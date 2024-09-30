@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\toetk\\OneDrive\\Documenten\\GitHub\\Project-B\\Project\\Project.csproj": {}
+    "C:\\Users\\matth\\OneDrive\\Documenten\\GitHub\\ProjectB\\Project-B\\Project\\Project.csproj": {}
   },
   "projects": {
-    "C:\\Users\\toetk\\OneDrive\\Documenten\\GitHub\\Project-B\\Project\\Project.csproj": {
+    "C:\\Users\\matth\\OneDrive\\Documenten\\GitHub\\ProjectB\\Project-B\\Project\\Project.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\toetk\\OneDrive\\Documenten\\GitHub\\Project-B\\Project\\Project.csproj",
+        "projectUniqueName": "C:\\Users\\matth\\OneDrive\\Documenten\\GitHub\\ProjectB\\Project-B\\Project\\Project.csproj",
         "projectName": "Project",
-        "projectPath": "C:\\Users\\toetk\\OneDrive\\Documenten\\GitHub\\Project-B\\Project\\Project.csproj",
-        "packagesPath": "C:\\Users\\toetk\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\toetk\\OneDrive\\Documenten\\GitHub\\Project-B\\Project\\obj\\",
+        "projectPath": "C:\\Users\\matth\\OneDrive\\Documenten\\GitHub\\ProjectB\\Project-B\\Project\\Project.csproj",
+        "packagesPath": "C:\\Users\\matth\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\matth\\OneDrive\\Documenten\\GitHub\\ProjectB\\Project-B\\Project\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\toetk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\matth\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -70,7 +75,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
