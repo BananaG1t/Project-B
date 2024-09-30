@@ -1,0 +1,73 @@
+{
+  "format": 1,
+  "restore": {
+    "c:\\Users\\speed\\OneDrive - Hogeschool Rotterdam\\ProjectB\\ThreeLayerTemplate\\Student versie met SQL\\Project\\Project.csproj": {}
+  },
+  "projects": {
+    "c:\\Users\\speed\\OneDrive - Hogeschool Rotterdam\\ProjectB\\ThreeLayerTemplate\\Student versie met SQL\\Project\\Project.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "c:\\Users\\speed\\OneDrive - Hogeschool Rotterdam\\ProjectB\\ThreeLayerTemplate\\Student versie met SQL\\Project\\Project.csproj",
+        "projectName": "Project",
+        "projectPath": "c:\\Users\\speed\\OneDrive - Hogeschool Rotterdam\\ProjectB\\ThreeLayerTemplate\\Student versie met SQL\\Project\\Project.csproj",
+        "packagesPath": "C:\\Users\\speed\\.nuget\\packages\\",
+        "outputPath": "c:\\Users\\speed\\OneDrive - Hogeschool Rotterdam\\ProjectB\\ThreeLayerTemplate\\Student versie met SQL\\Project\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\speed\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.1.35, )"
+            },
+            "Microsoft.Data.Sqlite": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "c:\\program files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
