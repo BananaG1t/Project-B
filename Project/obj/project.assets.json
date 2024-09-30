@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    "net7.0": {
+    "net8.0": {
       "Dapper/2.1.35": {
         "type": "package",
         "compile": {
@@ -34,12 +34,12 @@
           "SQLitePCLRaw.core": "2.1.6"
         },
         "compile": {
-          "lib/net6.0/Microsoft.Data.Sqlite.dll": {
+          "lib/net8.0/Microsoft.Data.Sqlite.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/Microsoft.Data.Sqlite.dll": {
+          "lib/net8.0/Microsoft.Data.Sqlite.dll": {
             "related": ".xml"
           }
         }
@@ -78,10 +78,10 @@
           "lib/netstandard2.0/_._": {}
         },
         "build": {
-          "buildTransitive/net7.0/SQLitePCLRaw.lib.e_sqlite3.targets": {}
+          "buildTransitive/net8.0/SQLitePCLRaw.lib.e_sqlite3.targets": {}
         },
         "runtimeTargets": {
-          "runtimes/browser-wasm/nativeassets/net7.0/e_sqlite3.a": {
+          "runtimes/browser-wasm/nativeassets/net8.0/e_sqlite3.a": {
             "assetType": "native",
             "rid": "browser-wasm"
           },
@@ -353,37 +353,37 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net7.0": [
+    "net8.0": [
       "Dapper >= 2.1.35",
       "Microsoft.Data.Sqlite >= 8.0.8"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\speed\\.nuget\\packages\\": {}
+    "C:\\Users\\toetk\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "c:\\Users\\speed\\OneDrive - Hogeschool Rotterdam\\ProjectB\\ThreeLayerTemplate\\Student versie met SQL\\Project\\Project.csproj",
+      "projectUniqueName": "C:\\Users\\toetk\\OneDrive\\Documenten\\GitHub\\Project-B\\Project\\Project.csproj",
       "projectName": "Project",
-      "projectPath": "c:\\Users\\speed\\OneDrive - Hogeschool Rotterdam\\ProjectB\\ThreeLayerTemplate\\Student versie met SQL\\Project\\Project.csproj",
-      "packagesPath": "C:\\Users\\speed\\.nuget\\packages\\",
-      "outputPath": "c:\\Users\\speed\\OneDrive - Hogeschool Rotterdam\\ProjectB\\ThreeLayerTemplate\\Student versie met SQL\\Project\\obj\\",
+      "projectPath": "C:\\Users\\toetk\\OneDrive\\Documenten\\GitHub\\Project-B\\Project\\Project.csproj",
+      "packagesPath": "C:\\Users\\toetk\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\toetk\\OneDrive\\Documenten\\GitHub\\Project-B\\Project\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\speed\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\toetk\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net7.0"
+        "net8.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "projectReferences": {}
         }
       },
@@ -391,11 +391,16 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
-      "net7.0": {
-        "targetAlias": "net7.0",
+      "net8.0": {
+        "targetAlias": "net8.0",
         "dependencies": {
           "Dapper": {
             "target": "Package",
@@ -422,7 +427,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "c:\\program files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
