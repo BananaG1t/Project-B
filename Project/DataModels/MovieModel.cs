@@ -1,19 +1,20 @@
-﻿public class AccountModel
+﻿public class MovieModel
 {
+    public string Name { get; set; }
+    public string Author { get; set; }
+    public string Description { get; set; }
+    public DateTime Length { get; set; }
+    public string Genre { get; set; }
+    public string MovieRating { get; set; }
 
-    public Int64 Id { get; set; }
-    public string EmailAddress { get; set; }
-
-    public string Password { get; set; }
-
-    public string FullName { get; set; }
-
-    public AccountModel(Int64 id, string email, string password, string fullname)
+    public MovieModel(Int64 id, string name, string author, string description, DateTime length, string genre, string movierating)
     {
-        Id = id;
-        EmailAddress = email;
-        Password = password;
-        FullName = fullname;
+        Name = name;
+        Author = author;
+        Description = description;
+        Length = length;
+        Genre = genre;
+        MovieRating = movierating;
     }
 
 

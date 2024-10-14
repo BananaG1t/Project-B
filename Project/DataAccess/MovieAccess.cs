@@ -7,31 +7,31 @@ public static class MovieAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private static string Table = "Movie";
+    private static string Table = "Movies";
 
-    public static void Write(AccountModel account)
+    public static void Write(MovieModel movie)
     {
-        string sql = $"INSERT INTO {Table} (email, password, fullname) VALUES (@EmailAddress, @Password, @FullName)";
-        _connection.Execute(sql, account);
+        string sql = $"INSERT INTO {Table} (name, author, description, length, genre, movierating) VALUES (@Name, @Author, @Description, @Length ,@Genre ,@Movie_ratings)";
+        _connection.Execute(sql, movie);
     }
 
 
-    public static AccountModel GetById(int id)
+    public static MovieModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        return _connection.QueryFirstOrDefault<AccountModel>(sql, new { Id = id });
+        return _connection.QueryFirstOrDefault<MovieModel>(sql, new { Id = id });
     }
 
-    public static AccountModel GetByEmail(string email)
+    public static MovieModel GetByName(string name)
     {
         string sql = $"SELECT * FROM {Table} WHERE email = @Email";
-        return _connection.QueryFirstOrDefault<AccountModel>(sql, new { Email = email });
+        return _connection.QueryFirstOrDefault<MovieModel>(sql, new { Name = name });
     }
 
-    public static void Update(AccountModel account)
+    public static void Update(MovieModel movie)
     {
-        string sql = $"UPDATE {Table} SET email = @EmailAddress, password = @Password, fullname = @FullName WHERE id = @Id";
-        _connection.Execute(sql, account);
+        string sql = $"UPDATE {Table} SET name = @Name, author = @Author, description = @Description, length = @Length, genre = @Gnere, movierating = @Movie_ratings WHERE id = @Id";
+        _connection.Execute(sql, movie);
     }
 
     public static void Delete(int id)
