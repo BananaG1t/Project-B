@@ -5,12 +5,12 @@ import os
 db_file = 'project.db'
 
 # Check if the file exists
-if os.path.exists(db_file):
+#if os.path.exists(db_file):
     # Delete the file
-    os.remove(db_file)
-    print(f"{db_file} deleted successfully.")
-else:
-    print(f"{db_file} does not exist.")
+    #os.remove(db_file)
+    #print(f"{db_file} deleted successfully.")
+#else:
+    #print(f"{db_file} does not exist.")
 
 # Step 1: Connect to a database (or create it if it doesn't exist)
 connection = sqlite3.connect(db_file)
@@ -88,19 +88,19 @@ CREATE TABLE IF NOT EXISTS Movies (
     Name TEXT NOT NULL,
     Author TEXT NOT NULL,
     Description TEXT NOT NULL,
-    Lenght TIME NOT NULL,
+    Length TIME NOT NULL,
     Genre TEXT NOT NULL,
     Movie_ratings TEXT NOT NULL
 );
 ''')
 
-# Step 9: Create the Auditorium layout table
+# Step 9: Create the Auditorium_layout table
 cursor.execute('''
-CREATE TABLE Auditorium_layout (
+CREATE TABLE IF NOT EXISTS Auditorium_layout (
     room_id INTEGER,
     row_num INTEGER NOT NULL,
     col_num INTEGER NOT NULL,
-    seat_class TINYINT(50) NOT NULL,
+    seat_class TINYINT NOT NULL,
     price DECIMAL(4,2) NOT NULL,
     PRIMARY KEY (room_id, row_num, col_num)
 );
