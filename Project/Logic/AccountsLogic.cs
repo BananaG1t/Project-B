@@ -24,6 +24,7 @@ public class AccountsLogic
         return AccountsAccess.GetById(id);
     }
 
+
     public AccountModel CheckLogin(string email, string password)
     {
 
@@ -35,6 +36,15 @@ public class AccountsLogic
         }
         return null;
     }
+
+    public bool CheckNewEmail(string email) // added bool to check if email already exsits in database
+    {
+        AccountModel acc = AccountsAccess.GetByEmail(email);
+        if (acc == null) return true;
+        else return false;
+    }
+        
+
 }
 
 

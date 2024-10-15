@@ -22,6 +22,62 @@ static class UserLogin
         else
         {
             Console.WriteLine("No account found with that email and password");
+            Console.WriteLine("Would you like to make a new account?\n[1] Yes\n[2] No"); // added create new account option in main menu.
+            string choice = Console.ReadLine();
+            switch(choice)
+            {
+                case "1":
+                {
+                    CreateLogin();
+                    break;
+                }
+                case "2":
+                {
+                    break;
+                }
+                default:
+                {
+                    Console.WriteLine("Invalid input");
+                    break;
+                }
+            }
         }
+    }
+    public static void CreateLogin()
+    {
+        string email;
+        string password;
+        string fullname;
+        do
+        {
+            Console.WriteLine("Please enter your full name (Optional)");
+            fullname = Console.ReadLine();
+            Console.WriteLine("Please enter your email address");
+            email = Console.ReadLine();
+            Console.WriteLine("Please enter your password");
+            password = Console.ReadLine();
+
+            if (!email.Contains("@") & !email.Contains(".")) Console.WriteLine("Invalid email");
+            else if (password.Length < 1) Console.WriteLine("Invalid password");
+            else if (!accountsLogic.CheckNewEmail(email)) 
+            {
+                Console.WriteLine("Account with this email already exists");
+                continue;
+            }
+            else Console.WriteLine("New account added");
+
+        } while (!email.Contains("@") & !email.Contains(".") & password.Length < 1);
+
+        if (fullname == "")
+        {
+            AccountModel newacc = new AccountModel(email, password, null);
+            AccountsAccess.Write(newacc);
+        }
+        else
+        {
+            AccountModel newacc = new AccountModel(email, password, fullname);
+            AccountsAccess.Write(newacc);
+        }
+
     }
 }

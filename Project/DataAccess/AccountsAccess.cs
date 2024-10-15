@@ -11,7 +11,7 @@ public static class AccountsAccess
 
     public static void Write(AccountModel account)
     {
-        string sql = $"INSERT INTO {Table} (email, password, fullname) VALUES (@EmailAddress, @Password, @FullName)";
+        string sql = $"INSERT INTO {Table} (email, password, fullname) VALUES (@EmailAddress, @Password, @Full_name)";
         _connection.Execute(sql, account);
     }
 

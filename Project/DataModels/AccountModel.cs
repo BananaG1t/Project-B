@@ -15,8 +15,12 @@
         Password = password;
         FullName = fullname;
     }
-
-
+    public AccountModel(string email, string password, string fullname)
+    {
+        EmailAddress = email;
+        Password = password;
+        FullName = fullname;
+    }
 }
 
 
