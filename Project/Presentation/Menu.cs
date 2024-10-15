@@ -23,6 +23,29 @@ static class Menu
             Console.WriteLine("Invalid input");
             Start();
         }
+    }
+
+    public static void Main(AccountModel CurrentAccount)
+    {
+        List<string> ValidChoices = ["1", "2"];
+        string choice;
+        do
+        {
+            Console.WriteLine("Press [1] to get a new reservation");
+            Console.WriteLine("Press [2] to see all the reservations you have made");
+
+            choice = Console.ReadLine();
+            if (choice == "1")
+            {
+                // link code to getting a reservation
+            }
+            else if (choice == "2")
+            {
+                // link code to see all the reservations the user has made
+            }
+            else { Console.WriteLine("That is not a valid choice!"); }
+        } while (!ValidChoices.Contains(choice));
+
 
     }
 }
