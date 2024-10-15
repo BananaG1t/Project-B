@@ -25,9 +25,14 @@ CREATE TABLE IF NOT EXISTS Accounts (
     Email TEXT NOT NULL,
     Password TEXT NOT NULL,
     Full_name TEXT NOT NULL,
-    Admin BOOLEAN NOT NULL
+    Admin BOOLEAN NOT NULL DEFAULT 0
 );
 ''')
+
+cursor.execute('''
+INSERT OR IGNORE INTO Accounts (id, Email, Password, Full_name, Admin)
+VALUES (?, ?, ?, ?, ?)
+''', (0, "admin", "admin", "Admin", 1))
 
 # Step 4: Create the Reservation table
 cursor.execute('''
