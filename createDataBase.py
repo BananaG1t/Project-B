@@ -18,67 +18,77 @@ connection = sqlite3.connect(db_file)
 # Step 2: Create a cursor object to execute SQL commands
 cursor = connection.cursor()
 
+cursor.execute('''DROP TABLE Accounts''')
+
 # Step 3: Create the Account table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Accounts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Email TEXT NOT NULL,
-    Password TEXT NOT NULL,
-    Full_name TEXT NOT NULL,
-    Admin BOOLEAN NOT NULL DEFAULT 0
+    email TEXT NOT NULL,
+    password TEXT NOT NULL,
+    fullname TEXT NOT NULL,
+    admin BOOLEAN NOT NULL DEFAULT false
 );
 ''')
 
 cursor.execute('''
-INSERT OR IGNORE INTO Accounts (id, Email, Password, Full_name, Admin)
+INSERT OR IGNORE INTO Accounts (id, email, password, fullname, admin)
 VALUES (?, ?, ?, ?, ?)
-''', (0, "admin", "admin", "Admin", 1))
+''', (0, "admin", "admin", "Admin", True))
+
+cursor.execute('''DROP TABLE IF EXISTS Reservations''')
 
 # Step 4: Create the Reservation table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS Accounts (
+CREATE TABLE IF NOT EXISTS Reservations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     Account_ID INTEGER NOT NULL,
     Schedule_ID INTEGER NOT NULL,
-    Seat_Row INTEGER NOT NULL,
-    Seat_Collum INTEGER NOT NULL,           
-    Status TEXT NOT NULL,
+    seat_Row INTEGER NOT NULL,
+    seat_Collum INTEGER NOT NULL,           
+    status TEXT NOT NULL,
     FOREIGN KEY (Account_ID) REFERENCES Accounts(Account_ID)
     FOREIGN KEY (Schedule_ID) REFERENCES Schedule(Schedule_ID)
 );
 ''')
+
+cursor.execute('''DROP TABLE Auditorium''')
 
 # Step 5: Create the Auditorium table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Auditorium (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     Layout_ID INTEGER NOT NULL,
-    Type TEXT,
-    Total_seats INTEGER NOT NULL,
+    type TEXT,
+    total_seats INTEGER NOT NULL,
     FOREIGN KEY (Layout_ID) REFERENCES Auditorium_layout(Layout_ID)
 );
 ''')
+
+cursor.execute('''DROP TABLE Seats''')
 
 # Step 6: Create the Seats table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Seats (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     Auditorium_ID INTEGER NOT NULL,
-    Row INTEGER NOT NULL,
-    Collum INTEGER NOT NULL,
-    Price FLOAT NOT NULL,
-    Class INTEGER NOT NULL,
-    IsAvailable BOOLEAN DEFAULT 1,
+    row INTEGER NOT NULL,
+    collum INTEGER NOT NULL,
+    price FLOAT NOT NULL,
+    class INTEGER NOT NULL,
+    isAvailable BOOLEAN DEFAULT true,
     FOREIGN KEY (Auditorium_ID) REFERENCES Auditorium(Auditorium_ID)
 );
 ''')
+
+cursor.execute('''DROP TABLE Schedule''')
 
 # Step 7: Create the Schedule table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Schedule (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    StartTime DATETIME NOT NULL,
-    EndTime DATETIME NOT NULL,
+    startTime DATETIME NOT NULL,
+    endTime DATETIME NOT NULL,
     Movie_ID INTEGER NOT NULL,
     Auditorium_ID INTEGER NOT NULL,
     FOREIGN KEY (Auditorium_ID) REFERENCES Room(Auditorium_ID)
@@ -86,16 +96,19 @@ CREATE TABLE IF NOT EXISTS Schedule (
 );
 ''')
 
+cursor.execute('''DROP TABLE Movies''')
+
 # Step 8: Create the Movie table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Movies (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Name TEXT NOT NULL,
-    Author TEXT NOT NULL,
-    Description TEXT NOT NULL,
-    Length TIME NOT NULL,
-    Genre TEXT NOT NULL,
-    Movie_ratings TEXT NOT NULL
+    name TEXT NOT NULL,
+    author TEXT NOT NULL,
+    description TEXT NOT NULL,
+    length TIME NOT NULL,
+    genre TEXT NOT NULL,
+    age_rating INTERGER,
+    movie_ratings TEXT NOT NULL
 );
 ''')
 
