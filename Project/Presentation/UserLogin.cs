@@ -24,22 +24,22 @@ static class UserLogin
             Console.WriteLine("No account found with that email and password");
             Console.WriteLine("Would you like to make a new account?\n[1] Yes\n[2] No"); // added create new account option in main menu.
             string choice = Console.ReadLine();
-            switch(choice)
+            switch (choice)
             {
                 case "1":
-                {
-                    CreateLogin();
-                    break;
-                }
+                    {
+                        CreateLogin();
+                        break;
+                    }
                 case "2":
-                {
-                    break;
-                }
+                    {
+                        break;
+                    }
                 default:
-                {
-                    Console.WriteLine("Invalid input");
-                    break;
-                }
+                    {
+                        Console.WriteLine("Invalid input");
+                        break;
+                    }
             }
         }
     }
@@ -59,7 +59,7 @@ static class UserLogin
 
             if (!email.Contains("@") & !email.Contains(".")) Console.WriteLine("Invalid email");
             else if (password.Length < 1) Console.WriteLine("Invalid password");
-            else if (!accountsLogic.CheckNewEmail(email)) 
+            else if (!accountsLogic.CheckNewEmail(email))
             {
                 Console.WriteLine("Account with this email already exists");
                 continue;
