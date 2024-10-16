@@ -47,7 +47,7 @@ static class UserLogin
     {
         string email;
         string password;
-        string fullname;
+        string? fullname;
         do
         {
             Console.WriteLine("Please enter your full name (Optional)");
@@ -68,16 +68,8 @@ static class UserLogin
 
         } while (!email.Contains("@") & !email.Contains(".") & password.Length < 1);
 
-        if (fullname == "")
-        {
-            AccountModel newacc = new AccountModel(email, password, null);
-            AccountsAccess.Write(newacc);
-        }
-        else
-        {
-            AccountModel newacc = new AccountModel(email, password, fullname);
-            AccountsAccess.Write(newacc);
-        }
+        fullname = fullname == "" ? fullname : null;
+        AccountModel newacc = new AccountModel(email, password, fullname);
 
     }
 }
