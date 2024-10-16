@@ -9,10 +9,15 @@ public static class AccountsAccess
 
     private static string Table = "Accounts";
 
-    public static void Write(AccountModel account)
+    public static Int64 Write(AccountModel account)
     {
-        string sql = $"INSERT INTO {Table} (email, password, fullname) VALUES (@EmailAddress, @Password, @Full_name)";
-        _connection.Execute(sql, account);
+        string sql = @$"
+        INSERT INTO {Table} (email, password, fullname)
+        VALUES(@EmailAddress, @Password, @Full_name)
+
+        SELECT last_insert_rowid();
+        ";
+        return _connection.Execute(sql, account);
     }
 
 

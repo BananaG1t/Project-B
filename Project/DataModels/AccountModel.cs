@@ -20,6 +20,7 @@
         EmailAddress = email;
         Password = password;
         FullName = fullname;
+        Id = AccountsAccess.Write(this);
     }
 }
 
