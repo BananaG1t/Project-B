@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS Accounts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL,
     password TEXT NOT NULL,
-    fullname TEXT NOT NULL,
+    fullname TEXT,
     admin BOOLEAN NOT NULL DEFAULT false
 );
 ''')
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS Reservations (
     Schedule_ID INTEGER NOT NULL,
     seat_Row INTEGER NOT NULL,
     seat_Collum INTEGER NOT NULL,           
-    status TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT Active,
     FOREIGN KEY (Account_ID) REFERENCES Accounts(Account_ID)
     FOREIGN KEY (Schedule_ID) REFERENCES Schedule(Schedule_ID)
 );
@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS Movies (
     length TIME NOT NULL,
     genre TEXT NOT NULL,
     age_rating INTERGER,
-    movie_ratings TEXT NOT NULL
+    movie_ratings DECIMAL(2,1)
 );
 ''')
 
