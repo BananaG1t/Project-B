@@ -27,6 +27,7 @@ static class Menu
         {
             // link code to see all the reservations the user has made
         }
+        // sends the user to the start to login again
         else if (input == 3) { UserLogin.Start(); }
     }
 }
