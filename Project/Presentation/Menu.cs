@@ -15,8 +15,9 @@ static class Menu
 
     public static void Main(AccountModel CurrentAccount)
     {
+        string text = "Press [1] to get a new reservation\nPress [2] to see all the reservations you have made\nPress [3] to log out";
         // get a valid input number
-        int input = General.ValidAnswer("Press [1] to get a new reservation\nPress [2] to see all the reservations you have made", [1, 2]);
+        int input = General.ValidAnswer(text, [1, 2, 3]);
 
         if (input == 1)
         {
@@ -26,5 +27,6 @@ static class Menu
         {
             // link code to see all the reservations the user has made
         }
+        else if (input == 3) { UserLogin.Start(); }
     }
 }
