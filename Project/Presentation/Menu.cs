@@ -6,6 +6,7 @@ static class Menu
     //You could edit this to show different menus depending on the user's role
     static public void Start()
     {
+        // get a valid input number
         int input = General.ValidAnswer("Enter [1] to login\nEnter [2] to do something else in the future", [1, 2]);
 
         if (input == 1) { UserLogin.Start(); }
@@ -14,6 +15,7 @@ static class Menu
 
     public static void Main(AccountModel CurrentAccount)
     {
+        // get a valid input number
         int input = General.ValidAnswer("Press [1] to get a new reservation\nPress [2] to see all the reservations you have made", [1, 2]);
 
         if (input == 1)
