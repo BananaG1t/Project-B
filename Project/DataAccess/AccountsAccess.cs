@@ -11,13 +11,13 @@ public static class AccountsAccess
 
     public static Int64 Write(AccountModel account)
     {
-        string sql = @$"
-        INSERT INTO {Table} (email, password, fullname)
-        VALUES(@EmailAddress, @Password, @Full_name)
+        string sql = $"INSERT INTO {Table} (email, password, fullname) VALUES (@EmailAddress, @Password, @FullName)";
+        _connection.Execute(sql, account);
 
-        SELECT last_insert_rowid();
-        ";
-        return _connection.Execute(sql, account);
+        string idSql = "SELECT last_insert_rowid();";
+        Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
+
+        return lastId;
     }
 
 
