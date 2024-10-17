@@ -46,8 +46,7 @@ public class AccountsLogic
 
     public bool Validinfo(string email, string password)
     {
-
-        if (!email.Contains("@")& !email.Contains(".")) 
+        if (!email.Contains('@')& !email.Contains('.')) 
         {
             Console.WriteLine("Invalid email");
             return false;

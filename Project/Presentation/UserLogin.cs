@@ -49,21 +49,28 @@ static class UserLogin
         string email;
         string password;
         string? fullname;
+        string exit;
+
         do
+        {   
+        Console.WriteLine("[1] Exit\n[2] Continue");
+        exit = Console.ReadLine();
+        if (exit == "1")
         {
+            Menu.Start();
+        }
             Console.WriteLine("Please enter your full name (Optional)");
             fullname = Console.ReadLine();
             Console.WriteLine("Please enter your email address");
             email = Console.ReadLine();
             Console.WriteLine("Please enter your password");
             password = Console.ReadLine();
-        } while (accountsLogic.Validinfo(email,password) == false);
+        } while (!accountsLogic.Validinfo(email,password));
 
         fullname = fullname == "" ? null : fullname;
         AccountModel newacc = new AccountModel(email, password, fullname);
         Console.WriteLine($"Welcome {newacc.FullName}");
         Console.WriteLine($"Your email number is { newacc.EmailAddress}");
-        //menu
-
+        Menu.Main(newacc);
     }
 }
