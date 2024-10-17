@@ -43,7 +43,32 @@ public class AccountsLogic
         if (acc == null) return true;
         else return false;
     }
-        
+
+    public bool Validinfo(string email, string password)
+    {
+
+        if (!email.Contains("@")& !email.Contains(".")) 
+        {
+            Console.WriteLine("Invalid email");
+            return false;
+        }
+        else if (!CheckNewEmail(email))
+        {
+            Console.WriteLine("Account with this email already exists");
+            return false;
+        }
+        else if (password.Length < 1) 
+        {
+            Console.WriteLine("Invalid password");
+            return false;
+        }
+        else 
+        {
+            Console.WriteLine("New account added");
+            return true;
+        }
+    }
+
 
 }
 

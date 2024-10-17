@@ -33,6 +33,7 @@ static class UserLogin
                     }
                 case "2":
                     {
+                        Start();
                         break;
                     }
                 default:
@@ -56,20 +57,13 @@ static class UserLogin
             email = Console.ReadLine();
             Console.WriteLine("Please enter your password");
             password = Console.ReadLine();
+        } while (accountsLogic.Validinfo(email,password) == false);
 
-            if (!email.Contains("@") & !email.Contains(".")) Console.WriteLine("Invalid email");
-            else if (password.Length < 1) Console.WriteLine("Invalid password");
-            else if (!accountsLogic.CheckNewEmail(email))
-            {
-                Console.WriteLine("Account with this email already exists");
-                continue;
-            }
-            else Console.WriteLine("New account added");
-
-        } while (!email.Contains("@") & !email.Contains(".") & password.Length < 1);
-
-        fullname = fullname == "" ? fullname : null;
+        fullname = fullname == "" ? null : fullname;
         AccountModel newacc = new AccountModel(email, password, fullname);
+        Console.WriteLine($"Welcome {newacc.FullName}");
+        Console.WriteLine($"Your email number is { newacc.EmailAddress}");
+        //menu
 
     }
 }
