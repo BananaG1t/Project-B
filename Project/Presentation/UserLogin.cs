@@ -15,11 +15,7 @@ static class UserLogin
         {
             if (acc.Admin)
             {
-                Console.WriteLine("Admin Menu:");
-                Console.WriteLine("1. Manage Users (empty for now)");
-                Console.WriteLine("2. System Settings (empty for now)");
-                Console.WriteLine("3. Exit");
-                Menu.AdminStart();
+                Menu.AdminMenu();
             }
             
             else 
