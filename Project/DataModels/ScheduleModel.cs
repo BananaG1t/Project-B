@@ -25,6 +25,8 @@ public class ScheduleModel
         StartTime = startTime;
         Movie = movie;
         Auditorium = auditorium;
+        EndTime = StartTime + Movie.Length;
+        Id = ScheduleAccess.Write(this);
     }
 
 
