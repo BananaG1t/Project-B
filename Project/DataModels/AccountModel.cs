@@ -1,4 +1,4 @@
-﻿public class AccountModel
+public class AccountModel
 {
 
     public Int64 Id { get; set; }
@@ -17,12 +17,6 @@
         Password = password;
         FullName = fullname;
         Admin = admin == 1;
-    
-
     }
 
-
 }
-
-
-

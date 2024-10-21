@@ -1,26 +1,4 @@
-﻿class Program
-{
-    static void Main(string[] args)
-    {
-        var loginService = new LoginService();
-        Console.WriteLine("Enter username:");
-        string username = Console.ReadLine();
-        Console.WriteLine("Enter password:");
-        string password = Console.ReadLine();
-
-        var user = loginService.Login(username, password);
-        if (user != null)
-        {
-            if (user.IsAdmin)
-            {
-                var adminMenu = new AdminMenu();
-                adminMenu.Show();
-            }
-            else
-            {
-                var userMenu = new UserMenu();
-                userMenu.Show();
-            }
-        }
-    }
-}
+// See https://aka.ms/new-console-template for more information
+Console.WriteLine("Welcome to this amazing program");
+Directory.SetCurrentDirectory(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName);
+Menu.Start();
