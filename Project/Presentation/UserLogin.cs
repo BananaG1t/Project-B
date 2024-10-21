@@ -53,7 +53,7 @@ static class UserLogin
 
         do
         {   
-        Console.WriteLine("[1] Exit\n[2] Continue");
+        Console.WriteLine("Enter [1] to return to menu");
         exit = Console.ReadLine();
         if (exit == "1")
         {
