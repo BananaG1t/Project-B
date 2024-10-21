@@ -44,7 +44,7 @@ public class AccountsLogic
         else return false;
     }
 
-    public bool Validinfo(string email, string password)
+    public bool Validinfo(string email, string password) // check if new email and password are valid 
     {
         if (!email.Contains('@')& !email.Contains('.')) 
         {
