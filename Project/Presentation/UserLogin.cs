@@ -5,11 +5,13 @@ static class UserLogin
 
     public static void Start()
     {
+        Console.Clear();
         Console.WriteLine("Welcome to the login page");
         Console.WriteLine("Please enter your email address");
         string email = Console.ReadLine();
         Console.WriteLine("Please enter your password");
         string password = Console.ReadLine();
+        Console.Clear();
         AccountModel acc = accountsLogic.CheckLogin(email, password);
         if (acc != null)
         {
@@ -29,25 +31,29 @@ static class UserLogin
     }
     public static void CreateLogin()
     {
+        Console.Clear();
         string email;
         string password;
         string? fullname;
         string exit;
 
         do
-        {   
+        {  
+        Console.WriteLine("Welcome to the account creation page"); 
         Console.WriteLine("Enter [1] to return to menu");
         exit = Console.ReadLine();
         if (exit == "1")
         {
             Menu.Start();
         }
+            Console.Clear();
             Console.WriteLine("Please enter your full name (Optional)");
             fullname = Console.ReadLine();
             Console.WriteLine("Please enter your email address");
             email = Console.ReadLine();
             Console.WriteLine("Please enter your password");
             password = Console.ReadLine();
+            Console.Clear();
         } while (!accountsLogic.Validinfo(email,password));
 
         fullname = fullname == "" ? null : fullname;
