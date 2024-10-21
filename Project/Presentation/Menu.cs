@@ -4,24 +4,26 @@ static class Menu
     //This shows the menu. You can call back to this method to show the menu again
     //after another presentation method is completed.
     //You could edit this to show different menus depending on the user's role
-    static public void Start()
+    static public void AdminStart()
     {
-        Console.WriteLine("Enter 1 to login");
-        Console.WriteLine("Enter 2 to do something else in the future");
+        Console.WriteLine("Admin Menu:");
+        Console.WriteLine("1. Manage Users (empty for now)");
+        Console.WriteLine("2. System Settings (empty for now)");
+        Console.WriteLine("3. Exit");
 
         string input = Console.ReadLine();
         if (input == "1")
         {
-            UserLogin.Start();
+            Console.WriteLine("This feature is not yet implemented");
         }
         else if (input == "2")
         {
             Console.WriteLine("This feature is not yet implemented");
         }
-        else
+        else if (input == "3")
         {
-            Console.WriteLine("Invalid input");
-            Start();
+            Console.WriteLine("Exiting");
+            UserLogin.Start();
         }
 
     }
