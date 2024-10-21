@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS Seats (
     row INTEGER NOT NULL,
     collum INTEGER NOT NULL,
     price FLOAT NOT NULL,
-    class INTEGER NOT NULL,
+    type INTEGER NOT NULL,
     isAvailable BOOLEAN DEFAULT true,
     FOREIGN KEY (Auditorium_ID) REFERENCES Auditorium(Auditorium_ID)
 );
