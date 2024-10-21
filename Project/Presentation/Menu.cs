@@ -6,51 +6,28 @@ static class Menu
     //You could edit this to show different menus depending on the user's role
     static public void Start()
     {
-        Console.WriteLine("Enter 1 to login");
-        Console.WriteLine("Enter 2 to create new account");
-        Console.WriteLine("Enter 3 to do something else in the future");
+        // get a valid input number
+        int input = General.ValidAnswer("Enter [1] to login\nEnter [2] to create new account", [1, 2]);
 
-        string input = Console.ReadLine();
-        if (input == "1")
-        {
-            UserLogin.Start();
-        }
-        else if (input == "2")
-        {
-            UserLogin.CreateLogin();
-        }
-        else if (input == "3")
-        {
-            Console.WriteLine("This feature is not yet implemented");
-        }
-        else
-        {
-            Console.WriteLine("Invalid input");
-            Start();
-        }
+        if (input == 1) { UserLogin.Start(); }
+        else if (input == 2) { UserLogin.CreateLogin(); }
     }
 
     public static void Main(AccountModel CurrentAccount)
     {
-        List<string> ValidChoices = ["1", "2"];
-        string choice;
-        do
+        string text = "Press [1] to get a new reservation\nPress [2] to see all the reservations you have made\nPress [3] to log out";
+        // get a valid input number
+        int input = General.ValidAnswer(text, [1, 2, 3]);
+
+        if (input == 1)
         {
-            Console.WriteLine("Press [1] to get a new reservation");
-            Console.WriteLine("Press [2] to see all the reservations you have made");
-
-            choice = Console.ReadLine();
-            if (choice == "1")
-            {
-                // link code to getting a reservation
-            }
-            else if (choice == "2")
-            {
-                // link code to see all the reservations the user has made
-            }
-            else { Console.WriteLine("That is not a valid choice!"); }
-        } while (!ValidChoices.Contains(choice));
-
-
+            // link code to getting a reservation
+        }
+        else if (input == 2)
+        {
+            // link code to see all the reservations the user has made
+        }
+        // sends the user to the start to login again
+        else if (input == 3) { UserLogin.Start(); }
     }
 }
