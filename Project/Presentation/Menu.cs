@@ -29,19 +29,5 @@ static class Menu
         }
         // sends the user to the start to login again
         else if (input == 3) { UserLogin.Start(); }
-        text = "Press [1] to get a new reservation\nPress [2] to see all the reservations you have made\nPress [3] to log out";
-        // get a valid input number
-        input = General.ValidAnswer(text, [1, 2, 3]);
-
-        if (input == 1)
-        {
-            // link code to getting a reservation
-        }
-        else if (input == 2)
-        {
-            // link code to see all the reservations the user has made
-        }
-        // sends the user to the start to login again
-        else if (input == 3) { UserLogin.Start(); }
     }
 }
