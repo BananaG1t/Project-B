@@ -9,40 +9,27 @@ public static class MovieAccess
 
     private static string Table = "Movies";
 
-    public static void Write(MovieModel movie)
+    public static Int64 Write(MovieModel movie)
     {
         string sql = $"INSERT INTO {Table} (name, author, description, length, genre, age_rating, movie_ratings) VALUES (@Name, @Author, @Description, @Length ,@Genre, @AgeRating, @MovieRating)";
-        using (var command = _connection.CreateCommand())
-        {
-            command.CommandText = sql;
+        _connection.Execute(sql, movie);
 
-            // Add parameters for the SQL query
-            command.Parameters.AddWithValue("@Name", movie.Name);
-            command.Parameters.AddWithValue("@Author", movie.Author);
-            command.Parameters.AddWithValue("@Description", movie.Description);
-            command.Parameters.AddWithValue("@Length", movie.Length);
-            command.Parameters.AddWithValue("@Genre", movie.Genre);
-            command.Parameters.AddWithValue("@AgeRating", movie.AgeRating);
-            command.Parameters.AddWithValue("@MovieRating", movie.MovieRating);
+        string idSql = "SELECT last_insert_rowid();";
+        Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
 
-            // Open connection and execute the query
-            _connection.Open();
-            command.ExecuteNonQuery();
-            _connection.Close();
-        }
-        //_connection.Execute(sql, movie);
+        return lastId;
     }
 
 
     public static MovieModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        
+
         using (var command = _connection.CreateCommand())
         {
             command.CommandText = sql;
             command.Parameters.AddWithValue("@Id", id);
-            
+
             _connection.Open();
             using (var reader = command.ExecuteReader())
             {
@@ -50,7 +37,7 @@ public static class MovieAccess
                 {
                     // Retrieve the TIME value from the database as a TimeSpan
                     TimeSpan lengthAsTimeSpan = reader.GetTimeSpan(4);  // Get the TIME value as TimeSpan
-                    
+
                     // Create and return a new MovieModel instance
                     return new MovieModel(
                         reader.GetString(1),   // Name
@@ -67,7 +54,7 @@ public static class MovieAccess
         }
 
         return null;  // Return null if no movie found
- 
+
     }
 
     public static void Update(MovieModel movie, int id)
@@ -78,7 +65,7 @@ public static class MovieAccess
             movie.Name,
             movie.Author,
             movie.Description,
-            movie.Length,  
+            movie.Length,
             movie.Genre,
             movie.AgeRating,
             movie.MovieRating,
