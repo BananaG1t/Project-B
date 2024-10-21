@@ -21,27 +21,10 @@ static class UserLogin
         }
         else
         {
-            Console.WriteLine("No account found with that email and password");
-            Console.WriteLine("Would you like to make a new account?\n[1] Yes\n[2] No"); // added create new account option in main menu.
-            string choice = Console.ReadLine();
-            switch (choice)
-            {
-                case "1":
-                    {
-                        CreateLogin();
-                        break;
-                    }
-                case "2":
-                    {
-                        Start();
-                        break;
-                    }
-                default:
-                    {
-                        Console.WriteLine("Invalid input");
-                        break;
-                    }
-            }
+            Console.WriteLine("No account found with that email and password");// added create new account option in main menu.
+            int input = General.ValidAnswer("Would you like to make a new account?\n[1] Yes\n[2] No", [1, 2]);
+            if (input == 1) { CreateLogin(); }
+            else if (input == 2) { Menu.Start(); }
         }
     }
     public static void CreateLogin()
