@@ -19,7 +19,6 @@
         Admin = admin == 1;
     }
 
-
 }
 
 
