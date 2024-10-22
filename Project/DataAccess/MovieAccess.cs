@@ -92,12 +92,15 @@ public static class MovieAccess
         _connection.Execute(sql, new { Id = id });
     }
 
-    public static MovieModel GetAuditoriumById(string movie_id) // added method to get auditorium id
+    public static int GetAuditoriumById(int movie_id) // added method to get auditorium id
     {
         string sql = $"SELECT Auditorium_ID FROM {Table} WHERE Movie_ID = @Movie_ID";
-        return _connection.QueryFirstOrDefault<MovieModel>(sql, new { Movie_ID = movie_id });
+        return _connection.QueryFirstOrDefault<int>(sql, new { Movie_ID = movie_id });
     }
 
-
-
+    public static int GetTotalSeats(int auditorium_id)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Movie_ID = @Movie_ID";
+        return _connection.QueryFirstOrDefault<int>(sql, new { Auditorium_ID = auditorium_id });
+    }
 }
