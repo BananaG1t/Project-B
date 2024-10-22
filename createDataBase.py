@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS Reservations (
     seat_Row INTEGER NOT NULL,
     seat_Collum INTEGER NOT NULL,           
     status TEXT NOT NULL DEFAULT Active,
-    FOREIGN KEY (Account_ID) REFERENCES Accounts(Account_ID)
-    FOREIGN KEY (Schedule_ID) REFERENCES Schedule(Schedule_ID)
+    FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
+    FOREIGN KEY (Schedule_ID) REFERENCES Schedule(id)
 );
 ''')
 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS Seats (
     price FLOAT NOT NULL,
     type INTEGER NOT NULL,
     isAvailable BOOLEAN DEFAULT true,
-    FOREIGN KEY (Auditorium_ID) REFERENCES Auditorium(Auditorium_ID)
+    FOREIGN KEY (Auditorium_ID) REFERENCES Auditorium(id)
 );
 ''')
 
@@ -90,8 +90,8 @@ CREATE TABLE IF NOT EXISTS Schedule (
     endTime DATETIME NOT NULL,
     Movie_ID INTEGER NOT NULL,
     Auditorium_ID INTEGER NOT NULL,
-    FOREIGN KEY (Auditorium_ID) REFERENCES Room(Auditorium_ID)
-    FOREIGN KEY (Auditorium_ID) REFERENCES Auditorium(Auditorium_ID)
+    FOREIGN KEY (Auditorium_ID) REFERENCES Room(id)
+    FOREIGN KEY (Auditorium_ID) REFERENCES Auditorium(id)
 );
 ''')
 
