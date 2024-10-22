@@ -28,9 +28,9 @@ public class MovieLogic
         return MovieAccess.GetAll();
     }
 
-    public void AddMovie(string name, string author, string description, TimeSpan length, string genre, int agerating, double movierating)
+    public static void AddMovie(string name, string author, string description, TimeSpan length, string genre, int agerating, double movierating)
     {
-        MovieAccess.Write(new MovieModel(name, author, description, length, genre, agerating, movierating));
+        new MovieModel(name, author, description, length, genre, agerating, movierating);
     }
 
     public void UpdateMovie(string name, string author, string description, TimeSpan length, string genre, int agerating, double movierating, int id)

@@ -9,30 +9,33 @@ public class ScheduleModel
 
     public MovieModel Movie { get; set; }
 
-    public Int64 MovieId { get; set; }
+    public int MovieId { get; set; }
 
     public AuditoriumModel Auditorium { get; set; }
 
-    public Int64 AuditoriumId { get; set; }
+    public int AuditoriumId { get; set; }
 
-    public ScheduleModel(Int64 id, DateTime startTime, DateTime endTime, MovieModel movie, AuditoriumModel auditorium)
+    public ScheduleModel(Int64 id, string startTime, string endTime, Int64 Movie_ID, Int64 Auditorium_ID)
     {
+        string format = "yyyy-MM-dd HH:mm:ss";
         Id = id;
-        StartTime = startTime;
-        EndTime = endTime;
-        Movie = movie;
-        MovieId = Movie.Id;
-        Auditorium = auditorium;
-        AuditoriumId = Auditorium.Id;
+        DateTime.TryParseExact(startTime, format, null, System.Globalization.DateTimeStyles.None, out DateTime output);
+        StartTime = output;
+        DateTime.TryParseExact(endTime, format, null, System.Globalization.DateTimeStyles.None, out output);
+        EndTime = output;
+        MovieId = (int)Movie_ID;
+        Movie = MovieAccess.GetById(MovieId);
+        AuditoriumId = (int)Auditorium_ID;
+        Auditorium = AuditoriumAcces.GetById(AuditoriumId);
     }
 
     public ScheduleModel(DateTime startTime, MovieModel movie, AuditoriumModel auditorium)
     {
         StartTime = startTime;
         Movie = movie;
-        MovieId = Movie.Id;
+        MovieId = (int)Movie.Id;
         Auditorium = auditorium;
-        AuditoriumId = Auditorium.Id;
+        AuditoriumId = (int)Auditorium.Id;
         EndTime = StartTime + Movie.Length;
         Id = ScheduleAccess.Write(this);
     }

@@ -31,6 +31,15 @@ public static class ScheduleAccess
         return _connection.ExecuteScalar<int>(sql, new { Room = room, StartTime = startTime, EndTime = endTime }) == 0;
     }
 
+    public static List<ScheduleModel> ScheduleByDate()
+    {
+        DateTime currdate = DateTime.Now;
+        string sql = $"SELECT * FROM {Table} WHERE startTime > @Currdate ORDER BY startTime ASC";
+        List<ScheduleModel> schedules = (List<ScheduleModel>)_connection.Query<ScheduleModel>(sql, new { Currdate = currdate });
+
+        return schedules;
+    }
+
     public static ScheduleModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";

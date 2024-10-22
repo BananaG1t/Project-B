@@ -9,9 +9,10 @@ static class Menu
         //admin menu
         Console.WriteLine("Admin Menu:");
         Console.WriteLine("1. Manage Users (empty for now)");
-        Console.WriteLine("2. System Settings (empty for now)");
+        Console.WriteLine("2. Add a movie");
         Console.WriteLine("3. Add to the schedule");
-        Console.WriteLine("4. Exit");
+        Console.WriteLine("4. Display the schedule");
+        Console.WriteLine("5. Exit");
 
 
         //reading input from the menu to connect to the features
@@ -29,6 +30,10 @@ static class Menu
             CreateScheduleEntry.Main();
         }
         else if (input == "4")
+        {
+            DisplaySchedule();
+        }
+        else if (input == "5")
         {
             Console.WriteLine("Exiting");
             UserLogin.Start();
@@ -48,7 +53,7 @@ static class Menu
 
     public static void Main(AccountModel CurrentAccount)
     {
-        string text = "Press [1] to get a new reservation\nPress [2] to see all the reservations you have made\nPress [3] to log out";
+        string text = "Press [1] to get a new reservation\nPress [2] to see all the reservations you have made\nPress [3] to see movie schedules\nPress [4] to log out";
         // get a valid input number
         int input = General.ValidAnswer(text, [1, 2, 3]);
 
@@ -61,8 +66,12 @@ static class Menu
         {
             // link code to see all the reservations the user has made
         }
+        else if (input == 3)
+        {
+            DisplaySchedule();
+        }
         // sends the user to the start to login again
-        else if (input == 3) { UserLogin.Start(); }
+        else if (input == 4) { UserLogin.Start(); }
     }
 
     // Add movie menu
@@ -113,14 +122,14 @@ static class Menu
             }
         }
 
-        decimal movie_ratings = 0;
+        double movie_ratings = 0;
         valid = false;
         while (!valid)
         {
             Console.WriteLine($"Movie rating: ");
             string input = Console.ReadLine();
 
-            if (decimal.TryParse(input, out movie_ratings) && movie_ratings >= 0)
+            if (double.TryParse(input, out movie_ratings) && movie_ratings >= 0)
             {
                 valid = true;
             }
@@ -137,15 +146,14 @@ static class Menu
 
     public static void DisplaySchedule()
     {
-        List<ScheduleModel> Schedules = [];
+        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
 
         // Shows what movie are playing based on the date and time
-        Console.WriteLine($"Date: {Schedules[0].StartTime.ToString("d")}\nMovies Playing");
-        int count = 0;
+        Console.Clear();
+        Console.WriteLine($"Movies Playing");
         foreach (ScheduleModel schedule in Schedules)
         {
-            count++;
-            Console.WriteLine($"[{count}] Movie: {schedule.Movie.Name}\n Starting time: {schedule.StartTime.ToString("HH:mm:ss")}");
+            Console.WriteLine($"Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime.ToString("HH:mm:ss")}");
         }
     }
 }
