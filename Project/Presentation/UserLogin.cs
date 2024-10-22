@@ -15,8 +15,21 @@ static class UserLogin
         AccountModel acc = accountsLogic.CheckLogin(email, password);
         if (acc != null)
         {
+            if (acc.Admin)
+            {
+                Menu.AdminMenu();
+            }
+            
+            else 
+            {
+                Console.WriteLine("Welcome back " + acc.FullName);
+                Console.WriteLine("Your email number is " + acc.EmailAddress);
+                //Send user to main menu
+            }
+
             Console.WriteLine("Welcome back " + acc.FullName);
             Console.WriteLine("Your email number is " + acc.EmailAddress);
+          
             Menu.Main(acc);
 
             //Write some code to go back to the menu

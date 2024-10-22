@@ -1,4 +1,4 @@
-﻿public class AccountModel
+public class AccountModel
 {
 
     public Int64 Id { get; set; }
@@ -26,6 +26,3 @@
         Id = AccountsAccess.Write(this);
     }
 }
-
-
-
