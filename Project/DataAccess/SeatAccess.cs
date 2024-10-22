@@ -9,10 +9,15 @@ public static class SeatsAccess
 
     private static string Table = "Seats";
 
-    public static void Write(AccountModel account)
+    public static Int64 Write(SeatModel seat)
     {
-        string sql = $"INSERT INTO {Table} (email, password, fullname) VALUES (@EmailAddress, @Password, @FullName)";
-        _connection.Execute(sql, account);
+        string sql = $"INSERT INTO {Table} (Auditorium_ID, row, collum, price, type) VALUES (@AuditoriumId, @Row, @Collum, @Price, @Class)";
+        _connection.Execute(sql, seat);
+
+        string idSql = "SELECT last_insert_rowid();";
+        Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
+
+        return lastId;
     }
 
 
