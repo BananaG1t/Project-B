@@ -11,6 +11,7 @@ public static class MovieAccess
 
     public static Int64 Write(MovieModel movie)
     {
+        movie.Length.ToString(@"hh\:mm\:ss");
         string sql = $"INSERT INTO {Table} (name, author, description, length, genre, age_rating, movie_ratings) VALUES (@Name, @Author, @Description, @Length ,@Genre, @AgeRating, @MovieRating)";
         _connection.Execute(sql, movie);
 
@@ -20,41 +21,10 @@ public static class MovieAccess
         return lastId;
     }
 
-
     public static MovieModel GetById(int id)
     {
-        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-
-        using (var command = _connection.CreateCommand())
-        {
-            command.CommandText = sql;
-            command.Parameters.AddWithValue("@Id", id);
-
-            _connection.Open();
-            using (var reader = command.ExecuteReader())
-            {
-                if (reader.Read())
-                {
-                    // Retrieve the TIME value from the database as a TimeSpan
-                    TimeSpan lengthAsTimeSpan = reader.GetTimeSpan(4);  // Get the TIME value as TimeSpan
-
-                    // Create and return a new MovieModel instance
-                    return new MovieModel(
-                        reader.GetString(1),   // Name
-                        reader.GetString(2),   // Author
-                        reader.GetString(3),   // Description
-                        lengthAsTimeSpan,      // Length as TimeSpan
-                        reader.GetString(5),   // Genre
-                        reader.GetInt32(6),    // AgeRating
-                        reader.GetDouble(7)    // MovieRating
-                    );
-                }
-            }
-            _connection.Close();
-        }
-
-        return null;  // Return null if no movie found
-
+        string sql = $"SELECT id, name, author, description, length, genre, age_rating, CAST(movie_ratings AS REAL) AS movie_ratings FROM {Table} WHERE id = @Id";
+        return _connection.QueryFirstOrDefault<MovieModel>(sql, new { Id = id });
     }
 
     public static List<MovieModel> GetAll()
@@ -73,7 +43,7 @@ public static class MovieAccess
             movie.Name,
             movie.Author,
             movie.Description,
-            movie.Length,
+            Length = movie.Length.ToString(@"hh\:mm\:ss"),  
             movie.Genre,
             movie.AgeRating,
             movie.MovieRating,
