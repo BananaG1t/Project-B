@@ -17,7 +17,7 @@ public class AuditoriumLogic
     public Dictionary<(Int64 Id, int Row, int Collum), SeatModel> CreateSeats(Int64 id, int room_id)
     {
         Dictionary<(Int64 Id, int Row, int Collum), SeatModel> Seats = [];
-        List<AuditoriumLayoutModel> layout = AuditoriumLayoutAcces.GetById(room_id);
+        List<AuditoriumLayoutModel> layout = AuditoriumLayoutAccess.GetById(room_id);
         foreach (AuditoriumLayoutModel seat in layout)
         {
             Seats[(id, seat.Row, seat.Collum)] = new SeatModel(id, seat.Row, seat.Collum, seat.Class, seat.Price);

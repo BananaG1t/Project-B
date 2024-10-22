@@ -26,17 +26,6 @@ public static class AuditoriumLayoutAccess
         string query = "SELECT MAX(col_num) AS biggest_row_size FROM Auditorium_layout WHERE room_id = @roomId";
         return _connection.QuerySingleOrDefault<int>(query, new { roomId });
     }
-}using Microsoft.Data.Sqlite;
-
-using Dapper;
-
-
-public static class AuditoriumLayoutAcces
-{
-    private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-
-    private static string Table = "Auditorium_layout";
-
 
     public static List<AuditoriumLayoutModel> GetById(Int64 id)
     {
@@ -45,7 +34,4 @@ public static class AuditoriumLayoutAcces
 
         return Seats;
     }
-
-
-
 }
