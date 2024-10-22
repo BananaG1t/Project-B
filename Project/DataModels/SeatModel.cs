@@ -23,7 +23,16 @@
         Id = SeatsAccess.Write(this);
     }
 
-
+    public SeatModel(Int64 id, Int64 Auditorium_ID, Int64 row, Int64 collum, double price, Int64 type, Int64 isAvailable)
+    {
+        Id = id;
+        AuditoriumId = Auditorium_ID;
+        Row = (int)row;
+        Collum = (int)collum;
+        Price = price;
+        Class = (int)type;
+        IsAvailable = isAvailable == 1;
+    }
 }
 
 
