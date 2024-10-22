@@ -99,4 +99,10 @@ class ReservationLogic
         return selectedMovie;
     }
 
+    public static double GetSeatPrice(int seatClass)
+    {
+        return AuditoriumLayoutAccess.GetPriceBySeatClass(seatClass);
+    }
+
+
 }

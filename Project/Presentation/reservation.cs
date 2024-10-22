@@ -13,6 +13,17 @@ static class Reservation
                 Console.WriteLine("There are no movies playing.\nYou will be sent back to the menu\n");
                 Menu.Main(CurrentAccount);
             }
+
+            else
+            {
+                text = "How many seats would you like?";
+                int SeatAmount = General.ValidAnswer(text, General.ListMaker(1, 100));
+
+                if (SeatAmount > 1)
+                {
+                    
+                }
+            }
         }
         else { Menu.Main(CurrentAccount); }
     }
