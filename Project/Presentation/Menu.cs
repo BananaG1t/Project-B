@@ -47,3 +47,4 @@ static class Menu
         } while (!ValidChoices.Contains(choice));
 
     }
+}
