@@ -10,7 +10,8 @@ static class Menu
         Console.WriteLine("Admin Menu:");
         Console.WriteLine("1. Manage Users (empty for now)");
         Console.WriteLine("2. Add a movie");
-        Console.WriteLine("3. Exit");
+        Console.WriteLine("3. Show schedule");
+        Console.WriteLine("4. Exit");
 
 
         //reading input from the menu to connect to the features
@@ -24,6 +25,10 @@ static class Menu
             Menu.AddMovieMenu();
         }
         else if (input == "3")
+        {
+            Menu.DisplaySchedule();
+        }
+        else if (input == "4")
         {
             Console.WriteLine("Exiting");
             UserLogin.Start();
@@ -125,15 +130,22 @@ static class Menu
             }
         }
 
-        new MovieModel(name, author, description, length, genre, agerating, movie_ratings);
+        MovieLogic.AddMovie(name, author, description, length, genre, agerating, movie_ratings);
 
         Menu.AdminMenu();
     }
 
     public static void DisplaySchedule()
     {
-        List<ScheduleModel> Schedules = new();
+        List<ScheduleModel> Schedules = [];
 
-        
+        // Shows what movie are playing based on the date and time
+        Console.WriteLine($"Date: {Schedules[0].StartTime.ToString("d")}\nMovies Playing");
+        int count = 0;
+        foreach (ScheduleModel schedule in Schedules)
+        {
+            count++;
+            Console.WriteLine($"[{count}] Movie: {schedule.Movie.Name}\n Starting time: {schedule.StartTime.ToString("HH:mm:ss")}");
+        }
     }
 }
