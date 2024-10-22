@@ -9,18 +9,16 @@ public static class MovieAccess
 
     private static string Table = "Movies";
 
-    public static int Write(MovieModel movie)
+    public static Int64 Write(MovieModel movie)
     {
         movie.Length.ToString(@"hh\:mm\:ss");
         string sql = $"INSERT INTO {Table} (name, author, description, length, genre, age_rating, movie_ratings) VALUES (@Name, @Author, @Description, @Length ,@Genre, @AgeRating, @MovieRating)";
         _connection.Execute(sql, movie);
 
-        string selectSql = "SELECT last_insert_rowid();";
-    
-        int newId = _connection.ExecuteScalar<int>(selectSql);
+        string idSql = "SELECT last_insert_rowid();";
+        Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
 
-        return newId; 
-
+        return lastId;
     }
 
 
@@ -53,9 +51,7 @@ public static class MovieAccess
     public static MovieModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        
         return _connection.QueryFirstOrDefault<MovieModel>(sql, new { Id = id });
-
     }
 
     public static void Update(MovieModel movie, int id)

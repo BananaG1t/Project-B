@@ -9,7 +9,7 @@
     public decimal MovieRating { get; set; }
     public int AgeRating { get; set; }
 
-    public MovieModel(int id, string name, string author, string description, TimeSpan length, string genre, int agerating, decimal movierating)
+    public MovieModel(Int64 id, string name, string author, string description, TimeSpan length, string genre, int agerating, string movierating)
     {
         Id = id;
         Name = name;
