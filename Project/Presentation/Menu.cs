@@ -129,4 +129,11 @@ static class Menu
 
         Menu.AdminMenu();
     }
+
+    public static void DisplaySchedule()
+    {
+        List<ScheduleModel> Schedules = new();
+
+        
+    }
 }
