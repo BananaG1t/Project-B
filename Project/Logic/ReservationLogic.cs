@@ -166,6 +166,5 @@ class ReservationLogic
         {
             ReservationAcces.Write(new(account.Id, Schedule_ID, seat.Row, seat.Collum, status));
         }
-
     }
 }

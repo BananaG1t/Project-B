@@ -50,7 +50,4 @@ public static class SeatsAccess
         string sql = $"SELECT * FROM {Table} WHERE ColNum = @ColNum AND RowNum = @RowNum AND Auditorium_ID = @AuditoriumId AND SeatClass = @class";
         return _connection.QueryFirstOrDefault<SeatModel>(sql, new { ColNum = ColNum, RowNum = RowNum, AuditoriumId = Auditorium_ID, SeatClass = SeatClass });
     }
-
-
-
 }

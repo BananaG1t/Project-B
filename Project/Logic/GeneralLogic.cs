@@ -32,6 +32,4 @@ static class General
         }
         return ValidAnswerList;
     }
-
-
 }

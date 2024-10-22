@@ -22,6 +22,4 @@ public class SeatModel
         IsAvailable = true;
         Id = SeatsAccess.Write(this);
     }
-
-
 }

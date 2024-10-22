@@ -91,6 +91,4 @@ public static class MovieAccess
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
     }
-
-
 }

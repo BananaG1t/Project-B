@@ -38,7 +38,4 @@ public static class ReservationAcces
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
     }
-
-
-
 }
