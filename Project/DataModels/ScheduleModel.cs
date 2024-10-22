@@ -9,7 +9,11 @@ public class ScheduleModel
 
     public MovieModel Movie { get; set; }
 
+    public Int64 MovieId { get; set; }
+
     public AuditoriumModel Auditorium { get; set; }
+
+    public Int64 AuditoriumId { get; set; }
 
     public ScheduleModel(Int64 id, DateTime startTime, DateTime endTime, MovieModel movie, AuditoriumModel auditorium)
     {
@@ -17,14 +21,18 @@ public class ScheduleModel
         StartTime = startTime;
         EndTime = endTime;
         Movie = movie;
+        MovieId = Movie.Id;
         Auditorium = auditorium;
+        AuditoriumId = Auditorium.Id;
     }
 
     public ScheduleModel(DateTime startTime, MovieModel movie, AuditoriumModel auditorium)
     {
         StartTime = startTime;
         Movie = movie;
+        MovieId = Movie.Id;
         Auditorium = auditorium;
+        AuditoriumId = Auditorium.Id;
         EndTime = StartTime + Movie.Length;
         Id = ScheduleAccess.Write(this);
     }

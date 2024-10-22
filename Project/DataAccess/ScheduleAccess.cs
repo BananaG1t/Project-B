@@ -11,7 +11,7 @@ public static class ScheduleAccess
 
     public static Int64 Write(ScheduleModel schedule)
     {
-        string sql = $"INSERT INTO {Table} (startTime, endTime, Movie_ID, Auditorium_ID) VALUES (@StartTime, @EndTime, @Movie.Id, @Auditorium.Id)";
+        string sql = $"INSERT INTO {Table} (startTime, endTime, Movie_ID, Auditorium_ID) VALUES (@StartTime, @EndTime, @MovieId, @AuditoriumId)";
         _connection.Execute(sql, schedule);
 
         string idSql = "SELECT last_insert_rowid();";

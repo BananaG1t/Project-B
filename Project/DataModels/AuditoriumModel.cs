@@ -31,7 +31,6 @@ public class AuditoriumModel
         };
         Id = AuditoriumAcces.Write(this);
         Seats = Logic.CreateSeats(Id, Room);
-
     }
 
 

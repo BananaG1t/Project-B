@@ -11,7 +11,7 @@ public static class AuditoriumAcces
 
     public static Int64 Write(AuditoriumModel auditorium)
     {
-        string sql = $"INSERT INTO {Table} (Layout_ID, type, total_seats) VALUES (@Room, @Type, @Total_seats)";
+        string sql = $"INSERT INTO {Table} (room, type, total_seats) VALUES (@Room, @Type, @Total_seats)";
         _connection.Execute(sql, auditorium);
 
         string idSql = "SELECT last_insert_rowid();";
