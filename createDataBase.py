@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS Schedule (
     endTime DATETIME NOT NULL,
     Movie_ID INTEGER NOT NULL,
     Auditorium_ID INTEGER NOT NULL,
-    FOREIGN KEY (Auditorium_ID) REFERENCES Room(id)
+    FOREIGN KEY (Movie_ID) REFERENCES Movies(id)
     FOREIGN KEY (Auditorium_ID) REFERENCES Auditorium(id)
 );
 ''')
