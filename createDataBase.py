@@ -58,10 +58,9 @@ cursor.execute('''DROP TABLE Auditorium''')
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Auditorium (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Layout_ID INTEGER NOT NULL,
+    room INTEGER NOT NULL,
     type TEXT,
-    total_seats INTEGER NOT NULL,
-    FOREIGN KEY (Layout_ID) REFERENCES Auditorium_layout(Layout_ID)
+    total_seats INTEGER NOT NULL
 );
 ''')
 
