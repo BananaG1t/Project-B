@@ -9,76 +9,66 @@ public static class MovieAccess
 
     private static string Table = "Movies";
 
-    public static void Write(MovieModel movie)
+    public static int Write(MovieModel movie)
     {
+        movie.Length.ToString(@"hh\:mm\:ss");
         string sql = $"INSERT INTO {Table} (name, author, description, length, genre, age_rating, movie_ratings) VALUES (@Name, @Author, @Description, @Length ,@Genre, @AgeRating, @MovieRating)";
-        using (var command = _connection.CreateCommand())
-        {
-            command.CommandText = sql;
+        _connection.Execute(sql, movie);
 
-            // Add parameters for the SQL query
-            command.Parameters.AddWithValue("@Name", movie.Name);
-            command.Parameters.AddWithValue("@Author", movie.Author);
-            command.Parameters.AddWithValue("@Description", movie.Description);
-            command.Parameters.AddWithValue("@Length", movie.Length);
-            command.Parameters.AddWithValue("@Genre", movie.Genre);
-            command.Parameters.AddWithValue("@AgeRating", movie.AgeRating);
-            command.Parameters.AddWithValue("@MovieRating", movie.MovieRating);
+        string selectSql = "SELECT last_insert_rowid();";
+    
+        // Execute the query and fetch the ID
+        int newId = _connection.ExecuteScalar<int>(selectSql);
 
-            // Open connection and execute the query
-            _connection.Open();
-            command.ExecuteNonQuery();
-            _connection.Close();
-        }
-        //_connection.Execute(sql, movie);
+        return newId;  // Return the newly inserted Id
+
     }
+
+
+    // public static MovieModel GetById(int id)
+    // {
+    //     string sql = $"SELECT * FROM {Table} WHERE id = @Id";
+        
+    //     var movie = _connection.QueryFirstOrDefault(sql, new { Id = id });
+
+    //     if (movie != null)
+    //     {
+    //         // Map the movie object to MovieModel and handle TimeSpan conversion
+    //         return new MovieModel(
+    //             movie.Id,
+    //             movie.Name,
+    //             movie.Author,
+    //             movie.Description,
+    //             TimeSpan.Parse(movie.Length),  // Convert length from string to TimeSpan
+    //             movie.Genre,
+    //             movie.AgeRating,
+    //             movie.MovieRating
+    //         );
+    //     }
+        
+    //     return null;  // Return null if no movie found
+
+    // }
 
 
     public static MovieModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         
-        using (var command = _connection.CreateCommand())
-        {
-            command.CommandText = sql;
-            command.Parameters.AddWithValue("@Id", id);
-            
-            _connection.Open();
-            using (var reader = command.ExecuteReader())
-            {
-                if (reader.Read())
-                {
-                    // Retrieve the TIME value from the database as a TimeSpan
-                    TimeSpan lengthAsTimeSpan = reader.GetTimeSpan(4);  // Get the TIME value as TimeSpan
-                    
-                    // Create and return a new MovieModel instance
-                    return new MovieModel(
-                        reader.GetString(1),   // Name
-                        reader.GetString(2),   // Author
-                        reader.GetString(3),   // Description
-                        lengthAsTimeSpan,      // Length as TimeSpan
-                        reader.GetString(5),   // Genre
-                        reader.GetInt32(6),    // AgeRating
-                        reader.GetString(7)    // MovieRating
-                    );
-                }
-            }
-            _connection.Close();
-        }
+        return _connection.QueryFirstOrDefault<MovieModel>(sql, new { Id = id });
 
-        return null;  // Return null if no movie found
- 
     }
 
     public static void Update(MovieModel movie, int id)
     {
+        movie.Length.ToString(@"hh\:mm\:ss");
         string sql = $"UPDATE {Table} SET name = @Name, author = @Author, description = @Description, length = @Length, genre = @Genre, age_rating = @AgeRating, movie_ratings = @MovieRating WHERE id = @Id";
         _connection.Execute(sql, new
         {
             movie.Name,
             movie.Author,
             movie.Description,
-            movie.Length,  
+            Length = movie.Length.ToString(@"hh\:mm\:ss"),  
             movie.Genre,
             movie.AgeRating,
             movie.MovieRating,
@@ -91,7 +81,5 @@ public static class MovieAccess
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
     }
-
-
 
 }

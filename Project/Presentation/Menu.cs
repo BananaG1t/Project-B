@@ -46,6 +46,10 @@ static class Menu
             else { Console.WriteLine("That is not a valid choice!"); }
         } while (!ValidChoices.Contains(choice));
 
+    }
 
+    public static void DisplaySchedule()
+    {
+        
     }
 }
