@@ -11,10 +11,10 @@ public class AuditoriumModel
 
     public Dictionary<(Int64 Id, int Row, int Collum), SeatModel> Seats = [];
 
-    public AuditoriumModel(Int64 id, Int64 Layout_ID, string type, Int64 total_seats)
+    public AuditoriumModel(Int64 id, Int64 room, string type, Int64 total_seats)
     {
         Id = id;
-        Room = (int)Layout_ID;
+        Room = (int)room;
         Type = type;
         Total_seats = (int)total_seats;
     }
