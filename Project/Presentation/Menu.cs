@@ -6,11 +6,14 @@ static class Menu
     //You could edit this to show different menus depending on the user's role
     static public void Start()
     {
+        Console.Clear();
         // get a valid input number
-        int input = General.ValidAnswer("Enter [1] to login\nEnter [2] to do something else in the future", [1, 2]);
+        int input = General.ValidAnswer("Enter [1] to login\nEnter [2] to create new account", [1, 2]);
 
         if (input == 1) { UserLogin.Start(); }
-        else if (input == 2) { Console.WriteLine("This feature is not yet implemented"); }
+        else if (input == 2)
+        { //UserLogin.CreateLogin(); 
+        }
     }
 
     public static void Main(AccountModel CurrentAccount)

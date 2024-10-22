@@ -15,7 +15,6 @@ public static class AccountsAccess
         _connection.Execute(sql, account);
     }
 
-
     public static AccountModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";

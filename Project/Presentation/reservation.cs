@@ -7,20 +7,18 @@ static class Reservation
 
         if (input == 1)
         {
-            ReservationLogic.Start();
+            string DateAndTime = ReservationLogic.GetDateAndTime();
+            if (DateAndTime == null)
+            {
+                Console.WriteLine("There are no movies playing.\nYou will be sent back to the menu\n");
+                Menu.Main(CurrentAccount);
+            }
         }
         else { Menu.Main(CurrentAccount); }
     }
 
-    public static void PickMovie()
+    public static void PickMovie(string DateAndTime)
     {
         // show the user all tbe movies and let them pick one
     }
-
-    public static void PickTime(string ChosenDay)
-    {
-        Console.WriteLine(ChosenDay);
-    }
-
-
 }
