@@ -20,7 +20,6 @@ public static class AccountsAccess
         return lastId;
     }
 
-
     public static AccountModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";

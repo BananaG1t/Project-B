@@ -43,7 +43,7 @@ public static class MovieAccess
             movie.Name,
             movie.Author,
             movie.Description,
-            Length = movie.Length.ToString(@"hh\:mm\:ss"),  
+            Length = movie.Length.ToString(@"hh\:mm\:ss"),
             movie.Genre,
             movie.AgeRating,
             movie.MovieRating,

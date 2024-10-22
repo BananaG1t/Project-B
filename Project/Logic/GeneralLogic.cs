@@ -47,4 +47,14 @@ static class General
         // when it breaks out of the loop, the ouput number is valid and returns it to the method that called it
         return output;
     }
+
+    public static List<int> ListMaker(int firstNumber, int lastNumber)
+    {
+        List<int> ValidAnswerList = [];
+        for (int i = firstNumber; i < lastNumber; i++)
+        {
+            ValidAnswerList.Add(i);
+        }
+        return ValidAnswerList;
+    }
 }

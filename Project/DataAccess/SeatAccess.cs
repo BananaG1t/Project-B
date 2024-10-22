@@ -33,10 +33,10 @@ public static class SeatsAccess
         return _connection.QueryFirstOrDefault<AccountModel>(sql, new { Email = email });
     }
 
-    public static void Update(AccountModel account)
+    public static void Update(SeatModel seat)
     {
-        string sql = $"UPDATE {Table} SET email = @EmailAddress, password = @Password, fullname = @FullName WHERE id = @Id";
-        _connection.Execute(sql, account);
+        string sql = $"UPDATE {Table} SET IsAvailable = @IsAvailable";
+        _connection.Execute(sql, seat);
     }
 
     public static void Delete(int id)
@@ -45,6 +45,9 @@ public static class SeatsAccess
         _connection.Execute(sql, new { Id = id });
     }
 
-
-
+    public static SeatModel GetByReservationInfo(int ColNum, int RowNum, int Auditorium_ID, int SeatClass)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE ColNum = @ColNum AND RowNum = @RowNum AND Auditorium_ID = @AuditoriumId AND SeatClass = @class";
+        return _connection.QueryFirstOrDefault<SeatModel>(sql, new { ColNum = ColNum, RowNum = RowNum, AuditoriumId = Auditorium_ID, SeatClass = SeatClass });
+    }
 }

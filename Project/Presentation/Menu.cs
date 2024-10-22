@@ -59,7 +59,7 @@ static class Menu
 
         if (input == 1)
         {
-            // link code to getting a reservation
+            Reservation.Start(CurrentAccount);
         }
 
         else if (input == 2)
@@ -100,11 +100,11 @@ static class Menu
                 Console.WriteLine("Invalid format. Please try again");
             }
         }
-        
+
         Console.WriteLine($"Movie genre: ");
         string genre = Console.ReadLine();
 
-        
+
         int agerating = 0;
         valid = false;
         while (!valid)

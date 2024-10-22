@@ -16,7 +16,6 @@ public class MovieLogic
     public MovieLogic()
     {
         // Could do something here
-
     }
 
     public MovieModel GetById(int id)

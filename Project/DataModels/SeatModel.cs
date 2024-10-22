@@ -1,4 +1,4 @@
-﻿public class SeatModel
+public class SeatModel
 {
 
     public Int64 Id { get; set; }
