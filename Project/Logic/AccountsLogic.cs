@@ -22,6 +22,7 @@ public class AccountsLogic
         return AccountsAccess.GetById(id);
     }
 
+
     public AccountModel CheckLogin(string email, string password)
     {
         AccountModel acc = AccountsAccess.GetByEmail(email);
@@ -32,6 +33,39 @@ public class AccountsLogic
         }
         return null;
     }
+
+    public bool CheckNewEmail(string email) // added bool to check if email already exsits in database
+    {
+        AccountModel acc = AccountsAccess.GetByEmail(email);
+        if (acc == null) return true;
+        else return false;
+    }
+
+    public bool Validinfo(string email, string password) // check if new email and password are valid 
+    {
+        if (!email.Contains('@')& !email.Contains('.')) 
+        {
+            Console.WriteLine("Invalid email");
+            return false;
+        }
+        else if (!CheckNewEmail(email))
+        {
+            Console.WriteLine("Account with this email already exists");
+            return false;
+        }
+        else if (password.Length < 1) 
+        {
+            Console.WriteLine("Invalid password");
+            return false;
+        }
+        else 
+        {
+            Console.WriteLine("New account added");
+            return true;
+        }
+    }
+
+
 }
 
 
