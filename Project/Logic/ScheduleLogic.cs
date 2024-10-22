@@ -12,9 +12,20 @@ public class ScheduleLogic
         return ScheduleAccess.IsAvailable(room, startTime, startTime + length);
     }
 
+    public static List<ScheduleModel> GetpastSchedules()
+    {
+        return ScheduleAccess.GetpastSchedules();
+    }
+
+    public static List<ScheduleModel> GetpastSchedulesWithMovie(MovieModel movie)
+    {
+        return ScheduleAccess.GetpastSchedulesWithMovie(movie);
+    }
+
     public int CalculateMaxIncome(int id)
     {
-        return id switch
+        ScheduleModel entry = ScheduleAccess.GetById(id);
+        return entry.Auditorium.Room switch
         {
             1 => 1610,
             2 => 3465,
@@ -22,14 +33,23 @@ public class ScheduleLogic
         };
     }
 
-    public List<Tuple<ScheduleModel, double>> CalculatePerSchedule()
+    public int CalculateMaxIncome(ScheduleModel entry)
+    {
+        return entry.Auditorium.Room switch
+        {
+            1 => 1610,
+            2 => 3465,
+            3 => 5750
+        };
+    }
+
+    public List<Tuple<ScheduleModel, double>> CalculatePerSchedule(List<ScheduleModel> schedulesEntries)
     {
         List<Tuple<ScheduleModel, double>> scheduleIncome = [];
-        List<ScheduleModel> schedulesEntries = ScheduleAccess.GetpastSchedules();
-        foreach(ScheduleModel schedule in schedulesEntries)
+        foreach (ScheduleModel schedule in schedulesEntries)
         {
             double income = CalculateIncome(schedule);
-            scheduleIncome.Add(new (schedule,income));
+            scheduleIncome.Add(new(schedule, income));
         }
         return scheduleIncome;
     }
@@ -46,7 +66,7 @@ public class ScheduleLogic
         }
         return counter;
     }
-        public double CalculateIncome(ScheduleModel schedule)
+    public double CalculateIncome(ScheduleModel schedule)
     {
         double counter = 0;
         List<SeatModel> seats = ScheduleAccess.GetSeats(schedule);
@@ -57,7 +77,7 @@ public class ScheduleLogic
         }
         return counter;
     }
-        public int EmptySeats(int scheduleId)
+    public int EmptySeats(int scheduleId)
     {
         int counter = 0;
         ScheduleModel entry = ScheduleAccess.GetById(scheduleId);
@@ -69,7 +89,7 @@ public class ScheduleLogic
         }
         return counter;
     }
-        public int EmptySeats(ScheduleModel schedule)
+    public int EmptySeats(ScheduleModel schedule)
     {
         int counter = 0;
         List<SeatModel> seats = ScheduleAccess.GetSeats(schedule);

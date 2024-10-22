@@ -58,13 +58,21 @@ public static class ScheduleAccess
         _connection.Execute(sql, schedule);
     }
 
-    public static List <ScheduleModel> GetpastSchedules()
+    public static List<ScheduleModel> GetpastSchedules()
     {
         DateTime currentTime = DateTime.Now;
         string sql = $"SELECT * FROM {Table} WHERE startTime < @CurrentTime";
         return (List<ScheduleModel>)_connection.Query<ScheduleModel>(sql, new { CurrentTime = currentTime });
     }
-        public static List <SeatModel> GetSeats(ScheduleModel schedule)
+
+    public static List<ScheduleModel> GetpastSchedulesWithMovie(MovieModel movie)
+    {
+        DateTime currentTime = DateTime.Now;
+        string sql = $"SELECT * FROM {Table} WHERE startTime < @CurrentTime AND Movie_ID = @MovieId";
+        return (List<ScheduleModel>)_connection.Query<ScheduleModel>(sql, new { CurrentTime = currentTime, MovieId = movie.Id });
+    }
+
+    public static List<SeatModel> GetSeats(ScheduleModel schedule)
     {
         string sql = @$"SELECT * FROM Seats 
         WHERE Auditorium_ID = @AuditoriumId";
