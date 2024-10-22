@@ -14,6 +14,7 @@ static class General
         // loop logic to make sure the input is a number and check if the number is a valid choice
         while (!int.TryParse(input, out output) || !ValidInputs.Contains(output))
         {
+            Console.Clear();
             Console.WriteLine("That is not a valid input");
             Console.WriteLine(text);
             input = Console.ReadLine();

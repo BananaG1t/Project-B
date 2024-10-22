@@ -4,8 +4,36 @@ static class Menu
     //This shows the menu. You can call back to this method to show the menu again
     //after another presentation method is completed.
     //You could edit this to show different menus depending on the user's role
+    static public void AdminMenu()
+    {
+        //admin menu
+        Console.WriteLine("Admin Menu:");
+        Console.WriteLine("1. Manage Users (empty for now)");
+        Console.WriteLine("2. System Settings (empty for now)");
+        Console.WriteLine("3. Exit");
+
+
+        //reading input from the menu to connect to the features
+        string input = Console.ReadLine();
+        if (input == "1")
+        {
+            Console.WriteLine("This feature is not yet implemented");
+        }
+        else if (input == "2")
+        {
+            Console.WriteLine("This feature is not yet implemented");
+        }
+        else if (input == "3")
+        {
+            Console.WriteLine("Exiting");
+            UserLogin.Start();
+        }
+        
+     }
+
     static public void Start()
     {
+        Console.Clear();
         // get a valid input number
         int input = General.ValidAnswer("Enter [1] to login\nEnter [2] to create new account", [1, 2]);
 
@@ -23,6 +51,7 @@ static class Menu
         {
             // link code to getting a reservation
         }
+        
         else if (input == 2)
         {
             // link code to see all the reservations the user has made
