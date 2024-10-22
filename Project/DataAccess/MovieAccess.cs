@@ -37,12 +37,12 @@ public static class MovieAccess
     public static MovieModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        
+
         using (var command = _connection.CreateCommand())
         {
             command.CommandText = sql;
             command.Parameters.AddWithValue("@Id", id);
-            
+
             _connection.Open();
             using (var reader = command.ExecuteReader())
             {
@@ -50,7 +50,7 @@ public static class MovieAccess
                 {
                     // Retrieve the TIME value from the database as a TimeSpan
                     TimeSpan lengthAsTimeSpan = reader.GetTimeSpan(4);  // Get the TIME value as TimeSpan
-                    
+
                     // Create and return a new MovieModel instance
                     return new MovieModel(
                         reader.GetString(1),   // Name
@@ -67,7 +67,7 @@ public static class MovieAccess
         }
 
         return null;  // Return null if no movie found
- 
+
     }
 
     public static void Update(MovieModel movie, int id)
@@ -78,7 +78,7 @@ public static class MovieAccess
             movie.Name,
             movie.Author,
             movie.Description,
-            movie.Length,  
+            movie.Length,
             movie.Genre,
             movie.AgeRating,
             movie.MovieRating,
@@ -91,7 +91,6 @@ public static class MovieAccess
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
     }
-
 
 
 }

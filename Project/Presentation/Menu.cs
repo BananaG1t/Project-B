@@ -21,7 +21,7 @@ static class Menu
 
         if (input == 1)
         {
-            // link code to getting a reservation
+            Reservation.Start(CurrentAccount);
         }
         else if (input == 2)
         {
