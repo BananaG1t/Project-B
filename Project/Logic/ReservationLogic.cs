@@ -138,7 +138,7 @@ class ReservationLogic
         if (SameClass)
         {
             string text = "In which class do you want to sit?\n";
-            text += "[1] Class 1\n[2] Class 2\n[3] Class 3";
+            text += "[1] Class 1 - €15\n[2] Class 2 - €12.50\n[3] Class 3 - €10";
             int SeatClass = General.ValidAnswer(text, [1, 2, 3]);
             for (int i = 0; i < SeatAmount; i++)
             {
@@ -150,7 +150,7 @@ class ReservationLogic
             for (int i = 1; i < SeatAmount; i++)
             {
                 string text = "In which class do you want to sit?\n";
-                text += "[1] Class 1\n[2] Class 2\n[3] Class 3";
+                text += "[1] Class 1 - €15\n[2] Class 2 - €12.50\n[3] Class 3 - €10";
                 int SeatClass = General.ValidAnswer(text, [1, 2, 3]);
                 SeatClassList.Add(SeatClass);
             }
