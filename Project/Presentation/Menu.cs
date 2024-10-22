@@ -47,9 +47,3 @@ static class Menu
         } while (!ValidChoices.Contains(choice));
 
     }
-
-    public static void DisplaySchedule()
-    {
-        
-    }
-}
