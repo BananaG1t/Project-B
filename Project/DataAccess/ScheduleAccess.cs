@@ -20,6 +20,16 @@ public static class ScheduleAccess
         return lastId;
     }
 
+    public static bool IsAvailable(int room, DateTime startTime, DateTime endTime)
+    {
+        string sql = @$"
+                SELECT COUNT(*) FROM {Table} 
+                JOIN Auditorium ON {Table}.Auditorium_ID = Auditorium.id 
+                WHERE Auditorium.room = @Room 
+                AND @StartTime < endTime 
+                AND @EndTime > startTime";
+        return _connection.ExecuteScalar<int>(sql, new { Room = room, StartTime = startTime, EndTime = endTime }) == 0;
+    }
 
     public static ScheduleModel GetById(int id)
     {

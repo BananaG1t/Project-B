@@ -15,22 +15,17 @@ static class UserLogin
         AccountModel acc = accountsLogic.CheckLogin(email, password);
         if (acc != null)
         {
+            Console.WriteLine("Welcome back " + acc.FullName);
+
             if (acc.Admin)
             {
                 Menu.AdminMenu();
             }
-            
-            else 
+            else
             {
-                Console.WriteLine("Welcome back " + acc.FullName);
-                Console.WriteLine("Your email number is " + acc.EmailAddress);
-                //Send user to main menu
+                Menu.Main(acc);
             }
 
-            Console.WriteLine("Welcome back " + acc.FullName);
-            Console.WriteLine("Your email number is " + acc.EmailAddress);
-          
-            Menu.Main(acc);
 
             //Write some code to go back to the menu
             //Menu.Start();
@@ -52,14 +47,14 @@ static class UserLogin
         string exit;
 
         do
-        {  
-        Console.WriteLine("Welcome to the account creation page"); 
-        Console.WriteLine("Enter [1] to return to menu");
-        exit = Console.ReadLine();
-        if (exit == "1")
         {
-            Menu.Start();
-        }
+            Console.WriteLine("Welcome to the account creation page");
+            Console.WriteLine("Enter [1] to return to menu");
+            exit = Console.ReadLine();
+            if (exit == "1")
+            {
+                Menu.Start();
+            }
             Console.Clear();
             Console.WriteLine("Please enter your full name (Optional)");
             fullname = Console.ReadLine();
@@ -68,12 +63,12 @@ static class UserLogin
             Console.WriteLine("Please enter your password");
             password = Console.ReadLine();
             Console.Clear();
-        } while (!accountsLogic.Validinfo(email,password));
+        } while (!accountsLogic.Validinfo(email, password));
 
         fullname = fullname == "" ? null : fullname;
         AccountModel newacc = new AccountModel(email, password, fullname);
         Console.WriteLine($"Welcome {newacc.FullName}");
-        Console.WriteLine($"Your email number is { newacc.EmailAddress}");
+        Console.WriteLine($"Your email number is {newacc.EmailAddress}");
         Menu.Main(newacc);
     }
 }

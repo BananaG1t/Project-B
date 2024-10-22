@@ -9,8 +9,8 @@ static class Menu
         //admin menu
         Console.WriteLine("Admin Menu:");
         Console.WriteLine("1. Manage Users (empty for now)");
-        Console.WriteLine("2. Add a movie");
-        Console.WriteLine("3. Show schedule");
+        Console.WriteLine("2. System Settings (empty for now)");
+        Console.WriteLine("3. Add to the schedule");
         Console.WriteLine("4. Exit");
 
 
@@ -26,15 +26,15 @@ static class Menu
         }
         else if (input == "3")
         {
-            Menu.DisplaySchedule();
+            CreateScheduleEntry.Main();
         }
         else if (input == "4")
         {
             Console.WriteLine("Exiting");
             UserLogin.Start();
         }
-        
-     }
+
+    }
 
     static public void Start()
     {
@@ -56,7 +56,7 @@ static class Menu
         {
             // link code to getting a reservation
         }
-        
+
         else if (input == 2)
         {
             // link code to see all the reservations the user has made

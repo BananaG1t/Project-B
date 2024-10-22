@@ -51,7 +51,44 @@ public static class MovieAccess
     public static MovieModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        return _connection.QueryFirstOrDefault<MovieModel>(sql, new { Id = id });
+
+        using (var command = _connection.CreateCommand())
+        {
+            command.CommandText = sql;
+            command.Parameters.AddWithValue("@Id", id);
+
+            _connection.Open();
+            using (var reader = command.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    // Retrieve the TIME value from the database as a TimeSpan
+                    TimeSpan lengthAsTimeSpan = reader.GetTimeSpan(4);  // Get the TIME value as TimeSpan
+
+                    // Create and return a new MovieModel instance
+                    return new MovieModel(
+                        reader.GetString(1),   // Name
+                        reader.GetString(2),   // Author
+                        reader.GetString(3),   // Description
+                        lengthAsTimeSpan,      // Length as TimeSpan
+                        reader.GetString(5),   // Genre
+                        reader.GetInt32(6),    // AgeRating
+                        reader.GetDouble(7)    // MovieRating
+                    );
+                }
+            }
+            _connection.Close();
+        }
+
+        return null;  // Return null if no movie found
+    }
+
+    public static List<MovieModel> GetAll()
+    {
+        string sql = $"SELECT id, name, author, description, length, genre, age_rating, CAST(movie_ratings AS REAL) AS movie_ratings FROM {Table}";
+        List<MovieModel> Movies = (List<MovieModel>)_connection.Query<MovieModel>(sql);
+
+        return Movies;
     }
 
     public static void Update(MovieModel movie, int id)
