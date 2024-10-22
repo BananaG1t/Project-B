@@ -17,10 +17,9 @@ public static class MovieAccess
 
         string selectSql = "SELECT last_insert_rowid();";
     
-        // Execute the query and fetch the ID
         int newId = _connection.ExecuteScalar<int>(selectSql);
 
-        return newId;  // Return the newly inserted Id
+        return newId; 
 
     }
 
@@ -61,7 +60,6 @@ public static class MovieAccess
 
     public static void Update(MovieModel movie, int id)
     {
-        movie.Length.ToString(@"hh\:mm\:ss");
         string sql = $"UPDATE {Table} SET name = @Name, author = @Author, description = @Description, length = @Length, genre = @Genre, age_rating = @AgeRating, movie_ratings = @MovieRating WHERE id = @Id";
         _connection.Execute(sql, new
         {

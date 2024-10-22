@@ -9,7 +9,7 @@ static class Menu
         //admin menu
         Console.WriteLine("Admin Menu:");
         Console.WriteLine("1. Manage Users (empty for now)");
-        Console.WriteLine("2. System Settings (empty for now)");
+        Console.WriteLine("2. Add a movie");
         Console.WriteLine("3. Exit");
 
 
@@ -21,7 +21,7 @@ static class Menu
         }
         else if (input == "2")
         {
-            Console.WriteLine("This feature is not yet implemented");
+            Menu.AddMovieMenu();
         }
         else if (input == "3")
         {
@@ -58,5 +58,75 @@ static class Menu
         }
         // sends the user to the start to login again
         else if (input == 3) { UserLogin.Start(); }
+    }
+
+    // Add movie menu
+    public static void AddMovieMenu()
+    {
+        Console.WriteLine($"Movie Name: ");
+        string name = Console.ReadLine();
+
+        Console.WriteLine($"Author Name: ");
+        string author = Console.ReadLine();
+
+        Console.WriteLine($"Movie description: ");
+        string description = Console.ReadLine();
+
+        TimeSpan length = new TimeSpan(0, 0, 0);
+        bool valid = false;
+        while (!valid)
+        {
+            Console.WriteLine($"Movie length (hh:mm:ss): ");
+            string input = Console.ReadLine();
+
+            valid = TimeSpan.TryParse(input, out length);
+
+            if (!valid)
+            {
+                Console.WriteLine("Invalid format. Please try again");
+            }
+        }
+        
+        Console.WriteLine($"Movie genre: ");
+        string genre = Console.ReadLine();
+
+        
+        int agerating = 0;
+        valid = false;
+        while (!valid)
+        {
+            Console.WriteLine($"Movie age rating: ");
+            string input = Console.ReadLine();
+
+            if (int.TryParse(input, out agerating) && agerating >= 0)
+            {
+                valid = true;
+            }
+            else
+            {
+                Console.WriteLine("Invalid number. Please try again.");
+            }
+        }
+
+        decimal movie_ratings = 0;
+        valid = false;
+        while (!valid)
+        {
+            Console.WriteLine($"Movie rating: ");
+            string input = Console.ReadLine();
+
+            if (decimal.TryParse(input, out movie_ratings) && movie_ratings >= 0)
+            {
+                valid = true;
+            }
+            else
+            {
+                Console.WriteLine("Invalid number. Please try again.");
+            }
+        }
+
+        new MovieModel(name, author, description, length, genre, agerating, movie_ratings);
+
+        Menu.AdminMenu();
     }
 }
