@@ -49,6 +49,18 @@ public static class ScheduleAccess
         _connection.Execute(sql, schedule);
     }
 
+    public static List <ScheduleModel> GetpastSchedules()
+    {
+        DateTime currentTime = DateTime.Now;
+        string sql = $"SELECT * FROM {Table} WHERE startTime < @CurrentTime";
+        return (List<ScheduleModel>)_connection.Query<ScheduleModel>(sql, new { CurrentTime = currentTime });
+    }
+        public static List <SeatModel> GetSeats(ScheduleModel schedule)
+    {
+        string sql = @$"SELECT * FROM Seats 
+        WHERE Auditorium_ID = @AuditoriumId";
+        return (List<SeatModel>)_connection.Query<SeatModel>(sql, schedule);
+    }
     public static void Delete(int id)
     {
         string sql = $"DELETE FROM {Table} WHERE id = @Id";

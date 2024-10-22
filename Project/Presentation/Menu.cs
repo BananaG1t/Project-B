@@ -11,7 +11,8 @@ static class Menu
         Console.WriteLine("1. Manage Users (empty for now)");
         Console.WriteLine("2. System Settings (empty for now)");
         Console.WriteLine("3. Add to the schedule");
-        Console.WriteLine("4. Exit");
+        Console.WriteLine("4. Income overview");
+        Console.WriteLine("5. Exit");
 
 
         //reading input from the menu to connect to the features
@@ -29,6 +30,10 @@ static class Menu
             CreateScheduleEntry.Main();
         }
         else if (input == "4")
+        {
+            Overview.MoneyOverview();
+        }
+        else if (input == "5")
         {
             Console.WriteLine("Exiting");
             UserLogin.Start();
