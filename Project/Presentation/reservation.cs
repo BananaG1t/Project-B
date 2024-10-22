@@ -13,16 +13,25 @@ static class Reservation
                 Console.WriteLine("There are no movies playing.\nYou will be sent back to the menu\n");
                 Menu.Main(CurrentAccount);
             }
-
             else
             {
+                List<int> SeatList = [];
+
                 text = "How many seats would you like?";
                 int SeatAmount = General.ValidAnswer(text, General.ListMaker(1, 100));
 
                 if (SeatAmount > 1)
                 {
-                    
+                    text = "Do you want all the seats in the same seat class\n";
+                    text += "[1] to get the seats in the same class\n";
+                    text += "[2] to get seats in different classes\n";
+
+                    if (General.ValidAnswer(text, [1, 2]) == 1) { SeatList = ReservationLogic.MakeSeatList(SeatAmount); }
+                    else { SeatList = ReservationLogic.MakeSeatList(SeatAmount, false); }
                 }
+                else { SeatList = ReservationLogic.MakeSeatList(SeatAmount); }
+
+                List<SeatModel> AllSeats = ReservationLogic.AssignSeats(SeatList);
             }
         }
         else { Menu.Main(CurrentAccount); }

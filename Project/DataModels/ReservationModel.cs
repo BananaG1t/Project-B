@@ -1,16 +1,16 @@
 public class ReservationModel
 {
-    public int Account_ID { get; set; }
+    public Int64 Account_ID { get; set; }
     public int Schedule_ID { get; set; }
     public int Seat_Row { get; set; }
     public int Seat_Collum { get; set; }
     public string Status { get; set; }
     public ReservationModel()
     {
-        
+
     }
 
-    public ReservationModel(int account_ID, int schedule_ID, int seat_Row, int seat_Collum, string status)
+    public ReservationModel(Int64 account_ID, int schedule_ID, int seat_Row, int seat_Collum, string status)
     {
         Account_ID = account_ID;
         Schedule_ID = schedule_ID;

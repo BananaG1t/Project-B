@@ -104,5 +104,68 @@ class ReservationLogic
         return AuditoriumLayoutAccess.GetPriceBySeatClass(seatClass);
     }
 
+    public static List<SeatModel> AssignSeats(List<int> SeatClasses)
+    {
+        List<SeatModel> AllSeats = [];
 
+        int Auditorium_ID = 1;
+        int RowSize = AuditoriumLayoutAccess.GetRowSizeByRoomId(Auditorium_ID);
+        int ColumSize = AuditoriumLayoutAccess.GetColSizeByRoomId(Auditorium_ID);
+
+        for (int i = 0; i < SeatClasses.Count(); i++)
+        {
+            for (int j = 1; j < ColumSize; j++)
+            {
+                for (int k = 1; k < RowSize; k++)
+                {
+                    SeatModel seat = SeatsAccess.GetByReservationInfo(k, j, Auditorium_ID, i);
+                    if (!seat.IsAvailable)
+                    {
+                        seat.IsAvailable = true;
+                        SeatsAccess.Update(seat);
+                        AllSeats.Add(seat);
+                    }
+                }
+            }
+        }
+        return AllSeats;
+    }
+
+    public static List<int> MakeSeatList(int SeatAmount, bool SameClass = true)
+    {
+        List<int> SeatClassList = [];
+
+        if (SameClass)
+        {
+            string text = "In which class do you want to sit?\n";
+            text += "[1] Class 1\n[2] Class 2\n[3] Class 3";
+            int SeatClass = General.ValidAnswer(text, [1, 2, 3]);
+            for (int i = 0; i < SeatAmount; i++)
+            {
+                SeatClassList.Add(SeatClass);
+            }
+        }
+        else
+        {
+            for (int i = 1; i < SeatAmount; i++)
+            {
+                string text = "In which class do you want to sit?\n";
+                text += "[1] Class 1\n[2] Class 2\n[3] Class 3";
+                int SeatClass = General.ValidAnswer(text, [1, 2, 3]);
+                SeatClassList.Add(SeatClass);
+            }
+        }
+        return SeatClassList;
+    }
+
+    public static void GetReservation(AccountModel account, List<SeatModel> AllSeats)
+    {
+        int Schedule_ID = 1;
+        string status = "Active";
+        foreach (SeatModel seat in AllSeats)
+        {
+            ReservationAcces.Write(new(account.Id, Schedule_ID, seat.Row, seat.Collum, status));
+        }
+
+    }
 }
