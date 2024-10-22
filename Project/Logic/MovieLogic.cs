@@ -24,14 +24,19 @@ public class MovieLogic
         return MovieAccess.GetById(id);
     }
 
-    public void AddMovie(string name, string author, string description, TimeSpan length, string genre, int agerating, string movierating)
+    public static List<MovieModel> GetAll()
     {
-            MovieAccess.Write(new MovieModel(name, author, description, length, genre, agerating, movierating));
+        return MovieAccess.GetAll();
     }
 
-    public void UpdateMovie(string name, string author, string description, TimeSpan length, string genre, int agerating, string movierating, int id) 
-    { 
-        MovieAccess.Update(new MovieModel(name, author, description, length, genre, agerating, movierating), id); 
+    public void AddMovie(string name, string author, string description, TimeSpan length, string genre, int agerating, double movierating)
+    {
+        MovieAccess.Write(new MovieModel(name, author, description, length, genre, agerating, movierating));
+    }
+
+    public void UpdateMovie(string name, string author, string description, TimeSpan length, string genre, int agerating, double movierating, int id)
+    {
+        MovieAccess.Update(new MovieModel(name, author, description, length, genre, agerating, movierating), id);
     }
 
     public void DeleteMovie(int id) { MovieAccess.Delete(id); }
