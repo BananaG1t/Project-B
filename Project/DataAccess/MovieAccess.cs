@@ -46,7 +46,7 @@ public static class MovieAccess
                         lengthAsTimeSpan,      // Length as TimeSpan
                         reader.GetString(5),   // Genre
                         reader.GetInt32(6),    // AgeRating
-                        reader.GetString(7)    // MovieRating
+                        reader.GetDouble(7)    // MovieRating
                     );
                 }
             }
@@ -55,6 +55,14 @@ public static class MovieAccess
 
         return null;  // Return null if no movie found
 
+    }
+
+    public static List<MovieModel> GetAll()
+    {
+        string sql = $"SELECT id, name, author, description, length, genre, age_rating, CAST(movie_ratings AS REAL) AS movie_ratings FROM {Table}";
+        List<MovieModel> Movies = (List<MovieModel>)_connection.Query<MovieModel>(sql);
+
+        return Movies;
     }
 
     public static void Update(MovieModel movie, int id)
