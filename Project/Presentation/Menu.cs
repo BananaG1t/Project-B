@@ -12,7 +12,8 @@ static class Menu
         Console.WriteLine("2. Add a movie");
         Console.WriteLine("3. Add to the schedule");
         Console.WriteLine("4. Display the schedule");
-        Console.WriteLine("5. Exit");
+        Console.WriteLine("5. Display income overview");
+        Console.WriteLine("6. Exit");
 
 
         //reading input from the menu to connect to the features
@@ -29,11 +30,11 @@ static class Menu
         {
             CreateScheduleEntry.Main();
         }
-        else if (input == "4")
-        {
-            DisplaySchedule();
-        }
         else if (input == "5")
+        {
+            Overview.MoneyOverview();
+        }
+        else if (input == "6")
         {
             Console.WriteLine("Exiting");
             UserLogin.Start();
