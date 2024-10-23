@@ -9,7 +9,7 @@ static class CreateScheduleEntry
         DateTime date = SelectDate(room, movie.Length);
         string? extras = GetExtras();
         new ScheduleModel(date, movie, new AuditoriumModel(room, extras));
-        Menu.AdminMenu();
+        Console.Clear();
     }
 
     private static int SelectRoom()
@@ -59,6 +59,7 @@ static class CreateScheduleEntry
     {
         Console.Clear();
         Console.WriteLine("Does it have any extraslike IMAX? (leave blank if none)");
-        return Console.ReadLine();
+        string? Input = Console.ReadLine();
+        return Input == "" ? null : Input;
     }
 }
