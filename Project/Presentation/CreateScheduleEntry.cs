@@ -9,7 +9,7 @@ static class CreateScheduleEntry
         DateTime date = SelectDate(room, movie.Length);
         string? extras = GetExtras();
         new ScheduleModel(date, movie, new AuditoriumModel(room, extras));
-        Menu.AdminMenu();
+        Console.Clear();
     }
 
     private static int SelectRoom()

@@ -9,37 +9,39 @@ static class Menu
         //admin menu
         string text =
         "Admin Menu:\n" +
-        "1. Manage Users (empty for now)\n" +
-        "2. Add a movie\n" +
-        "3. Add to the schedule\n" +
-        "4. Display the schedule\n" +
-        "5. Display income overview\n" +
-        "6. Exit";
+        "[1] Manage Users (empty for now)\n" +
+        "[2] Add a movie\n" +
+        "[3] Add to the schedule\n" +
+        "[4] Display the schedule\n" +
+        "[5] Display income overview\n" +
+        "[6] Exit";
 
         while (true)
         {
-            General.ValidAnswer(text, [1, 2, 3, 4, 5, 6]);
-
-
             //reading input from the menu to connect to the features
-            string input = Console.ReadLine();
-            if (input == "1")
+            int input = General.ValidAnswer(text, [1, 2, 3, 4, 5, 6]);
+
+            if (input == 1)
             {
                 Console.WriteLine("This feature is not yet implemented");
             }
-            else if (input == "2")
+            else if (input == 2)
             {
                 AddMovieMenu.Main();
             }
-            else if (input == "3")
+            else if (input == 3)
             {
                 CreateScheduleEntry.Main();
             }
-            else if (input == "5")
+            else if (input == 4)
+            {
+                DisplaySchedule();
+            }
+            else if (input == 5)
             {
                 Overview.MoneyOverview();
             }
-            else if (input == "6")
+            else if (input == 6)
             {
                 Console.WriteLine("Exiting");
                 break;
@@ -63,7 +65,13 @@ static class Menu
     {
         while (true)
         {
-            string text = "Press [1] to get a new reservation\nPress [2] to see all the reservations you have made\nPress [3] to see movie schedules\nPress [4] to log out";
+            string text =
+            "User menu\n" +
+            "Press [1] to get a new reservation\n" +
+            "Press [2] to see all the reservations you have made\n" +
+            "Press [3] to see movie schedules\n" +
+            "Press [4] to log out";
+
             // get a valid input number
             int input = General.ValidAnswer(text, [1, 2, 3, 4]);
 
@@ -96,7 +104,8 @@ static class Menu
         Console.WriteLine($"Movies Playing");
         foreach (ScheduleModel schedule in Schedules)
         {
-            Console.WriteLine($"Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime.ToString("HH:mm:ss")}");
+            Console.WriteLine($"Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime}");
         }
+        Console.WriteLine();
     }
 }
