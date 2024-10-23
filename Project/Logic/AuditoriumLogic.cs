@@ -25,4 +25,42 @@ public class AuditoriumLogic
 
         return Seats;
     }
+
+    public Dictionary<(Int64 Id, int Row, int Collum), SeatModel> GetSeats(Int64 id)
+    {
+        Dictionary<(Int64 Id, int Row, int Collum), SeatModel> Seats = [];
+        List<SeatModel> seats = SeatsAccess.GetByRoom((int)id);
+        foreach (SeatModel seat in seats)
+        {
+            Seats[(id, seat.Row, seat.Collum)] = seat;
+        }
+
+        return Seats;
+    }
+
+    public static void DisplaySeats(AuditoriumModel auditorium)
+    {
+        int RowSize = AuditoriumLayoutAccess.GetRowSizeByRoomId(auditorium.Room);
+        int ColumSize = AuditoriumLayoutAccess.GetColSizeByRoomId(auditorium.Room);
+
+        Console.Write("      ");
+        for (int k = 1; k < RowSize; k++)
+        {
+            Console.Write($"{k} ");
+        }
+        Console.WriteLine();
+        for (int j = 1; j < ColumSize + 3; j++)
+        {
+            Console.WriteLine();
+            Console.Write(j.ToString().PadLeft(3) + "    ");
+            for (int k = 1; k < RowSize; k++)
+            {
+                if (auditorium.Seats.ContainsKey((auditorium.Id, j, k)))
+                    if (auditorium.Seats[(auditorium.Id, j, k)].IsAvailable) Console.Write("O ");
+                    else Console.Write("X ");
+                else Console.Write("  ");
+            }
+        }
+        Console.WriteLine();
+    }
 }

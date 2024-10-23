@@ -20,6 +20,11 @@ public static class SeatsAccess
         return lastId;
     }
 
+    public static List<SeatModel> GetByRoom(int id)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Auditorium_ID = @Id";
+        return (List<SeatModel>)_connection.Query<SeatModel>(sql, new { Id = id });
+    }
 
     public static AccountModel GetById(int id)
     {
@@ -35,7 +40,7 @@ public static class SeatsAccess
 
     public static void Update(SeatModel seat)
     {
-        string sql = $"UPDATE {Table} SET IsAvailable = @IsAvailable";
+        string sql = $"UPDATE {Table} SET IsAvailable = @IsAvailable WHERE id = @Id";
         _connection.Execute(sql, seat);
     }
 
@@ -45,9 +50,9 @@ public static class SeatsAccess
         _connection.Execute(sql, new { Id = id });
     }
 
-    public static SeatModel GetByReservationInfo(int ColNum, int RowNum, int Auditorium_ID, int SeatClass)
+    public static SeatModel GetByReservationInfo(int ColNum, int RowNum, int Auditorium_ID)
     {
-        string sql = $"SELECT * FROM {Table} WHERE ColNum = @ColNum AND RowNum = @RowNum AND Auditorium_ID = @AuditoriumId AND SeatClass = @class";
-        return _connection.QueryFirstOrDefault<SeatModel>(sql, new { ColNum = ColNum, RowNum = RowNum, AuditoriumId = Auditorium_ID, SeatClass = SeatClass });
+        string sql = $"SELECT * FROM {Table} WHERE collum = @ColNum AND row = @RowNum AND Auditorium_ID = @AuditoriumId";
+        return _connection.QueryFirstOrDefault<SeatModel>(sql, new { ColNum = ColNum, RowNum = RowNum, AuditoriumId = Auditorium_ID });
     }
 }
