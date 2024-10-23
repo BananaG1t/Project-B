@@ -36,21 +36,4 @@ static class Reservation
         }
         else { Menu.Main(CurrentAccount); }
     }
-
-    public static void PickMovie(AccountModel account, )
-    {
-        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
-
-        string text = "";
-
-
-        foreach (ScheduleModel schedule in Schedules)
-        {
-
-        }
-
-        ReservationModel reservation = new(account.Id, schedule.id)
-
-        ReservationAcces.Write(account.Id, )
-    }
 }
