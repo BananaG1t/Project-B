@@ -21,6 +21,12 @@ public static class ReservationAcces
         return _connection.QueryFirstOrDefault<ReservationModel>(sql, new { Id = id });
     }
 
+    public static List<ReservationModel> GetFromAccount(AccountModel account)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Account_ID = @Id";
+        return (List<ReservationModel>)_connection.Query<ReservationModel>(sql, account);
+    }
+
     public static List<ReservationModel> GetByAccount_id(int Account_id)
     {
         string sql = $"SELECT * FROM {Table} WHERE Account_id = @Account_id";

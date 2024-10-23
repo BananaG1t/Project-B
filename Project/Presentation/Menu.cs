@@ -68,7 +68,7 @@ static class Menu
             string text =
             "User menu\n" +
             "Press [1] to get a new reservation\n" +
-            "Press [2] to see all the reservations you have made\n" +
+            "Press [2] to manage the reservations you have made\n" +
             "Press [3] to see movie schedules\n" +
             "Press [4] to log out";
 
@@ -77,12 +77,12 @@ static class Menu
 
             if (input == 1)
             {
-                Reservation.Start(CurrentAccount);
+                ReservationLogic.GetReservation(CurrentAccount);
             }
 
             else if (input == 2)
             {
-                // link code to see all the reservations the user has made
+                Reservation.ManageReservations(CurrentAccount);
             }
             else if (input == 3)
             {

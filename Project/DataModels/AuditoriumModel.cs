@@ -17,6 +17,7 @@ public class AuditoriumModel
         Room = (int)room;
         Type = type;
         Total_seats = (int)total_seats;
+        Seats = Logic.GetSeats(Id);
     }
 
     public AuditoriumModel(int room, string? type)

@@ -1,5 +1,6 @@
 static class Reservation
 {
+    /*
     public static void Start(AccountModel CurrentAccount)
     {
         string text = "Press [1] to pick a day and time\nPress [2] to go back";
@@ -35,5 +36,32 @@ static class Reservation
             }
         }
         else { Menu.Main(CurrentAccount); }
+    }
+    */
+    public static void ManageReservations(AccountModel account)
+    {
+        ReservationModel reservation = ReservationLogic.SelectReservation(account);
+
+        Console.Clear();
+        string text =
+        "What do you want to do?\n" +
+        "[1] Cancel\n" +
+        "[2] Back\n";
+
+        int choice = General.ValidAnswer(text, [1]);
+
+        switch (choice)
+        {
+            case 1:
+                reservation.Status = "Canceled";
+                SeatModel seat = SeatsAccess.GetByReservationInfo(reservation);
+                seat.IsAvailable = true;
+                ReservationAcces.Update(reservation);
+                SeatsAccess.Update(seat);
+                return;
+            case 2:
+                return;
+        }
+
     }
 }

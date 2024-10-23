@@ -38,52 +38,28 @@ class ReservationLogic
         return DateInfo;
     }
 
-    public static int PickSeats()
+    public static int PickSeats(ScheduleModel schedule)
     {
         return 1;
     }
 
     public static MovieModel PickMovie()
     {
-        // Define movie options using your custom MovieModel class
-        var movies = new MovieModel[]
-        {
-            new MovieModel("Shrek", "DreamWorks", "An ogre's journey with a donkey to rescue a princess.", new TimeSpan(1, 29, 0), "Comedy/Fantasy", 7, 8.1),
-            new MovieModel("Blair Witch Project", "Haxan Films", "Found footage of a group lost in the woods.", new TimeSpan(1, 18, 0), "Horror/Mystery", 16, 6.5),
-            new MovieModel("Pacific Rim", "Legendary Pictures", "Robots fight giant monsters to save the Earth.", new TimeSpan(2, 11, 0), "Action/Sci-Fi", 12, 7.0),
-            new MovieModel("Cars", "Pixar", "A race car learns life lessons in a small town.", new TimeSpan(1, 57, 0), "Kids/Comedy", 6, 7.1),
-            new MovieModel("Interstellar", "Paramount Pictures", "Astronauts venture through a wormhole to save humanity.", new TimeSpan(2, 49, 0), "Sci-Fi/Adventure", 10, 8.6)
-        };
-
-        string movieList = "[1] Movie 1\nShrek\n2001 ‧ Komedie/Fantasyfilm ‧ 1 u 29 m\n\n" +
-                           "[2] Movie 2\nBlair Witch Project\n1999 ‧ Horror/Mysterie film ‧ 1 u 18 m\n\n" +
-                           "[3] Movie 3\nPacific Rim\n2013 ‧ Actie/Sci-fi ‧ 2 u 11 m\n\n" +
-                           "[4] Movie 4\nCars\n2006 ‧ Kinderen/Komedie ‧ 1 u 57 m\n\n" +
-                           "[5] Movie 5\nInterstellar\n2014 ‧ Sci-fi/Avontuur ‧ 2 u 49 m\n";
-
-        // Generate valid movie numbers using ListMaker (1 to 5)
-        List<int> validInputs = General.ListMaker(1, 5);
         MovieModel selectedMovie = null;
         bool isValid = false;
 
         while (!isValid)
         {
-            // Display the movie list
-            Console.WriteLine(movieList);
-
-            // Ask the user for a valid movie number
-            int selectedMovieNumber = General.ValidAnswer(movieList, validInputs);
-
-            // Get the selected movie based on the user's choice
-            selectedMovie = movies[selectedMovieNumber - 1];
+            //Select a movie
+            selectedMovie = SelectMovie();
 
             // Ask for confirmation
-            Console.WriteLine($"You selected Movie {selectedMovieNumber}: {selectedMovie.Name}. Are you sure? (yes/no): ");
+            Console.WriteLine($"You selected Movie {selectedMovie.Id}: {selectedMovie.Name}. Are you sure? (yes/no): ");
             string confirmation = Console.ReadLine().ToLower();
 
             if (confirmation == "yes")
             {
-                Console.WriteLine($"You confirmed Movie {selectedMovieNumber}: {selectedMovie.Name}.");
+                Console.WriteLine($"You confirmed Movie {selectedMovie.Id}: {selectedMovie.Name}.");
                 isValid = true;  // Exit the loop
             }
             else if (confirmation == "no")
@@ -99,11 +75,27 @@ class ReservationLogic
         return selectedMovie;
     }
 
+    private static MovieModel SelectMovie()
+    {
+        Console.Clear();
+        string text = "What movie do you want to see?";
+        List<MovieModel> Movies = MovieLogic.GetAll();
+        List<int> valid = [];
+        foreach (MovieModel movie in Movies)
+        {
+            text += $"\n[{movie.Id}] {movie.Name}";
+            valid.Add((int)movie.Id);
+        }
+
+        return Movies.First(MovieModel => MovieModel.Id == General.ValidAnswer(text, valid));
+    }
+
     public static double GetSeatPrice(int seatClass)
     {
         return AuditoriumLayoutAccess.GetPriceBySeatClass(seatClass);
     }
 
+    /*
     public static List<SeatModel> AssignSeats(List<int> SeatClasses)
     {
         List<SeatModel> AllSeats = [];
@@ -130,6 +122,7 @@ class ReservationLogic
         }
         return AllSeats;
     }
+    */
 
     public static List<int> MakeSeatList(int SeatAmount, bool SameClass = true)
     {
@@ -167,11 +160,11 @@ class ReservationLogic
         string text = "";
         foreach (ScheduleModel schedule in Schedules)
         {
-            text += $"[{i}] Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime.ToString("HH:mm:ss")}";
+            text += $"\n[{i}] Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime}";
             i++;
         }
 
-        int input = General.ValidAnswer(text, General.ListMaker(1, Schedules.Count()));
+        int input = General.ValidAnswer(text, General.ListMaker(1, Schedules.Count + 1));
 
         return Schedules[input - 1];
     }
@@ -182,10 +175,53 @@ class ReservationLogic
         // pick seat class
         // same class?
         ScheduleModel schedule = PickSchedule();
-        string status = "Active";
-        foreach (SeatModel seat in AllSeats)
+        AuditoriumLogic.DisplaySeats(schedule.Auditorium);
+        int row;
+        int collum;
+        Console.WriteLine("What row?");
+        int.TryParse(Console.ReadLine(), out row);
+        Console.WriteLine("What collum?");
+        int.TryParse(Console.ReadLine(), out collum);
+
+
+        if (schedule.Auditorium.Seats.ContainsKey((schedule.Auditorium.Id, row, collum)))
         {
-            ReservationAcces.Write(new(account.Id, schedule.Id, seat.Row, seat.Collum, status));
+            SeatModel seat = schedule.Auditorium.Seats[(schedule.Auditorium.Id, row, collum)];
+            seat.IsAvailable = false;
+            SeatsAccess.Update(seat);
+            ReservationAcces.Write(new(account.Id, (int)schedule.Id, seat.Row, seat.Collum));
+            Console.WriteLine("Made the reservation");
         }
+
+        else Console.WriteLine("Invalid");
+
+        //List<SeatModel> AllSeats = AssignSeats(MakeSeatList());
+
+        //foreach (SeatModel seat in AllSeats)
+        //{
+        //ReservationAcces.Write(new(account.Id, (int)schedule.Id, seat.Row, seat.Collum, status));
+        //}
+    }
+
+    public static List<ReservationModel> GetFromAccount(AccountModel account)
+    {
+        return ReservationAcces.GetFromAccount(account);
+    }
+
+    public static ReservationModel SelectReservation(AccountModel account)
+    {
+        Console.Clear();
+        string text = "What reseration do you want to manage?";
+        List<ReservationModel> reservations = ReservationLogic.GetFromAccount(account);
+        List<int> valid = [];
+
+        foreach (ReservationModel reservation in reservations)
+        {
+            ScheduleModel schedule = ScheduleAccess.GetById((int)reservation.Schedule_ID);
+            text += $"\n[{reservation.Id}] Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seat: row {reservation.Seat_Row} collum {reservation.Seat_Collum}";
+            valid.Add(reservation.Id);
+        }
+
+        return reservations.First(ReservationModel => ReservationModel.Id == General.ValidAnswer(text, valid));
     }
 }
