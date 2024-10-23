@@ -167,7 +167,7 @@ class ReservationLogic
         string text = "";
         foreach (ScheduleModel schedule in Schedules)
         {
-            text += $"[i] Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime.ToString("HH:mm:ss")}";
+            text += $"[{i}] Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime.ToString("HH:mm:ss")}";
             i++;
         }
 
@@ -176,8 +176,11 @@ class ReservationLogic
         return Schedules[input - 1];
     }
 
-    public static void GetReservation(AccountModel account, List<SeatModel> AllSeats)
+    public static void GetReservation(AccountModel account)
     {
+        // pick seat amount
+        // pick seat class
+        // same class?
         ScheduleModel schedule = PickSchedule();
         string status = "Active";
         foreach (SeatModel seat in AllSeats)
