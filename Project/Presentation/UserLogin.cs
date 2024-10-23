@@ -44,24 +44,20 @@ static class UserLogin
         string email;
         string password;
         string? fullname;
-        string exit;
 
         do
         {
             Console.WriteLine("Welcome to the account creation page");
             Console.WriteLine("Enter [1] to return to menu");
-            exit = Console.ReadLine();
-            if (exit == "1")
-            {
-                Menu.Start();
-            }
-            Console.Clear();
             Console.WriteLine("Please enter your full name (Optional)");
             fullname = Console.ReadLine();
+            if (fullname == "1") Menu.Start();
             Console.WriteLine("Please enter your email address");
             email = Console.ReadLine();
+            if (email == "1") Menu.Start();
             Console.WriteLine("Please enter your password");
             password = Console.ReadLine();
+            if (password == "1") Menu.Start();
             Console.Clear();
         } while (!accountsLogic.Validinfo(email, password));
 
