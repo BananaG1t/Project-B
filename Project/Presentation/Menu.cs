@@ -141,7 +141,7 @@ static class Menu
 
         MovieLogic.AddMovie(name, author, description, length, genre, agerating, movie_ratings);
 
-        Menu.AdminMenu();
+        AdminMenu();
     }
 
     public static void DisplaySchedule()

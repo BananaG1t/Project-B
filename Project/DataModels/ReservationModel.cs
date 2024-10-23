@@ -1,7 +1,7 @@
 public class ReservationModel
 {
     public Int64 Account_ID { get; set; }
-    public int Schedule_ID { get; set; }
+    public Int64 Schedule_ID { get; set; }
     public int Seat_Row { get; set; }
     public int Seat_Collum { get; set; }
     public string Status { get; set; }

@@ -158,13 +158,31 @@ class ReservationLogic
         return SeatClassList;
     }
 
+    public static ScheduleModel PickSchedule()
+    {
+        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
+
+        int i = 1;
+
+        string text = "";
+        foreach (ScheduleModel schedule in Schedules)
+        {
+            text += $"[i] Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime.ToString("HH:mm:ss")}";
+            i++;
+        }
+
+        int input = General.ValidAnswer(text, General.ListMaker(1, Schedules.Count()));
+
+        return Schedules[input - 1];
+    }
+
     public static void GetReservation(AccountModel account, List<SeatModel> AllSeats)
     {
-        int Schedule_ID = 1;
+        ScheduleModel schedule = PickSchedule();
         string status = "Active";
         foreach (SeatModel seat in AllSeats)
         {
-            ReservationAcces.Write(new(account.Id, Schedule_ID, seat.Row, seat.Collum, status));
+            ReservationAcces.Write(new(account.Id, schedule.Id, seat.Row, seat.Collum, status));
         }
     }
 }
