@@ -50,22 +50,9 @@ public static class SeatsAccess
         _connection.Execute(sql, new { Id = id });
     }
 
-    public static SeatModel GetByReservationInfo(ReservationModel reservation)
+    public static SeatModel GetByReservationInfo(int ColNum, int RowNum, int Auditorium_ID)
     {
-        string sql = $@"
-    SELECT s.* 
-    FROM {Table} s
-    JOIN Schedule sc ON @Schedule_ID = sc.id
-    JOIN Auditorium a ON sc.Auditorium_ID = a.id
-    WHERE s.collum = @Seat_Collum AND s.row = @Seat_Row AND s.Auditorium_ID = @AuditoriumId";
-
-        var seat = _connection.QueryFirstOrDefault<SeatModel>(sql, new
-        {
-            Seat_Collum = reservation.Seat_Collum,
-            Seat_Row = reservation.Seat_Row,
-            AuditoriumId = ScheduleAccess.GetById((int)reservation.Schedule_ID).AuditoriumId,
-            Schedule_ID = reservation.Schedule_ID
-        });
-        return seat;
+        string sql = $"SELECT * FROM {Table} WHERE collum = @ColNum AND row = @RowNum AND Auditorium_ID = @AuditoriumId";
+        return _connection.QueryFirstOrDefault<SeatModel>(sql, new { ColNum = ColNum, RowNum = RowNum, AuditoriumId = Auditorium_ID });
     }
 }

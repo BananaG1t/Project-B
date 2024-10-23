@@ -53,8 +53,13 @@ static class Reservation
         switch (choice)
         {
             case 1:
+                if (reservation.Status == "Canceled")
+                {
+                    Console.WriteLine("Already canceled");
+                    return;
+                }
                 reservation.Status = "Canceled";
-                SeatModel seat = SeatsAccess.GetByReservationInfo(reservation);
+                SeatModel seat = SeatsAccess.GetByReservationInfo(reservation.Seat_Collum, reservation.Seat_Row, ScheduleAccess.GetById((int)reservation.Schedule_ID).AuditoriumId);
                 seat.IsAvailable = true;
                 ReservationAcces.Update(reservation);
                 SeatsAccess.Update(seat);

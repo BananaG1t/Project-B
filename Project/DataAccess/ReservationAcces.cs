@@ -33,10 +33,10 @@ public static class ReservationAcces
         return _connection.Query<ReservationModel>(sql, new { Account_id }).ToList();
     }
 
-    public static void Update(ReservationModel Reservation)
+    public static void Update(ReservationModel reservation)
     {
-        string sql = $"UPDATE {Table} SET Account_id = @Account_id, Schedule_ID = @Schedule_ID, seat_Row = @Seat_Row, seat_Collum = @Seat_Collum, status = @Status WHERE id = @Id";
-        _connection.Execute(sql, Reservation);
+        string sql = $"UPDATE {Table} SET status = @Status WHERE id = @Id";
+        _connection.Execute(sql, reservation);
     }
 
     public static void Delete(int id)
