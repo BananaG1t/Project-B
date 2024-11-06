@@ -174,23 +174,30 @@ class ReservationLogic
         // pick seat amount
         // pick seat class
         // same class?
-        ScheduleModel schedule = PickSchedule();
-        AuditoriumLogic.DisplaySeats(schedule.Auditorium);
-        int row;
-        int collum;
-        Console.WriteLine("What row?");
-        int.TryParse(Console.ReadLine(), out row);
-        Console.WriteLine("What collum?");
-        int.TryParse(Console.ReadLine(), out collum);
-
-
-        if (schedule.Auditorium.Seats.ContainsKey((schedule.Auditorium.Id, row, collum)))
+        int amount;
+        do
         {
-            SeatModel seat = schedule.Auditorium.Seats[(schedule.Auditorium.Id, row, collum)];
-            seat.IsAvailable = false;
-            SeatsAccess.Update(seat);
-            ReservationAcces.Write(new(account.Id, (int)schedule.Id, seat.Row, seat.Collum));
-            Console.WriteLine("Made the reservation");
+            Console.WriteLine("How many seats?");
+            int.TryParse(Console.ReadLine(), out amount);
+        } while (amount <= 0);
+
+        ScheduleModel schedule = PickSchedule();
+        Tuple<int, int>? selected;
+        selected = schedule.Auditorium.Seats.First().Key.ToTuple();
+
+        AuditoriumLogic.DisplaySeats(schedule.Auditorium, selected, amount);
+
+
+        if (schedule.Auditorium.Seats.ContainsKey((selected.Item1, selected.Item2)))
+        {
+            SeatModel seat = schedule.Auditorium.Seats[(selected.Item1, selected.Item2)];
+            if (seat.IsAvailable)
+            {
+                seat.IsAvailable = false;
+                SeatsAccess.Update(seat);
+                ReservationAcces.Write(new(account.Id, (int)schedule.Id, seat.Row, seat.Collum));
+                Console.WriteLine("Made the reservation");
+            }
         }
 
         else Console.WriteLine("Invalid");
