@@ -57,4 +57,11 @@ static class General
         }
         return ValidAnswerList;
     }
+
+    public static void PrintInRed(string text)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(text);
+        Console.ResetColor();
+    }
 }

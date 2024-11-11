@@ -25,7 +25,7 @@ static class AddMovieMenu
 
             if (!valid)
             {
-                Console.WriteLine("Invalid format. Please try again");
+                General.PrintInRed("Invalid format. Please try again");
             }
         }
 
@@ -46,7 +46,7 @@ static class AddMovieMenu
             }
             else
             {
-                Console.WriteLine("Invalid number. Please try again.");
+                General.PrintInRed("Invalid format. Please try again");
             }
         }
 
@@ -63,7 +63,7 @@ static class AddMovieMenu
             }
             else
             {
-                Console.WriteLine("Invalid number. Please try again.");
+                General.PrintInRed("Invalid format. Please try again");
             }
         }
 
