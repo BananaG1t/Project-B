@@ -67,7 +67,7 @@ static class Menu
         {
             string text =
             "User menu\n" +
-            "Press [1] to get a new reservation\n" +
+            "Press [1] to make a new reservation\n" +
             "Press [2] to manage the reservations you have made\n" +
             "Press [3] to see movie schedules\n" +
             "Press [4] to log out";

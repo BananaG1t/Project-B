@@ -48,7 +48,7 @@ static class CreateScheduleEntry
         while (!ScheduleLogic.IsAvailable(room, date, length))
         {
             Console.Clear();
-            Console.WriteLine("Date is unavailable");
+            Console.WriteLine("There is already a movie playing on that time");
             date = General.ValidDate(text);
 
         }
