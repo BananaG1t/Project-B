@@ -6,8 +6,8 @@ public class ValidDateTest
     [TestMethod]
     public void TestMethod1()
     {
-        string input = "15-11-2023-14-30";
-        DateTime expectedDate = new DateTime(2023, 11, 15, 14, 30, 0);
+        string input = "15-12-2024-14-30";
+        DateTime expectedDate = new DateTime(2024, 12, 15, 14, 30, 0);
 
         // Set up Console input to simulate user input
         using (var reader = new StringReader(input))
