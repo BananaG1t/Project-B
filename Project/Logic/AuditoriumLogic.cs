@@ -39,7 +39,7 @@ public class AuditoriumLogic
         return Seats;
     }
 
-    public static void DisplaySeats(AuditoriumModel auditorium, Tuple<int, int> selected, int amountSelected)
+    public static void DisplaySeats(AuditoriumModel auditorium, int x, int y, int amountSelected)
     {
         int maxRow = auditorium.Seats.Keys.Max(k => k.Row);
         int maxCol = auditorium.Seats.Keys.Max(k => k.Collum);
@@ -73,33 +73,36 @@ public class AuditoriumLogic
                 {
                     curSeat = auditorium.Seats[(row, col)];
 
-                    if (row == selected.Item1 && col - selected.Item2 >= 0 && col - selected.Item2 < amountSelected)
+                    if (row == x && col - y >= 0 && col - y < amountSelected)
                         Console.ForegroundColor = ConsoleColor.White;
 
                     else
                     {
-                        switch (curSeat.Class)
+                        if (!curSeat.IsAvailable)
+                            Console.ForegroundColor = ConsoleColor.Red;
+                        else
                         {
-                            case 1:
-                                Console.ForegroundColor = ConsoleColor.Yellow;
-                                break;
+                            switch (curSeat.Class)
+                            {
+                                case 1:
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    break;
 
-                            case 2:
-                                Console.ForegroundColor = ConsoleColor.Blue;
-                                break;
+                                case 2:
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                    break;
 
-                            case 3:
-                                Console.ForegroundColor = ConsoleColor.Green;
-                                break;
+                                case 3:
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    break;
+                            }
                         }
                     }
 
-                    if (!curSeat.IsAvailable)
-                        Console.BackgroundColor = ConsoleColor.Red;
+                    if (curSeat.IsAvailable)
+                        Console.Write("O".PadRight(cellWidth)); // Available seat with padding
                     else
-                        Console.BackgroundColor = ConsoleColor.Black;
-
-                    Console.Write("O".PadRight(cellWidth)); // Available seat with padding
+                        Console.Write("X".PadRight(cellWidth)); // Available seat with padding
                 }
                 else
                 {

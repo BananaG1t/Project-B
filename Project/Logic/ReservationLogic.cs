@@ -182,25 +182,130 @@ class ReservationLogic
         } while (amount <= 0);
 
         ScheduleModel schedule = PickSchedule();
-        Tuple<int, int>? selected;
-        selected = schedule.Auditorium.Seats.First().Key.ToTuple();
-
-        AuditoriumLogic.DisplaySeats(schedule.Auditorium, selected, amount);
-
-
-        if (schedule.Auditorium.Seats.ContainsKey((selected.Item1, selected.Item2)))
+        int row = 0; int col = 1;
+        int last_row;
+        int last_col;
+        int maxRow = schedule.Auditorium.Seats.Keys.Max(k => k.Row);
+        int maxCol = schedule.Auditorium.Seats.Keys.Max(k => k.Collum);
+        findNext(row, col, "down");
+        if (row == 0)
         {
-            SeatModel seat = schedule.Auditorium.Seats[(selected.Item1, selected.Item2)];
-            if (seat.IsAvailable)
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("No row of seats available");
+            Console.ResetColor();
+            return;
+        }
+        ConsoleKey input = ConsoleKey.None;
+
+        bool isValid(int row, int col)
+        {
+            for (int i = 0; i < amount; i++)
             {
-                seat.IsAvailable = false;
-                SeatsAccess.Update(seat);
-                ReservationAcces.Write(new(account.Id, (int)schedule.Id, seat.Row, seat.Collum));
-                Console.WriteLine("Made the reservation");
+                if (!schedule.Auditorium.Seats.ContainsKey((row, col + i)) || !schedule.Auditorium.Seats[(row, col + i)].IsAvailable)
+                    return false;
+            }
+            return true;
+        }
+
+        void findNext(int newRow, int newCol, string direction)
+        {
+            while (true)
+            {
+                if (direction == "down")
+                    newRow += 1;
+                else if (direction == "up")
+                    newRow -= 1;
+
+                if (newRow > maxRow || newRow < 1)
+                    return;
+
+                bool left = true;
+                bool right = true;
+                int cnt = 0;
+
+                if (direction == "left")
+                {
+                    right = false;
+                    cnt++;
+                }
+                else if (direction == "right")
+                {
+                    left = false;
+                    cnt++;
+                }
+
+                while (true)
+                {
+                    if (newCol + (amount - 1) + cnt > maxCol)
+                    {
+                        right = false;
+                    }
+                    if (newCol - cnt < 1)
+                    {
+                        left = false;
+                    }
+
+                    if (!right && !left)
+                        break;
+
+                    if (right)
+                        if (isValid(newRow, newCol + cnt))
+                        {
+                            row = newRow;
+                            col = newCol + cnt;
+                            return;
+                        }
+                    if (left)
+                        if (isValid(newRow, newCol - cnt))
+                        {
+                            row = newRow;
+                            col = newCol - cnt;
+                            return;
+                        }
+                    cnt++;
+                }
+                if (direction == "left" || direction == "right")
+                    return;
             }
         }
 
-        else Console.WriteLine("Invalid");
+        do
+        {
+            last_row = row;
+            last_col = col;
+            if (input == ConsoleKey.DownArrow)
+                if (isValid(row + 1, col))
+                    row += 1;
+                else findNext(row, col, "down");
+            else if (input == ConsoleKey.UpArrow)
+                if (isValid(row - 1, col))
+                    row -= 1;
+                else findNext(row, col, "up");
+            else if (input == ConsoleKey.LeftArrow)
+                if (isValid(row, col - 1))
+                    col -= 1;
+                else findNext(row, col, "left");
+            else if (input == ConsoleKey.RightArrow)
+                if (isValid(row, col + 1))
+                    col += 1;
+                else findNext(row, col, "right");
+
+            AuditoriumLogic.DisplaySeats(schedule.Auditorium, row, col, amount);
+            input = Console.ReadKey().Key;
+            Console.Clear();
+        } while (input != ConsoleKey.Enter);
+
+        for (int i = 0; i < amount; i++)
+        {
+            SeatModel seat = schedule.Auditorium.Seats[(row, col + i)];
+            seat.IsAvailable = false;
+            SeatsAccess.Update(seat);
+            ReservationAcces.Write(new(account.Id, (int)schedule.Id, seat.Row, seat.Collum));
+        }
+        Console.WriteLine("Made the reservation");
+
+
 
         //List<SeatModel> AllSeats = AssignSeats(MakeSeatList());
 
@@ -228,7 +333,7 @@ class ReservationLogic
             text += $"\n[{reservation.Id}] Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seat: row {reservation.Seat_Row} collum {reservation.Seat_Collum}, Status: {reservation.Status}";
             valid.Add(reservation.Id);
         }
-
-        return reservations.First(ReservationModel => ReservationModel.Id == General.ValidAnswer(text, valid));
+        int answer = General.ValidAnswer(text, valid);
+        return reservations.First(ReservationModel => ReservationModel.Id == answer);
     }
 }
