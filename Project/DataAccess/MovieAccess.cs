@@ -12,7 +12,7 @@ public static class MovieAccess
     public static Int64 Write(MovieModel movie)
     {
         movie.Length.ToString(@"hh\:mm\:ss");
-        string sql = $"INSERT INTO {Table} (name, author, description, length, genre, age_rating, movie_ratings) VALUES (@Name, @Author, @Description, @Length ,@Genre, @AgeRating, @MovieRating)";
+        string sql = $"INSERT INTO {Table} (name, director, description, length, genre, age_rating, movie_ratings) VALUES (@Name, @Director, @Description, @Length ,@Genre, @AgeRating, @MovieRating)";
         _connection.Execute(sql, movie);
 
         string idSql = "SELECT last_insert_rowid();";
@@ -23,13 +23,13 @@ public static class MovieAccess
 
     public static MovieModel GetById(int id)
     {
-        string sql = $"SELECT id, name, author, description, length, genre, age_rating, CAST(movie_ratings AS REAL) AS movie_ratings FROM {Table} WHERE id = @Id";
+        string sql = $"SELECT id, name, director, description, length, genre, age_rating, CAST(movie_ratings AS REAL) AS movie_ratings FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<MovieModel>(sql, new { Id = id });
     }
 
     public static List<MovieModel> GetAll()
     {
-        string sql = $"SELECT id, name, author, description, length, genre, age_rating, CAST(movie_ratings AS REAL) AS movie_ratings FROM {Table}";
+        string sql = $"SELECT id, name, director, description, length, genre, age_rating, CAST(movie_ratings AS REAL) AS movie_ratings FROM {Table}";
         List<MovieModel> Movies = (List<MovieModel>)_connection.Query<MovieModel>(sql);
 
         return Movies;
@@ -37,11 +37,11 @@ public static class MovieAccess
 
     public static void Update(MovieModel movie, int id)
     {
-        string sql = $"UPDATE {Table} SET name = @Name, author = @Author, description = @Description, length = @Length, genre = @Genre, age_rating = @AgeRating, movie_ratings = @MovieRating WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET name = @Name, director = @Director, description = @Description, length = @Length, genre = @Genre, age_rating = @AgeRating, movie_ratings = @MovieRating WHERE id = @Id";
         _connection.Execute(sql, new
         {
             movie.Name,
-            movie.Author,
+            movie.Director,
             movie.Description,
             Length = movie.Length.ToString(@"hh\:mm\:ss"),
             movie.Genre,
