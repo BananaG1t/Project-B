@@ -8,7 +8,7 @@ static class AddMovieMenu
         Console.WriteLine($"Movie Name: ");
         string name = Console.ReadLine();
 
-        Console.WriteLine($"Author Name: ");
+        Console.WriteLine($"Director Name: ");
         string author = Console.ReadLine();
 
         Console.WriteLine($"Movie description: ");
