@@ -8,7 +8,7 @@ static class AddMovieMenu
         Console.WriteLine($"Movie Name: ");
         string name = Console.ReadLine();
 
-        Console.WriteLine($"Author Name: ");
+        Console.WriteLine($"Director Name: ");
         string author = Console.ReadLine();
 
         Console.WriteLine($"Movie description: ");
@@ -18,7 +18,7 @@ static class AddMovieMenu
         bool valid = false;
         while (!valid)
         {
-            Console.WriteLine($"Movie length (hh:mm:ss): ");
+            Console.WriteLine($"Movie length (hh:mm): ");
             string input = Console.ReadLine();
 
             valid = TimeSpan.TryParse(input, out length);
