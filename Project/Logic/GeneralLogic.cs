@@ -29,7 +29,7 @@ static class General
         // create starting variables
         string input;
         DateTime output;
-        string format = "yyyy-MM-dd-HH-mm-ss";
+        string format = "dd-MM-yyyy-HH-mm";
 
         // ask the question at least once
         Console.WriteLine(text);

@@ -48,7 +48,8 @@ static class Reservation
     "[1] Cancel\n" +
     "[2] Back\n";
 
-int choice = General.ValidAnswer(text, [1]);
+
+    int choice = General.ValidAnswer(text, [1, 2]);
 
 switch (choice)
 {

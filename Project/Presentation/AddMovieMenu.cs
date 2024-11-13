@@ -18,7 +18,7 @@ static class AddMovieMenu
         bool valid = false;
         while (!valid)
         {
-            Console.WriteLine($"Movie length (hh:mm:ss): ");
+            Console.WriteLine($"Movie length (hh:mm): ");
             string input = Console.ReadLine();
 
             valid = TimeSpan.TryParse(input, out length);

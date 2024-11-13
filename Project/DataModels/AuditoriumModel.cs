@@ -9,7 +9,7 @@ public class AuditoriumModel
     public int Total_seats { get; set; }
     private AuditoriumLogic Logic = new();
 
-    public Dictionary<(Int64 Id, int Row, int Collum), SeatModel> Seats = [];
+    public Dictionary<(int Row, int Collum), SeatModel> Seats = [];
 
     public AuditoriumModel(Int64 id, Int64 room, string type, Int64 total_seats)
     {

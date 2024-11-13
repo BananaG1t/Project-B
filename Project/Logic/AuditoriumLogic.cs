@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-
-
 //This class is not static so later on we can use inheritance and interfaces
 public class AuditoriumLogic
 {
@@ -14,53 +8,102 @@ public class AuditoriumLogic
 
     }
 
-    public Dictionary<(Int64 Id, int Row, int Collum), SeatModel> CreateSeats(Int64 id, int room_id)
+    public Dictionary<(int Row, int Collum), SeatModel> CreateSeats(Int64 id, int room_id)
     {
-        Dictionary<(Int64 Id, int Row, int Collum), SeatModel> Seats = [];
+        Dictionary<(int Row, int Collum), SeatModel> Seats = [];
         List<AuditoriumLayoutModel> layout = AuditoriumLayoutAccess.GetById(room_id);
         foreach (AuditoriumLayoutModel seat in layout)
         {
-            Seats[(id, seat.Row, seat.Collum)] = new SeatModel(id, seat.Row, seat.Collum, seat.Class, seat.Price);
+            Seats[(seat.Row, seat.Collum)] = new SeatModel(id, seat.Row, seat.Collum, seat.Class, seat.Price);
         }
 
         return Seats;
     }
 
-    public Dictionary<(Int64 Id, int Row, int Collum), SeatModel> GetSeats(Int64 id)
+    public Dictionary<(int Row, int Collum), SeatModel> GetSeats(Int64 id)
     {
-        Dictionary<(Int64 Id, int Row, int Collum), SeatModel> Seats = [];
+        Dictionary<(int Row, int Collum), SeatModel> Seats = [];
         List<SeatModel> seats = SeatsAccess.GetByRoom((int)id);
         foreach (SeatModel seat in seats)
         {
-            Seats[(id, seat.Row, seat.Collum)] = seat;
+            Seats[(seat.Row, seat.Collum)] = seat;
         }
 
         return Seats;
     }
 
-    public static void DisplaySeats(AuditoriumModel auditorium)
+    public static void DisplaySeats(AuditoriumModel auditorium, int x, int y, int amountSelected)
     {
-        int RowSize = AuditoriumLayoutAccess.GetRowSizeByRoomId(auditorium.Room);
-        int ColumSize = AuditoriumLayoutAccess.GetColSizeByRoomId(auditorium.Room);
+        int maxRow = auditorium.Seats.Keys.Max(k => k.Row);
+        int maxCol = auditorium.Seats.Keys.Max(k => k.Collum);
 
-        Console.Write("      ");
-        for (int k = 1; k < RowSize; k++)
+        int cellWidth = 3; // Set a fixed width for cells
+        string seperator = "------";
+
+        // Print column headers with alignment
+        Console.Clear();
+        Console.Write(" 0 |  "); // Offset for row headers
+        for (int col = 1; col <= maxCol; col++)
         {
-            Console.Write($"{k} ");
+            Console.Write($"{col.ToString().PadRight(cellWidth)}");
+            seperator += new string('-', cellWidth);
         }
         Console.WriteLine();
-        for (int j = 1; j < ColumSize + 3; j++)
+        Console.WriteLine(seperator);
+        SeatModel curSeat;
+
+        // Print each row with cells aligned
+        for (int row = 1; row <= maxRow; row++)
         {
-            Console.WriteLine();
-            Console.Write(j.ToString().PadLeft(3) + "    ");
-            for (int k = 1; k < RowSize; k++)
+            if (row != 1)
+                Console.WriteLine();
+            Console.ResetColor();
+            Console.Write($"{row,2} |  "); // Row header with padding
+
+            for (int col = 1; col <= maxCol; col++)
             {
-                if (auditorium.Seats.ContainsKey((auditorium.Id, j, k)))
-                    if (auditorium.Seats[(auditorium.Id, j, k)].IsAvailable) Console.Write("O ");
-                    else Console.Write("X ");
-                else Console.Write("  ");
+                if (auditorium.Seats.ContainsKey((row, col)))
+                {
+                    curSeat = auditorium.Seats[(row, col)];
+
+                    if (row == x && col - y >= 0 && col - y < amountSelected)
+                        Console.ForegroundColor = ConsoleColor.White;
+
+                    else
+                    {
+                        if (!curSeat.IsAvailable)
+                            Console.ForegroundColor = ConsoleColor.Red;
+                        else
+                        {
+                            switch (curSeat.Class)
+                            {
+                                case 1:
+                                    Console.ForegroundColor = ConsoleColor.Yellow;
+                                    break;
+
+                                case 2:
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                    break;
+
+                                case 3:
+                                    Console.ForegroundColor = ConsoleColor.Green;
+                                    break;
+                            }
+                        }
+                    }
+
+                    if (curSeat.IsAvailable)
+                        Console.Write("O".PadRight(cellWidth)); // Available seat with padding
+                    else
+                        Console.Write("X".PadRight(cellWidth)); // Available seat with padding
+                }
+                else
+                {
+                    Console.Write("".PadRight(cellWidth)); // Empty space with padding
+                }
             }
         }
+        Console.ResetColor();
         Console.WriteLine();
     }
 }
