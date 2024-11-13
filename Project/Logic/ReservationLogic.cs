@@ -102,11 +102,11 @@ class ReservationLogic
 
         int Auditorium_ID = 1;
         int RowSize = AuditoriumLayoutAccess.GetRowSizeByRoomId(Auditorium_ID);
-        int ColumSize = AuditoriumLayoutAccess.GetColSizeByRoomId(Auditorium_ID);
+        int ColumnSize = AuditoriumLayoutAccess.GetColSizeByRoomId(Auditorium_ID);
 
         for (int i = 0; i < SeatClasses.Count(); i++)
         {
-            for (int j = 1; j < ColumSize; j++)
+            for (int j = 1; j < ColumnSize; j++)
             {
                 for (int k = 1; k < RowSize; k++)
                 {
@@ -140,7 +140,7 @@ class ReservationLogic
         }
         else
         {
-            for (int i = 1; i < SeatAmount; i++)
+            for (int i = 1; i < SeatAmount ; i++)
             {
                 string text = "In which class do you want to sit?\n";
                 text += "[1] Class 1 - €15\n[2] Class 2 - €12.50\n[3] Class 3 - €10";
