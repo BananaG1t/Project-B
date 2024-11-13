@@ -5,12 +5,12 @@ import os
 db_file = 'project.db'
 
 # Check if the file exists
-#if os.path.exists(db_file):
-    # Delete the file
-    #os.remove(db_file)
-    #print(f"{db_file} deleted successfully.")
-#else:
-    #print(f"{db_file} does not exist.")
+# if os.path.exists(db_file):
+# Delete the file
+# os.remove(db_file)
+# print(f"{db_file} deleted successfully.")
+# else:
+# print(f"{db_file} does not exist.")
 
 # Step 1: Connect to a database (or create it if it doesn't exist)
 connection = sqlite3.connect(db_file)
@@ -102,7 +102,7 @@ cursor.execute('''
 CREATE TABLE IF NOT EXISTS Movies (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    author TEXT NOT NULL,
+    director TEXT NOT NULL,
     description TEXT NOT NULL,
     length TIME NOT NULL,
     genre TEXT NOT NULL,
