@@ -42,7 +42,7 @@ static class CreateScheduleEntry
     private static DateTime SelectDate(int room, TimeSpan length)
     {
         Console.Clear();
-        string text = "When do you want to show the movie? (dd-mm-yyy-hh-mm)";
+        string text = "When do you want to show the movie? (dd-mm-yyyy-hh-mm)";
         DateTime date;
         date = General.ValidDate(text);
         while (!ScheduleLogic.IsAvailable(room, date, length))
