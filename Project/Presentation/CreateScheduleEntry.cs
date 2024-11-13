@@ -36,7 +36,8 @@ static class CreateScheduleEntry
             valid.Add((int)movie.Id);
         }
 
-        return Movies.First(MovieModel => MovieModel.Id == General.ValidAnswer(text, valid));
+        int answer = General.ValidAnswer(text, valid);
+        return Movies.First(MovieModel => MovieModel.Id == answer);
     }
 
     private static DateTime SelectDate(int room, TimeSpan length)
