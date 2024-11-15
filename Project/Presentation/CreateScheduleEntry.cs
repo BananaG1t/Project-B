@@ -53,6 +53,19 @@ static class CreateScheduleEntry
             date = General.ValidDate(text);
 
         }
+        
+        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
+        TimeSpan CleanupTime = new TimeSpan(0,20,0);
+        foreach (ScheduleModel schedule in Schedules)
+        {
+            if ((date - schedule.EndTime) <= CleanupTime)
+            {
+                Console.Clear();
+                Console.WriteLine("Not enough time to clean the room");
+                SelectDate(room, length);
+            }
+        }
+
         return date;
     }
 
