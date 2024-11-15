@@ -18,7 +18,7 @@ connection = sqlite3.connect(db_file)
 # Step 2: Create a cursor object to execute SQL commands
 cursor = connection.cursor()
 
-cursor.execute('''DROP TABLE Accounts''')
+# cursor.execute('''DROP TABLE Accounts''')
 
 # Step 3: Create the Account table
 cursor.execute('''
@@ -36,7 +36,7 @@ INSERT OR IGNORE INTO Accounts (id, email, password, fullname, admin)
 VALUES (?, ?, ?, ?, ?)
 ''', (0, "admin", "admin", "Admin", True))
 
-cursor.execute('''DROP TABLE IF EXISTS Reservations''')
+# cursor.execute('''DROP TABLE IF EXISTS Reservations''')
 
 # Step 4: Create the Reservation table
 cursor.execute('''
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS Reservations (
 );
 ''')
 
-cursor.execute('''DROP TABLE Auditorium''')
+# cursor.execute('''DROP TABLE Auditorium''')
 
 # Step 5: Create the Auditorium table
 cursor.execute('''
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS Auditorium (
 );
 ''')
 
-cursor.execute('''DROP TABLE Seats''')
+# cursor.execute('''DROP TABLE Seats''')
 
 # Step 6: Create the Seats table
 cursor.execute('''
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS Seats (
 );
 ''')
 
-cursor.execute('''DROP TABLE Schedule''')
+# cursor.execute('''DROP TABLE Schedule''')
 
 # Step 7: Create the Schedule table
 cursor.execute('''
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS Schedule (
 );
 ''')
 
-cursor.execute('''DROP TABLE Movies''')
+# cursor.execute('''DROP TABLE Movies''')
 
 # Step 8: Create the Movie table
 cursor.execute('''
@@ -123,7 +123,20 @@ CREATE TABLE IF NOT EXISTS Auditorium_layout (
 );
 ''')
 
-# Step 10: Commit changes and close the connection
+# Step 10: Create the Schedule table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS Bar_reservation (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    startTime DATETIME NOT NULL,
+    endTime DATETIME NOT NULL,
+    Account_ID INTEGER NOT NULL,
+    Reservation_ID INTEGER NOT NULL,
+    FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
+    FOREIGN KEY (Reservation_ID) REFERENCES Reservations(id)
+);
+''')
+
+# Step 11: Commit changes and close the connection
 connection.commit()
 connection.close()
 
