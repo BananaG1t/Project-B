@@ -7,11 +7,11 @@ public class BarReservationAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private static string Table = "Barseats";
+    private static string Table = "Bar_reservation";
 
     public static Int64 Write(BarSeatModel BarSeat)
     {
-        string sql = $"INSERT INTO {Table} (Auditorium_ID, row, collum, price, type) VALUES (@AuditoriumId, @Row, @Collum, @Price, @Class)";
+        string sql = $"INSERT INTO {Table} (startTime, endTime, Account_ID, Reservation_ID, Seat_Number) VALUES (@startTime, @endTime, @Account_ID, @Reservation_ID, @Seat_Number)";
         _connection.Execute(sql, BarSeat);
 
         string idSql = "SELECT last_insert_rowid();";
@@ -20,15 +20,27 @@ public class BarReservationAccess
         return lastId;
     }
 
-    public static bool IsAvailable(int Seat, DateTime startTime, DateTime endTime)
+    public static List<int> IsAvailable(DateTime startTime, DateTime endTime)
     {
-        string sql = @$"
-                SELECT COUNT(*) FROM {Table} 
-                JOIN Auditorium ON {Table}.Auditorium_ID = Auditorium.id 
-                WHERE Auditorium.room = @Room 
-                AND @StartTime < endTime 
-                AND @EndTime > startTime";
-        return _connection.ExecuteScalar<int>(sql, new { Room = Seat, StartTime = startTime, EndTime = endTime }) == 0;
+        string sql = @$"WITH RECURSIVE PossibleSpots AS (
+                        SELECT 1 AS Seat_Number
+                        UNION ALL
+                        SELECT Seat_Number + 1
+                        FROM PossibleSpots
+                        WHERE Seat_Number < 40
+                    )
+                    SELECT Seat_Number
+                    FROM PossibleSpots
+                    WHERE Seat_Number NOT IN (
+                        SELECT Seat_Number
+                        FROM {Table}
+                        WHERE (startTime < @StartTime AND endTime > @EndTime)
+                    )
+                    ORDER BY Seat_Number";
+
+        return (List<int>)_connection.Query<int>(sql, new { StartTime = startTime, EndTime = endTime });
     }
+
+
 
 }
