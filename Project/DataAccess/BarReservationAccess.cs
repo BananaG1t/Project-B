@@ -11,7 +11,7 @@ public class BarReservationAccess
 
     public static Int64 Write(BarSeatModel BarSeat)
     {
-        string sql = $"INSERT INTO {Table} (startTime, endTime, Account_ID, Reservation_ID, Seat_Number) VALUES (@startTime, @endTime, @Account_ID, @Reservation_ID, @Seat_Number)";
+        string sql = $"INSERT INTO {Table} (startTime, endTime, Account_ID, Reservation_ID, Seat_Number) VALUES (@StartTime, @EndTime, @AccountId, @ReservationId, @SeatId)";
         _connection.Execute(sql, BarSeat);
 
         string idSql = "SELECT last_insert_rowid();";
@@ -22,23 +22,27 @@ public class BarReservationAccess
 
     public static List<int> IsAvailable(DateTime startTime, DateTime endTime)
     {
-        string sql = @$"WITH RECURSIVE PossibleSpots AS (
-                        SELECT 1 AS Seat_Number
-                        UNION ALL
-                        SELECT Seat_Number + 1
-                        FROM PossibleSpots
-                        WHERE Seat_Number < 40
-                    )
-                    SELECT Seat_Number
-                    FROM PossibleSpots
-                    WHERE Seat_Number NOT IN (
-                        SELECT Seat_Number
-                        FROM {Table}
-                        WHERE (startTime < @StartTime AND endTime > @EndTime)
-                    )
-                    ORDER BY Seat_Number";
+        List<int> ValidSeats = [];
 
-        return (List<int>)_connection.Query<int>(sql, new { StartTime = startTime, EndTime = endTime });
+        string sql = @$"
+                SELECT COUNT(*) FROM {Table} 
+                WHERE Seat_Number = @SeatNumber 
+                AND @StartTime < endTime 
+                AND @EndTime > startTime";
+
+        for (int CurrentSeatNumber = 0; CurrentSeatNumber < 40; CurrentSeatNumber++)
+        {
+            if (_connection.ExecuteScalar<int>(sql, new { StartTime = startTime, EndTime = endTime, SeatNumber = CurrentSeatNumber }) == 0)
+                ValidSeats.Add(CurrentSeatNumber);
+        }
+
+        return ValidSeats;
+    }
+
+    public static void WipeTable()
+    {
+        string sql = $"DELETE FROM {Table}";
+        _connection.Execute(sql);
     }
 
 

@@ -20,7 +20,7 @@ public class UnitTest1
         Assert.IsTrue(BarReservationLogic.AvailableBarSeats(StartTime).Count() == MaxSeats);
     }
 
-    // [TestMethod]
+    [TestMethod]
     public void TestBarEnoughSeats()
     {
         // start time is far in the future to make sure the bar will be empty on that time
@@ -40,7 +40,7 @@ public class UnitTest1
         Assert.IsFalse(BarReservationLogic.BarAvailable(availableBarSeats, MaxSeats + 1));
     }
 
-    // [TestMethod]
+    [TestMethod]
     public void TestBookBarSeat()
     {
         // start time is far in the future to make sure the bar will be empty on that time
@@ -52,18 +52,21 @@ public class UnitTest1
         DateTime.TryParseExact(startTime, format, null, System.Globalization.DateTimeStyles.None, out DateTime output);
         StartTime = output;
 
-        List<int> availableBarSeats = BarReservationLogic.AvailableBarSeats(StartTime);
-
-        AccountModel user = AccountsLogic.CheckLogin("U1", "UP1");
+        AccountsLogic logic = new AccountsLogic();
+        AccountModel user = logic.CheckLogin("U1", "UP1");
         ScheduleModel schedule = new(1, startTime, endTime, 1, 1);
         int MaxSeats = 40;
         int seatAmount = 1;
 
         // check if the bar is empty
+        List<int> availableBarSeats = BarReservationLogic.AvailableBarSeats(StartTime);
+
         Assert.IsTrue(availableBarSeats.Count() == MaxSeats);
         // reserve a spot at the bar and check if it lets it
         Assert.IsTrue(BarReservationLogic.ReserveBarSeats(user, schedule, seatAmount, 1));
         // check if there is a spot less in the bar
+        availableBarSeats = BarReservationLogic.AvailableBarSeats(StartTime);
+
         Assert.IsTrue(availableBarSeats.Count() == MaxSeats - seatAmount);
     }
 }
