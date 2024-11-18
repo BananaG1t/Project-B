@@ -5,69 +5,19 @@ static class AddMovieMenu
     {
         Console.Clear();
 
-        Console.WriteLine($"Movie Name: ");
-        string name = Console.ReadLine();
+        string name = PresentationHelper.GetString($"Movie Name: ", "name");
 
-        Console.WriteLine($"Director Name: ");
-        string author = Console.ReadLine();
+        string director = PresentationHelper.GetString($"Movie Name: ", "director");
 
-        Console.WriteLine($"Movie description: ");
-        string description = Console.ReadLine();
+        string description = PresentationHelper.GetString($"Movie Name: ", "description");
 
-        TimeSpan length = new TimeSpan(0, 0, 0);
-        bool valid = false;
-        while (!valid)
-        {
-            Console.WriteLine($"Movie length (hh:mm): ");
-            string input = Console.ReadLine();
+        TimeSpan movieLength = PresentationHelper.GetTimespan($"Movie length (hh:mm): ");
 
-            valid = TimeSpan.TryParse(input, out length);
+        string genre = PresentationHelper.GetString($"Movie Name: ", "genre");
 
-            if (!valid)
-            {
-                General.PrintInRed("Invalid format. Please try again");
-            }
-        }
+        int agerating = PresentationHelper.GetInt($"Movie age rating: ");
 
-        Console.WriteLine($"Movie genre: ");
-        string genre = Console.ReadLine();
-
-
-        int agerating = 0;
-        valid = false;
-        while (!valid)
-        {
-            Console.WriteLine($"Movie age rating: ");
-            string input = Console.ReadLine();
-
-            if (int.TryParse(input, out agerating) && agerating >= 0)
-            {
-                valid = true;
-            }
-            else
-            {
-                General.PrintInRed("Invalid format. Please try again");
-            }
-        }
-
-        double movie_ratings = 0;
-        valid = false;
-        while (!valid)
-        {
-            Console.WriteLine($"Movie rating: ");
-            string input = Console.ReadLine();
-
-            if (double.TryParse(input, out movie_ratings) && movie_ratings >= 0)
-            {
-                valid = true;
-            }
-            else
-            {
-                General.PrintInRed("Invalid format. Please try again");
-            }
-        }
-
-        MovieLogic.AddMovie(name, author, description, length, genre, agerating, movie_ratings);
+        MovieLogic.AddMovie(name, director, description, movieLength, genre, agerating, agerating);
     }
 
 }

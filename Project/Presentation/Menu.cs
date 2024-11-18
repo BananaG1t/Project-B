@@ -48,7 +48,7 @@ static class Menu
             }
         }
 
-        UserLogin.Start();
+        Start();
     }
 
     static public void Start()
