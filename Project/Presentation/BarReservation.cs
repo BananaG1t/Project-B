@@ -9,8 +9,12 @@ static class BarReservation
         if (BarReservationLogic.ReserveBarSeats(Account, schedule, SeatAmount, reservationId))
         {
             // Console.Clear();
-            Console.WriteLine($"You have booked {SeatAmount} Seats for {schedule.EndTime}");
+            Console.WriteLine($"You have booked {SeatAmount} seats for {schedule.EndTime}");
             return;
+        }
+        else
+        {
+            Console.WriteLine($"There was not enough space to book {SeatAmount} seats");
         }
         ;
     }
