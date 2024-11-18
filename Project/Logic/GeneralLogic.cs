@@ -1,4 +1,4 @@
-static class General
+public static class General
 {
     // method to get a valid answer from the user
     public static int ValidAnswer(string text, List<int> ValidInputs)

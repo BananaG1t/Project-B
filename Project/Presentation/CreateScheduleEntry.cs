@@ -1,6 +1,6 @@
 using System.Globalization;
 
-static class CreateScheduleEntry
+public static class CreateScheduleEntry
 {
     public static void Main()
     {
