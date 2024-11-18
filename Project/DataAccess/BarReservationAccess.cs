@@ -30,7 +30,7 @@ public class BarReservationAccess
                 AND @StartTime < endTime 
                 AND @EndTime > startTime";
 
-        for (int CurrentSeatNumber = 0; CurrentSeatNumber < 40; CurrentSeatNumber++)
+        for (int CurrentSeatNumber = 1; CurrentSeatNumber < 41; CurrentSeatNumber++)
         {
             if (_connection.ExecuteScalar<int>(sql, new { StartTime = startTime, EndTime = endTime, SeatNumber = CurrentSeatNumber }) == 0)
                 ValidSeats.Add(CurrentSeatNumber);
