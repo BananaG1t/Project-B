@@ -19,5 +19,7 @@ public class CleanupTime
 
         Assert.AreEqual(expected, result);
 
+        ScheduleAccess.Delete((int)TestSchedule.Id);
+
     }
 }
