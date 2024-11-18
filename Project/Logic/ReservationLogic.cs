@@ -300,7 +300,7 @@ class ReservationLogic
         }
         Console.WriteLine("Made the reservation");
 
-        BarReservation.GetBarReservation(account, schedule, amount);
+        BarReservation.GetBarReservation(account, schedule, amount, 1);
     }
 
     public static List<ReservationModel> GetFromAccount(AccountModel account)

@@ -1,13 +1,13 @@
 public static class BarReservationLogic
 {
-    public static bool ReserveBarSeats(AccountModel account, ScheduleModel schedule, int seatAmount, ReservationModel reservation)
+    public static bool ReserveBarSeats(AccountModel account, ScheduleModel schedule, int seatAmount, int reservationId)
     {
         List<int> availableBarSeats = AvailableBarSeats(schedule.EndTime);
         if (!BarAvailable(availableBarSeats, seatAmount)) { return false; }
         for (int i = 0; i < seatAmount; i++)
         {
             TimeSpan length = new TimeSpan(2, 0, 0);
-            BarSeatModel barSeat = new(schedule.EndTime, schedule.EndTime + length, account.Id, reservation.Id, availableBarSeats[i]);
+            BarSeatModel barSeat = new(schedule.EndTime, schedule.EndTime + length, account.Id, reservationId, availableBarSeats[i]);
         }
         return true;
     }
