@@ -46,27 +46,40 @@ static class CreateScheduleEntry
         string text = "When do you want to show the movie? (dd-mm-yyyy-hh-mm)";
         DateTime date;
         date = General.ValidDate(text);
-        while (!ScheduleLogic.IsAvailable(room, date, length))
+        bool cleanupTime = CleanupTime(date);
+        while (!ScheduleLogic.IsAvailable(room, date, length) || !cleanupTime)
         {
             Console.Clear();
-            Console.WriteLine("There is already a movie playing on that time");
+            if (!ScheduleLogic.IsAvailable(room, date, length))
+            {
+                Console.WriteLine("There is already a movie playing on that time");
+            }
+            else
+            {
+                Console.WriteLine("Not enough time to clean the room");
+            }    
+                 
             date = General.ValidDate(text);
-
+            cleanupTime = CleanupTime(date);
         }
-        
+
+        return date;
+    }
+
+    private static bool CleanupTime(DateTime date)
+    {
+        bool enoughTime = true;
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
         TimeSpan CleanupTime = new TimeSpan(0,20,0);
+         
         foreach (ScheduleModel schedule in Schedules)
         {
             if ((date - schedule.EndTime) <= CleanupTime)
             {
-                Console.Clear();
-                Console.WriteLine("Not enough time to clean the room");
-                SelectDate(room, length);
+                enoughTime = false;
             }
         }
-
-        return date;
+        return enoughTime;
     }
 
     private static string? GetExtras()
