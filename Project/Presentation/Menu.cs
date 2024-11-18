@@ -14,7 +14,7 @@ static class Menu
         "[3] Add to the schedule\n" +
         "[4] Display the schedule\n" +
         "[5] Display income overview\n" +
-        "[6] Add Snacks\n"
+        "[6] Manage snacks\n" +
         "[7] Exit";
 
         while (true)
