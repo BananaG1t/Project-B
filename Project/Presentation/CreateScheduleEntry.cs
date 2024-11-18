@@ -66,7 +66,7 @@ static class CreateScheduleEntry
         return date;
     }
 
-    private static bool CleanupTime(DateTime date)
+    public static bool CleanupTime(DateTime date)
     {
         bool enoughTime = true;
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
