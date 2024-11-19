@@ -13,20 +13,19 @@ public class CleanupTime
         new MovieModel ("Test", "Test", "Test", new TimeSpan(01, 30, 00), "Test", 99, 5.0),
         new AuditoriumModel(1, null));
 
-        string input = date;
-        using (var reader = new StringReader(input))
+        // Set up Console input to simulate user input
+        using (var reader = new StringReader(date))
         {
             Console.SetIn(reader);
 
-            DateTime ValidDate = General.ValidDate("test");
+            DateTime Date = General.ValidDate("test");
 
-            bool result = CreateScheduleEntry.CleanupTime(ValidDate);
+            bool result = CreateScheduleEntry.CleanupTime(Date);
 
             Assert.AreEqual(expected, result);
         }
 
-        
-
+        // Deletes test schedule
         ScheduleAccess.Delete((int)TestSchedule.Id);
 
     }
