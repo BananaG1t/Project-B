@@ -7,6 +7,11 @@ public class ScheduleLogic
 
     }
 
+    public static ScheduleModel GetById(int id)
+    {
+        return ScheduleAccess.GetById(id);
+    }
+
     public static bool IsAvailable(int room, DateTime startTime, TimeSpan length)
     {
         return ScheduleAccess.IsAvailable(room, startTime, startTime + length);

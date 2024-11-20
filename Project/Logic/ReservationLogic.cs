@@ -5,6 +5,11 @@ class ReservationLogic
 
     }
 
+    public static void Update(ReservationModel reservation)
+    {
+        ReservationAcces.Update(reservation);
+    }
+
     public static ScheduleModel PickSchedule()
     {
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
