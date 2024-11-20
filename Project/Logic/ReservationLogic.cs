@@ -173,15 +173,14 @@ class ReservationLogic
         Console.Clear();
         string text = "What reseration do you want to manage?";
         List<ReservationModel> reservations = ReservationLogic.GetFromAccount(account);
-        List<int> valid = [];
 
         foreach (ReservationModel reservation in reservations)
         {
             ScheduleModel schedule = ScheduleAccess.GetById((int)reservation.Schedule_ID);
             text += $"\n[{reservation.Id}] Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seat: row {reservation.Seat_Row} collum {reservation.Seat_Collum}, Status: {reservation.Status}";
-            valid.Add(reservation.Id);
         }
-        int answer = General.ValidAnswer(text, valid);
+
+        int answer = PresentationHelper.MenuLoop(text, 1, reservations.Count);
         return reservations.First(ReservationModel => ReservationModel.Id == answer);
     }
 }

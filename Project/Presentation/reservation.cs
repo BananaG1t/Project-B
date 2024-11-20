@@ -17,37 +17,42 @@ static class Reservation
         {
             case 1:
                 string confirmText =
+                string confirmText =
                 "Are you sure you want to cancel the reservation?\n" +
+                "[1] Yes \n" +
                 "[1] Yes \n" +
                 "[2] No\n";
 
                 int confirmChoice = General.ValidAnswer(confirmText, [1]);
 
                 if (confirmChoice == 1)
-                {
-                    if (reservation.Status == "Canceled")
+
+                    if (confirmChoice == 1)
                     {
-                        Console.WriteLine("Already canceled");
-                        return;
+                        if (reservation.Status == "Canceled")
+                        {
+                            Console.WriteLine("Already canceled");
+                            return;
+                        }
+
+
+                        reservation.Status = "Canceled";
+                        SeatModel seat = SeatLogic.GetByReservationInfo(
+                            reservation.Seat_Collum,
+                            reservation.Seat_Row,
+                            ScheduleLogic.GetById((int)reservation.Schedule_ID).AuditoriumId
+                        );
+                        seat.IsAvailable = true;
+
+                        ReservationLogic.Update(reservation);
+                        SeatLogic.Update(seat);
+
+                        Console.WriteLine("The reservation has been canceled.");
                     }
-
-                    reservation.Status = "Canceled";
-                    SeatModel seat = SeatLogic.GetByReservationInfo(
-                        reservation.Seat_Collum,
-                        reservation.Seat_Row,
-                        ScheduleLogic.GetById((int)reservation.Schedule_ID).AuditoriumId
-                    );
-                    seat.IsAvailable = true;
-
-                    ReservationLogic.Update(reservation);
-                    SeatLogic.Update(seat);
-
-                    Console.WriteLine("The reservation has been canceled.");
-                }
-                else
-                {
-                    Console.WriteLine("Cancellation aborted.");
-                }
+                    else
+                    {
+                        Console.WriteLine("Cancellation aborted.");
+                    }
                 return;
 
             case 2:

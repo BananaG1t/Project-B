@@ -97,7 +97,7 @@ static class Menu
 
     public static void DisplaySchedule()
     {
-        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
+        List<ScheduleModel> Schedules = ScheduleLogic.GetSchedules();
 
         // Shows what movie are playing based on the date and time
         Console.Clear();
