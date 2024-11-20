@@ -100,4 +100,9 @@ public class ScheduleLogic
         }
         return counter;
     }
+
+    public static List<ScheduleModel> GetSchedules()
+    {
+        return ScheduleAccess.ScheduleByDate();
+    }
 }
