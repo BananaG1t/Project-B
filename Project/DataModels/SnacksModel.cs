@@ -15,7 +15,8 @@ public class SnacksModel
     public SnacksModel(string name, float price)
     {
         Name = name;
-        Price = price; 
+        Price = price;
+        Id = SnacksAccess.Write(this);
     }
 
 
