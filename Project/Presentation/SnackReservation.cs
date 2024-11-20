@@ -2,6 +2,15 @@ static class SnackReservation
 {
     public static void ManageSnacks()
     {
+        string snackName;
+        double price;
+        do
+        {
+            Console.WriteLine("What snack would you like to add");
+            snackName = Console.ReadLine();
+            if (snackName == "1") { Menu.AdminMenu(); }
+
+            price = ValidDouble();
         string text =
         "User menu\n" +
         "Press [1] Add snacks\n" +
@@ -34,5 +43,27 @@ static class SnackReservation
         {
             
         }
+    }
+
+    private static double ValidDouble()
+    {
+        double price = 0;
+        bool valid = false;
+        while (!valid)
+        {
+            Console.WriteLine("What is the price of the snack (0,0): ");
+            string input = Console.ReadLine();
+
+            if (double.TryParse(input, out price))
+            {
+                valid = true;
+            }
+            else
+            {
+                General.PrintInRed("Invalid input. Please try again");
+            }
+        }
+
+        return price;
     }
 }
