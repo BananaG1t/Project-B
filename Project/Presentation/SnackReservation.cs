@@ -1,47 +1,73 @@
 static class SnackReservation
 {
-    public static void ManageSnacks()
+    public static void Main()
+    {
+        string text =
+        "Snack menu\n" +
+        "[1] Add snacks\n" +
+        "[2] Update snacks\n" +
+        "[3] Delete snacks\n" +
+        "[4] Go back to admin menu";
+
+        while (true)
+        {
+            int input = General.ValidAnswer(text, [1, 2, 3]);
+
+            if (input == 1)
+            {
+                AddSnacks();
+            }
+            else if (input == 2)
+            {
+               UpdateSnacks();
+            }
+            else if (input == 3)
+            {
+                Console.WriteLine("This feature is not yet implemented");
+            }
+            else if (input == 4)
+            {
+                Console.WriteLine("Exiting");
+                break;
+            }
+        }
+
+        Menu.AdminMenu();
+
+    }
+    public static void AddSnacks()
     {
         string snackName;
         double price;
+
         do
         {
             Console.WriteLine("What snack would you like to add");
             snackName = Console.ReadLine();
-            if (snackName == "1") { Menu.AdminMenu(); }
+
+            // if (snackName == "1") { Menu.AdminMenu(); }
 
             price = ValidDouble();
-        string text =
-        "User menu\n" +
-        "Press [1] Add snacks\n" +
-        "Press [2] Delete snacks";
-        int input = General.ValidAnswer(text, [1, 2]);
 
-        if (input == 1)
-        {
-            string snackName;
-            float price;
-            do
+            // if (price == 1) { Menu.AdminMenu(); }
+
+            if (snackName == null) { Console.WriteLine("The Snack name is invalid"); }
+            else if (price < 0) { Console.WriteLine("The price is incorrect"); }
+            else
             {
-                Console.WriteLine("What snack would you like to add");
-                snackName = Console.ReadLine();
-                if (snackName == "1") { Menu.AdminMenu(); }
-                Console.WriteLine("What is the price of the snack");
-                price = float.Parse(Console.ReadLine());
-                if (price == 1) { Menu.AdminMenu(); }
+                SnacksLogic.Add(snackName, price);
+                Console.WriteLine($"{snackName} added to the menu");
+            }
+        } while (snackName != null & price < 0);
+    }
 
-                if (snackName == null) { Console.WriteLine("The Snack name is invalid"); }
-                else if (price < 0) { Console.WriteLine("The price is incorrect"); }
-                else
-                {
-                    SnacksLogic.Write(new SnacksModel(snackName, price));
-                    Console.WriteLine("snack added");
-                }
-            } while (snackName != null & price < 0);
-        }
-        if (input == 2)
+    public static void UpdateSnacks()
+    {
+        List<SnacksModel> Snacks = SnacksLogic.GetAll();
+
+        foreach (SnacksModel snack in Snacks)
         {
-            
+            Console.WriteLine($"Name: {snack.Name} Price: {snack.Price}");
         }
     }
 

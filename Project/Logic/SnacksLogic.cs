@@ -1,13 +1,18 @@
 public static class SnacksLogic
 {
-    public static void Write(SnacksModel snack)
+    public static void Add(string name, double price)
     {
-        SnacksAccess.Write(snack);
+        new SnacksModel(name, price);
     }
 
     public static void GetById(int id)
     {
         SnacksAccess.GetById(id);
+    }
+
+    public static List<SnacksModel> GetAll()
+    {
+        return SnacksAccess.GetAll();
     }
 
     public static void update(SnacksModel snack)

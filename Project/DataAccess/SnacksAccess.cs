@@ -24,6 +24,14 @@ public static class SnacksAccess
         return _connection.QueryFirstOrDefault<SnacksModel>(sql, new { Id = id });
     }
 
+    public static List<SnacksModel> GetAll()
+    {
+        string sql = $"SELECT id, name, price FROM {Table}";
+        List<SnacksModel> Snacks = (List<SnacksModel>)_connection.Query<SnacksModel>(sql);
+
+        return Snacks;
+    }
+
     public static void Update(SnacksModel snack)
     {
         string sql = $"UPDATE {Table} SET status = @Status WHERE id = @Id";
