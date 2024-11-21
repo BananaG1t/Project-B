@@ -20,9 +20,8 @@ public class BarReservationAccess
         return lastId;
     }
 
-    public static List<int> IsAvailable(DateTime startTime, DateTime endTime)
+    public static bool IsAvailable(int CurrentSeatNumber, DateTime startTime, DateTime endTime)
     {
-        List<int> ValidSeats = [];
 
         string sql = @$"
                 SELECT COUNT(*) FROM {Table} 
@@ -30,13 +29,7 @@ public class BarReservationAccess
                 AND @StartTime < endTime 
                 AND @EndTime > startTime";
 
-        for (int CurrentSeatNumber = 1; CurrentSeatNumber < 41; CurrentSeatNumber++)
-        {
-            if (_connection.ExecuteScalar<int>(sql, new { StartTime = startTime, EndTime = endTime, SeatNumber = CurrentSeatNumber }) == 0)
-                ValidSeats.Add(CurrentSeatNumber);
-        }
-
-        return ValidSeats;
+        return _connection.ExecuteScalar<int>(sql, new { StartTime = startTime, EndTime = endTime, SeatNumber = CurrentSeatNumber }) == 0;
     }
 
     public static void WipeTable()

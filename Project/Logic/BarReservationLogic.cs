@@ -23,8 +23,17 @@ public static class BarReservationLogic
 
     public static List<int> AvailableBarSeats(DateTime starttime)
     {
+        List<int> validSeats = [];
+
         TimeSpan length = new TimeSpan(2, 0, 0);
-        return BarReservationAccess.IsAvailable(starttime, starttime + length);
+
+        for (int seatNumber = 1; seatNumber < 41; seatNumber++)
+        {
+            if (BarReservationAccess.IsAvailable(seatNumber, starttime, starttime + length))
+                validSeats.Add(seatNumber);
+        }
+
+        return validSeats;
     }
 
     public static bool BarAvailable(List<int> availableBarSeats, int seatAmount) => availableBarSeats.Count() >= seatAmount;
