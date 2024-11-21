@@ -21,7 +21,6 @@ public class ValidAccName
         Assert.IsNotNull(UserResult);
     }
 
-
     [TestMethod]
     public void InvalidAccNameAndPassTest()
     {
