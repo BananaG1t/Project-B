@@ -34,7 +34,7 @@ public static class SnacksAccess
 
     public static void Update(SnacksModel snack)
     {
-        string sql = $"UPDATE {Table} SET status = @Status WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET name = @Name, price = @Price WHERE id = @Id";
         _connection.Execute(sql, snack);
     }
 

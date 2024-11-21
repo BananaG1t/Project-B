@@ -5,9 +5,9 @@ public static class SnacksLogic
         new SnacksModel(name, price);
     }
 
-    public static void GetById(int id)
+    public static SnacksModel GetById(int id)
     {
-        SnacksAccess.GetById(id);
+        return SnacksAccess.GetById(id);
     }
 
     public static List<SnacksModel> GetAll()

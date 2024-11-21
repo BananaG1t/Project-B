@@ -7,11 +7,12 @@ static class SnackReservation
         "[1] Add snacks\n" +
         "[2] Update snacks\n" +
         "[3] Delete snacks\n" +
-        "[4] Go back to admin menu";
+        "[4] Display snacks\n" +
+        "[5] Go back to admin menu";
 
         while (true)
         {
-            int input = General.ValidAnswer(text, [1, 2, 3]);
+            int input = General.ValidAnswer(text, [1, 2, 3, 4, 5]);
 
             if (input == 1)
             {
@@ -23,9 +24,13 @@ static class SnackReservation
             }
             else if (input == 3)
             {
-                Console.WriteLine("This feature is not yet implemented");
+                DeleteSnacks();
             }
             else if (input == 4)
+            {
+                DisplaySnacks();
+            }
+            else if (input == 5)
             {
                 Console.WriteLine("Exiting");
                 break;
@@ -42,14 +47,13 @@ static class SnackReservation
 
         do
         {
+            Console.Clear();
             Console.WriteLine("What snack would you like to add");
             snackName = Console.ReadLine();
 
-            // if (snackName == "1") { Menu.AdminMenu(); }
 
             price = ValidDouble();
 
-            // if (price == 1) { Menu.AdminMenu(); }
 
             if (snackName == null) { Console.WriteLine("The Snack name is invalid"); }
             else if (price < 0) { Console.WriteLine("The price is incorrect"); }
@@ -57,18 +61,78 @@ static class SnackReservation
             {
                 SnacksLogic.Add(snackName, price);
                 Console.WriteLine($"{snackName} added to the menu");
+                break;
             }
-        } while (snackName != null & price < 0);
+        } while (snackName == null || price < 0);
     }
 
     public static void UpdateSnacks()
     {
+        Console.Clear();
         List<SnacksModel> Snacks = SnacksLogic.GetAll();
+        List<int> ValidInputs = [];
+        string text = "";
 
         foreach (SnacksModel snack in Snacks)
         {
-            Console.WriteLine($"Name: {snack.Name} Price: {snack.Price}");
+            text += $"[{snack.Id}] Name: {snack.Name}, Price: {snack.Price:F2}\n";
+            ValidInputs.Add((int)snack.Id);
         }
+
+        int input = General.ValidAnswer(text + "Enter the number of the snack that you would like to update: ", ValidInputs);
+
+        SnacksModel OldSnack = SnacksLogic.GetById(input);
+
+        string snackName;
+        double price;
+        do
+        {
+            Console.Clear();
+            Console.WriteLine("What is the name of the new snack");
+            snackName = Console.ReadLine();
+            if (snackName == null) { Console.WriteLine("The Snack name is invalid"); }
+
+            price = ValidDouble();
+
+        } while (snackName == null || price < 0);
+
+        SnacksLogic.update(new SnacksModel(input, snackName, price));
+        Console.WriteLine($"Changed Name: From {OldSnack.Name} to {snackName}\n" +
+        $"Changed Price: From {OldSnack.Price:F2} to {price:F2}");
+    }
+
+    public static void DeleteSnacks()
+    {
+        Console.Clear();
+        List<SnacksModel> Snacks = SnacksLogic.GetAll();
+        List<int> ValidInputs = [];
+        string text = "";
+
+        foreach (SnacksModel snack in Snacks)
+        {
+            text += $"[{snack.Id}] Name: {snack.Name}, Price: {snack.Price:F2}\n";
+            ValidInputs.Add((int)snack.Id);
+        }
+
+        int input = General.ValidAnswer(text + "Enter the number of the snack that you would like to remove: ", ValidInputs);
+
+        SnacksModel OldSnack = SnacksLogic.GetById(input);
+
+        SnacksLogic.Delete(input);
+
+        Console.WriteLine($"Removed Name: {OldSnack.Name}, Price: {OldSnack.Price:F2} from the menu");
+    }
+
+    public static void DisplaySnacks()
+    {
+        Console.Clear();
+        List<SnacksModel> Snacks = SnacksLogic.GetAll();
+        Console.WriteLine($"Available snacks:");
+        foreach (SnacksModel snack in Snacks)
+        {
+            Console.WriteLine($"Name: {snack.Name}, Price: {snack.Price:F2}");
+        }
+        Console.WriteLine();
     }
 
     private static double ValidDouble()
@@ -77,6 +141,7 @@ static class SnackReservation
         bool valid = false;
         while (!valid)
         {
+            Console.Clear();
             Console.WriteLine("What is the price of the snack (0,0): ");
             string input = Console.ReadLine();
 
