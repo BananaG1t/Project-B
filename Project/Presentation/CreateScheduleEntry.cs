@@ -21,7 +21,7 @@ static class CreateScheduleEntry
         "[2] Auditorium 2, size 300\n" +
         "[3] Auditorium 3, size 500";
 
-        return General.ValidAnswer(text, [1, 2, 3]);
+        return PresentationHelper.MenuLoop(text, 1, 3);
     }
 
     private static MovieModel SelectMovie()
@@ -36,7 +36,7 @@ static class CreateScheduleEntry
             valid.Add((int)movie.Id);
         }
 
-        int answer = General.ValidAnswer(text, valid);
+        int answer = PresentationHelper.MenuLoop(text, 1, Movies.Count);
         return Movies.First(MovieModel => MovieModel.Id == answer);
     }
 

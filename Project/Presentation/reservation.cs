@@ -10,8 +10,7 @@ static class Reservation
         "[1] Cancel\n" +
         "[2] Back\n";
 
-
-        int choice = General.ValidAnswer(text, [1, 2]);
+        int choice = PresentationHelper.MenuLoop(text, 1, 2);
 
         switch (choice)
         {
@@ -21,7 +20,8 @@ static class Reservation
                 "[1] Yes \n" +
                 "[2] No\n";
 
-                int confirmChoice = General.ValidAnswer(confirmText, [1]);
+                int confirmChoice = PresentationHelper.MenuLoop(confirmText, 1, 2);
+
 
                 if (confirmChoice == 1)
                 {
@@ -30,7 +30,6 @@ static class Reservation
                         Console.WriteLine("Already canceled");
                         return;
                     }
-
 
                     reservation.Status = "Canceled";
                     SeatModel seat = SeatLogic.GetByReservationInfo(
