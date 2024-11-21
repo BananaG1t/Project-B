@@ -44,7 +44,7 @@ static class Menu
             }
             else if (input == 6)
             {
-                SnackReservation.ManageSnacks();
+                SnackReservation.Main();
             }
             else if (input == 7)
             {

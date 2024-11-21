@@ -5,8 +5,9 @@ static class SnackReservation
         string text =
         "Snack menu\n" +
         "[1] Add snacks\n" +
-        "[2] Delete snacks\n" +
-        "[3] Go back to admin menu";
+        "[2] Update snacks\n" +
+        "[3] Delete snacks\n" +
+        "[4] Go back to admin menu";
 
         while (true)
         {
@@ -14,13 +15,17 @@ static class SnackReservation
 
             if (input == 1)
             {
-                ManageSnacks();
+                AddSnacks();
             }
             else if (input == 2)
             {
-                Console.WriteLine("This feature is not yet implemented");
+               UpdateSnacks();
             }
             else if (input == 3)
+            {
+                Console.WriteLine("This feature is not yet implemented");
+            }
+            else if (input == 4)
             {
                 Console.WriteLine("Exiting");
                 break;
@@ -30,7 +35,7 @@ static class SnackReservation
         Menu.AdminMenu();
 
     }
-    public static void ManageSnacks()
+    public static void AddSnacks()
     {
         string snackName;
         double price;
@@ -42,7 +47,6 @@ static class SnackReservation
 
             // if (snackName == "1") { Menu.AdminMenu(); }
 
-            Console.WriteLine("What is the price of the snack");
             price = ValidDouble();
 
             // if (price == 1) { Menu.AdminMenu(); }
@@ -51,10 +55,20 @@ static class SnackReservation
             else if (price < 0) { Console.WriteLine("The price is incorrect"); }
             else
             {
-                SnacksLogic.Write(new SnacksModel(snackName, price));
+                SnacksLogic.Add(snackName, price);
                 Console.WriteLine($"{snackName} added to the menu");
             }
         } while (snackName != null & price < 0);
+    }
+
+    public static void UpdateSnacks()
+    {
+        List<SnacksModel> Snacks = SnacksLogic.GetAll();
+
+        foreach (SnacksModel snack in Snacks)
+        {
+            Console.WriteLine($"Name: {snack.Name} Price: {snack.Price}");
+        }
     }
 
     private static double ValidDouble()
