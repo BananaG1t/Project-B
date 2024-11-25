@@ -44,6 +44,7 @@ static class Menu
             }
             else if (input == 6)
             {
+                Console.Clear();
                 SnackReservation.Main();
             }
             else if (input == 7)
