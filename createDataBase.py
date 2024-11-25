@@ -18,7 +18,7 @@ connection = sqlite3.connect(db_file)
 # Step 2: Create a cursor object to execute SQL commands
 cursor = connection.cursor()
 
-# cursor.execute('''DROP TABLE Accounts''')
+cursor.execute('''DROP TABLE Accounts''')
 
 # Step 3: Create the Account table
 cursor.execute('''
@@ -34,25 +34,28 @@ CREATE TABLE IF NOT EXISTS Accounts (
 cursor.execute('''
 INSERT OR IGNORE INTO Accounts (id, email, password, fullname, admin)
 VALUES (?, ?, ?, ?, ?)
-''', (0, "admin", "admin", "Admin", True))
+''', (0, "A1", "AP1", "Admin", True))
 
-# cursor.execute('''DROP TABLE IF EXISTS Reservations''')
-
-# Step 4: Create the Reservation table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS Reservations (
+INSERT OR IGNORE INTO Accounts (id, email, password, fullname, admin)
+VALUES (?, ?, ?, ?, ?)
+''', (1, "U1", "UP1", "User", False))
+
+cursor.execute('''DROP TABLE IF EXISTS SeatReservations''')
+
+# Step 4: Create the SeatReservation table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS SeatReservations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Account_ID INTEGER NOT NULL,
-    Schedule_ID INTEGER NOT NULL,
+    Order_ID INTERGER NOT NULL,
     seat_Row INTEGER NOT NULL,
     seat_Collum INTEGER NOT NULL,           
     status TEXT NOT NULL DEFAULT Active,
-    FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
-    FOREIGN KEY (Schedule_ID) REFERENCES Schedule(id)
+    FOREIGN KEY (Order_ID) REFERENCES Orders(id)
 );
 ''')
 
-# cursor.execute('''DROP TABLE Auditorium''')
+cursor.execute('''DROP TABLE IF EXISTS Auditorium''')
 
 # Step 5: Create the Auditorium table
 cursor.execute('''
@@ -64,7 +67,7 @@ CREATE TABLE IF NOT EXISTS Auditorium (
 );
 ''')
 
-# cursor.execute('''DROP TABLE Seats''')
+cursor.execute('''DROP TABLE Seats''')
 
 # Step 6: Create the Seats table
 cursor.execute('''
@@ -123,16 +126,18 @@ CREATE TABLE IF NOT EXISTS Auditorium_layout (
 );
 ''')
 
-# Step 10: Create the Schedule table
+cursor.execute('''DROP TABLE IF EXISTS Orders''')
+
+# Step 10: Create the Orders table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS Bar_reservation (
+CREATE TABLE IF NOT EXISTS Orders (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    startTime DATETIME NOT NULL,
-    endTime DATETIME NOT NULL,
     Account_ID INTEGER NOT NULL,
-    Reservation_ID INTEGER NOT NULL,
+    Schedule_ID INTEGER NOT NULL,
+    Amount INTERGET NOT NULL,
+    Bar BOOLEAN NOT NULL,
     FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
-    FOREIGN KEY (Reservation_ID) REFERENCES Reservations(id)
+    FOREIGN KEY (Schedule_ID) REFERENCES Schedule(id)
 );
 ''')
 
