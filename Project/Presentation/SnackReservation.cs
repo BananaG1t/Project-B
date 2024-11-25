@@ -37,90 +37,70 @@ static class SnackReservation
             }
         }
 
+        Console.Clear();
         Menu.AdminMenu();
 
     }
     public static void AddSnacks()
     {
-        string snackName;
-        double price;
+        Console.Clear();
+        string snackName = ValidName();
+        double price = ValidDouble();
 
-        do
-        {
-            Console.Clear();
-            Console.WriteLine("What snack would you like to add");
-            snackName = Console.ReadLine();
-
-
-            price = ValidDouble();
-
-
-            if (snackName == null) { Console.WriteLine("The Snack name is invalid"); }
-            else if (price < 0) { Console.WriteLine("The price is incorrect"); }
-            else
-            {
-                SnacksLogic.Add(snackName, price);
-                Console.WriteLine($"{snackName} added to the menu");
-                break;
-            }
-        } while (snackName == null || price < 0);
+        SnacksLogic.Add(snackName, price);
+        Console.WriteLine($"{snackName} added to the menu\n");
     }
 
     public static void UpdateSnacks()
     {
         Console.Clear();
         List<SnacksModel> Snacks = SnacksLogic.GetAll();
-        List<int> ValidInputs = [];
+        Dictionary<int, int> ValidInputs = new Dictionary<int, int>();
         string text = "";
+        int count = 0;
 
         foreach (SnacksModel snack in Snacks)
         {
-            text += $"[{snack.Id}] Name: {snack.Name}, Price: {snack.Price:F2}\n";
-            ValidInputs.Add((int)snack.Id);
+            count++;
+            text += $"[{count}] Name: {snack.Name}, Price: {snack.Price:F2}\n";
+            ValidInputs.Add(count, (int)snack.Id);
         }
 
-        int input = General.ValidAnswer(text + "Enter the number of the snack that you would like to update: ", ValidInputs);
+        int input = General.ValidAnswer(text + "Enter the number of the snack that you would like to update: ", new List<int>(ValidInputs.Keys));
 
-        SnacksModel OldSnack = SnacksLogic.GetById(input);
+        SnacksModel OldSnack = SnacksLogic.GetById(ValidInputs[input]);
 
-        string snackName;
-        double price;
-        do
-        {
-            Console.Clear();
-            Console.WriteLine("What is the name of the new snack");
-            snackName = Console.ReadLine();
-            if (snackName == null) { Console.WriteLine("The Snack name is invalid"); }
+        string snackName = ValidName();
+        double price = ValidDouble();
 
-            price = ValidDouble();
-
-        } while (snackName == null || price < 0);
-
-        SnacksLogic.update(new SnacksModel(input, snackName, price));
-        Console.WriteLine($"Changed Name: From {OldSnack.Name} to {snackName}\n" +
-        $"Changed Price: From {OldSnack.Price:F2} to {price:F2}");
+        SnacksLogic.update(new SnacksModel(ValidInputs[input], snackName, price));
+        Console.WriteLine($"\nChanged Name: From {OldSnack.Name} to {snackName}\n" +
+        $"Changed Price: From {OldSnack.Price:F2} to {price:F2}\n");
     }
 
     public static void DeleteSnacks()
     {
         Console.Clear();
         List<SnacksModel> Snacks = SnacksLogic.GetAll();
-        List<int> ValidInputs = [];
+        Dictionary<int, int> ValidInputs = new Dictionary<int, int>();
         string text = "";
+        int count = 0;
 
         foreach (SnacksModel snack in Snacks)
         {
-            text += $"[{snack.Id}] Name: {snack.Name}, Price: {snack.Price:F2}\n";
-            ValidInputs.Add((int)snack.Id);
+            count++;
+            text += $"[{count}] Name: {snack.Name}, Price: {snack.Price:F2}\n";
+            ValidInputs.Add(count, (int)snack.Id);
         }
 
-        int input = General.ValidAnswer(text + "Enter the number of the snack that you would like to remove: ", ValidInputs);
+        int input = General.ValidAnswer(text + "Enter the number of the snack that you would like to remove: ", new List<int>(ValidInputs.Keys));
 
-        SnacksModel OldSnack = SnacksLogic.GetById(input);
+        SnacksModel OldSnack = SnacksLogic.GetById(ValidInputs[input]);
 
-        SnacksLogic.Delete(input);
+        SnacksLogic.Delete(ValidInputs[input]);
 
-        Console.WriteLine($"Removed Name: {OldSnack.Name}, Price: {OldSnack.Price:F2} from the menu");
+        Console.Clear();
+        Console.WriteLine($"Removed Name: {OldSnack.Name}, Price: {OldSnack.Price:F2} from the menu\n");
     }
 
     public static void DisplaySnacks()
@@ -135,23 +115,49 @@ static class SnackReservation
         Console.WriteLine();
     }
 
+    private static string ValidName()
+    {
+        Console.Clear();
+        string name = "";
+        bool valid = false;
+        while (!valid)
+        {
+            Console.WriteLine("What is the name of the snack");
+            string input = Console.ReadLine();
+
+            if (input != "")
+            {
+                valid = true;
+                name = input;
+            }
+            else
+            {
+                General.PrintInRed("Invalid input. Please try again\n");
+            }
+        }
+
+        return name;
+    }
+
     private static double ValidDouble()
     {
+        Console.Clear();
         double price = 0;
         bool valid = false;
         while (!valid)
         {
-            Console.Clear();
             Console.WriteLine("What is the price of the snack (0,0): ");
             string input = Console.ReadLine();
+            
+            if (input.Contains(".")) { input = input.Replace(".", ","); }
 
-            if (double.TryParse(input, out price))
+            if (double.TryParse(input, out price) && price >= 0)
             {
                 valid = true;
             }
             else
             {
-                General.PrintInRed("Invalid input. Please try again");
+                General.PrintInRed("Invalid input. Please try again\n");
             }
         }
 
