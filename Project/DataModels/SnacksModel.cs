@@ -18,6 +18,4 @@ public class SnacksModel
         Price = price;
         Id = SnacksAccess.Write(this);
     }
-
-
 }
