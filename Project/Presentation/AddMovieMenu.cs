@@ -85,7 +85,7 @@ static class AddMovieMenu
             {
                 DateTime dayStartTime = startTime.AddDays(day - 1);
                 DateTime dayEndTime = endTime.AddDays(day - 1);
-
+    
                 if (ScheduleAccess.IsAvailable(room, dayStartTime, dayEndTime))
                 {
                     Console.WriteLine($"The movie has been added to day {day} of the weekly schedule in room {room}.");
