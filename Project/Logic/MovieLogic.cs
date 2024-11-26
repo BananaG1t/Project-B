@@ -32,6 +32,11 @@ public class MovieLogic
         new MovieModel(name, director, description, length, genre, agerating, movierating);
     }
 
+    public static void AddMovieByDay(int day, string name, string director, string description, TimeSpan length, string genre, int agerating, double movierating)
+    {
+        new MovieModel(day, name, director, description, length, genre, agerating, movierating);
+    }
+
     public void UpdateMovie(string name, string director, string description, TimeSpan length, string genre, int agerating, double movierating, int id)
     {
         MovieAccess.Update(new MovieModel(name, director, description, length, genre, agerating, movierating), id);

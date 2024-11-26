@@ -36,20 +36,19 @@ static class CreateScheduleEntry
             valid.Add((int)movie.Id);
         }
 
-        int answer = General.ValidAnswer(text, valid);
-        return Movies.First(MovieModel => MovieModel.Id == answer);
+        return Movies.First(MovieModel => MovieModel.Id == General.ValidAnswer(text, valid));
     }
 
     private static DateTime SelectDate(int room, TimeSpan length)
     {
         Console.Clear();
-        string text = "When do you want to show the movie? (dd-mm-yyyy-hh-mm)";
+        string text = "When do you want to show the movie? (dd-mm-yyyy)";
         DateTime date;
         date = General.ValidDate(text);
         while (!ScheduleLogic.IsAvailable(room, date, length))
         {
             Console.Clear();
-            Console.WriteLine("There is already a movie playing on that time");
+            Console.WriteLine("Date is unavailable");
             date = General.ValidDate(text);
 
         }
@@ -59,7 +58,7 @@ static class CreateScheduleEntry
     private static string? GetExtras()
     {
         Console.Clear();
-        Console.WriteLine("Does it have any extraslike IMAX? (leave blank if none)");
+        Console.WriteLine("Does it have any extras like IMAX? (leave blank if none)");
         string? Input = Console.ReadLine();
         return Input == "" ? null : Input;
     }
