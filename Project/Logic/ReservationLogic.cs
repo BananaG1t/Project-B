@@ -291,16 +291,18 @@ class ReservationLogic
             Console.Clear();
         } while (input != ConsoleKey.Enter);
 
+        bool bar = General.ValidAnswer("Do you want to stay at the bar after the movie?\n[1] yes\n[2] no", [1, 2]) == 1 ? true : false;
+
+        OrderModel order = new(account.Id, schedule.Id, amount, bar);
+
         for (int i = 0; i < amount; i++)
         {
             SeatModel seat = schedule.Auditorium.Seats[(row, col + i)];
             seat.IsAvailable = false;
             SeatsAccess.Update(seat);
-            ReservationAcces.Write(new(account.Id, (int)schedule.Id, seat.Row, seat.Collum));
+            ReservationAcces.Write(new(order.Id, seat.Row, seat.Collum));
         }
         Console.WriteLine("Made the reservation");
-
-        BarReservation.GetBarReservation(account, schedule, amount, 1);
     }
 
     public static List<ReservationModel> GetFromAccount(AccountModel account)
