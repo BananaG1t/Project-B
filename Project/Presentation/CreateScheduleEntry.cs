@@ -36,13 +36,14 @@ static class CreateScheduleEntry
             valid.Add((int)movie.Id);
         }
 
-        return Movies.First(MovieModel => MovieModel.Id == General.ValidAnswer(text, valid));
+        int movieId = General.ValidAnswer(text, valid);
+        return Movies.First(MovieModel => MovieModel.Id == movieId);
     }
 
     private static DateTime SelectDate(int room, TimeSpan length)
     {
         Console.Clear();
-        string text = "When do you want to show the movie? (dd-mm-yyyy)";
+        string text = "When do you want to show the movie? (dd-MM-yyyy-HH-mm)";
         DateTime date;
         date = General.ValidDate(text);
         while (!ScheduleLogic.IsAvailable(room, date, length))

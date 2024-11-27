@@ -89,7 +89,7 @@ static class AddMovieMenu
                 if (ScheduleAccess.IsAvailable(room, dayStartTime, dayEndTime))
                 {
                     Console.WriteLine($"The movie has been added to day {day} of the weekly schedule in room {room}.");
-                    MovieLogic.AddMovieByDay(day, name, author, description, length, genre, agerating, movieRatings);
+                    MovieLogic.AddMovieByDay(name, author, description, length, genre, agerating, movieRatings);
                 }
                 else
                 {
