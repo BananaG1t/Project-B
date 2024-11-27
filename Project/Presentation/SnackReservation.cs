@@ -1,7 +1,4 @@
-using System.Data.Common;
-using System.Threading.Channels;
-
-static class SnackReservation
+public static class SnackReservation
 {
     public static void Main()
     {
@@ -118,9 +115,8 @@ static class SnackReservation
         Console.WriteLine();
     }
 
-    private static string ValidName()
+    public static string ValidName()
     {
-        Console.Clear();
         string name = "";
         bool valid = false;
         while (!valid)
@@ -142,9 +138,8 @@ static class SnackReservation
         return name;
     }
 
-    private static double ValidDouble()
+    public static double ValidDouble()
     {
-        Console.Clear();
         double price = 0;
         bool valid = false;
         while (!valid)
