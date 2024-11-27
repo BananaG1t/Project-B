@@ -146,6 +146,7 @@ class ReservationLogic
         return SeatClassList;
     }
 
+
     public static ScheduleModel PickSchedule()
     {
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
@@ -301,7 +302,7 @@ class ReservationLogic
         Console.WriteLine("Made the reservation");
 
         string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
-        int choice = General.ValidAnswer(text,[1,2]);
+        int choice = General.ValidAnswer(text, [1, 2]);
         if (choice == 1)
         {
             SnackReservation.BuySnacks(account);
