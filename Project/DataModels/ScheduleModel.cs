@@ -17,7 +17,7 @@ public class ScheduleModel
 
     public ScheduleModel(Int64 id, string startTime, string endTime, Int64 Movie_ID, Int64 Auditorium_ID)
     {
-        string format = "dd-MM-yyyy HH:mm";
+        string format = "yyyy-MM-dd HH:mm:ss";
         Id = id;
         DateTime.TryParseExact(startTime, format, null, System.Globalization.DateTimeStyles.None, out DateTime output);
         StartTime = output;
