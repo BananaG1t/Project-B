@@ -10,7 +10,7 @@ public class ValidAccName
 
         string adminAccName = "A1";
         string AdminAccPass = "AP1";
-        
+
         string UserAccName = "U1";
         string UserAccPass = "UP1";
 
@@ -21,13 +21,14 @@ public class ValidAccName
         Assert.IsNotNull(UserResult);
     }
 
+    [TestMethod]
     public void InvalidAccNameAndPassTest()
     {
         AccountsLogic logic = new AccountsLogic();
 
         string adminAccName = "A1";
         string AdminAccPass = "UP1";
-        
+
         string UserAccName = "U1";
         string UserAccPass = "AP1";
 
@@ -41,5 +42,4 @@ public class ValidAccName
         Assert.IsNull(UserResult);
         Assert.IsNull(InvalidResult);
     }
-
 }
