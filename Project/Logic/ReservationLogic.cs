@@ -38,11 +38,6 @@ class ReservationLogic
         return DateInfo;
     }
 
-    public static int PickSeats(ScheduleModel schedule)
-    {
-        return 1;
-    }
-
     public static MovieModel PickMovie()
     {
         MovieModel selectedMovie = null;
@@ -140,7 +135,7 @@ class ReservationLogic
         }
         else
         {
-            for (int i = 1; i < SeatAmount ; i++)
+            for (int i = 1; i < SeatAmount; i++)
             {
                 string text = "In which class do you want to sit?\n";
                 text += "[1] Class 1 - €15\n[2] Class 2 - €12.50\n[3] Class 3 - €10";
@@ -320,6 +315,9 @@ class ReservationLogic
         //{
         //ReservationAcces.Write(new(account.Id, (int)schedule.Id, seat.Row, seat.Collum, status));
         //}
+
+        BarReservation.GetBarReservation(account, schedule, amount, 1);
+
     }
 
     public static List<ReservationModel> GetFromAccount(AccountModel account)
@@ -343,8 +341,10 @@ class ReservationLogic
         int answer = General.ValidAnswer(text, valid);
         return reservations.First(ReservationModel => ReservationModel.Id == answer);
     }
+
     public static Int64 GetReservation_id(Int64 id)
     {
         return ReservationAcces.GetReservation_id(id);
     }
+
 }
