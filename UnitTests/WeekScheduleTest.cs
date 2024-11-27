@@ -10,7 +10,7 @@ public class MovieLogicTests
         DateTime startTime = new DateTime(2024, 11, 25, 10, 0, 0);
         DateTime endTime = startTime.AddHours(2); 
 
-        Assert.True(MovieLogic.IsAvailable(room, startTime, endTime));
+        Assert.IsTrue(MovieLogic.IsAvailable(room, startTime, endTime));
     }
 
     [TestMethod]
@@ -20,6 +20,6 @@ public class MovieLogicTests
         DateTime startTime = new DateTime(2024, 11, 25, 14, 0, 0); 
         DateTime endTime = startTime.AddHours(2); 
 
-        Assert.False(MovieLogic.IsAvailable(room, startTime, endTime));
+        Assert.IsFalse(MovieLogic.IsAvailable(room, startTime, endTime));
     }
 }
