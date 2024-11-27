@@ -38,11 +38,6 @@ class ReservationLogic
         return DateInfo;
     }
 
-    public static int PickSeats(ScheduleModel schedule)
-    {
-        return 1;
-    }
-
     public static MovieModel PickMovie()
     {
         MovieModel selectedMovie = null;
@@ -102,11 +97,11 @@ class ReservationLogic
 
         int Auditorium_ID = 1;
         int RowSize = AuditoriumLayoutAccess.GetRowSizeByRoomId(Auditorium_ID);
-        int ColumSize = AuditoriumLayoutAccess.GetColSizeByRoomId(Auditorium_ID);
+        int ColumnSize = AuditoriumLayoutAccess.GetColSizeByRoomId(Auditorium_ID);
 
         for (int i = 0; i < SeatClasses.Count(); i++)
         {
-            for (int j = 1; j < ColumSize; j++)
+            for (int j = 1; j < ColumnSize; j++)
             {
                 for (int k = 1; k < RowSize; k++)
                 {
@@ -150,6 +145,7 @@ class ReservationLogic
         }
         return SeatClassList;
     }
+
 
     public static ScheduleModel PickSchedule()
     {
@@ -305,6 +301,13 @@ class ReservationLogic
         }
         Console.WriteLine("Made the reservation");
 
+        string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
+        int choice = General.ValidAnswer(text, [1, 2]);
+        if (choice == 1)
+        {
+            SnackReservation.BuySnacks(account);
+        }
+
 
 
         //List<SeatModel> AllSeats = AssignSeats(MakeSeatList());
@@ -313,6 +316,9 @@ class ReservationLogic
         //{
         //ReservationAcces.Write(new(account.Id, (int)schedule.Id, seat.Row, seat.Collum, status));
         //}
+
+        BarReservation.GetBarReservation(account, schedule, amount, 1);
+
     }
 
     public static List<ReservationModel> GetFromAccount(AccountModel account)
@@ -336,4 +342,10 @@ class ReservationLogic
         int answer = General.ValidAnswer(text, valid);
         return reservations.First(ReservationModel => ReservationModel.Id == answer);
     }
+
+    public static Int64 GetReservation_id(Int64 id)
+    {
+        return ReservationAcces.GetReservation_id(id);
+    }
+
 }

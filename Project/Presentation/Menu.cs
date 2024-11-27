@@ -14,12 +14,13 @@ static class Menu
         "[3] Add to the schedule\n" +
         "[4] Display the schedule\n" +
         "[5] Display income overview\n" +
-        "[6] Exit";
+        "[6] Manage snacks\n" +
+        "[7] Exit";
 
         while (true)
         {
             //reading input from the menu to connect to the features
-            int input = General.ValidAnswer(text, [1, 2, 3, 4, 5, 6]);
+            int input = General.ValidAnswer(text, [1, 2, 3, 4, 5, 6, 7]);
 
             if (input == 1)
             {
@@ -42,6 +43,11 @@ static class Menu
                 Overview.MoneyOverview();
             }
             else if (input == 6)
+            {
+                Console.Clear();
+                SnackReservation.Main();
+            }
+            else if (input == 7)
             {
                 Console.WriteLine("Exiting");
                 break;
@@ -104,7 +110,7 @@ static class Menu
         Console.WriteLine($"Movies Playing");
         foreach (ScheduleModel schedule in Schedules)
         {
-            Console.WriteLine($"Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime}");
+            Console.WriteLine($"Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime.ToString("dd-MM-yyyy HH:mm")}");
         }
         Console.WriteLine();
     }

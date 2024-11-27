@@ -2,18 +2,21 @@
 {
     public Int64 Id { get; set; }
     public string Name { get; set; }
-    public string Author { get; set; }
+    public string Director { get; set; }
     public string Description { get; set; }
+    public string LengthAsString { get; set; }
     public TimeSpan Length { get; set; }
     public string Genre { get; set; }
     public double MovieRating { get; set; }
     public int AgeRating { get; set; }
+    public Int64 Day { get; set; }
+    public object Day1 { get; }
 
-    public MovieModel(Int64 id, string name, string author, string description, string length, string genre, Int64 age_rating, double movie_ratings)
+    public MovieModel(Int64 id, string name, string director, string description, string length, string genre, Int64 age_rating, double movie_ratings)
     {
         Id = id;
         Name = name;
-        Author = author;
+        Director = director;
         Description = description;
         Length = TimeSpan.Parse(length);
         Genre = genre;
@@ -21,10 +24,10 @@
         MovieRating = movie_ratings;
     }
 
-    public MovieModel(string name, string author, string description, TimeSpan length, string genre, int age_rating, double movie_ratings)
+    public MovieModel(string name, string director, string description, TimeSpan length, string genre, int age_rating, double movie_ratings)
     {
         Name = name;
-        Author = author;
+        Director = director;
         Description = description;
         Length = length;
         Genre = genre;
@@ -32,6 +35,11 @@
         MovieRating = movie_ratings;
         Id = MovieAccess.Write(this);
     }
+
+    // public MovieModel()
+    // {
+
+    // }
 }
 
 

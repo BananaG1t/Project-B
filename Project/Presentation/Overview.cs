@@ -5,8 +5,8 @@ static class Overview
     {
         Console.Clear();
         string text = "Welcome to the income overview\n" +
-        "[1] Show total income\n" +
-        "[2] Show income from certain schedule entry\n" +
+        "[1] Show income from al movies\n" +
+        "[2] Show movie income from certain schedule entry\n" +
         "[3] Show income from movie";
         int Choice = General.ValidAnswer(text, [1, 2, 3]);
 
