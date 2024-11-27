@@ -184,7 +184,7 @@ public static class SnackReservation
         SnacksModel boughtSnack = SnacksLogic.GetById(ValidInputs[input]);
         Int64 reservation_id = ReservationLogic.GetReservation_id(currentaccount.Id);
 
-        BoughtSnacksLogic.Write(new BoughtSnacksModel(currentaccount.Id,reservation_id,boughtSnack.Id,amount));
+        BoughtSnacksLogic.Write(currentaccount.Id, reservation_id, boughtSnack.Id, amount);
     }
 
 
