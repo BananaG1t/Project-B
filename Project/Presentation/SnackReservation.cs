@@ -162,6 +162,28 @@ public static class SnackReservation
         return price;
     }
 
+    public static int ValidAmount()
+    {
+        int amount = 0;
+        bool valid = false;
+        while (!valid)
+        {
+            Console.WriteLine("Enter how many you want to buy");
+            string input = Console.ReadLine();
+
+            if (int.TryParse(input, out amount) && amount > 0)
+            {
+                valid = true;
+            }
+            else
+            {
+                General.PrintInRed("Invalid input. Please try again\n");
+            }
+        }
+
+        return amount;
+    }
+
     public static void BuySnacks(AccountModel currentaccount)
     {
         Console.Clear();
@@ -178,13 +200,15 @@ public static class SnackReservation
         }
 
         int input = General.ValidAnswer(text + "Enter the number of the snack that you would like to buy ", new List<int>(ValidInputs.Keys));
-        Console.WriteLine("Enter how many you want to buy");
-        int amount = Convert.ToInt32(Console.ReadLine());
+        
+        int amount = ValidAmount();
 
         SnacksModel boughtSnack = SnacksLogic.GetById(ValidInputs[input]);
         Int64 reservation_id = ReservationLogic.GetReservation_id(currentaccount.Id);
 
         BoughtSnacksLogic.Write(currentaccount.Id, reservation_id, boughtSnack.Id, amount);
+
+        Console.WriteLine($"\nSnacks reserved: {amount}X {boughtSnack.Name}, Total Price: {(amount * boughtSnack.Price):F2}\n");
     }
 
 

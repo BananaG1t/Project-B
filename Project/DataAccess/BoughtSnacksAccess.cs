@@ -10,7 +10,7 @@ public static class BoughtSnacksAccess
     
     public static Int64 Write(BoughtSnacksModel snack)
     {
-        string sql = $"INSERT INTO {Table} (Account_ID,Reservation_ID,snack,amount) VALUES (@Account_Id,@Reservation_Id,@Snack,@Amount)";
+        string sql = $"INSERT INTO {Table} (Account_ID,Reservation_ID,Snack_ID,amount) VALUES (@Account_ID,@Reservation_ID,@Snack_ID,@Amount)";
         _connection.Execute(sql, snack);
         
         string idSql = "SELECT last_insert_rowid();";
