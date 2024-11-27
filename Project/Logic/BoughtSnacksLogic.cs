@@ -15,7 +15,7 @@ public static class BoughtSnacksLogic
 
     public static void Delete(int id)
     {
-        SnacksAccess.Delete(id);
+        BoughtSnacksAccess.Delete(id);
     }
 
 }

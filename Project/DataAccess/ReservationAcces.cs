@@ -44,4 +44,9 @@ public static class ReservationAcces
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
     }
+    public static Int64 GetReservation_id(Int64 Account_id)
+    {
+        string sql = $"SELECT id FROM {Table} WHERE Account_ID = @Account_id";
+        return _connection.QueryFirstOrDefault<Int64>(sql, new { Id = Account_id });
+    }
 }

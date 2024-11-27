@@ -305,6 +305,13 @@ class ReservationLogic
         }
         Console.WriteLine("Made the reservation");
 
+        string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
+        int choice = General.ValidAnswer(text,[1,2]);
+        if (choice == 1)
+        {
+            SnackReservation.BuySnacks(account);
+        }
+
 
 
         //List<SeatModel> AllSeats = AssignSeats(MakeSeatList());
@@ -335,5 +342,9 @@ class ReservationLogic
         }
         int answer = General.ValidAnswer(text, valid);
         return reservations.First(ReservationModel => ReservationModel.Id == answer);
+    }
+    public static Int64 GetReservation_id(Int64 id)
+    {
+        return ReservationAcces.GetReservation_id(id);
     }
 }

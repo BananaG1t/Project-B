@@ -1,3 +1,6 @@
+using System.Data.Common;
+using System.Threading.Channels;
+
 static class SnackReservation
 {
     public static void Main()
@@ -164,22 +167,29 @@ static class SnackReservation
         return price;
     }
 
-    public static void BuySnacks()
+    public static void BuySnacks(AccountModel currentaccount)
     {
         Console.Clear();
         List<SnacksModel> Snacks = SnacksLogic.GetAll();
-        List<int> ValidInputs = [];
+        Dictionary<int, int> ValidInputs = new Dictionary<int, int>();
         string text = "";
+        int count = 0;
 
         foreach (SnacksModel snack in Snacks)
         {
-            text += $"[{snack.Id}] Name: {snack.Name}, Price: {snack.Price:F2}\n";
-            ValidInputs.Add((int)snack.Id);
+            count++;
+            text += $"[{count}] Name: {snack.Name}, Price: {snack.Price:F2}\n";
+            ValidInputs.Add(count, (int)snack.Id);
         }
 
-        int input = General.ValidAnswer(text + "Enter the number of the snack you would like to buy: ", ValidInputs);
-        
+        int input = General.ValidAnswer(text + "Enter the number of the snack that you would like to buy ", new List<int>(ValidInputs.Keys));
+        Console.WriteLine("Enter how many you want to buy");
+        int amount = Convert.ToInt32(Console.ReadLine());
 
+        SnacksModel boughtSnack = SnacksLogic.GetById(ValidInputs[input]);
+        Int64 reservation_id = ReservationLogic.GetReservation_id(currentaccount.Id);
+
+        BoughtSnacksLogic.Write(new BoughtSnacksModel(currentaccount.Id,reservation_id,boughtSnack.Id,amount));
     }
 
 
