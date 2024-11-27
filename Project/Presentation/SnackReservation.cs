@@ -161,4 +161,24 @@ public static class SnackReservation
 
         return price;
     }
+
+    public static void BuySnacks()
+    {
+        Console.Clear();
+        List<SnacksModel> Snacks = SnacksLogic.GetAll();
+        List<int> ValidInputs = [];
+        string text = "";
+
+        foreach (SnacksModel snack in Snacks)
+        {
+            text += $"[{snack.Id}] Name: {snack.Name}, Price: {snack.Price:F2}\n";
+            ValidInputs.Add((int)snack.Id);
+        }
+
+        int input = General.ValidAnswer(text + "Enter the number of the snack you would like to buy: ", ValidInputs);
+        
+
+    }
+
+
 }
