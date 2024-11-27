@@ -136,7 +136,31 @@ CREATE TABLE IF NOT EXISTS Bar_reservation (
 );
 ''')
 
-# Step 11: Commit changes and close the connection
+# Step 11: Create the Available Snacks table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS Available_snacks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    price FLOAT NOT NULL
+);
+''')
+
+# Step 12: Create the Bought Snacks table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS Bought_snacks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Account_ID INTEGER NOT NULL,
+    Reservation_ID INTEGER NOT NULL,
+    Snack_ID INTEGER NOT NULL,
+    amount INTERGER NOT NULL,
+    FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
+    FOREIGN KEY (Reservation_ID) REFERENCES Reservations(id)
+    FOREIGN KEY (Snack_ID) REFERENCES Available_snacks(id)
+    
+);
+''')
+
+# Step 13: Commit changes and close the connection
 connection.commit()
 connection.close()
 
