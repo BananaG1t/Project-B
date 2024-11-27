@@ -55,5 +55,4 @@ static class Reservation
         }
     }
 
-
 }

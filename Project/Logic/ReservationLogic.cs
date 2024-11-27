@@ -300,7 +300,24 @@ class ReservationLogic
         }
         Console.WriteLine("Made the reservation");
 
+        string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
+        int choice = General.ValidAnswer(text,[1,2]);
+        if (choice == 1)
+        {
+            SnackReservation.BuySnacks(account);
+        }
+
+
+
+        //List<SeatModel> AllSeats = AssignSeats(MakeSeatList());
+
+        //foreach (SeatModel seat in AllSeats)
+        //{
+        //ReservationAcces.Write(new(account.Id, (int)schedule.Id, seat.Row, seat.Collum, status));
+        //}
+
         BarReservation.GetBarReservation(account, schedule, amount, 1);
+
     }
 
     public static List<ReservationModel> GetFromAccount(AccountModel account)
@@ -325,5 +342,9 @@ class ReservationLogic
         return reservations.First(ReservationModel => ReservationModel.Id == answer);
     }
 
+    public static Int64 GetReservation_id(Int64 id)
+    {
+        return ReservationAcces.GetReservation_id(id);
+    }
 
 }
