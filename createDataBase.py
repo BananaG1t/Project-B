@@ -160,7 +160,20 @@ CREATE TABLE IF NOT EXISTS Bought_snacks (
 );
 ''')
 
-# Step 13: Commit changes and close the connection
+# Step 13: Create the Bought Snacks table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS Location (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    Reservation_ID INTEGER NOT NULL,
+    Schedule_ID INTEGER NOT NULL,
+    FOREIGN KEY (Reservation_ID) REFERENCES Reservations(id)
+    FOREIGN KEY (Schedule_ID) REFERENCES Schedule(id)
+    
+);
+''')
+
+# Step 14: Commit changes and close the connection
 connection.commit()
 connection.close()
 
