@@ -47,8 +47,10 @@ CREATE TABLE IF NOT EXISTS Reservations (
     seat_Row INTEGER NOT NULL,
     seat_Collum INTEGER NOT NULL,           
     status TEXT NOT NULL DEFAULT Active,
+    Location_ID INTEGER NOT NULL,
     FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
     FOREIGN KEY (Schedule_ID) REFERENCES Schedule(id)
+    FOREIGN KEY (Location_ID) REFERENCES Location(id)
 );
 ''')
 
@@ -90,8 +92,10 @@ CREATE TABLE IF NOT EXISTS Schedule (
     endTime DATETIME NOT NULL,
     Movie_ID INTEGER NOT NULL,
     Auditorium_ID INTEGER NOT NULL,
+    Location_ID INTEGER NOT NULL,
     FOREIGN KEY (Movie_ID) REFERENCES Movies(id)
     FOREIGN KEY (Auditorium_ID) REFERENCES Auditorium(id)
+    FOREIGN KEY (Location_ID) REFERENCES Location(id)
 );
 ''')
 
@@ -164,11 +168,7 @@ CREATE TABLE IF NOT EXISTS Bought_snacks (
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Location (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    Reservation_ID INTEGER NOT NULL,
-    Schedule_ID INTEGER NOT NULL,
-    FOREIGN KEY (Reservation_ID) REFERENCES Reservations(id)
-    FOREIGN KEY (Schedule_ID) REFERENCES Schedule(id)
+    name TEXT NOT NULL
     
 );
 ''')
