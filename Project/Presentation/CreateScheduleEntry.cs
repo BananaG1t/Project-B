@@ -74,7 +74,7 @@ public static class CreateScheduleEntry
          
         foreach (ScheduleModel schedule in Schedules)
         {
-            if ((date - schedule.EndTime) <= CleanupTime)
+            if ((date - schedule.EndTime ) <= CleanupTime && (date - schedule.EndTime ) > TimeSpan.Zero)
             {
                 enoughTime = false;
             }
