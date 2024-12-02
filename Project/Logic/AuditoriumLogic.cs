@@ -36,20 +36,12 @@ public class AuditoriumLogic
     {
         int maxRow = auditorium.Seats.Keys.Max(k => k.Row);
         int maxCol = auditorium.Seats.Keys.Max(k => k.Collum);
-        List<double> totalPrice = [];
 
         int cellWidth = 3; // Set a fixed width for cells
         string seperator = "------";
 
         // Print column headers with alignment
         Console.Clear();
-        Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.Write("Yellow = €15  ");
-        Console.ForegroundColor = ConsoleColor.Blue;
-        Console.Write("Blue = €12.5  ");
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Green = €10");
-        Console.ResetColor();
         Console.Write(" 0 |  "); // Offset for row headers
         for (int col = 1; col <= maxCol; col++)
         {
@@ -75,10 +67,8 @@ public class AuditoriumLogic
                     curSeat = auditorium.Seats[(row, col)];
 
                     if (row == x && col - y >= 0 && col - y < amountSelected)
-                    {
                         Console.ForegroundColor = ConsoleColor.White;
-                        totalPrice.Add(curSeat.Price);
-                    }
+
                     else
                     {
                         if (!curSeat.IsAvailable)
@@ -114,10 +104,6 @@ public class AuditoriumLogic
             }
         }
         Console.ResetColor();
-        var grouped = totalPrice.GroupBy(n => n)
-                                    .Select(g => new { Number = g.Key, Count = g.Count() })
-                                    .ToList();
-        string equation = string.Join(" + ", grouped.Select(g => $"{g.Number} x {g.Count}"));
-        Console.WriteLine($"\ntotal price: {equation} = {totalPrice.Sum()}");
+        Console.WriteLine();
     }
 }
