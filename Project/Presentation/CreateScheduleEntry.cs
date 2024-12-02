@@ -36,14 +36,14 @@ public static class CreateScheduleEntry
             valid.Add((int)movie.Id);
         }
 
-        int answer = General.ValidAnswer(text, valid);
-        return Movies.First(MovieModel => MovieModel.Id == answer);
+        int movieId = General.ValidAnswer(text, valid);
+        return Movies.First(MovieModel => MovieModel.Id == movieId);
     }
 
     private static DateTime SelectDate(int room, TimeSpan length)
     {
         Console.Clear();
-        string text = "When do you want to show the movie? (dd-mm-yyyy-hh-mm)";
+        string text = "When do you want to show the movie? (dd-MM-yyyy-HH-mm)";
         DateTime date;
         date = General.ValidDate(text);
         bool cleanupTime = CleanupTime(date);
@@ -85,7 +85,7 @@ public static class CreateScheduleEntry
     private static string? GetExtras()
     {
         Console.Clear();
-        Console.WriteLine("Does it have any extraslike IMAX? (leave blank if none)");
+        Console.WriteLine("Does it have any extras like IMAX? (leave blank if none)");
         string? Input = Console.ReadLine();
         return Input == "" ? null : Input;
     }

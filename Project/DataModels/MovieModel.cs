@@ -4,10 +4,13 @@
     public string Name { get; set; }
     public string Director { get; set; }
     public string Description { get; set; }
+    public string LengthAsString { get; set; }
     public TimeSpan Length { get; set; }
     public string Genre { get; set; }
     public double MovieRating { get; set; }
     public int AgeRating { get; set; }
+    public Int64 Day { get; set; }
+    public object Day1 { get; }
 
     public MovieModel(Int64 id, string name, string director, string description, string length, string genre, Int64 age_rating, double movie_ratings)
     {
@@ -32,6 +35,11 @@
         MovieRating = movie_ratings;
         Id = MovieAccess.Write(this);
     }
+
+    // public MovieModel()
+    // {
+
+    // }
 }
 
 
