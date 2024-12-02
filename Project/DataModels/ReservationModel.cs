@@ -6,6 +6,7 @@ public class ReservationModel
     public int Seat_Row { get; set; }
     public int Seat_Collum { get; set; }
     public string Status { get; set; }
+    public int LocationId { get; set; }
 
     public ReservationModel(Int64 account_ID, int schedule_ID, int seat_Row, int seat_Collum, string status = "Active")
     {
