@@ -16,7 +16,7 @@ public class ReservationModel
 
     }
 
-    public ReservationModel(Int64 id, Int64 Order_ID, Int64 schedule_ID, Int64 seat_Row, Int64 seat_Collum, string status)
+    public ReservationModel(Int64 id, Int64 Order_ID, Int64 seat_Row, Int64 seat_Collum, string status)
     {
         Id = (int)id;
         OrderId = (int)Order_ID;

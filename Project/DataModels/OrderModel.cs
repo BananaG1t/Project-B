@@ -16,7 +16,7 @@ public class OrderModel
         Id = OrderAccess.Write(this);
     }
 
-    public OrderModel(Int64 id, Int64 account_ID, Int64 schedule_ID, Int64 amount, Int64 bar, string status)
+    public OrderModel(Int64 id, Int64 account_ID, Int64 schedule_ID, Int64 amount, Int64 bar)
     {
         Id = (int)id;
         Account_ID = (int)account_ID;

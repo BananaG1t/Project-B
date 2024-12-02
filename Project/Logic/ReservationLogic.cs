@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 class ReservationLogic
 {
     public ReservationLogic()
@@ -305,22 +303,22 @@ class ReservationLogic
         Console.WriteLine("Made the reservation");
     }
 
-    public static List<ReservationModel> GetFromAccount(AccountModel account)
+    public static List<ReservationModel> GetFromOrder(OrderModel order)
     {
-        return ReservationAcces.GetFromAccount(account);
+        return ReservationAcces.GetFromOrder(order);
     }
 
-    public static ReservationModel SelectReservation(AccountModel account)
+    public static ReservationModel SelectReservation(OrderModel order)
     {
         Console.Clear();
-        string text = "What reseration do you want to manage?";
-        List<ReservationModel> reservations = ReservationLogic.GetFromAccount(account);
+        ScheduleModel schedule = ScheduleLogic.GetById(order.Schedule_ID);
+        string text = $"Movie: {schedule.Movie.Name}, Date: {schedule.StartTime} Bar: {order.Bar}\nWhat reseration do you want to manage?";
+        List<ReservationModel> reservations = GetFromOrder(order);
         List<int> valid = [];
 
         foreach (ReservationModel reservation in reservations)
         {
-            ScheduleModel schedule = ScheduleAccess.GetById((int)reservation.Schedule_ID);
-            text += $"\n[{reservation.Id}] Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seat: row {reservation.Seat_Row} collum {reservation.Seat_Collum}, Status: {reservation.Status}";
+            text += $"\n[{reservation.Id}] Seat: row {reservation.Seat_Row} collum {reservation.Seat_Collum}, Status: {reservation.Status}";
             valid.Add(reservation.Id);
         }
         int answer = General.ValidAnswer(text, valid);

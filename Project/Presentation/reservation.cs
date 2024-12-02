@@ -1,8 +1,8 @@
 static class Reservation
 {
-    public static void ManageReservations(AccountModel account)
+    public static void ManageReservations(OrderModel order)
     {
-        ReservationModel reservation = ReservationLogic.SelectReservation(account);
+        ReservationModel reservation = ReservationLogic.SelectReservation(order);
 
         Console.Clear();
         string text =
@@ -35,12 +35,14 @@ static class Reservation
                     SeatModel seat = SeatsAccess.GetByReservationInfo(
                         reservation.Seat_Collum,
                         reservation.Seat_Row,
-                        ScheduleAccess.GetById((int)reservation.Schedule_ID).AuditoriumId
+                        ScheduleAccess.GetById(order.Schedule_ID).AuditoriumId
                     );
                     seat.IsAvailable = true;
+                    order.Amount--;
 
                     ReservationAcces.Update(reservation);
                     SeatsAccess.Update(seat);
+                    OrderAccess.Update(order);
 
                     Console.WriteLine("The reservation has been canceled.");
                 }
