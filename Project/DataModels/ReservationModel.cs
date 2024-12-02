@@ -17,7 +17,7 @@ public class ReservationModel
         Status = status;
     }
 
-    public ReservationModel(Int64 id, Int64 account_ID, Int64 schedule_ID, Int64 seat_Row, Int64 seat_Collum, string status)
+    public ReservationModel(Int64 id, Int64 account_ID, Int64 schedule_ID, Int64 seat_Row, Int64 seat_Collum, string status, Int64 Location_ID)
     {
         Id = (int)id;
         Account_ID = account_ID;
@@ -25,6 +25,7 @@ public class ReservationModel
         Seat_Row = (int)seat_Row;
         Seat_Collum = (int)seat_Collum;
         Status = status;
+        LocationId = (int)Location_ID;
     }
 }
 

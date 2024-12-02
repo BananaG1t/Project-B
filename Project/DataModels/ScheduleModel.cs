@@ -16,6 +16,7 @@ public class ScheduleModel
     public int AuditoriumId { get; set; }
 
     public int LocationId { get; set; }
+    public LocationModel Location { get; set; }
 
     public ScheduleModel(Int64 id, string startTime, string endTime, Int64 Movie_ID, Int64 Auditorium_ID, Int64 Location_ID)
     {
@@ -30,6 +31,7 @@ public class ScheduleModel
         AuditoriumId = (int)Auditorium_ID;
         Auditorium = AuditoriumAcces.GetById(AuditoriumId);
         LocationId = (int)Location_ID;
+        Location = LocationAccess.GetById(LocationId);
     }
 
     public ScheduleModel(DateTime startTime, MovieModel movie, AuditoriumModel auditorium)
