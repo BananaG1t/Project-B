@@ -173,7 +173,29 @@ CREATE TABLE IF NOT EXISTS Location (
 );
 ''')
 
-# Step 14: Commit changes and close the connection
+# Step 14: Create the Assigned Roles table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS Assigned_Roles (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Role INTEGER NOT NULL,
+    Account_ID INTEGER NOT NULL,
+    Location_ID INTEGER NOT NULL,
+    FOREIGN KEY (Role) REFERENCES Roles(id)
+    FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
+    FOREIGN KEY (Location_ID) REFERENCES Location(id)
+);
+''')
+
+# Step 15: Create the Roles table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS Roles (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    functionality TEXT NOT NULL,
+    level_Needed INTEGER NOT NULL
+);
+''')
+
+# Step 16: Commit changes and close the connection
 connection.commit()
 connection.close()
 
