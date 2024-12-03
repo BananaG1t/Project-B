@@ -6,6 +6,7 @@ public static class CreateScheduleEntry
     {
         int room = SelectRoom();
         MovieModel movie = SelectMovie();
+        Console.Clear();
         DateTime date = SelectDate(room, movie.Length);
         string? extras = GetExtras();
         new ScheduleModel(date, movie, new AuditoriumModel(room, extras));
@@ -42,44 +43,25 @@ public static class CreateScheduleEntry
 
     private static DateTime SelectDate(int room, TimeSpan length)
     {
-        Console.Clear();
         string text = "When do you want to show the movie? (dd-MM-yyyy-HH-mm)";
         DateTime date;
         date = General.ValidDate(text);
-        bool cleanupTime = CleanupTime(date);
-        while (!ScheduleLogic.IsAvailable(room, date, length) || !cleanupTime)
+
+        Console.Clear();
+        if (!ScheduleLogic.IsAvailable(room, date, length))
         {
-            Console.Clear();
-            if (!ScheduleLogic.IsAvailable(room, date, length))
-            {
-                Console.WriteLine("There is already a movie playing on that time");
-            }
-            else
-            {
-                Console.WriteLine("Not enough time to clean the room");
-            }    
-                 
-            date = General.ValidDate(text);
-            cleanupTime = CleanupTime(date);
+            Console.WriteLine("There is already a movie playing on that time");
+            return SelectDate(room, length);
         }
+        
+        if (!ScheduleLogic.IsAvailable(room, date.AddMinutes(-20), length.Add(new TimeSpan(0,20,0))))
+        {
+            Console.WriteLine("Not enough time to clean the room");
+            return SelectDate(room, length);
+        }    
+                 
 
         return date;
-    }
-
-    public static bool CleanupTime(DateTime date)
-    {
-        bool enoughTime = true;
-        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
-        TimeSpan CleanupTime = new TimeSpan(0,20,0);
-         
-        foreach (ScheduleModel schedule in Schedules)
-        {
-            if ((date - schedule.EndTime) <= CleanupTime)
-            {
-                enoughTime = false;
-            }
-        }
-        return enoughTime;
     }
 
     private static string? GetExtras()
