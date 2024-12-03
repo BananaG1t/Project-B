@@ -164,12 +164,11 @@ CREATE TABLE IF NOT EXISTS Bought_snacks (
 );
 ''')
 
-# Step 13: Create the Bought Snacks table
+# Step 13: Create the Location table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Location (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL
-    
 );
 ''')
 
