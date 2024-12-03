@@ -66,7 +66,7 @@ public static class CreateScheduleEntry
 
     private static string? GetExtras()
     {
-        
+        Console.Clear();
         Console.WriteLine("Does it have any extras like IMAX? (leave blank if none)");
         string? Input = Console.ReadLine();
         return Input == "" ? null : Input;
