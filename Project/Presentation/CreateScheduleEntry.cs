@@ -22,7 +22,7 @@ public static class CreateScheduleEntry
         "[2] Auditorium 2, size 300\n" +
         "[3] Auditorium 3, size 500";
 
-        return General.ValidAnswer(text, [1, 2, 3]);
+        return PresentationHelper.MenuLoop(text, 1, 3);
     }
 
     private static MovieModel SelectMovie()
@@ -37,8 +37,8 @@ public static class CreateScheduleEntry
             valid.Add((int)movie.Id);
         }
 
-        int movieId = General.ValidAnswer(text, valid);
-        return Movies.First(MovieModel => MovieModel.Id == movieId);
+        int answer = PresentationHelper.MenuLoop(text, 1, Movies.Count);
+        return Movies.First(MovieModel => MovieModel.Id == answer);
     }
 
     private static DateTime SelectDate(int room, TimeSpan length)

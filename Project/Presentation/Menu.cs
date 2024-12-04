@@ -20,7 +20,7 @@ static class Menu
         while (true)
         {
             //reading input from the menu to connect to the features
-            int input = General.ValidAnswer(text, [1, 2, 3, 4, 5, 6, 7]);
+            int input = PresentationHelper.MenuLoop(text, 1, 6);
 
             if (input == 1)
             {
@@ -54,14 +54,15 @@ static class Menu
             }
         }
 
-        UserLogin.Start();
+        Start();
     }
 
     static public void Start()
     {
         Console.Clear();
         // get a valid input number
-        int input = General.ValidAnswer("Enter [1] to login\nEnter [2] to create new account", [1, 2]);
+        string text = $"Enter [1] to login\nEnter [2] to create new account";
+        int input = PresentationHelper.MenuLoop(text, 1, 2);
 
         if (input == 1) { UserLogin.Start(); }
         else if (input == 2) { UserLogin.CreateLogin(); }
@@ -79,7 +80,7 @@ static class Menu
             "Press [4] to log out";
 
             // get a valid input number
-            int input = General.ValidAnswer(text, [1, 2, 3, 4]);
+            int input = PresentationHelper.MenuLoop(text, 1, 4);
 
             if (input == 1)
             {
@@ -103,14 +104,16 @@ static class Menu
 
     public static void DisplaySchedule()
     {
-        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
+        List<ScheduleModel> Schedules = ScheduleLogic.GetSchedules();
 
         // Shows what movie are playing based on the date and time
         Console.Clear();
         Console.WriteLine($"Movies Playing");
         foreach (ScheduleModel schedule in Schedules)
         {
-            Console.WriteLine($"Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime.ToString("dd-MM-yyyy HH:mm")}");
+            Console.WriteLine(@$"Movie: {schedule.Movie.Name}, 
+                                Room: {schedule.Auditorium.Room}, 
+                                Starting time: {schedule.StartTime.ToString("dd-MM-yyyy HH:mm")}");
         }
         Console.WriteLine();
     }

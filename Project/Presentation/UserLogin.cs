@@ -33,7 +33,9 @@ static class UserLogin
         else
         {
             Console.WriteLine("No account found with that email and password");// added create new account option in main menu.
-            int input = General.ValidAnswer("Would you like to make a new account?\n[1] Yes\n[2] No", [1, 2]);
+            string text = "Would you like to make a new account?\n[1] Yes\n[2] No";
+            int input = PresentationHelper.MenuLoop(text, 1, 2);
+
             if (input == 1) { CreateLogin(); }
             else if (input == 2) { Menu.Start(); }
         }
