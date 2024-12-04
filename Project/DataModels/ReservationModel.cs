@@ -6,7 +6,6 @@ public class ReservationModel
     public int Seat_Row { get; set; }
     public int Seat_Collum { get; set; }
     public string Status { get; set; }
-    public int LocationId { get; set; }
 
     public ReservationModel(Int64 account_ID, int schedule_ID, int seat_Row, int seat_Collum, string status = "Active")
     {
@@ -17,7 +16,7 @@ public class ReservationModel
         Status = status;
     }
 
-    public ReservationModel(Int64 id, Int64 account_ID, Int64 schedule_ID, Int64 seat_Row, Int64 seat_Collum, string status, Int64 Location_ID)
+    public ReservationModel(Int64 id, Int64 account_ID, Int64 schedule_ID, Int64 seat_Row, Int64 seat_Collum, string status)
     {
         Id = (int)id;
         Account_ID = account_ID;
@@ -25,7 +24,6 @@ public class ReservationModel
         Seat_Row = (int)seat_Row;
         Seat_Collum = (int)seat_Collum;
         Status = status;
-        LocationId = (int)Location_ID;
     }
 }
 

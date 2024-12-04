@@ -110,7 +110,7 @@ static class Menu
         Console.WriteLine($"Movies Playing");
         foreach (ScheduleModel schedule in Schedules)
         {
-            Console.WriteLine($"Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime.ToString("dd-MM-yyyy HH:mm")}");
+            Console.WriteLine($"Location: {schedule.Location.Name}, Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime.ToString("dd-MM-yyyy HH:mm")}");
         }
         Console.WriteLine();
     }

@@ -8,7 +8,8 @@ public static class CreateScheduleEntry
         MovieModel movie = SelectMovie();
         DateTime date = SelectDate(room, movie.Length);
         string? extras = GetExtras();
-        new ScheduleModel(date, movie, new AuditoriumModel(room, extras));
+        string location = Location();
+        new ScheduleModel(date, movie, new AuditoriumModel(room, extras), new LocationModel(location));
         Console.Clear();
     }
 
@@ -74,7 +75,7 @@ public static class CreateScheduleEntry
          
         foreach (ScheduleModel schedule in Schedules)
         {
-            if ((date - schedule.EndTime) <= CleanupTime)
+            if ((date - schedule.EndTime) <= CleanupTime && (date - schedule.EndTime) > TimeSpan.Zero)
             {
                 enoughTime = false;
             }
@@ -89,4 +90,13 @@ public static class CreateScheduleEntry
         string? Input = Console.ReadLine();
         return Input == "" ? null : Input;
     }
+
+        private static string Location()
+    {
+        Console.Clear();
+        Console.WriteLine("Which location do you want the movie to play at");
+        string Input = Console.ReadLine();
+        return Input;
+    }
+
 }

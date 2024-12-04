@@ -156,7 +156,7 @@ class ReservationLogic
         string text = "";
         foreach (ScheduleModel schedule in Schedules)
         {
-            text += $"\n[{i}] Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime}";
+            text += $"\n[{i}] Location: {schedule.Location.Name}, Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime}";
             i++;
         }
 
@@ -336,7 +336,7 @@ class ReservationLogic
         foreach (ReservationModel reservation in reservations)
         {
             ScheduleModel schedule = ScheduleAccess.GetById((int)reservation.Schedule_ID);
-            text += $"\n[{reservation.Id}] Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seat: row {reservation.Seat_Row} collum {reservation.Seat_Collum}, Status: {reservation.Status}";
+            text += $"\n[{reservation.Id}] Location: {schedule.Location.Name}, Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seat: row {reservation.Seat_Row} collum {reservation.Seat_Collum}, Status: {reservation.Status}";
             valid.Add(reservation.Id);
         }
         int answer = General.ValidAnswer(text, valid);
