@@ -6,13 +6,13 @@ using Dapper;
 public static class BoughtSnacksAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-     private static string Table = "Bought_snacks";
-    
+    private static string Table = "BoughtSnacks";
+
     public static Int64 Write(BoughtSnacksModel snack)
     {
         string sql = $"INSERT INTO {Table} (Account_ID,Reservation_ID,Snack_ID,amount) VALUES (@Account_ID,@Reservation_ID,@Snack_ID,@Amount)";
         _connection.Execute(sql, snack);
-        
+
         string idSql = "SELECT last_insert_rowid();";
         Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
 

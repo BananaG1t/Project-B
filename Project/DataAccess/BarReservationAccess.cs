@@ -7,7 +7,7 @@ public class BarReservationAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private static string Table = "Bar_reservation";
+    private static string Table = "BarReservation";
 
     public static Int64 Write(BarSeatModel BarSeat)
     {
