@@ -197,12 +197,12 @@ CREATE TABLE IF NOT EXISTS roleLevel (
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Coupons (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Coupon_code INTEGER NOT NULL,
-    Expiration_date DATETIME NOT NULL,
-    Coupon_type TEXT NOT NULL,
-    Coupon_percentage BOOLEAN NOT NULL DEFAULT false,
-    Amount INTEGER NOT NULL,
-    Account_ID INTEGER NOT NULL,
+    coupon_code INTEGER NOT NULL,
+    expiration_date DATETIME NOT NULL,
+    coupon_type TEXT NOT NULL,
+    coupon_percentage BOOLEAN NOT NULL DEFAULT false,
+    amount INTEGER NOT NULL,
+    account_ID INTEGER NOT NULL,
     FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
 );
 ''')
