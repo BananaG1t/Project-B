@@ -151,6 +151,8 @@ class ReservationLogic
     {
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
 
+        if (Schedules.Count == 0) { return null; }
+
         int i = 1;
 
         string text = "";
@@ -178,6 +180,7 @@ class ReservationLogic
         } while (amount <= 0);
 
         ScheduleModel schedule = PickSchedule();
+        if (schedule is null) { return; }
         int row = 0; int col = 1;
         int last_row;
         int last_col;
