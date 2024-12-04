@@ -2,8 +2,8 @@ public static class CreateRoles
 {
     public static void AddRole()
     {
-        string text = "What is the name of the role? ";
+        string roleName = PresentationHelper.GetString("What is the name of the role? ", "role");
 
-        string roleName = Console.ReadLine();
+
     }
 }

@@ -17,8 +17,6 @@ class ReservationLogic
 
         if (Schedules.Count == 0) { return null; }
 
-        int i = 1;
-
         string text = "";
 
         for (int i = 1; i < Schedules.Count + 1; i++)
