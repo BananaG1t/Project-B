@@ -171,7 +171,31 @@ CREATE TABLE IF NOT EXISTS Location (
 );
 ''')
 
-# Step 14: Create the Assigned Roles table
+cursor.execute('''DROP TABLE RoleLevel''')
+cursor.execute('''DROP TABLE Roles''')
+cursor.execute('''DROP TABLE AssignedRoles''')
+
+# Step 14: Create the role Level table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS RoleLevel (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    functionality TEXT NOT NULL,
+    level_Needed INTEGER NOT NULL
+);
+               
+''')
+
+# Step 15: Create the roles table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS Roles (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Role_Name TEXT NOT NULL,
+    Role_Level_ID INTEGER NOT NULL,
+    FOREIGN KEY (Role_Level_ID) REFERENCES RoleLevel(id)
+);
+''')
+
+# Step 16: Create the Assigned Roles table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS AssignedRoles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -184,24 +208,6 @@ CREATE TABLE IF NOT EXISTS AssignedRoles (
 );
 ''')
 
-# Step 15: Create the role Level table
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS RoleLevel (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    functionality TEXT NOT NULL,
-    level_Needed INTEGER NOT NULL
-);
-''')
-
-# Step 16: Create the roles table
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS Roles (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Role_Name TEXT NOT NULL,
-    Role_Level_ID INTEGER NOT NULL,
-    FOREIGN KEY (Role_Level_ID) REFERENCES RoleLevel(id)
-);
-''')
 
 # Step 17: Create the Coupons table
 cursor.execute('''
