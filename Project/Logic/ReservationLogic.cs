@@ -149,11 +149,24 @@ class ReservationLogic
 
     public static ScheduleModel PickSchedule()
     {
-        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
+
+        Console.Clear();
+        string text = "At which location do you want to see?";
+        List<LocationModel> locations = LocationLogic.GetAll();
+        List<int> valid = [];
+        foreach (LocationModel location in locations)
+        {
+            text += $"\n[{location.Id}] {location.Name}";
+            valid.Add((int)location.Id);
+        }
+
+        LocationModel Location = locations.First(LocationModel => LocationModel.Id == General.ValidAnswer(text, valid));
+
+        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
 
         int i = 1;
 
-        string text = "";
+        text = "";
         foreach (ScheduleModel schedule in Schedules)
         {
             text += $"\n[{i}] Location: {schedule.Location.Name}, Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime}";

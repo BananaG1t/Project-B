@@ -40,6 +40,15 @@ public static class ScheduleAccess
         return schedules;
     }
 
+    public static List<ScheduleModel> ScheduleByDateAndLocation(LocationModel location)
+    {
+        DateTime currdate = DateTime.Now;
+        string sql = $"SELECT * FROM {Table} WHERE startTime > @Currdate ORDER BY startTime ASC AND LocationID = @LocationId";
+        List<ScheduleModel> schedules = (List<ScheduleModel>)_connection.Query<ScheduleModel>(sql, new { Currdate = currdate, LocationId = location.Id });
+
+        return schedules;
+    }
+
     public static ScheduleModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
