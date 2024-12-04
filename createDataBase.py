@@ -164,12 +164,11 @@ CREATE TABLE IF NOT EXISTS Bought_snacks (
 );
 ''')
 
-# Step 13: Create the Bought Snacks table
+# Step 13: Create the Location table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Location (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL
-    
 );
 ''')
 
@@ -195,7 +194,21 @@ CREATE TABLE IF NOT EXISTS Roles (
 );
 ''')
 
-# Step 16: Commit changes and close the connection
+# Step 16: Create the Assigned Roles table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS Coupons (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Coupon_code INTEGER NOT NULL,
+    Expiration_date DATETIME NOT NULL,
+    Coupon_type TEXT NOT NULL,
+    Coupon_percentage BOOLEAN NOT NULL DEFAULT false,
+    Amount INTEGER NOT NULL,
+    Account_ID INTEGER NOT NULL,
+    FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
+);
+''')
+
+# Step 17: Commit changes and close the connection
 connection.commit()
 connection.close()
 
