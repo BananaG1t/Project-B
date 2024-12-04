@@ -186,14 +186,24 @@ CREATE TABLE IF NOT EXISTS AssignedRoles (
 
 # Step 15: Create the role Level table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS roleLevel (
+CREATE TABLE IF NOT EXISTS RoleLevel (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     functionality TEXT NOT NULL,
     level_Needed INTEGER NOT NULL
 );
 ''')
 
-# Step 16: Create the Coupons table
+# Step 16: Create the roles table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS Roles (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Role_Name TEXT NOT NULL,
+    Role_Level_ID INTEGER NOT NULL,
+    FOREIGN KEY (Role_Level_ID) REFERENCES RoleLevel(id)
+);
+''')
+
+# Step 17: Create the Coupons table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Coupons (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -207,7 +217,7 @@ CREATE TABLE IF NOT EXISTS Coupons (
 );
 ''')
 
-# Step 16: Commit changes and close the connection
+# Step 18: Commit changes and close the connection
 connection.commit()
 connection.close()
 
