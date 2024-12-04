@@ -14,7 +14,8 @@ static class Menu
         "[3] Add to the schedule\n" +
         "[4] Display the schedule\n" +
         "[5] Display income overview\n" +
-        "[6] Exit";
+        "[6] Manage snacks\n" +
+        "[7] Exit";
 
         while (true)
         {
@@ -42,6 +43,11 @@ static class Menu
                 Overview.MoneyOverview();
             }
             else if (input == 6)
+            {
+                Console.Clear();
+                SnackReservation.Main();
+            }
+            else if (input == 7)
             {
                 Console.WriteLine("Exiting");
                 break;

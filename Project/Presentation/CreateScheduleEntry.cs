@@ -1,11 +1,12 @@
 using System.Globalization;
 
-static class CreateScheduleEntry
+public static class CreateScheduleEntry
 {
     public static void Main()
     {
         int room = SelectRoom();
         MovieModel movie = SelectMovie();
+        Console.Clear();
         DateTime date = SelectDate(room, movie.Length);
         string? extras = GetExtras();
         new ScheduleModel(date, movie, new AuditoriumModel(room, extras));
@@ -42,24 +43,31 @@ static class CreateScheduleEntry
 
     private static DateTime SelectDate(int room, TimeSpan length)
     {
-        Console.Clear();
-        string text = "When do you want to show the movie? (dd-mm-yyyy-hh-mm)";
+        string text = "When do you want to show the movie? (dd-MM-yyyy-HH-mm)";
         DateTime date;
         date = General.ValidDate(text);
-        while (!ScheduleLogic.IsAvailable(room, date, length))
-        {
-            Console.Clear();
-            Console.WriteLine("There is already a movie playing on that time");
-            date = General.ValidDate(text);
 
+        Console.Clear();
+        if (!ScheduleLogic.IsAvailable(room, date, length))
+        {
+            Console.WriteLine("There is already a movie playing on that time");
+            return SelectDate(room, length);
         }
+        
+        if (!ScheduleLogic.IsAvailable(room, date.AddMinutes(-20), length.Add(new TimeSpan(0,20,0))))
+        {
+            Console.WriteLine("Not enough time to clean the room");
+            return SelectDate(room, length);
+        }    
+                 
+
         return date;
     }
 
     private static string? GetExtras()
     {
         Console.Clear();
-        Console.WriteLine("Does it have any extraslike IMAX? (leave blank if none)");
+        Console.WriteLine("Does it have any extras like IMAX? (leave blank if none)");
         string? Input = Console.ReadLine();
         return Input == "" ? null : Input;
     }

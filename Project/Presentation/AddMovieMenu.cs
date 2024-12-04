@@ -17,7 +17,6 @@ static class AddMovieMenu
 
         int agerating = PresentationHelper.GetInt($"Movie age rating: ");
 
-        MovieLogic.AddMovie(name, director, description, movieLength, genre, agerating, agerating);
+        MovieLogic.AddMovie(name, author, description, length, genre, agerating, movieRatings);
     }
-
 }

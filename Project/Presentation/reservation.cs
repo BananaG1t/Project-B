@@ -22,7 +22,6 @@ static class Reservation
 
                 int confirmChoice = PresentationHelper.MenuLoop(confirmText, 1, 2);
 
-
                 if (confirmChoice == 1)
                 {
                     if (reservation.Status == "Canceled")
@@ -54,4 +53,5 @@ static class Reservation
                 return;
         }
     }
+
 }
