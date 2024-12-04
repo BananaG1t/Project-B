@@ -115,9 +115,9 @@ CREATE TABLE IF NOT EXISTS Movies (
 );
 ''')
 
-# Step 9: Create the Auditorium_layout table
+# Step 9: Create the Auditorium Layout table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS Auditorium_layout (
+CREATE TABLE IF NOT EXISTS AuditoriumLayout (
     room_id INTEGER,
     row_num INTEGER NOT NULL,
     col_num INTEGER NOT NULL,
@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS Auditorium_layout (
 
 # Step 10: Create the Schedule table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS Bar_reservation (
+CREATE TABLE IF NOT EXISTS BarReservation (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     startTime DATETIME NOT NULL,
     endTime DATETIME NOT NULL,
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS Bar_reservation (
 
 # Step 11: Create the Available Snacks table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS Available_snacks (
+CREATE TABLE IF NOT EXISTS AvailableSnacks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     price FLOAT NOT NULL
@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS Available_snacks (
 
 # Step 12: Create the Bought Snacks table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS Bought_snacks (
+CREATE TABLE IF NOT EXISTS BoughtSnacks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     Account_ID INTEGER NOT NULL,
     Reservation_ID INTEGER NOT NULL,
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS Location (
 
 # Step 14: Create the Assigned Roles table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS Assigned_Roles (
+CREATE TABLE IF NOT EXISTS AssignedRoles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     Role_ID INTEGER NOT NULL,
     Account_ID INTEGER NOT NULL,
@@ -184,16 +184,16 @@ CREATE TABLE IF NOT EXISTS Assigned_Roles (
 );
 ''')
 
-# Step 15: Create the role_level table
+# Step 15: Create the role Level table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS role_level (
+CREATE TABLE IF NOT EXISTS roleLevel (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     functionality TEXT NOT NULL,
     level_Needed INTEGER NOT NULL
 );
 ''')
 
-# Step 16: Create the Assigned Roles table
+# Step 16: Create the Coupons table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Coupons (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -207,7 +207,7 @@ CREATE TABLE IF NOT EXISTS Coupons (
 );
 ''')
 
-# Step 17: Commit changes and close the connection
+# Step 16: Commit changes and close the connection
 connection.commit()
 connection.close()
 
