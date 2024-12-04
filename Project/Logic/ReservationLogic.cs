@@ -290,8 +290,16 @@ class ReservationLogic
             Console.Clear();
         } while (input != ConsoleKey.Enter);
 
-        bool bar = General.ValidAnswer("Do you want to stay at the bar after the movie?\n[1] yes\n[2] no", [1, 2]) == 1 ? true : false;
 
+        bool bar;
+        if (OrderLogic.CheckBarSeats(schedule, amount))
+        {
+            bar = General.ValidAnswer("Do you want to stay at the bar after the movie?\n[1] yes\n[2] no", [1, 2]) == 1 ? true : false;
+        } else 
+        {
+            Console.WriteLine("Sorry, the bar is already full");
+            bar = false;
+        }
         OrderModel order = new(account.Id, schedule.Id, amount, bar);
 
         for (int i = 0; i < amount; i++)
@@ -309,17 +317,6 @@ class ReservationLogic
         {
             SnackReservation.BuySnacks(account);
         }
-
-
-
-        //List<SeatModel> AllSeats = AssignSeats(MakeSeatList());
-
-        //foreach (SeatModel seat in AllSeats)
-        //{
-        //ReservationAcces.Write(new(account.Id, (int)schedule.Id, seat.Row, seat.Collum, status));
-        //}
-
-        BarReservation.GetBarReservation(account, schedule, amount, 1);
 
     }
 

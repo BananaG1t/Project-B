@@ -32,19 +32,22 @@ public class OrderAccess
         return (List<OrderModel>)_connection.Query<OrderModel>(sql, account);
     }
 
-    public static int GetAvailableBarSpots()
+    public static List<(int, DateTime, int)> GetAvailableBarSpots(ScheduleModel schedule)
     {
         string sql = @"
 SELECT
-    Id,
-    endTime
+    Schedule.Id,
+    Schedule.endTime,
+    SUM(Orders.Amount) AS TotalAmount
 FROM Schedule
-WHERE endTime < @timeY
-AND DATETIME(endTime, '+2 hours')
-";
+INNER JOIN Orders ON Schedule.Id = Orders.Schedule_ID
+WHERE @StartTime < DATETIME(endTime, '+2 hours') 
+AND @EndTime > endTime
+AND Orders.Bar = 1
+GROUP BY Schedule.Id, Schedule.endTime;";
 
-        foreach (int entry in _connection.Query<int>(sql, new { timeX = new DateTime(2028, 12, 12, 19, 0, 0), timeY = new DateTime(2028, 12, 12, 21, 0, 0) }))
-            Console.WriteLine(entry);
-        return 1;
+        // foreach ((int, DateTime, int) entry in 
+        //     Console.WriteLine($"{entry.Item1} {entry.Item2} {entry.Item3}");
+        return (List<(int, DateTime, int)>)_connection.Query<(int, DateTime, int)>(sql, new { StartTime = schedule.EndTime, EndTime = schedule.EndTime.AddHours(2) });
     }
 }
