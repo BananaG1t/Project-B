@@ -188,8 +188,8 @@ public static class SnackReservation
     {
         Console.Clear();
         List<SnacksModel> snacks = SnacksLogic.GetAll();
-        string text = "Enter the number of the snack that you would like to buy";
-        List<int>ValidInputs = [];
+        string text = "Enter the number of the snack that you would like to buy\n[0] Done";
+        List<int>ValidInputs = [0];
 
         for (int i = 0; i < snacks.Count; i++)
         {
@@ -197,15 +197,19 @@ public static class SnackReservation
             ValidInputs.Add(i+1);
         }
 
-        int input = General.ValidAnswer(text, ValidInputs);
-        
-        int amount = ValidAmount();
+        while (true)
+        {
+            int input = General.ValidAnswer(text, ValidInputs);
+            if (input == 0) break;
 
-        SnacksModel boughtSnack = snacks[input-1];
+            int amount = ValidAmount();
 
-        BoughtSnacksLogic.Write(reservation_id, boughtSnack.Id, amount);
+            SnacksModel boughtSnack = snacks[input - 1];
 
-        Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {amount * boughtSnack.Price:F2}\n");
+            BoughtSnacksLogic.Write(reservation_id, boughtSnack.Id, amount);
+
+            Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {amount * boughtSnack.Price:F2}\n");
+        }
     }
 
 
