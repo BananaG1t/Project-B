@@ -46,9 +46,7 @@ public static class RoleAccess
     public static List<RoleModel> GetAllRoles()
     {
         string sql = $"SELECT * FROM {Table} ORDER BY level_Access ASC";
-        List<RoleModel> roles = (List<RoleModel>)_connection.Query<RoleModel>(sql, new { });
-
-        return roles;
+        return (List<RoleModel>)_connection.Query<RoleModel>(sql, new { });
     }
 
     public static void Delete(int id)

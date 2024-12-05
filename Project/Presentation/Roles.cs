@@ -21,13 +21,13 @@ public static class Roles
 
         if (choice == 1) { AssignRole(); }
         if (choice == 2) { RemoveRoll(); }
-        if (choice == 3) { DisplayAssignedRoles(); }
+        if (choice == 3) { DisplayRoles(""); }
         if (choice == 4) { CreateRole(); }
         if (choice == 5) { DeleteRole(); }
-        if (choice == 6) { DisplayRoles(); }
+        if (choice == 6) { DisplayRoles("Roles"); }
         if (choice == 7) { CreateFunctionalityRole(); }
         if (choice == 8) { DeleteFunctionalityRole(); }
-        if (choice == 9) { DisplayRoleLevels(); }
+        if (choice == 9) { DisplayRoles("Role Levels"); }
 
         if (choice > 9)
         {
@@ -42,11 +42,16 @@ public static class Roles
     public static void CreateRole()
     {
         string roleName = PresentationHelper.GetString("What is the name of the role? ", "role");
+        int levelAccess = PresentationHelper.GetInt("What level access should the role have?");
 
-        int roleLevelId = 1;
-
-
-
+        if (RoleLogic.AddRole(roleName, levelAccess))
+        {
+            Console.WriteLine("The functionality has been added to the database");
+            return;
+        }
+        Console.WriteLine("That role name or level access already exists");
+        Thread.Sleep(5000);
+        Console.Clear();
     }
 
     public static void CreateFunctionalityRole()
@@ -59,7 +64,7 @@ public static class Roles
             Console.WriteLine("The functionality has been added to the database");
             return;
         }
-        Console.WriteLine("That functionality or level is already in the database");
+        Console.WriteLine("That functionality or level already exists");
         Thread.Sleep(5000);
         Console.Clear();
     }
@@ -79,18 +84,22 @@ public static class Roles
 
     }
 
-    public static void DisplayRoleLevels()
+    public static void DisplayRoles(string displayType)
     {
+        Tuple<string, int> displayInfo = new("", 0);
 
+        if (displayType == "1")
+        {
+            // displayInfo = RoleLogic.GetRoleText();
+        }
+        if (displayType == "Roles")
+        { displayInfo = RoleLogic.GetRoleText(); }
+        if (displayType == "Role Levels")
+        { displayInfo = RoleLogic.GetRoleLevelText(); }
+
+        Console.WriteLine(displayInfo.Item1);
+
+        Console.WriteLine("[ENTER] Continue");
     }
 
-    public static void DisplayRoles()
-    {
-
-    }
-
-    public static void DisplayAssignedRoles()
-    {
-
-    }
 }
