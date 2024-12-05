@@ -42,6 +42,8 @@ VALUES (?, ?, ?, ?, ?)
 ''', (1, "U1", "UP1", "User", False))
 
 cursor.execute('''DROP TABLE IF EXISTS SeatReservations''')
+cursor.execute('''DROP TABLE IF EXISTS Reservations''')
+cursor.execute('''DROP TABLE IF EXISTS BarReservation''')
 
 # Step 4: Create the SeatReservation table
 cursor.execute('''
@@ -143,6 +145,9 @@ CREATE TABLE IF NOT EXISTS Orders (
 );
 ''')
 
+cursor.execute('''DROP TABLE IF EXISTS Snacks''')
+cursor.execute('''DROP TABLE IF EXISTS AvailableSnacks''')
+
 # Step 11: Create the Available Snacks table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Snacks (
@@ -152,14 +157,16 @@ CREATE TABLE IF NOT EXISTS Snacks (
 );
 ''')
 
-# Step 12: Create the Bought Snacks table
+cursor.execute('''DROP TABLE IF EXISTS BoughtSnacks''')
+
+# Step 12: Create the Bought BoughtSnacks table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS BoughtSnacks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     Reservation_ID INTEGER NOT NULL,
     Snack_ID INTEGER NOT NULL,
     amount INTERGER NOT NULL,
-    FOREIGN KEY (Reservation_ID) REFERENCES Reservations(id)
+    FOREIGN KEY (Reservation_ID) REFERENCES SeatReservations(id)
     FOREIGN KEY (Snack_ID) REFERENCES Snacks(id)
     
 );
