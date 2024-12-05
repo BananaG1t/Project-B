@@ -146,6 +146,7 @@ CREATE TABLE IF NOT EXISTS Orders (
 ''')
 
 cursor.execute('''DROP TABLE IF EXISTS Snacks''')
+cursor.execute('''DROP TABLE IF EXISTS AvailableSnacks''')
 
 # Step 11: Create the Available Snacks table
 cursor.execute('''
