@@ -5,15 +5,15 @@ static class AddMovieMenu
     {
         Console.Clear();
 
-        string name = PresentationHelper.GetString($"Movie Name: ", "name");
+        string name = PresentationHelper.GetString($"Movie name: ", "name");
 
-        string director = PresentationHelper.GetString($"Movie Name: ", "director");
+        string director = PresentationHelper.GetString($"Director name: ", "director");
 
-        string description = PresentationHelper.GetString($"Movie Name: ", "description");
+        string description = PresentationHelper.GetString($"Movie description: ", "description");
 
         TimeSpan movieLength = PresentationHelper.GetTimespan($"Movie length (hh:mm): ");
 
-        string genre = PresentationHelper.GetString($"Movie Name: ", "genre");
+        string genre = PresentationHelper.GetString($"Movie genre: ", "genre");
 
         int agerating = PresentationHelper.GetInt($"Movie age rating: ");
 

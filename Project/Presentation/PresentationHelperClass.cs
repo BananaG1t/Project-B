@@ -47,7 +47,7 @@ public static class PresentationHelper
             Console.WriteLine(text);
             string input = Console.ReadLine();
 
-            if (int.TryParse(input, out output))
+            if (!int.TryParse(input, out output))
             { General.PrintInRed($"That is not a valid number"); }
             else { break; }
 
@@ -65,7 +65,7 @@ public static class PresentationHelper
             Console.WriteLine(text);
             string input = Console.ReadLine();
 
-            if (double.TryParse(input, out output))
+            if (!double.TryParse(input, out output))
             { General.PrintInRed($"That is not a valid number"); }
             else { break; }
 
