@@ -4,8 +4,10 @@ static class BarReservation
     {
         string text = $"Do you want to sit at the bar after the movie?\n[1] Yes\n[2] No";
 
-        bool choice = General.ValidAnswer(text, [1, 2]) == 1;
+        bool choice = PresentationHelper.MenuLoop(text, 1, 2) == 1;
+
         if (!choice) { Console.Clear(); return; }
+
         if (BarReservationLogic.ReserveBarSeats(Account, schedule, SeatAmount, reservationId))
         {
             // Console.Clear();

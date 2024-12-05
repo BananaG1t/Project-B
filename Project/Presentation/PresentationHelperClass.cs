@@ -10,7 +10,7 @@ public static class PresentationHelper
             output = Console.ReadLine();
 
             if (output.Count() == 0)
-            { General.PrintInRed($"That is not a valid {variableName}"); }
+            { PrintInRed($"That is not a valid {variableName}"); }
             else { break; }
 
         } while (true);
@@ -30,7 +30,7 @@ public static class PresentationHelper
             output = Console.ReadLine();
 
             if (!TimeSpan.TryParse(output, out ValidTimeSpan))
-            { General.PrintInRed($"Invalid format. Please try again"); }
+            { PrintInRed($"Invalid format. Please try again"); }
             else { break; }
 
         } while (true);
@@ -48,7 +48,7 @@ public static class PresentationHelper
             string input = Console.ReadLine();
 
             if (!int.TryParse(input, out output))
-            { General.PrintInRed($"That is not a valid number"); }
+            { PrintInRed($"That is not a valid number"); }
             else { break; }
 
         } while (true);
@@ -66,7 +66,7 @@ public static class PresentationHelper
             string input = Console.ReadLine();
 
             if (!double.TryParse(input, out output))
-            { General.PrintInRed($"That is not a valid number"); }
+            { PrintInRed($"That is not a valid number"); }
             else { break; }
 
         } while (true);
@@ -109,5 +109,12 @@ public static class PresentationHelper
         Console.WriteLine(text);
         Thread.Sleep(5000);
         Console.Clear();
+    }
+
+    public static void PrintInRed(string text)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(text);
+        Console.ResetColor();
     }
 }

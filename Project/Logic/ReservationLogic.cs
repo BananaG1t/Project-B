@@ -21,7 +21,7 @@ class ReservationLogic
 
         for (int i = 0; i < Schedules.Count; i++)
         {
-            text += $"\n[{i+1}] Movie: {Schedules[i].Movie.Name}, Room: {Schedules[i].Auditorium.Room}, Starting time: {Schedules[i].StartTime}";
+            text += $"\n[{i + 1}] Movie: {Schedules[i].Movie.Name}, Room: {Schedules[i].Auditorium.Room}, Starting time: {Schedules[i].StartTime}";
         }
 
         int input = PresentationHelper.MenuLoop(text, 1, Schedules.Count + 1);
@@ -167,7 +167,9 @@ class ReservationLogic
         Console.WriteLine("Made the reservation");
 
         string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
-        int choice = General.ValidAnswer(text, [1, 2]);
+
+        int choice = PresentationHelper.MenuLoop(text, 1, 2);
+
         if (choice == 1)
         {
             SnackReservation.BuySnacks(account);

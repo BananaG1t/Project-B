@@ -12,7 +12,7 @@ public static class SnackReservation
 
         while (true)
         {
-            int input = General.ValidAnswer(text, [1, 2, 3, 4, 5]);
+            int input = PresentationHelper.MenuLoop(text, 1, 5);
 
             if (input == 1)
             {
@@ -20,7 +20,7 @@ public static class SnackReservation
             }
             else if (input == 2)
             {
-               UpdateSnacks();
+                UpdateSnacks();
             }
             else if (input == 3)
             {
@@ -66,7 +66,7 @@ public static class SnackReservation
             ValidInputs.Add(count, (int)snack.Id);
         }
 
-        int input = General.ValidAnswer(text + "Enter the number of the snack that you would like to update: ", new List<int>(ValidInputs.Keys));
+        int input = PresentationHelper.MenuLoop(text + "Enter the number of the snack that you would like to update: ", 1, ValidInputs.Count);
 
         SnacksModel OldSnack = SnacksLogic.GetById(ValidInputs[input]);
 
@@ -93,7 +93,7 @@ public static class SnackReservation
             ValidInputs.Add(count, (int)snack.Id);
         }
 
-        int input = General.ValidAnswer(text + "Enter the number of the snack that you would like to remove: ", new List<int>(ValidInputs.Keys));
+        int input = PresentationHelper.MenuLoop(text + "Enter the number of the snack that you would like to remove: ", 1, ValidInputs.Count);
 
         SnacksModel OldSnack = SnacksLogic.GetById(ValidInputs[input]);
 
@@ -131,7 +131,7 @@ public static class SnackReservation
             }
             else
             {
-                General.PrintInRed("Invalid input. Please try again\n");
+                PresentationHelper.PrintInRed("Invalid input. Please try again\n");
             }
         }
 
@@ -146,7 +146,7 @@ public static class SnackReservation
         {
             Console.WriteLine("What is the price of the snack (0,0): ");
             string input = Console.ReadLine();
-            
+
             if (input.Contains(".")) { input = input.Replace(".", ","); }
 
             if (double.TryParse(input, out price) && price >= 0)
@@ -155,7 +155,7 @@ public static class SnackReservation
             }
             else
             {
-                General.PrintInRed("Invalid input. Please try again\n");
+                PresentationHelper.PrintInRed("Invalid input. Please try again\n");
             }
         }
 
@@ -177,7 +177,7 @@ public static class SnackReservation
             }
             else
             {
-                General.PrintInRed("Invalid input. Please try again\n");
+                PresentationHelper.PrintInRed("Invalid input. Please try again\n");
             }
         }
 
@@ -199,8 +199,8 @@ public static class SnackReservation
             ValidInputs.Add(count, (int)snack.Id);
         }
 
-        int input = General.ValidAnswer(text + "Enter the number of the snack that you would like to buy ", new List<int>(ValidInputs.Keys));
-        
+        int input = PresentationHelper.MenuLoop(text + "Enter the number of the snack that you would like to buy ", 1, ValidInputs.Count);
+
         int amount = ValidAmount();
 
         SnacksModel boughtSnack = SnacksLogic.GetById(ValidInputs[input]);

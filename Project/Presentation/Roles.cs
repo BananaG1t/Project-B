@@ -29,7 +29,7 @@ public static class Roles
 
         if (choice > 9)
         {
-            General.PrintInRed("Probleem");
+            PresentationHelper.PrintInRed("Probleem");
             Console.WriteLine(choice);
         }
     }
