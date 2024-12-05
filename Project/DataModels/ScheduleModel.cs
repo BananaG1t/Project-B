@@ -1,7 +1,7 @@
 public class ScheduleModel
 {
 
-    public Int64 Id { get; set; }
+    public int Id { get; set; }
 
     public DateTime StartTime { get; set; }
 
@@ -18,7 +18,7 @@ public class ScheduleModel
     public ScheduleModel(Int64 id, string startTime, string endTime, Int64 Movie_ID, Int64 Auditorium_ID)
     {
         string format = "yyyy-MM-dd HH:mm:ss";
-        Id = id;
+        Id = (int)id;
         DateTime.TryParseExact(startTime, format, null, System.Globalization.DateTimeStyles.None, out DateTime output);
         StartTime = output;
         DateTime.TryParseExact(endTime, format, null, System.Globalization.DateTimeStyles.None, out output);

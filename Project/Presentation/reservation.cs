@@ -1,8 +1,8 @@
 static class Reservation
 {
-    public static void ManageReservations(AccountModel account)
+    public static void ManageReservations(OrderModel order)
     {
-        ReservationModel reservation = ReservationLogic.SelectReservation(account);
+        ReservationModel reservation = ReservationLogic.SelectReservation(order);
 
         Console.Clear();
         string text =
@@ -34,10 +34,13 @@ static class Reservation
                     SeatModel seat = SeatLogic.GetByReservationInfo(
                         reservation.Seat_Collum,
                         reservation.Seat_Row,
-                        ScheduleLogic.GetById((int)reservation.Schedule_ID).AuditoriumId
+                        ScheduleAccess.GetById(order.ScheduleId).AuditoriumId
+
                     );
                     seat.IsAvailable = true;
+                    order.Amount--;
 
+                    OrderAccess.Update(order);
                     ReservationLogic.Update(reservation);
                     SeatLogic.Update(seat);
 

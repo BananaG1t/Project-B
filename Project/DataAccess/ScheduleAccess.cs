@@ -9,13 +9,13 @@ public static class ScheduleAccess
 
     private static string Table = "Schedule";
 
-    public static Int64 Write(ScheduleModel schedule)
+    public static int Write(ScheduleModel schedule)
     {
         string sql = $"INSERT INTO {Table} (startTime, endTime, Movie_ID, Auditorium_ID) VALUES (@StartTime, @EndTime, @MovieId, @AuditoriumId)";
         _connection.Execute(sql, schedule);
 
         string idSql = "SELECT last_insert_rowid();";
-        Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
+        int lastId = _connection.ExecuteScalar<int>(idSql);
 
         return lastId;
     }

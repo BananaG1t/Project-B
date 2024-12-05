@@ -154,41 +154,55 @@ class ReservationLogic
             Console.Clear();
         } while (input != ConsoleKey.Enter);
 
+
+        bool bar;
+        if (OrderLogic.CheckBarSeats(schedule, amount))
+        {
+            bar = General.ValidAnswer("Do you want to stay at the bar after the movie?\n[1] yes\n[2] no", [1, 2]) == 1 ? true : false;
+        } else 
+        {
+            Console.WriteLine("Sorry, the bar is already full");
+            bar = false;
+        }
+
+        OrderModel order = new(account.Id, schedule.Id, amount, bar);
+        int reservationId;
+
+        bool snack = false;
+        string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
+        int choice = General.ValidAnswer(text, [1, 2]);
+        if (choice == 1)
+            snack = true;
+
         for (int i = 0; i < amount; i++)
         {
             SeatModel seat = schedule.Auditorium.Seats[(row, col + i)];
             seat.IsAvailable = false;
             SeatsAccess.Update(seat);
-            ReservationAcces.Write(new(account.Id, (int)schedule.Id, seat.Row, seat.Collum));
+            reservationId = ReservationAcces.Write(new(order.Id, seat.Row, seat.Collum));
+            if (snack)
+                SnackReservation.BuySnacks(reservationId);
         }
         Console.WriteLine("Made the reservation");
-
-        string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
-        int choice = General.ValidAnswer(text, [1, 2]);
-        if (choice == 1)
-        {
-            SnackReservation.BuySnacks(account);
-        }
-
-        BarReservation.GetBarReservation(account, schedule, amount, 1);
-
     }
 
-    public static List<ReservationModel> GetFromAccount(AccountModel account)
+    public static List<ReservationModel> GetFromOrder(OrderModel order)
     {
-        return ReservationAcces.GetFromAccount(account);
+        return ReservationAcces.GetFromOrder(order);
     }
 
-    public static ReservationModel SelectReservation(AccountModel account)
+    public static ReservationModel SelectReservation(OrderModel order)
     {
         Console.Clear();
-        string text = "What reseration do you want to manage?";
-        List<ReservationModel> reservations = ReservationLogic.GetFromAccount(account);
+        ScheduleModel schedule = ScheduleLogic.GetById(order.ScheduleId);
+        string text = $"Movie: {schedule.Movie.Name}, Date: {schedule.StartTime} Bar: {order.Bar}\nWhat reseration do you want to manage?";
+        List<ReservationModel> reservations = GetFromOrder(order);
+        List<int> valid = [];
 
         foreach (ReservationModel reservation in reservations)
         {
-            ScheduleModel schedule = ScheduleAccess.GetById((int)reservation.Schedule_ID);
-            text += $"\n[{reservation.Id}] Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seat: row {reservation.Seat_Row} collum {reservation.Seat_Collum}, Status: {reservation.Status}";
+            text += $"\n[{reservation.Id}] Seat: row {reservation.Seat_Row} collum {reservation.Seat_Collum}, Status: {reservation.Status}";
+            valid.Add(reservation.Id);
         }
 
         int answer = PresentationHelper.MenuLoop(text, 1, reservations.Count);
