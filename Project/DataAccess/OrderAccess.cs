@@ -11,7 +11,7 @@ public class OrderAccess
 
     public static int Write(OrderModel order)
     {
-        string sql = $"INSERT INTO {Table} (Account_ID, Schedule_ID, Amount, Bar) VALUES (@Account_ID, @Schedule_ID, @Amount, @Bar)";
+        string sql = $"INSERT INTO {Table} (Account_ID, Schedule_ID, amount, bar) VALUES (@AccountId, @ScheduleId, @Amount, @Bar)";
         _connection.Execute(sql, order);
 
         string idSql = "SELECT last_insert_rowid();";
@@ -38,16 +38,14 @@ public class OrderAccess
 SELECT
     Schedule.Id,
     Schedule.endTime,
-    SUM(Orders.Amount) AS TotalAmount
+    SUM(Orders.amount) AS TotalAmount
 FROM Schedule
 INNER JOIN Orders ON Schedule.Id = Orders.Schedule_ID
 WHERE @StartTime < DATETIME(endTime, '+2 hours') 
 AND @EndTime > endTime
-AND Orders.Bar = 1
+AND Orders.bar = 1
 GROUP BY Schedule.Id, Schedule.endTime;";
 
-        // foreach ((int, DateTime, int) entry in 
-        //     Console.WriteLine($"{entry.Item1} {entry.Item2} {entry.Item3}");
         return (List<(int, DateTime, int)>)_connection.Query<(int, DateTime, int)>(sql, new { StartTime = schedule.EndTime, EndTime = schedule.EndTime.AddHours(2) });
     }
 }

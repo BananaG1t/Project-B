@@ -35,7 +35,7 @@ static class Reservation
                     SeatModel seat = SeatsAccess.GetByReservationInfo(
                         reservation.Seat_Collum,
                         reservation.Seat_Row,
-                        ScheduleAccess.GetById(order.Schedule_ID).AuditoriumId
+                        ScheduleAccess.GetById(order.ScheduleId).AuditoriumId
                     );
                     seat.IsAvailable = true;
                     order.Amount--;

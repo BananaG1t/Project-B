@@ -9,10 +9,15 @@ public static class ReservationAcces
 
     private static string Table = "SeatReservations";
 
-    public static void Write(ReservationModel Reservation)
+    public static int Write(ReservationModel Reservation)
     {
         string sql = $"INSERT INTO {Table} (Order_ID, seat_Row, seat_Collum, status) VALUES (@OrderId, @Seat_Row, @Seat_Collum, @Status)";
         _connection.Execute(sql, Reservation);
+
+        string idSql = "SELECT last_insert_rowid();";
+        int lastId = _connection.ExecuteScalar<int>(idSql);
+
+        return lastId;
     }
 
     public static ReservationModel GetById(int id)

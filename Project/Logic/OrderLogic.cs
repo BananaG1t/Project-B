@@ -14,7 +14,7 @@ class OrderLogic
 
         foreach (OrderModel order in orders)
         {
-            ScheduleModel schedule = ScheduleLogic.GetById(order.Schedule_ID);
+            ScheduleModel schedule = ScheduleLogic.GetById(order.ScheduleId);
             text += $"\n[{order.Id}] Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seats: {order.Amount}, Bar: {order.Bar}";
             valid.Add(order.Id);
         }

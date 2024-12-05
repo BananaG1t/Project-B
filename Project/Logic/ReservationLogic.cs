@@ -300,23 +300,28 @@ class ReservationLogic
             Console.WriteLine("Sorry, the bar is already full");
             bar = false;
         }
+
         OrderModel order = new(account.Id, schedule.Id, amount, bar);
+        int reservationId;
+
+        bool snack = false;
+        string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
+        int choice = General.ValidAnswer(text, [1, 2]);
+        if (choice == 1)
+            snack = true;
 
         for (int i = 0; i < amount; i++)
         {
             SeatModel seat = schedule.Auditorium.Seats[(row, col + i)];
             seat.IsAvailable = false;
             SeatsAccess.Update(seat);
-            ReservationAcces.Write(new(order.Id, seat.Row, seat.Collum));
+            reservationId = ReservationAcces.Write(new(order.Id, seat.Row, seat.Collum));
+            if (snack)
+                SnackReservation.BuySnacks(reservationId);
         }
         Console.WriteLine("Made the reservation");
 
-        string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
-        int choice = General.ValidAnswer(text, [1, 2]);
-        if (choice == 1)
-        {
-            SnackReservation.BuySnacks(account);
-        }
+        
 
     }
 
@@ -328,7 +333,7 @@ class ReservationLogic
     public static ReservationModel SelectReservation(OrderModel order)
     {
         Console.Clear();
-        ScheduleModel schedule = ScheduleLogic.GetById(order.Schedule_ID);
+        ScheduleModel schedule = ScheduleLogic.GetById(order.ScheduleId);
         string text = $"Movie: {schedule.Movie.Name}, Date: {schedule.StartTime} Bar: {order.Bar}\nWhat reseration do you want to manage?";
         List<ReservationModel> reservations = GetFromOrder(order);
         List<int> valid = [];
