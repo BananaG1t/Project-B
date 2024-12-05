@@ -1,5 +1,10 @@
 public static class RoleLogic
 {
+    public static bool AssignRole(int roleId, int accountId, int locationId)
+    {
+        AssignedRoleModel assignedRoleModel = new(roleId, accountId, locationId);
+        return true;
+    }
 
     public static bool AddRole(string roleName, int LevelAccessMethod)
     {
@@ -19,6 +24,29 @@ public static class RoleLogic
         return true;
     }
 
+    public static Tuple<string, int> GetAssignedRoleText()
+    {
+        List<AssignedRoleModel> assignedRolesroles = AssignedRoleAccess.GetAllAssignedRoles();
+        List<RoleModel> roles = RoleAccess.GetAllRoles();
+
+        AccountsLogic acc = new();
+
+        string text = "";
+
+        for (int i = 0; i < assignedRolesroles.Count; i++)
+        {
+            string roleName = roles[i].Name;
+            int roleLevel = (int)roles[i].LevelAccess;
+            string fullName = acc.GetById((int)assignedRolesroles[i].AccountId).FullName;
+            string LocName = "";
+            //string LocationName = LocationLogic.GetById(1).Name;
+
+            text += $"[{i + 1}] {roleName} {roleLevel} {fullName} {LocName}\n";
+        }
+
+        return new(text, assignedRolesroles.Count);
+    }
+
     public static Tuple<string, int> GetRoleText()
     {
         List<RoleModel> roles = RoleAccess.GetAllRoles();
@@ -27,7 +55,7 @@ public static class RoleLogic
 
         for (int i = 0; i < roles.Count; i++)
         {
-            text += $"[{i + 1}] Name:{roles[i].Name} Level access: {roles[i].LevelAccess} ";
+            text += $"[{i + 1}] Name:{roles[i].Name} Level access: {roles[i].LevelAccess}\n";
         }
 
         return new(text, roles.Count);
@@ -41,7 +69,7 @@ public static class RoleLogic
 
         for (int i = 0; i < roles.Count; i++)
         {
-            text += $"[{i + 1}] Name:{roles[i].Functionalty} Level access: {roles[i].LevelNeeded} ";
+            text += $"[{i + 1}] Name:{roles[i].Functionalty} Level access: {roles[i].LevelNeeded}\n";
         }
 
         return new(text, roles.Count);
@@ -58,4 +86,18 @@ public static class RoleLogic
 
         return validLevels;
     }
+
+    // public static string GetLocations()
+    // {
+    //     List<LocationModel> locations = LocationAcces.GetAllLocations();
+
+    //     string text = "";
+
+    //     for (int i = 0; i < locations.Count; i++)
+    //     {
+    //         text += $"[{i + 1}] Name:{locations[i].Name}\n";
+    //     }
+
+    //     return new(text, locations.Count);
+    // }
 }

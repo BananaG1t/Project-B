@@ -103,4 +103,11 @@ public static class PresentationHelper
         // when it breaks out of the loop, the ouput number is valid and returns it to the method that called it
         return output;
     }
+
+    public static void PrintAndWait(string text)
+    {
+        Console.WriteLine(text);
+        Thread.Sleep(5000);
+        Console.Clear();
+    }
 }

@@ -19,7 +19,7 @@ public static class Roles
 
         if (choice == 1) { AssignRole(); }
         if (choice == 2) { RemoveRoll(); }
-        if (choice == 3) { DisplayRoles(""); }
+        if (choice == 3) { DisplayRoles("Assigned Roles"); }
         if (choice == 4) { CreateRole(); }
         if (choice == 5) { DeleteRole(); }
         if (choice == 6) { DisplayRoles("Roles"); }
@@ -35,6 +35,41 @@ public static class Roles
     }
     public static void AssignRole()
     {
+        Tuple<string, int> RoleInfo = RoleLogic.GetRoleText();
+
+        if (RoleInfo.Item2 == 0)
+        {
+            PresentationHelper.PrintAndWait("There are no roles in the database");
+            return;
+        }
+
+        int roleId = PresentationHelper.MenuLoop(RoleInfo.Item1, 1, RoleInfo.Item2);
+
+        AccountsLogic acc = new();
+        Tuple<string, int> allAccountInfo = acc.GetAccountText();
+
+        if (allAccountInfo.Item2 == 0)
+        {
+            PresentationHelper.PrintAndWait("There are no accounts in the database");
+            return;
+        }
+
+        int accountId = PresentationHelper.MenuLoop(allAccountInfo.Item1, 1, allAccountInfo.Item2);
+
+        // Tuple<string, int> locations = LocationLogic.GetLocations();
+
+        // if (locations.Count == 0)
+        // {
+        //     PresentationHelper.PrintAndWait("There are no locations in the database");
+        //     return;
+        // }
+
+        // int locationId = PresentationHelper.MenuLoop(RoleInfo.Item1, 1, RoleInfo.Item2);
+
+        int locationId = 1;
+
+        if (RoleLogic.AssignRole(roleId, accountId, locationId))
+        { PresentationHelper.PrintAndWait("The role has been assigned"); }
     }
 
     public static void CreateRole()
@@ -47,9 +82,8 @@ public static class Roles
             Console.WriteLine("The functionality has been added to the database");
             return;
         }
-        Console.WriteLine("That role name or level access already exists");
-        Thread.Sleep(5000);
-        Console.Clear();
+
+        PresentationHelper.PrintAndWait("That role name or level access already exists");
     }
 
     public static void CreateFunctionalityRole()
@@ -62,9 +96,8 @@ public static class Roles
             Console.WriteLine("The functionality has been added to the database");
             return;
         }
-        Console.WriteLine("That functionality or level already exists");
-        Thread.Sleep(5000);
-        Console.Clear();
+
+        PresentationHelper.PrintAndWait("That functionality or level already exists");
     }
 
     public static void RemoveRoll()
@@ -86,10 +119,8 @@ public static class Roles
     {
         Tuple<string, int> displayInfo = new("", 0);
 
-        if (displayType == "1")
-        {
-            // displayInfo = RoleLogic.GetRoleText();
-        }
+        if (displayType == "Assigned Roles")
+        { displayInfo = RoleLogic.GetAssignedRoleText(); }
         if (displayType == "Roles")
         { displayInfo = RoleLogic.GetRoleText(); }
         if (displayType == "Role Levels")
