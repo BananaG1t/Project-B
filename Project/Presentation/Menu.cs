@@ -20,7 +20,7 @@ static class Menu
         while (true)
         {
             //reading input from the menu to connect to the features
-            int input = PresentationHelper.MenuLoop(text, 1, 6);
+            int input = PresentationHelper.MenuLoop(text, 1, 7);
 
             if (input == 1)
             {
