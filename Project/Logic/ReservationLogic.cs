@@ -17,9 +17,9 @@ class ReservationLogic
 
         string text = "";
 
-        for (int i = 1; i < Schedules.Count + 1; i++)
+        for (int i = 0; i < Schedules.Count; i++)
         {
-            text += $"\n[{i}] Movie: {Schedules[i].Movie.Name}, Room: {Schedules[i].Auditorium.Room}, Starting time: {Schedules[i].StartTime}";
+            text += $"\n[{i+1}] Movie: {Schedules[i].Movie.Name}, Room: {Schedules[i].Auditorium.Room}, Starting time: {Schedules[i].StartTime}";
         }
 
         int input = PresentationHelper.MenuLoop(text, 1, Schedules.Count + 1);
