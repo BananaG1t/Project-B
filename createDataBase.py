@@ -18,7 +18,7 @@ connection = sqlite3.connect(db_file)
 # Step 2: Create a cursor object to execute SQL commands
 cursor = connection.cursor()
 
-# cursor.execute('''DROP TABLE Accounts''')
+cursor.execute('''DROP TABLE IF EXISTS Accounts''')
 
 # Step 3: Create the Account table
 cursor.execute('''
@@ -34,27 +34,28 @@ CREATE TABLE IF NOT EXISTS Accounts (
 cursor.execute('''
 INSERT OR IGNORE INTO Accounts (id, email, password, fullname, admin)
 VALUES (?, ?, ?, ?, ?)
-''', (0, "admin", "admin", "Admin", True))
+''', (0, "A1", "AP1", "Admin", True))
 
-# cursor.execute('''DROP TABLE IF EXISTS Reservations''')
-
-# Step 4: Create the Reservation table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS Reservations (
+INSERT OR IGNORE INTO Accounts (id, email, password, fullname, admin)
+VALUES (?, ?, ?, ?, ?)
+''', (1, "U1", "UP1", "User", False))
+
+cursor.execute('''DROP TABLE IF EXISTS SeatReservations''')
+
+# Step 4: Create the SeatReservation table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS SeatReservations (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Account_ID INTEGER NOT NULL,
-    Schedule_ID INTEGER NOT NULL,
+    Order_ID INTERGER NOT NULL,
     seat_Row INTEGER NOT NULL,
     seat_Collum INTEGER NOT NULL,           
     status TEXT NOT NULL DEFAULT Active,
-    Location_ID INTEGER NOT NULL,
-    FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
-    FOREIGN KEY (Schedule_ID) REFERENCES Schedule(id)
-    FOREIGN KEY (Location_ID) REFERENCES Location(id)
+    FOREIGN KEY (Order_ID) REFERENCES Orders(id)
 );
 ''')
 
-# cursor.execute('''DROP TABLE Auditorium''')
+cursor.execute('''DROP TABLE IF EXISTS Auditorium''')
 
 # Step 5: Create the Auditorium table
 cursor.execute('''
@@ -66,7 +67,7 @@ CREATE TABLE IF NOT EXISTS Auditorium (
 );
 ''')
 
-# cursor.execute('''DROP TABLE Seats''')
+cursor.execute('''DROP TABLE IF EXISTS Seats''')
 
 # Step 6: Create the Seats table
 cursor.execute('''
@@ -82,7 +83,7 @@ CREATE TABLE IF NOT EXISTS Seats (
 );
 ''')
 
-# cursor.execute('''DROP TABLE Schedule''')
+# cursor.execute('''DROP TABLE IF EXISTS Schedule''')
 
 # Step 7: Create the Schedule table
 cursor.execute('''
@@ -99,7 +100,7 @@ CREATE TABLE IF NOT EXISTS Schedule (
 );
 ''')
 
-# cursor.execute('''DROP TABLE Movies''')
+# cursor.execute('''DROP TABLE IF EXISTS Movies''')
 
 # Step 8: Create the Movie table
 cursor.execute('''
@@ -115,7 +116,7 @@ CREATE TABLE IF NOT EXISTS Movies (
 );
 ''')
 
-# Step 9: Create the Auditorium Layout table
+# Step 9: Create the AuditoriumLayout table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS AuditoriumLayout (
     room_id INTEGER,
@@ -127,22 +128,24 @@ CREATE TABLE IF NOT EXISTS AuditoriumLayout (
 );
 ''')
 
-# Step 10: Create the Schedule table
+cursor.execute('''DROP TABLE IF EXISTS Orders''')
+
+# Step 10: Create the Orders table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS BarReservation (
+CREATE TABLE IF NOT EXISTS Orders (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    startTime DATETIME NOT NULL,
-    endTime DATETIME NOT NULL,
     Account_ID INTEGER NOT NULL,
-    Reservation_ID INTEGER NOT NULL,
+    Schedule_ID INTEGER NOT NULL,
+    amount INTERGET NOT NULL,
+    bar BOOLEAN NOT NULL,
     FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
-    FOREIGN KEY (Reservation_ID) REFERENCES Reservations(id)
+    FOREIGN KEY (Schedule_ID) REFERENCES Schedule(id)
 );
 ''')
 
 # Step 11: Create the Available Snacks table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS AvailableSnacks (
+CREATE TABLE IF NOT EXISTS Snacks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     price FLOAT NOT NULL
@@ -153,13 +156,12 @@ CREATE TABLE IF NOT EXISTS AvailableSnacks (
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS BoughtSnacks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Account_ID INTEGER NOT NULL,
     Reservation_ID INTEGER NOT NULL,
     Snack_ID INTEGER NOT NULL,
     amount INTERGER NOT NULL,
-    FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
     FOREIGN KEY (Reservation_ID) REFERENCES Reservations(id)
-    FOREIGN KEY (Snack_ID) REFERENCES Available_snacks(id) 
+    FOREIGN KEY (Snack_ID) REFERENCES Snacks(id)
+    
 );
 ''')
 
@@ -171,45 +173,29 @@ CREATE TABLE IF NOT EXISTS Location (
 );
 ''')
 
-cursor.execute('''DROP TABLE RoleLevel''')
-cursor.execute('''DROP TABLE Roles''')
-cursor.execute('''DROP TABLE AssignedRoles''')
-
-# Step 14: Create the role Level table
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS RoleLevel (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    functionality TEXT NOT NULL,
-    level_Needed INTEGER NOT NULL
-);
-               
-''')
-
-# Step 15: Create the roles table
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS Roles (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Role_Name TEXT NOT NULL,
-    Role_Level_ID INTEGER NOT NULL,
-    FOREIGN KEY (Role_Level_ID) REFERENCES RoleLevel(id)
-);
-''')
-
-# Step 16: Create the Assigned Roles table
+# Step 14: Create the Assigned Roles table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS AssignedRoles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Role_ID INTEGER NOT NULL,
+    Role INTEGER NOT NULL,
     Account_ID INTEGER NOT NULL,
     Location_ID INTEGER NOT NULL,
-    FOREIGN KEY (Role_ID) REFERENCES Roles(id)
+    FOREIGN KEY (Role) REFERENCES Roles(id)
     FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
     FOREIGN KEY (Location_ID) REFERENCES Location(id)
 );
 ''')
 
+# Step 15: Create the Roles table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS Roles (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    functionality TEXT NOT NULL,
+    level_Needed INTEGER NOT NULL
+);
+''')
 
-# Step 17: Create the Coupons table
+# Step 16: Create the Assigned Roles table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Coupons (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -223,7 +209,7 @@ CREATE TABLE IF NOT EXISTS Coupons (
 );
 ''')
 
-# Step 18: Commit changes and close the connection
+# Step 17: Commit changes and close the connection
 connection.commit()
 connection.close()
 
