@@ -1,5 +1,14 @@
 public static class RoleLogic
 {
+
+    public static bool AddRole(string roleName, int RolelevelIdMethod)
+    {
+        if (RoleAccess.GetByName(roleName) != null)
+        { return false; }
+
+        RoleModel roleModel = new(roleName, RolelevelIdMethod);
+        return true;
+    }
     public static bool AddRoleLevel(string functionalty, int roleLevel)
     {
         if (RoleLevelAccess.GetByLevel(roleLevel) != null || RoleLevelAccess.GetByFunctionality(functionalty) != null)
@@ -9,24 +18,17 @@ public static class RoleLogic
         return true;
     }
 
-    public static bool AddRole(string roleName, int RolelevelIdMethod)
+    public static Tuple<string, int> GetRoleText()
     {
-        if (RoleAccess.GetByRoleName(roleName) != null)
-        { return false; }
+        List<RoleModel> roles = RoleAccess.GetAllRoles();
 
-        RoleModel roleModel = new(roleName, RolelevelIdMethod);
-        return true;
+        string text = "";
+
+        for (int i = 0; i < roles.Count; i++)
+        {
+            text += $"[{i + 1}] Name:{roles[i].Name} Level access: {roles[i].LevelAccess} ";
+        }
+
+        return new(text, roles.Count);
     }
-
-    // public static Tuple<string, int> GetRoleText()
-    // {
-    //     List<RoleModel> roles = RoleAccess.GetAllRoles();
-
-    //     string text = "";
-
-    //     for (int i = 0; i < roles.Count; i++)
-    //     {
-    //         text += $"[{i + 1}] Name:{roles[i].RoleName} ";
-    //     }
-    // }
 }

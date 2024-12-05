@@ -10,7 +10,7 @@ public static class RoleAccess
 
     public static Int64 Write(RoleModel RoleLevel)
     {
-        string sql = $"INSERT INTO {Table} (Role_Name, Role_Level_ID) VALUES (@RoleName, @RoleLevelId)";
+        string sql = $"INSERT INTO {Table} (name, level_Access) VALUES (@RoleName, @LevelAccess)";
         _connection.Execute(sql, RoleLevel);
 
         string idSql = "SELECT last_insert_rowid();";
@@ -25,27 +25,27 @@ public static class RoleAccess
         return _connection.QueryFirstOrDefault<RoleModel>(sql, new { Id = id });
     }
 
-    public static RoleModel GetByRoleLevelId(int RolelevelIdMethod)
+    public static RoleModel GetByRoleLevelAccess(int LevelAccessMethod)
     {
-        string sql = $"SELECT * FROM {Table} WHERE Role_Level_ID = @RolelevelId";
-        return _connection.QueryFirstOrDefault<RoleModel>(sql, new { RolelevelId = RolelevelIdMethod });
+        string sql = $"SELECT * FROM {Table} WHERE level_Access = @LevelAccess";
+        return _connection.QueryFirstOrDefault<RoleModel>(sql, new { LevelAccess = LevelAccessMethod });
     }
 
-    public static RoleModel GetByRoleName(string RoleNameMethod)
+    public static RoleModel GetByName(string RoleNameMethod)
     {
-        string sql = $"SELECT * FROM {Table} WHERE Role_Name = @RoleName";
+        string sql = $"SELECT * FROM {Table} WHERE name = @RoleName";
         return _connection.QueryFirstOrDefault<RoleModel>(sql, new { RoleName = RoleNameMethod });
     }
 
     public static void Update(RoleModel RoleLevel)
     {
-        string sql = $"UPDATE {Table} SET Role_Name = @RoleName, Role_Level_ID = @RolelevelId WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET name = @RoleName, level_Access = @LevelAccess WHERE id = @Id";
         _connection.Execute(sql, RoleLevel);
     }
 
     public static List<RoleModel> GetAllRoles()
     {
-        string sql = $"SELECT * FROM {Table} ORDER BY Role_Level_ID ASC";
+        string sql = $"SELECT * FROM {Table} ORDER BY level_Access ASC";
         List<RoleModel> roles = (List<RoleModel>)_connection.Query<RoleModel>(sql, new { });
 
         return roles;

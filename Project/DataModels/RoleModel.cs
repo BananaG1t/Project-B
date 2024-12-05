@@ -1,20 +1,20 @@
 public class RoleModel
 {
     public Int64 Id { get; set; }
-    public string RoleName { get; set; }
-    public Int64 RoleLevelId { get; set; }
+    public string Name { get; set; }
+    public Int64 LevelAccess { get; set; }
 
-    public RoleModel(Int64 id, string Role_Name, Int64 Role_Level_ID)
+    public RoleModel(Int64 id, string name, Int64 level_Access)
     {
         Id = id;
-        RoleName = Role_Name;
-        RoleLevelId = Role_Level_ID;
+        Name = name;
+        LevelAccess = level_Access;
     }
 
-    public RoleModel(string Role_Name, Int64 Role_Level_ID)
+    public RoleModel(string name, Int64 level_Access)
     {
-        RoleName = Role_Name;
-        RoleLevelId = Role_Level_ID;
+        Name = name;
+        LevelAccess = level_Access;
         Id = RoleAccess.Write(this);
     }
 }
