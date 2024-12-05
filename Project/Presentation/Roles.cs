@@ -1,5 +1,3 @@
-using System.Data;
-
 public static class Roles
 {
     public static void RoleMenu()
