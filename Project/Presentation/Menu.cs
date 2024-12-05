@@ -9,7 +9,7 @@ static class Menu
         //admin menu
         string text =
         "Admin Menu:\n" +
-        "[1] Manage Users (empty for now)\n" +
+        "[1] Manage Users\n" +
         "[2] Add a movie\n" +
         "[3] Add to the schedule\n" +
         "[4] Display the schedule\n" +
@@ -24,7 +24,7 @@ static class Menu
 
             if (input == 1)
             {
-                Console.WriteLine("This feature is not yet implemented");
+                Roles.RoleMenu();
             }
             else if (input == 2)
             {
