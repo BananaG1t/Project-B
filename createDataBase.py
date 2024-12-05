@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS Schedule (
 );
 ''')
 
-# cursor.execute('''DROP TABLE Movies''')
+# cursor.execute('''DROP TABLE IF EXISTS Movies''')
 
 # Step 8: Create the Movie table
 cursor.execute('''
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS Movies (
 );
 ''')
 
-# Step 9: Create the Auditorium_layout table
+# Step 9: Create the AuditoriumLayout table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS AuditoriumLayout (
     room_id INTEGER,
