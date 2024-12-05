@@ -145,6 +145,8 @@ CREATE TABLE IF NOT EXISTS Orders (
 );
 ''')
 
+cursor.execute('''DROP TABLE IF EXISTS Snacks''')
+
 # Step 11: Create the Available Snacks table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Snacks (
@@ -154,7 +156,9 @@ CREATE TABLE IF NOT EXISTS Snacks (
 );
 ''')
 
-# Step 12: Create the Bought Snacks table
+cursor.execute('''DROP TABLE IF EXISTS BoughtSnacks''')
+
+# Step 12: Create the Bought BoughtSnacks table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS BoughtSnacks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
