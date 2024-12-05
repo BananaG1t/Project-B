@@ -19,6 +19,18 @@ public static class RoleAccess
         return lastId;
     }
 
+    public static void Update(RoleModel RoleLevel)
+    {
+        string sql = $"UPDATE {Table} SET name = @RoleName, level_Access = @LevelAccess WHERE id = @Id";
+        _connection.Execute(sql, RoleLevel);
+    }
+
+    public static void Delete(int id)
+    {
+        string sql = $"DELETE FROM {Table} WHERE id = @Id";
+        _connection.Execute(sql, new { Id = id });
+    }
+
     public static RoleModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
@@ -37,21 +49,10 @@ public static class RoleAccess
         return _connection.QueryFirstOrDefault<RoleModel>(sql, new { RoleName = RoleNameMethod });
     }
 
-    public static void Update(RoleModel RoleLevel)
-    {
-        string sql = $"UPDATE {Table} SET name = @RoleName, level_Access = @LevelAccess WHERE id = @Id";
-        _connection.Execute(sql, RoleLevel);
-    }
-
     public static List<RoleModel> GetAllRoles()
     {
         string sql = $"SELECT * FROM {Table} ORDER BY level_Access ASC";
         return (List<RoleModel>)_connection.Query<RoleModel>(sql, new { });
     }
 
-    public static void Delete(int id)
-    {
-        string sql = $"DELETE FROM {Table} WHERE id = @Id";
-        _connection.Execute(sql, new { Id = id });
-    }
 }
