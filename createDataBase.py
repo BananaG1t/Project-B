@@ -18,7 +18,7 @@ connection = sqlite3.connect(db_file)
 # Step 2: Create a cursor object to execute SQL commands
 cursor = connection.cursor()
 
-cursor.execute('''DROP TABLE Accounts''')
+cursor.execute('''DROP TABLE IF EXISTS Accounts''')
 
 # Step 3: Create the Account table
 cursor.execute('''
@@ -42,6 +42,8 @@ VALUES (?, ?, ?, ?, ?)
 ''', (1, "U1", "UP1", "User", False))
 
 cursor.execute('''DROP TABLE IF EXISTS SeatReservations''')
+cursor.execute('''DROP TABLE IF EXISTS Reservations''')
+cursor.execute('''DROP TABLE IF EXISTS BarReservation''')
 
 # Step 4: Create the SeatReservation table
 cursor.execute('''
@@ -67,7 +69,7 @@ CREATE TABLE IF NOT EXISTS Auditorium (
 );
 ''')
 
-cursor.execute('''DROP TABLE Seats''')
+cursor.execute('''DROP TABLE IF EXISTS Seats''')
 
 # Step 6: Create the Seats table
 cursor.execute('''
@@ -83,7 +85,7 @@ CREATE TABLE IF NOT EXISTS Seats (
 );
 ''')
 
-# cursor.execute('''DROP TABLE Schedule''')
+# cursor.execute('''DROP TABLE IF EXISTS Schedule''')
 
 # Step 7: Create the Schedule table
 cursor.execute('''
@@ -118,7 +120,7 @@ CREATE TABLE IF NOT EXISTS Movies (
 
 # Step 9: Create the Auditorium_layout table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS Auditorium_layout (
+CREATE TABLE IF NOT EXISTS AuditoriumLayout (
     room_id INTEGER,
     row_num INTEGER NOT NULL,
     col_num INTEGER NOT NULL,
@@ -159,7 +161,7 @@ CREATE TABLE IF NOT EXISTS BoughtSnacks (
     Reservation_ID INTEGER NOT NULL,
     Snack_ID INTEGER NOT NULL,
     amount INTERGER NOT NULL,
-    FOREIGN KEY (Reservation_ID) REFERENCES Reservations(id)
+    FOREIGN KEY (Reservation_ID) REFERENCES SeatReservations(id)
     FOREIGN KEY (Snack_ID) REFERENCES Snacks(id)
     
 );
@@ -175,7 +177,7 @@ CREATE TABLE IF NOT EXISTS Location (
 
 # Step 14: Create the Assigned Roles table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS Assigned_Roles (
+CREATE TABLE IF NOT EXISTS AssignedRoles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     Role INTEGER NOT NULL,
     Account_ID INTEGER NOT NULL,
@@ -199,12 +201,12 @@ CREATE TABLE IF NOT EXISTS Roles (
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Coupons (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    Coupon_code INTEGER NOT NULL,
-    Expiration_date DATETIME NOT NULL,
-    Coupon_type TEXT NOT NULL,
-    Coupon_percentage BOOLEAN NOT NULL DEFAULT false,
-    Amount INTEGER NOT NULL,
-    Account_ID INTEGER NOT NULL,
+    coupon_code INTEGER NOT NULL,
+    expiration_date DATETIME NOT NULL,
+    coupon_type TEXT NOT NULL,
+    coupon_percentage BOOLEAN NOT NULL DEFAULT false,
+    amount INTEGER NOT NULL,
+    account_ID INTEGER NOT NULL,
     FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
 );
 ''')
