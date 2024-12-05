@@ -1,8 +1,8 @@
 public static class BoughtSnacksLogic
 {
-    public static void Write(Int64 account_id, Int64 reservationd_id, Int64 snack_id, int amount)
+    public static void Write(int reservation_id, int snack_id, int amount)
     {
-        new BoughtSnacksModel(account_id, reservationd_id, snack_id, amount);
+        BoughtSnacksAccess.Write(reservation_id, snack_id, amount);
     }
     public static BoughtSnacksModel GetById(int id)
     {

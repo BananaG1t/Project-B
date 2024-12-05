@@ -89,7 +89,7 @@ static class Menu
 
             else if (input == 2)
             {
-                Reservation.ManageReservations(CurrentAccount);
+                Reservation.ManageReservations(Order.SelectOrder(CurrentAccount));
             }
             else if (input == 3)
             {
