@@ -70,7 +70,7 @@ public class AccountsLogic
 
         for (int i = 0; i < accounts.Count; i++)
         {
-            text += $"[{i + 1}] {accounts[i].FullName}";
+            text += $"[{i + 1}] {accounts[i].FullName}\n";
         }
 
         return new(text, accounts.Count);

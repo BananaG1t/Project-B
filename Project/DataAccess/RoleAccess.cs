@@ -8,10 +8,10 @@ public static class RoleAccess
 
     private static string Table = "Roles";
 
-    public static Int64 Write(RoleModel RoleLevel)
+    public static Int64 Write(RoleModel Role)
     {
-        string sql = $"INSERT INTO {Table} (name, level_Access) VALUES (@RoleName, @LevelAccess)";
-        _connection.Execute(sql, RoleLevel);
+        string sql = $"INSERT INTO {Table} (name, level_Access) VALUES (@Name, @LevelAccess)";
+        _connection.Execute(sql, Role);
 
         string idSql = "SELECT last_insert_rowid();";
         Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
@@ -19,10 +19,10 @@ public static class RoleAccess
         return lastId;
     }
 
-    public static void Update(RoleModel RoleLevel)
+    public static void Update(RoleModel Role)
     {
         string sql = $"UPDATE {Table} SET name = @RoleName, level_Access = @LevelAccess WHERE id = @Id";
-        _connection.Execute(sql, RoleLevel);
+        _connection.Execute(sql, Role);
     }
 
     public static void Delete(int id)
@@ -51,7 +51,7 @@ public static class RoleAccess
 
     public static List<RoleModel> GetAllRoles()
     {
-        string sql = $"SELECT * FROM {Table} ORDER BY level_Access ASC";
+        string sql = $"SELECT * FROM {Table} ORDER BY level_Access DESC";
         return (List<RoleModel>)_connection.Query<RoleModel>(sql, new { });
     }
 

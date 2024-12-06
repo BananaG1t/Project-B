@@ -50,7 +50,7 @@ public static class RoleLevelAccess
 
     public static List<RoleLevelModel> GetAllRoleLevels()
     {
-        string sql = $"SELECT * FROM {Table} ORDER BY level_Needed ASC";
+        string sql = $"SELECT * FROM {Table} ORDER BY level_Needed DESC";
         return (List<RoleLevelModel>)_connection.Query<RoleLevelModel>(sql, new { });
     }
 

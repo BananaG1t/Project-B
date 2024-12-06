@@ -12,13 +12,14 @@ public static class Roles
         "[5] Delete role\n" +
         "[6] Display all the roles\n" +
         "[7] Create functionality role\n" +
-        "[8] Delete functionality role" +
-        "[9] Display all the role levels";
+        "[8] Delete functionality role\n" +
+        "[9] Display all the role levels\n" +
+        "[10] go back to the menu";
 
-        int choice = PresentationHelper.MenuLoop(text, 1, 9);
+        int choice = PresentationHelper.MenuLoop(text, 1, 10);
 
         if (choice == 1) { AssignRole(); }
-        if (choice == 2) { RemoveRoll(); }
+        if (choice == 2) { RemoveRole(); }
         if (choice == 3) { DisplayRoles("Assigned Roles"); }
         if (choice == 4) { CreateRole(); }
         if (choice == 5) { DeleteRole(); }
@@ -26,8 +27,9 @@ public static class Roles
         if (choice == 7) { CreateFunctionalityRole(); }
         if (choice == 8) { DeleteFunctionalityRole(); }
         if (choice == 9) { DisplayRoles("Role Levels"); }
+        if (choice == 10) { return; }
 
-        if (choice > 9)
+        if (choice > 10)
         {
             PresentationHelper.PrintInRed("Probleem");
             Console.WriteLine(choice);
@@ -100,26 +102,59 @@ public static class Roles
         PresentationHelper.PrintAndWait("That functionality or level already exists");
     }
 
-    public static void RemoveRoll()
+    public static void RemoveRole()
     {
+        Tuple<string, int> assignedRoles = RoleLogic.GetAssignedRoleText();
 
+        if (assignedRoles.Item2 == 0)
+        {
+            PresentationHelper.PrintAndWait("There are no assigned roles in the database");
+            return;
+        }
+
+        int assignedRoleId = PresentationHelper.MenuLoop(assignedRoles.Item1, 1, assignedRoles.Item2);
+
+        RoleLogic.RemoveRole(assignedRoleId);
     }
 
     public static void DeleteRole()
     {
+        Tuple<string, int> Roles = RoleLogic.GetRoleText();
 
+        if (Roles.Item2 == 0)
+        {
+            PresentationHelper.PrintAndWait("There are no roles in the database");
+            return;
+        }
+
+        string text = "This will unassign roles to accounts, are you sure\n[1] yes\n [2] no";
+        if (PresentationHelper.MenuLoop(text, 1, 2) == 2) { return; }
+
+        int RoleId = PresentationHelper.MenuLoop(Roles.Item1, 1, Roles.Item2);
+
+        RoleLogic.DeleteRole(RoleId);
     }
 
     public static void DeleteFunctionalityRole()
     {
+        Tuple<string, int> roleLevels = RoleLogic.GetRoleLevelText();
 
+        if (roleLevels.Item2 == 0)
+        {
+            PresentationHelper.PrintAndWait("There are no assigned roles in the database");
+            return;
+        }
+
+        int roleLevelId = PresentationHelper.MenuLoop(roleLevels.Item1, 1, roleLevels.Item2);
+
+        RoleLogic.DeleteFunctionalityRole(roleLevelId);
     }
 
     public static void DisplayRoles(string displayType)
     {
         Tuple<string, int> displayInfo = new("", 0);
 
-        if (displayType == "Assigned Roles")
+        if (displayType == " Roles")
         { displayInfo = RoleLogic.GetAssignedRoleText(); }
         if (displayType == "Roles")
         { displayInfo = RoleLogic.GetRoleText(); }
@@ -129,6 +164,8 @@ public static class Roles
         Console.WriteLine(displayInfo.Item1);
 
         Console.WriteLine("[ENTER] Continue");
+        Console.ReadLine();
+        Console.Clear();
     }
 
 }

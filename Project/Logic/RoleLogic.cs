@@ -24,6 +24,28 @@ public static class RoleLogic
         return true;
     }
 
+    public static void RemoveRole(int assignedRoleId)
+    {
+        AssignedRoleAccess.Delete(assignedRoleId);
+    }
+
+    public static void DeleteRole(int roleId)
+    {
+        while (true)
+        {
+            AssignedRoleModel assignedRoleModel = AssignedRoleAccess.GetByRoleId(roleId);
+            if (assignedRoleModel == null) { break; }
+            AssignedRoleAccess.Delete((int)assignedRoleModel.Id);
+        }
+
+        RoleAccess.Delete(roleId);
+    }
+
+    public static void DeleteFunctionalityRole(int roleLevelId)
+    {
+        RoleLevelAccess.Delete(roleLevelId);
+    }
+
     public static Tuple<string, int> GetAssignedRoleText()
     {
         List<AssignedRoleModel> assignedRolesroles = AssignedRoleAccess.GetAllAssignedRoles();
@@ -55,7 +77,7 @@ public static class RoleLogic
 
         for (int i = 0; i < roles.Count; i++)
         {
-            text += $"[{i + 1}] Name:{roles[i].Name} Level access: {roles[i].LevelAccess}\n";
+            text += $"[{i + 1}] Name:{roles[i].Name}, Level access: {roles[i].LevelAccess}\n";
         }
 
         return new(text, roles.Count);
@@ -69,7 +91,7 @@ public static class RoleLogic
 
         for (int i = 0; i < roles.Count; i++)
         {
-            text += $"[{i + 1}] Name:{roles[i].Functionalty} Level access: {roles[i].LevelNeeded}\n";
+            text += $"[{i + 1}] Functionalty:{roles[i].Functionalty}, Level needed: {roles[i].LevelNeeded}\n";
         }
 
         return new(text, roles.Count);
