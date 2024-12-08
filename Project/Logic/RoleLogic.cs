@@ -97,6 +97,30 @@ public static class RoleLogic
         return new(text, roles.Count);
     }
 
+    public static List<int> GetRoleIds()
+    {
+        List<RoleModel> roles = RoleAccess.GetAllRoles();
+
+        List<int> ids = [];
+
+        foreach (RoleModel roleLevelModel in roles)
+            ids.Add((int)roleLevelModel.Id);
+
+        return ids;
+    }
+
+    public static List<int> GetRoleLevelIds()
+    {
+        List<RoleModel> roles = RoleAccess.GetAllRoles();
+
+        List<int> ids = [];
+
+        foreach (RoleModel roleModel in roles)
+            ids.Add((int)roleModel.Id);
+
+        return ids;
+    }
+
     public static List<int> GetValidLevelAccess()
     {
         List<int> validLevels = [];

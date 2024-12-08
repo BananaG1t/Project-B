@@ -39,6 +39,8 @@ public static class Roles
     {
         Tuple<string, int> RoleInfo = RoleLogic.GetRoleText();
 
+        Console.Clear();
+
         if (RoleInfo.Item2 == 0)
         {
             PresentationHelper.PrintAndWait("There are no roles in the database");
@@ -76,6 +78,8 @@ public static class Roles
 
     public static void CreateRole()
     {
+        Console.Clear();
+
         string roleName = PresentationHelper.GetString("What is the name of the role? ", "role");
         int levelAccess = PresentationHelper.GetInt("What level access should the role have?");
 
@@ -90,6 +94,8 @@ public static class Roles
 
     public static void CreateFunctionalityRole()
     {
+        Console.Clear();
+
         string functionaltyName = PresentationHelper.GetString("What is the name of the functionalty? ", "functionalty");
         int roleLevel = PresentationHelper.GetInt("What level does the functionalty require? ");
 
@@ -106,6 +112,8 @@ public static class Roles
     {
         Tuple<string, int> assignedRoles = RoleLogic.GetAssignedRoleText();
 
+        Console.Clear();
+
         if (assignedRoles.Item2 == 0)
         {
             PresentationHelper.PrintAndWait("There are no assigned roles in the database");
@@ -114,6 +122,12 @@ public static class Roles
 
         int assignedRoleId = PresentationHelper.MenuLoop(assignedRoles.Item1, 1, assignedRoles.Item2);
 
+        if (assignedRoleId == 0)
+        {
+            PresentationHelper.PrintAndWait("You cannot remove your admin role");
+            return;
+        }
+
         RoleLogic.RemoveRole(assignedRoleId);
     }
 
@@ -121,16 +135,24 @@ public static class Roles
     {
         Tuple<string, int> Roles = RoleLogic.GetRoleText();
 
+        Console.Clear();
+
         if (Roles.Item2 == 0)
         {
             PresentationHelper.PrintAndWait("There are no roles in the database");
             return;
         }
 
-        string text = "This will unassign roles to accounts, are you sure\n[1] yes\n [2] no";
+        string text = "This will unassign roles to accounts, are you sure\n[1] yes\n[2] no";
         if (PresentationHelper.MenuLoop(text, 1, 2) == 2) { return; }
 
-        int RoleId = PresentationHelper.MenuLoop(Roles.Item1, 1, Roles.Item2);
+        int RoleId = RoleLogic.GetRoleIds()[PresentationHelper.MenuLoop(Roles.Item1, 1, Roles.Item2) - 1];
+
+        if (RoleId == 0)
+        {
+            PresentationHelper.PrintAndWait("You cannot remove the admin role");
+            return;
+        }
 
         RoleLogic.DeleteRole(RoleId);
     }
@@ -139,13 +161,15 @@ public static class Roles
     {
         Tuple<string, int> roleLevels = RoleLogic.GetRoleLevelText();
 
+        Console.Clear();
+
         if (roleLevels.Item2 == 0)
         {
             PresentationHelper.PrintAndWait("There are no assigned roles in the database");
             return;
         }
 
-        int roleLevelId = PresentationHelper.MenuLoop(roleLevels.Item1, 1, roleLevels.Item2);
+        int roleLevelId = RoleLogic.GetRoleLevelIds()[PresentationHelper.MenuLoop(roleLevels.Item1, 1, roleLevels.Item2)];
 
         RoleLogic.DeleteFunctionalityRole(roleLevelId);
     }
@@ -160,6 +184,8 @@ public static class Roles
         { displayInfo = RoleLogic.GetRoleText(); }
         if (displayType == "Role Levels")
         { displayInfo = RoleLogic.GetRoleLevelText(); }
+
+        Console.Clear();
 
         Console.WriteLine(displayInfo.Item1);
 
