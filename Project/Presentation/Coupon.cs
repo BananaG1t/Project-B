@@ -36,8 +36,6 @@ public static class Coupon
         if (type == 1) couponType = "Order";
         if (type == 2) couponType = "Seats";
         if (type == 3) couponType = "Snacks";
-    
-        DateTime date = ValidDate("Enter the expiration date of the coupon (dd-MM-yyyy)");
 
         int input = General.ValidAnswer("Should the coupon be a percentage of the price or a fixed amount?\n[1] Percentage\n[2] Fixed amount", [1, 2]);
         if (input == 1) 
@@ -49,7 +47,9 @@ public static class Coupon
         {
             double amount = General.ValidDouble("Enter the discount price of the coupon","Invalid input. Please try again\n");
         } 
+        DateTime date = ValidDate("Enter the expiration date of the coupon (dd-MM-yyyy)");
 
+        
     }
 
     public static int GenerateRandomCode(int length)

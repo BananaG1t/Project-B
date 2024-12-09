@@ -21,7 +21,7 @@ static class Menu
         while (true)
         {
             //reading input from the menu to connect to the features
-            int input = General.ValidAnswer(text, [1, 2, 3, 4, 5, 6, 7]);
+            int input = General.ValidAnswer(text, [1, 2, 3, 4, 5, 6, 7, 8]);
 
             if (input == 1)
             {
