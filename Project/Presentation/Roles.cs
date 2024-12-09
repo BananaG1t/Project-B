@@ -70,7 +70,7 @@ public static class Roles
 
         // int locationId = PresentationHelper.MenuLoop(RoleInfo.Item1, 1, RoleInfo.Item2);
 
-        int locationId = 1;
+        int locationId = 1; // remove when location is done
 
         if (RoleLogic.AssignRole(roleId, accountId, locationId))
         { PresentationHelper.PrintAndWait("The role has been assigned"); }
