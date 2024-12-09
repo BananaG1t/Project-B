@@ -2,13 +2,13 @@ public class CouponModel
 {
     Int64 Id { get; set; }
     int CouponCode { get; set; }
-    string ExpirationDate { get; set; }
+    DateTime ExpirationDate { get; set; }
     string CouponType { get; set; }
-    bool CouponPercentage { get; set; }
-    int Amount { get; set; }
+    Int64 CouponPercentage { get; set; }
+    double Amount { get; set; }
     Int64 AccountId { get; set; }
 
-    public CouponModel(Int64 id,int couponCode,string expirationDate,string couponType,bool couponPercentage,int amount,Int64 Account_ID)
+    public CouponModel(Int64 id,int couponCode,DateTime expirationDate,string couponType,Int64 couponPercentage,double amount,Int64 Account_ID)
     {
         Id = id;
         CouponCode = couponCode;
@@ -19,7 +19,7 @@ public class CouponModel
         AccountId = Account_ID;
     }
 
-    public CouponModel(int couponCode,string expirationDate,string couponType,bool couponPercentage,int amount,Int64 Account_ID)
+    public CouponModel(int couponCode,DateTime expirationDate,string couponType,Int64 couponPercentage,double amount,Int64 Account_ID)
     {
         CouponCode = couponCode;
         ExpirationDate = expirationDate;

@@ -21,6 +21,10 @@ public class AccountsLogic
     {
         return AccountsAccess.GetById(id);
     }
+    public static  List<AccountModel> GetAllUserAccounts()
+    {
+        return AccountsAccess.GetAllUserAccounts();
+    }
 
 
     public AccountModel CheckLogin(string email, string password)
@@ -64,6 +68,7 @@ public class AccountsLogic
             return true;
         }
     }
+
 
 
 }

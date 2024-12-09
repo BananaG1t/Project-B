@@ -29,8 +29,9 @@ public static class Coupon
     public static void CreateCoupon()
     {
         Console.Clear();
-        int percentage = 1;
+        Int64 percentage = 1;
         string couponType = "";
+        double amount = 0;
 
         int type = General.ValidAnswer("What can the coupon be used for?\n[1] Order price\n[2] Seat reservation price\n[3] Snack reservation price",[1, 2, 3]);
         if (type == 1) couponType = "Order";
@@ -41,15 +42,19 @@ public static class Coupon
         if (input == 1) 
         {
             percentage = 0;
-            double amount = General.ValidDouble("Enter the percentage of the coupon","Invalid input. Please try again\n");
+            amount = General.ValidDouble("Enter the percentage of the coupon","Invalid input. Please try again\n");
         }
         else if (input == 2)
         {
-            double amount = General.ValidDouble("Enter the discount price of the coupon","Invalid input. Please try again\n");
+            amount = General.ValidDouble("Enter the discount price of the coupon","Invalid input. Please try again\n");
         } 
-        DateTime date = ValidDate("Enter the expiration date of the coupon (dd-MM-yyyy)");
+        DateTime expirationDate = ValidDate("Enter the expiration date of the coupon (dd-MM-yyyy)");
 
-        
+        AccountModel account = ChooseAccount();
+
+        int couponCode = GenerateRandomCode(4);
+
+        CouponsLogic.Write(couponCode, expirationDate, couponType, percentage, amount, account.Id);
     }
 
     public static int GenerateRandomCode(int length)
@@ -58,10 +63,10 @@ public static class Coupon
         Random rnd = new Random();
         for (int i = 0; i < length; i ++)
         {
-            numbers.Add(rnd.Next(1, 1000));
+            numbers.Add(rnd.Next(0, 10));
         }
         string code = string.Join("", numbers); // convert numbers into a single string
-        return int.Parse(code); // convert string into a integer
+        return Convert.ToInt32(code); // convert string into a integer
     }
 
         public static DateTime ValidDate(string text)
@@ -77,7 +82,7 @@ public static class Coupon
 
         // loop logic to make sure the input is a number and check if the number is a valid choice
         while (!DateTime.TryParseExact(input, format, null, System.Globalization.DateTimeStyles.None, out output))
-        {
+        {   
             Console.Clear();
             Console.WriteLine("That is not a valid input");
             Console.WriteLine(text);
@@ -88,4 +93,23 @@ public static class Coupon
         return output;
     }
 
+    public static AccountModel ChooseAccount()
+    {
+        Console.Clear();
+        List<AccountModel> accounts = AccountsLogic.GetAllUserAccounts();
+        Dictionary<int, int> ValidInputs = new Dictionary<int, int>();
+        string text = "";
+        int count = 0;
+
+        foreach (AccountModel account in accounts)
+        {
+            count++;
+            text += $"[{count}] Email: {account.EmailAddress}\n";
+            ValidInputs.Add(count, (int)account.Id);
+        }
+
+        int input = General.ValidAnswer("Enter the number of the account that you want to assign the coupon to\n" + text, new List<int>(ValidInputs.Keys));
+        AccountModel chosenAccount = AccountsAccess.GetById(ValidInputs[input]);
+        return chosenAccount;
+    }
 }

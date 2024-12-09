@@ -44,7 +44,11 @@ public static class AccountsAccess
         _connection.Execute(sql, new { Id = id });
     }
 
+        public static List<AccountModel> GetAllUserAccounts()
+    {
+        string sql = $"SELECT * FROM {Table} WHERE admin = 0";
+        List<AccountModel> accounts = (List<AccountModel>)_connection.Query<AccountModel>(sql);
 
-
-
+        return accounts;
+    }
 }
