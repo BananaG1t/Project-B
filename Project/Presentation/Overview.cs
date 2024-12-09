@@ -4,7 +4,7 @@ static class Overview
     {
         Console.Clear();
         string text = "Welcome to the income overview\n" +
-        "[1] Show income from al movies\n" +
+        "[1] Show income from all movies\n" +
         "[2] Show movie income from certain schedule entry\n" +
         "[3] Show income from movie";
         int input = PresentationHelper.MenuLoop(text, 1, 3);
@@ -21,7 +21,6 @@ static class Overview
                 TotalMovieIncome();
                 break;
         }
-        Menu.AdminMenu();
     }
 
     public static void TotalIncome()
@@ -44,14 +43,14 @@ static class Overview
 
         List<ScheduleModel> pastEntries = ScheduleLogic.GetpastSchedules();
 
-        foreach (ScheduleModel entry in pastEntries)
+        for (int i = 0; i < pastEntries.Count; i++)
         {
-            text += $"\n[{entry.Id}] room: {entry.Auditorium.Room}, movie: {entry.Movie.Name}, date: {entry.StartTime}";
+            text += $"\n[{i + 1}] room: {pastEntries[i].Auditorium.Room}, movie: {pastEntries[i].Movie.Name}, date: {pastEntries[i].StartTime}";
         }
 
-        int input = PresentationHelper.MenuLoop(text, 1, pastEntries.Count);
+        int input = PresentationHelper.MenuLoop(text, 1, pastEntries.Count) - 1;
 
-        ScheduleModel Selected = pastEntries.First(ScheduleModel => ScheduleModel.Id == input);
+        ScheduleModel Selected = pastEntries[input];
 
         Console.WriteLine($"income: {ScheduleLogic.CalculateIncome(Selected)} / {ScheduleLogic.CalculateMaxIncome(Selected)}");
         Console.WriteLine($"Amount of empty seats: {ScheduleLogic.EmptySeats(Selected)}");
