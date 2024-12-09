@@ -120,15 +120,15 @@ public static class Roles
             return;
         }
 
-        int assignedRoleId = PresentationHelper.MenuLoop(assignedRoles.Item1, 1, assignedRoles.Item2);
+        AssignedRoleModel assignedRole = RoleLogic.GetAllAssignedRoles()[PresentationHelper.MenuLoop(assignedRoles.Item1, 1, assignedRoles.Item2) - 1];
 
-        if (assignedRoleId == 0)
+        if (assignedRole.AccountId == 0)
         {
             PresentationHelper.PrintAndWait("You cannot remove your admin role");
             return;
         }
 
-        RoleLogic.RemoveRole(assignedRoleId);
+        RoleLogic.RemoveRole((int)assignedRole.Id);
     }
 
     public static void DeleteRole()
@@ -146,15 +146,15 @@ public static class Roles
         string text = "This will unassign roles to accounts, are you sure\n[1] yes\n[2] no";
         if (PresentationHelper.MenuLoop(text, 1, 2) == 2) { return; }
 
-        int RoleId = RoleLogic.GetRoleIds()[PresentationHelper.MenuLoop(Roles.Item1, 1, Roles.Item2) - 1];
+        RoleModel role = RoleLogic.GetAllRoles()[PresentationHelper.MenuLoop(Roles.Item1, 1, Roles.Item2) - 1];
 
-        if (RoleId == 0)
+        if (role.LevelAccess == 255)
         {
             PresentationHelper.PrintAndWait("You cannot remove the admin role");
             return;
         }
 
-        RoleLogic.DeleteRole(RoleId);
+        RoleLogic.DeleteRole((int)role.Id);
     }
 
     public static void DeleteFunctionalityRole()
@@ -169,9 +169,9 @@ public static class Roles
             return;
         }
 
-        int roleLevelId = RoleLogic.GetRoleLevelIds()[PresentationHelper.MenuLoop(roleLevels.Item1, 1, roleLevels.Item2)];
+        RoleLevelModel roleLevel = RoleLogic.GetAllRoleLevels()[PresentationHelper.MenuLoop(roleLevels.Item1, 1, roleLevels.Item2) - 1];
 
-        RoleLogic.DeleteFunctionalityRole(roleLevelId);
+        RoleLogic.DeleteFunctionalityRole((int)roleLevel.Id);
     }
 
     public static void DisplayRoles(string displayType)

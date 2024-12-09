@@ -60,7 +60,4 @@ public static class AssignedRoleAccess
         string sql = $"SELECT * FROM {Table} ORDER BY id ASC";
         return (List<AssignedRoleModel>)_connection.Query<AssignedRoleModel>(sql, new { });
     }
-
-
-
 }

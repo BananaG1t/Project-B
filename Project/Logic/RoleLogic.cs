@@ -48,8 +48,8 @@ public static class RoleLogic
 
     public static Tuple<string, int> GetAssignedRoleText()
     {
-        List<AssignedRoleModel> assignedRolesroles = AssignedRoleAccess.GetAllAssignedRoles();
-        List<RoleModel> roles = RoleAccess.GetAllRoles();
+        List<AssignedRoleModel> assignedRolesroles = GetAllAssignedRoles();
+        List<RoleModel> roles = GetAllRoles();
 
         AccountsLogic acc = new();
 
@@ -71,7 +71,7 @@ public static class RoleLogic
 
     public static Tuple<string, int> GetRoleText()
     {
-        List<RoleModel> roles = RoleAccess.GetAllRoles();
+        List<RoleModel> roles = GetAllRoles();
 
         string text = "";
 
@@ -85,7 +85,7 @@ public static class RoleLogic
 
     public static Tuple<string, int> GetRoleLevelText()
     {
-        List<RoleLevelModel> roles = RoleLevelAccess.GetAllRoleLevels();
+        List<RoleLevelModel> roles = GetAllRoleLevels();
 
         string text = "";
 
@@ -97,28 +97,19 @@ public static class RoleLogic
         return new(text, roles.Count);
     }
 
-    public static List<int> GetRoleIds()
+    public static List<AssignedRoleModel> GetAllAssignedRoles()
     {
-        List<RoleModel> roles = RoleAccess.GetAllRoles();
-
-        List<int> ids = [];
-
-        foreach (RoleModel roleLevelModel in roles)
-            ids.Add((int)roleLevelModel.Id);
-
-        return ids;
+        return AssignedRoleAccess.GetAllAssignedRoles();
     }
 
-    public static List<int> GetRoleLevelIds()
+    public static List<RoleModel> GetAllRoles()
     {
-        List<RoleModel> roles = RoleAccess.GetAllRoles();
+        return RoleAccess.GetAllRoles();
+    }
 
-        List<int> ids = [];
-
-        foreach (RoleModel roleModel in roles)
-            ids.Add((int)roleModel.Id);
-
-        return ids;
+    public static List<RoleLevelModel> GetAllRoleLevels()
+    {
+        return RoleLevelAccess.GetAllRoleLevels();
     }
 
     public static List<int> GetValidLevelAccess()
