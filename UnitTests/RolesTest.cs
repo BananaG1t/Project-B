@@ -3,7 +3,7 @@ using Xunit;
 
 public class RolesTests
 {
-    [Fact]
+    [TestMethod]
     public void CreateRole_ShouldPromptForNameAndLevelAndAddRole()
     {
         // Simulate inputs for role name and level
@@ -35,7 +35,7 @@ public class RolesTests
         Roles.CreateRole();
     }
 
-    [Fact]
+    [TestMethod]
     public void CreateFunctionalityRole_ShouldPromptForFunctionalityAndLevel()
     {
         // Simulate inputs for functionality name and level
@@ -73,7 +73,7 @@ public class RolesTests
 //Admin: assign rolls to accounts
 public class RolesTests
 {
-    [Fact]
+    [TestMethod]
     public void AssignRole_ShouldAssignRoleToAccount()
     {
         // Simulated database data for roles and accounts
@@ -120,7 +120,7 @@ public class RolesTests
 ///Staff: Staff role
 public class StaffTests
 {
-    [Fact]
+    [TestMethod]
     public void CreateStaffAccount_ShouldCreateAccountWithPermissions()
     {
         // Simulated inputs for staff account creation
