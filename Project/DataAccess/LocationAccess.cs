@@ -8,10 +8,10 @@ public static class LocationAccess
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
      private static string Table = "Location";
     
-    public static Int64 Write(LocationModel snack)
+    public static Int64 Write(LocationModel location)
     {
         string sql = $"INSERT INTO {Table} (name) VALUES (@Name)";
-        _connection.Execute(sql, snack);
+        _connection.Execute(sql, location);
         
         string idSql = "SELECT last_insert_rowid();";
         Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
@@ -26,10 +26,10 @@ public static class LocationAccess
 
     public static List<LocationModel> GetAll()
     {
-        string sql = $"SELECT name FROM {Table}";
-        List<LocationModel> Snacks = (List<LocationModel>)_connection.Query<LocationModel>(sql);
+        string sql = $"SELECT id, name FROM {Table}";
+        List<LocationModel> Locations = (List<LocationModel>)_connection.Query<LocationModel>(sql);
 
-        return Snacks;
+        return Locations;
     }
 
     public static void Update(LocationModel snack)

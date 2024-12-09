@@ -43,7 +43,7 @@ public static class ScheduleAccess
     public static List<ScheduleModel> ScheduleByDateAndLocation(LocationModel location)
     {
         DateTime currdate = DateTime.Now;
-        string sql = $"SELECT * FROM {Table} WHERE startTime > @Currdate ORDER BY startTime ASC AND LocationID = @LocationId";
+        string sql = $"SELECT * FROM {Table} WHERE startTime > @Currdate AND LocationID = @LocationId ORDER BY startTime ASC";
         List<ScheduleModel> schedules = (List<ScheduleModel>)_connection.Query<ScheduleModel>(sql, new { Currdate = currdate, LocationId = location.Id });
 
         return schedules;

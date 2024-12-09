@@ -8,8 +8,8 @@ public static class CreateScheduleEntry
         MovieModel movie = SelectMovie();
         DateTime date = SelectDate(room, movie.Length);
         string? extras = GetExtras();
-        string location = Location();
-        new ScheduleModel(date, movie, new AuditoriumModel(room, extras), new LocationModel(location));
+        LocationModel location = Location();
+        new ScheduleModel(date, movie, new AuditoriumModel(room, extras), location);
         Console.Clear();
     }
 
@@ -91,12 +91,19 @@ public static class CreateScheduleEntry
         return Input == "" ? null : Input;
     }
 
-        private static string Location()
+        private static LocationModel Location()
     {
         Console.Clear();
-        Console.WriteLine("Which location do you want the movie to play at");
-        string Input = Console.ReadLine();
-        return Input;
+        string text = "At which location do you want to see?";
+        List<LocationModel> locations = LocationLogic.GetAll();
+        List<int> valid = [];
+        foreach (LocationModel location in locations)
+        {
+            text += $"\n[{location.Id}] {location.Name}";
+            valid.Add((int)location.Id);
+        }
+
+        return locations.First(LocationModel => LocationModel.Id == General.ValidAnswer(text, valid));
     }
 
 }

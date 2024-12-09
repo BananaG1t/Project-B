@@ -15,7 +15,8 @@ static class Menu
         "[4] Display the schedule\n" +
         "[5] Display income overview\n" +
         "[6] Manage snacks\n" +
-        "[7] Exit";
+        "[7] Add a location\n" +
+        "[8] Exit";
 
         while (true)
         {
@@ -48,6 +49,10 @@ static class Menu
                 SnackReservation.Main();
             }
             else if (input == 7)
+            {
+                LocationMenu.AddLocation();
+            }
+            else if (input == 8)
             {
                 Console.WriteLine("Exiting");
                 break;
@@ -103,10 +108,21 @@ static class Menu
 
     public static void DisplaySchedule()
     {
-        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
-
-        // Shows what movie are playing based on the date and time
         Console.Clear();
+        string text = "At which location do you want to see?";
+        List<LocationModel> locations = LocationLogic.GetAll();
+        List<int> valid = [];
+        foreach (LocationModel location in locations)
+        {
+            text += $"\n[{location.Id}] {location.Name}";
+            valid.Add((int)location.Id);
+        }
+
+        LocationModel Location = locations.First(LocationModel => LocationModel.Id == General.ValidAnswer(text, valid));
+
+        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
+
+        // Shows what movie are playing based on the date and time and location
         Console.WriteLine($"Movies Playing");
         foreach (ScheduleModel schedule in Schedules)
         {
