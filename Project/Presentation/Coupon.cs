@@ -30,42 +30,38 @@ public static class Coupon
     {
         Console.Clear();
         int percentage = 1;
-        DateTime date = ValidDate("Enter the expiration date of the coupon");
-        int input = General.ValidAnswer("Should the coupon be a percentage of the price or a fixed amount?\n[1] Percentage\n[2] Fixed amount", [1, 2]);
+        string couponType = "";
 
+        int type = General.ValidAnswer("What can the coupon be used for?\n[1] Order price\n[2] Seat reservation price\n[3] Snack reservation price",[1, 2, 3]);
+        if (type == 1) couponType = "Order";
+        if (type == 2) couponType = "Seats";
+        if (type == 3) couponType = "Snacks";
+    
+        DateTime date = ValidDate("Enter the expiration date of the coupon (dd-MM-yyyy)");
+
+        int input = General.ValidAnswer("Should the coupon be a percentage of the price or a fixed amount?\n[1] Percentage\n[2] Fixed amount", [1, 2]);
         if (input == 1) 
         {
             percentage = 0;
-            ValidDouble("Enter the percentage of the coupon");
+            double amount = General.ValidDouble("Enter the percentage of the coupon","Invalid input. Please try again\n");
         }
         else if (input == 2)
         {
-            ValidDouble("Enter the discount price of the coupon");
+            double amount = General.ValidDouble("Enter the discount price of the coupon","Invalid input. Please try again\n");
         } 
+
     }
 
-    public static double ValidDouble(string text)
+    public static int GenerateRandomCode(int length)
     {
-        double price = 0;
-        bool valid = false;
-        while (!valid)
+        var numbers = new List <int>();
+        Random rnd = new Random();
+        for (int i = 0; i < length; i ++)
         {
-            Console.WriteLine(text);
-            string input = Console.ReadLine();
-            
-            if (input.Contains(".")) { input = input.Replace(".", ","); }
-
-            if (double.TryParse(input, out price) && price >= 0)
-            {
-                valid = true;
-            }
-            else
-            {
-                General.PrintInRed("Invalid input. Please try again\n");
-            }
+            numbers.Add(rnd.Next(1, 1000));
         }
-
-        return price;
+        string code = string.Join("", numbers); // convert numbers into a single string
+        return int.Parse(code); // convert string into a integer
     }
 
         public static DateTime ValidDate(string text)

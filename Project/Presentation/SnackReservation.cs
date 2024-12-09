@@ -45,7 +45,7 @@ public static class SnackReservation
     {
         Console.Clear();
         string snackName = ValidName();
-        double price = ValidDouble();
+        double price = General.ValidDouble("What is the price of the snack (0,0): ","Invalid input. Please try again\n");
 
         SnacksLogic.Add(snackName, price);
         Console.WriteLine($"{snackName} added to the menu\n");
@@ -71,7 +71,7 @@ public static class SnackReservation
         SnacksModel OldSnack = SnacksLogic.GetById(ValidInputs[input]);
 
         string snackName = ValidName();
-        double price = ValidDouble();
+        double price = General.ValidDouble("What is the price of the snack (0,0): ","Invalid input. Please try again\n");
 
         SnacksLogic.update(new SnacksModel(ValidInputs[input], snackName, price));
         Console.WriteLine($"\nChanged Name: From {OldSnack.Name} to {snackName}\n" +
@@ -138,29 +138,7 @@ public static class SnackReservation
         return name;
     }
 
-    public static double ValidDouble()
-    {
-        double price = 0;
-        bool valid = false;
-        while (!valid)
-        {
-            Console.WriteLine("What is the price of the snack (0,0): ");
-            string input = Console.ReadLine();
-            
-            if (input.Contains(".")) { input = input.Replace(".", ","); }
 
-            if (double.TryParse(input, out price) && price >= 0)
-            {
-                valid = true;
-            }
-            else
-            {
-                General.PrintInRed("Invalid input. Please try again\n");
-            }
-        }
-
-        return price;
-    }
 
     public static int ValidAmount()
     {

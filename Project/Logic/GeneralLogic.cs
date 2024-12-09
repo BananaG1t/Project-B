@@ -64,4 +64,28 @@ public static class General
         Console.WriteLine(text);
         Console.ResetColor();
     }
+    
+        public static double ValidDouble(string text, string errorText)
+    {
+        double price = 0;
+        bool valid = false;
+        while (!valid)
+        {
+            Console.WriteLine(text);
+            string input = Console.ReadLine();
+            
+            if (input.Contains(".")) { input = input.Replace(".", ","); }
+
+            if (double.TryParse(input, out price) && price >= 0)
+            {
+                valid = true;
+            }
+            else
+            {
+                PrintInRed(errorText);
+            }
+        }
+
+        return price;
+    }
 }
