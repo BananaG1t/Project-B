@@ -47,7 +47,7 @@ public static class Roles
             return;
         }
 
-        int roleId = PresentationHelper.MenuLoop(RoleInfo.Item1, 1, RoleInfo.Item2);
+        RoleModel role = RoleLogic.GetAllRoles()[PresentationHelper.MenuLoop(RoleInfo.Item1, 1, RoleInfo.Item2) - 1];
 
         AccountsLogic acc = new();
         Tuple<string, int> allAccountInfo = acc.GetAccountText();
@@ -58,7 +58,8 @@ public static class Roles
             return;
         }
 
-        int accountId = PresentationHelper.MenuLoop(allAccountInfo.Item1, 1, allAccountInfo.Item2);
+        AccountsLogic accountLogic = new();
+        AccountModel account = accountLogic.GetAllAccounts()[PresentationHelper.MenuLoop(allAccountInfo.Item1, 1, allAccountInfo.Item2) - 1];
 
         // Tuple<string, int> locations = LocationLogic.GetLocations();
 
@@ -70,9 +71,9 @@ public static class Roles
 
         // int locationId = PresentationHelper.MenuLoop(RoleInfo.Item1, 1, RoleInfo.Item2);
 
-        int locationId = 1; // remove when location is done
+        int locationId = 3; // remove when location is done
 
-        if (RoleLogic.AssignRole(roleId, accountId, locationId))
+        if (RoleLogic.AssignRole((int)role.Id, (int)account.Id, locationId))
         { PresentationHelper.PrintAndWait("The role has been assigned"); }
     }
 
@@ -129,6 +130,8 @@ public static class Roles
         }
 
         RoleLogic.RemoveRole((int)assignedRole.Id);
+
+        Console.Clear();
     }
 
     public static void DeleteRole()
@@ -155,6 +158,8 @@ public static class Roles
         }
 
         RoleLogic.DeleteRole((int)role.Id);
+
+        Console.Clear();
     }
 
     public static void DeleteFunctionalityRole()
@@ -172,6 +177,8 @@ public static class Roles
         RoleLevelModel roleLevel = RoleLogic.GetAllRoleLevels()[PresentationHelper.MenuLoop(roleLevels.Item1, 1, roleLevels.Item2) - 1];
 
         RoleLogic.DeleteFunctionalityRole((int)roleLevel.Id);
+
+        Console.Clear();
     }
 
     public static void DisplayRoles(string displayType)
@@ -184,6 +191,7 @@ public static class Roles
         { displayInfo = RoleLogic.GetRoleText(); }
         if (displayType == "Role Levels")
         { displayInfo = RoleLogic.GetRoleLevelText(); }
+
 
         Console.Clear();
 

@@ -55,15 +55,18 @@ public static class RoleLogic
 
         string text = "";
 
-        for (int i = 0; i < assignedRolesroles.Count; i++)
+        for (int index = 0; index < assignedRolesroles.Count; index++)
         {
-            string roleName = roles[i].Name;
-            int roleLevel = (int)roles[i].LevelAccess;
-            string fullName = acc.GetById((int)assignedRolesroles[i].AccountId).FullName;
+            string roleName = roles[index].Name;
+            int roleLevel = (int)roles[index].LevelAccess;
+            string fullName = acc.GetById((int)assignedRolesroles[index].AccountId).FullName;
             string LocName = "";
             //string LocationName = LocationLogic.GetById(1).Name;
 
-            text += $"[{i + 1}] {roleName} {roleLevel} {fullName} {LocName}\n";
+            text += $"[{index + 1}] Role name: {roleName}, " +
+                    $"level access: {roleLevel}, " +
+                    $"full name: {fullName}, " +
+                    $"location name: {LocName}\n";
         }
 
         return new(text, assignedRolesroles.Count);

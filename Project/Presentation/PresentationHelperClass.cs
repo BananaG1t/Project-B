@@ -107,7 +107,7 @@ public static class PresentationHelper
     public static void PrintAndWait(string text)
     {
         Console.WriteLine(text);
-        Thread.Sleep(5000);
+        Thread.Sleep(3000);
         Console.Clear();
     }
 
