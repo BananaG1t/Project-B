@@ -112,8 +112,8 @@ static class Menu
         foreach (ScheduleModel schedule in Schedules)
         {
             Console.WriteLine(@$"Movie: {schedule.Movie.Name}, 
-                                Room: {schedule.Auditorium.Room}, 
-                                Starting time: {schedule.StartTime.ToString("dd-MM-yyyy HH:mm")}");
+Room: {schedule.Auditorium.Room}, 
+Starting time: {schedule.StartTime.ToString("dd-MM-yyyy HH:mm")}");
         }
         Console.WriteLine();
     }
