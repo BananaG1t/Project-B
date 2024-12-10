@@ -8,14 +8,14 @@ public class CouponModel
     double Amount { get; set; }
     int AccountId { get; set; }
 
-    public CouponModel(Int64 id,Int64 Coupon_code,DateTime Expiration_date,string Coupon_type,Int64 Coupon_percentage,double Amount,Int64 Account_ID)
+    public CouponModel(Int64 id,Int64 coupon_code,DateTime expiration_date,string coupon_type,Int64 coupon_percentage,double amount,Int64 Account_ID)
     {
         Id = (int)id;
-        CouponCode = (int)Coupon_code;
-        ExpirationDate = Expiration_date;
-        CouponType = Coupon_type;
-        CouponPercentage = Coupon_percentage == 1;
-        this.Amount = Amount;
+        CouponCode = (int)coupon_code;
+        ExpirationDate = expiration_date;
+        CouponType = coupon_type;
+        CouponPercentage = coupon_percentage == 1;
+        this.Amount = amount;
         AccountId = (int)Account_ID;
     }
 
