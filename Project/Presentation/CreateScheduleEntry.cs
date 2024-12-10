@@ -51,13 +51,13 @@ public static class CreateScheduleEntry
         if (!ScheduleLogic.IsAvailable(room, date, length, locationId))
         {
             Console.WriteLine("There is already a movie playing on that time");
-            return SelectDate(room, length);
+            return SelectDate(room, length, locationId);
         }
         
         if (!ScheduleLogic.IsAvailable(room, date.AddMinutes(-20), length.Add(new TimeSpan(0,20,0)), locationId))
         {
             Console.WriteLine("Not enough time to clean the room");
-            return SelectDate(room, length);
+            return SelectDate(room, length, locationId);
         }    
                  
 
