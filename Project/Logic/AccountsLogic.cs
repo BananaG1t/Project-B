@@ -59,6 +59,23 @@ public class AccountsLogic
         }
     }
 
+    public List<AccountModel> GetAllAccounts()
+    { return AccountsAccess.GetAllAccounts(); }
+
+    public Tuple<string, int> GetAccountText()
+    {
+        List<AccountModel> accounts = GetAllAccounts();
+
+        string text = "";
+
+        for (int i = 0; i < accounts.Count; i++)
+        {
+            text += $"[{i + 1}] {accounts[i].FullName}\n";
+        }
+
+        return new(text, accounts.Count);
+    }
+
 
 }
 

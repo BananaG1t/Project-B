@@ -30,7 +30,7 @@ class ReservationLogic
         {
             AllLocations[true].Add(location);
             valid.Add((int)location.Id);
-        } 
+        }
 
         // Adds all locations with no schedules to dict without adding it as a valid option for reserving
         foreach (LocationModel location in NoScheduleLocations)
@@ -57,7 +57,7 @@ class ReservationLogic
             }
         }
 
-        int LocationId = General.ValidAnswer(text, valid);
+        int LocationId = PresentationHelper.MenuLoop(text, valid);
         LocationModel Location = ScheduleLocations.First(LocationModel => LocationModel.Id == LocationId);
 
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
@@ -67,7 +67,7 @@ class ReservationLogic
 
         for (int i = 0; i < Schedules.Count; i++)
         {
-            text += $"\n[{i+1}] Movie: {Schedules[i].Movie.Name}, Room: {Schedules[i].Auditorium.Room}, Starting time: {Schedules[i].StartTime}";
+            text += $"\n[{i + 1}] Movie: {Schedules[i].Movie.Name}, Room: {Schedules[i].Auditorium.Room}, Starting time: {Schedules[i].StartTime}";
 
         }
 
@@ -89,6 +89,7 @@ class ReservationLogic
         } while (amount <= 0);
 
         ScheduleModel schedule = PickSchedule();
+        if (schedule is null) { return; }
         int row = 0; int col = 1;
         int last_row;
         int last_col;
@@ -207,8 +208,9 @@ class ReservationLogic
         bool bar;
         if (OrderLogic.CheckBarSeats(schedule, amount))
         {
-            bar = General.ValidAnswer("Do you want to stay at the bar after the movie?\n[1] yes\n[2] no", [1, 2]) == 1 ? true : false;
-        } else 
+            bar = PresentationHelper.MenuLoop("Do you want to stay at the bar after the movie?\n[1] yes\n[2] no", 1, 2) == 1 ? true : false;
+        }
+        else
         {
             Console.WriteLine("Sorry, the bar is already full");
             bar = false;
@@ -219,7 +221,7 @@ class ReservationLogic
 
         bool snack = false;
         string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
-        int choice = General.ValidAnswer(text, [1, 2]);
+        int choice = PresentationHelper.MenuLoop(text, 1, 2);
         if (choice == 1)
             snack = true;
 

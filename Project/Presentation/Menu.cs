@@ -4,56 +4,54 @@ static class Menu
     //This shows the menu. You can call back to this method to show the menu again
     //after another presentation method is completed.
     //You could edit this to show different menus depending on the user's role
-    static public void AdminMenu()
+
+    public static List<string> functionalities = ["Manage Users", "Add a movie", "Add to the schedule",
+                                                    "Display the schedule", "Display income overview",
+                                                    "Manage snacks", "Add Location"];
+    static public void AdminMenu(AccountModel account)
     {
         //admin menu
-        string text =
-        "Admin Menu:\n" +
-        "[1] Manage Users (empty for now)\n" +
-        "[2] Add a movie\n" +
-        "[3] Add to the schedule\n" +
-        "[4] Display the schedule\n" +
-        "[5] Display income overview\n" +
-        "[6] Manage snacks\n" +
-        "[7] Add a location\n" +
-        "[8] Exit";
+        List<string> MenuOptions = RoleLogic.GetMenuText(account);
+
+        string MenuText = String.Join("", MenuOptions);
+
+        List<string> usedFunctionalities = RoleLogic.GetMenuOptions(account);
 
         while (true)
         {
             //reading input from the menu to connect to the features
+            string functionality = usedFunctionalities[PresentationHelper.MenuLoop(MenuText + $"[{MenuOptions.Count + 1}] Exit", 1, MenuOptions.Count + 1) - 1];
 
-            int input = PresentationHelper.MenuLoop(text, 1, 8);
-
-            if (input == 1)
+            if (functionality == functionalities[0])
             {
-                Console.WriteLine("This feature is not yet implemented");
+                Roles.RoleMenu();
             }
-            else if (input == 2)
+            else if (functionality == functionalities[1])
             {
                 AddMovieMenu.Main();
             }
-            else if (input == 3)
+            else if (functionality == functionalities[2])
             {
                 CreateScheduleEntry.Main();
             }
-            else if (input == 4)
+            else if (functionality == functionalities[3])
             {
                 DisplaySchedule();
             }
-            else if (input == 5)
+            else if (functionality == functionalities[4])
             {
                 Overview.MoneyOverview();
             }
-            else if (input == 6)
+            else if (functionality == functionalities[5])
             {
                 Console.Clear();
                 SnackReservation.Main();
             }
-            else if (input == 7)
+            else if (functionality == functionalities[6])
             {
                 LocationMenu.AddLocation();
             }
-            else if (input == 8)
+            else if (functionality == "Exit")
             {
                 Console.WriteLine("Exiting");
                 break;
@@ -105,7 +103,7 @@ static class Menu
             else if (input == 4) { break; }
         }
 
-        UserLogin.Start();
+        Start();
     }
 
     public static void DisplaySchedule()
@@ -113,14 +111,12 @@ static class Menu
         Console.Clear();
         string text = "At which location do you want to see?";
         List<LocationModel> locations = LocationLogic.GetAll();
-        List<int> valid = [];
         foreach (LocationModel location in locations)
         {
             text += $"\n[{location.Id}] {location.Name}";
-            valid.Add((int)location.Id);
         }
 
-        int LocationId = General.ValidAnswer(text, valid);
+        int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
         LocationModel Location = locations.First(LocationModel => LocationModel.Id == LocationId);
 
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);

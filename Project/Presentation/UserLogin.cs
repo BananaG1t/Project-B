@@ -17,9 +17,9 @@ static class UserLogin
         {
             Console.WriteLine("Welcome back " + acc.FullName);
 
-            if (acc.Admin)
+            if (RoleLogic.HasAccess(acc, 1))
             {
-                Menu.AdminMenu();
+                Menu.AdminMenu(acc);
             }
             else
             {
