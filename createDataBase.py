@@ -212,6 +212,7 @@ CREATE TABLE IF NOT EXISTS RoleLevel (
 );
 ''')
 
+cursor.execute('''DROP TABLE IF EXISTS Coupons''')
 # Step 17: Create the Coupons table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Coupons (
