@@ -1,0 +1,32 @@
+public class CouponModel
+{
+    public int Id { get; set; }
+    public int CouponCode { get; set; }
+    public DateTime ExpirationDate { get; set; }
+    public string CouponType { get; set; }
+    public bool CouponPercentage { get; set; }
+    public double Amount { get; set; }
+    public int AccountId { get; set; }
+
+    public CouponModel(Int64 id,Int64 coupon_code,DateTime expiration_date,string coupon_type,Int64 coupon_percentage,double amount,Int64 Account_ID)
+    {
+        Id = (int)id;
+        CouponCode = (int)coupon_code;
+        ExpirationDate = expiration_date;
+        CouponType = coupon_type;
+        CouponPercentage = coupon_percentage == 1;
+        Amount = amount;
+        AccountId = (int)Account_ID;
+    }
+
+    public CouponModel(int couponCode,DateTime expirationDate,string couponType,bool couponPercentage,double amount,int Account_ID)
+    {
+        CouponCode = couponCode;
+        ExpirationDate = expirationDate;
+        CouponType = couponType;
+        CouponPercentage = couponPercentage;
+        Amount = amount;
+        AccountId = Account_ID;
+        Id = CouponsAccess.Write(this);
+    }
+}
