@@ -11,14 +11,14 @@ public static class Roles
         "[4] Create role\n" +
         "[5] Delete role\n" +
         "[6] Display all the roles\n" +
-        "[7] Create functionality role\n" +
-        "[8] Delete functionality role\n" +
-        "[9] Display all the role levels\n" +
-        "[10] go back to the menu";
+        // "[7] Create functionality role\n" +
+        // "[8] Delete functionality role\n" +
+        "[7] Display all the role levels\n" +
+        "[8] go back to the menu";
 
         while (true)
         {
-            int choice = PresentationHelper.MenuLoop(text, 1, 10);
+            int choice = PresentationHelper.MenuLoop(text, 1, 8);
 
             if (choice == 1) { AssignRole(); }
             if (choice == 2) { RemoveRole(); }
@@ -26,12 +26,12 @@ public static class Roles
             if (choice == 4) { CreateRole(); }
             if (choice == 5) { DeleteRole(); }
             if (choice == 6) { DisplayRoles("Roles"); }
-            if (choice == 7) { CreateFunctionalityRole(); }
-            if (choice == 8) { DeleteFunctionalityRole(); }
-            if (choice == 9) { DisplayRoles("Role Levels"); }
-            if (choice == 10) { break; }
+            // if (choice == 7) { CreateFunctionalityRole(); }
+            // if (choice == 8) { DeleteFunctionalityRole(); }
+            if (choice == 7) { DisplayRoles("Role Levels"); }
+            if (choice == 8) { break; }
 
-            if (choice > 10)
+            if (choice > 8)
             {
                 PresentationHelper.PrintInRed("Probleem");
                 Console.WriteLine(choice);
