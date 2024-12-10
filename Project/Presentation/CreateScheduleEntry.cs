@@ -53,13 +53,13 @@ public static class CreateScheduleEntry
             Console.WriteLine("There is already a movie playing on that time");
             return SelectDate(room, length, locationId);
         }
-        
-        if (!ScheduleLogic.IsAvailable(room, date.AddMinutes(-20), length.Add(new TimeSpan(0,20,0)), locationId))
+
+        if (!ScheduleLogic.IsAvailable(room, date.AddMinutes(-20), length.Add(new TimeSpan(0, 20, 0)), locationId))
         {
             Console.WriteLine("Not enough time to clean the room");
             return SelectDate(room, length, locationId);
-        }    
-                 
+        }
+
 
         return date;
     }
@@ -72,7 +72,7 @@ public static class CreateScheduleEntry
         return Input == "" ? null : Input;
     }
 
-        private static LocationModel Location()
+    private static LocationModel Location()
     {
         Console.Clear();
         string text = "At which location do you want to see?";
@@ -84,7 +84,7 @@ public static class CreateScheduleEntry
             valid.Add((int)location.Id);
         }
 
-        int LocationId = General.ValidAnswer(text, valid);
+        int LocationId = PresentationHelper.MenuLoop(text, valid);
         return locations.First(LocationModel => LocationModel.Id == LocationId);
     }
 

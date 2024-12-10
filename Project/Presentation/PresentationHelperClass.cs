@@ -10,7 +10,7 @@ public static class PresentationHelper
             output = Console.ReadLine();
 
             if (output.Count() == 0)
-            { General.PrintInRed($"That is not a valid {variableName}"); }
+            { PrintInRed($"That is not a valid {variableName}"); }
             else { break; }
 
         } while (true);
@@ -30,7 +30,7 @@ public static class PresentationHelper
             output = Console.ReadLine();
 
             if (!TimeSpan.TryParse(output, out ValidTimeSpan))
-            { General.PrintInRed($"Invalid format. Please try again"); }
+            { PrintInRed($"Invalid format. Please try again"); }
             else { break; }
 
         } while (true);
@@ -48,7 +48,7 @@ public static class PresentationHelper
             string input = Console.ReadLine();
 
             if (!int.TryParse(input, out output))
-            { General.PrintInRed($"That is not a valid number"); }
+            { PrintInRed($"That is not a valid number"); }
             else { break; }
 
         } while (true);
@@ -66,7 +66,7 @@ public static class PresentationHelper
             string input = Console.ReadLine();
 
             if (!double.TryParse(input, out output))
-            { General.PrintInRed($"That is not a valid number"); }
+            { PrintInRed($"That is not a valid number"); }
             else { break; }
 
         } while (true);
@@ -103,4 +103,43 @@ public static class PresentationHelper
         // when it breaks out of the loop, the ouput number is valid and returns it to the method that called it
         return output;
     }
+
+    public static int MenuLoop(string text, List<int> valid)
+    {
+        // create starting variables
+        string input;
+        int output;
+
+        // ask the question at least once
+        Console.WriteLine(text);
+        input = Console.ReadLine();
+
+        // loop logic to make sure the input is a number and check if the number is a valid choice
+        while (!int.TryParse(input, out output) || !valid.Contains(output))
+        {
+            Console.Clear();
+            Console.WriteLine("That is not a valid input");
+            Console.WriteLine(text);
+            input = Console.ReadLine();
+        }
+
+        // when it breaks out of the loop, the ouput number is valid and returns it to the method that called it
+        return output;
+    }
+
+    public static void PrintAndWait(string text)
+    {
+        Console.WriteLine(text);
+        Thread.Sleep(3000);
+        Console.Clear();
+    }
+
+    public static void PrintInRed(string text)
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine(text);
+        Console.ResetColor();
+    }
+
+
 }

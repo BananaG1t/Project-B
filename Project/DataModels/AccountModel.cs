@@ -8,15 +8,12 @@ public class AccountModel
 
     public string? FullName { get; set; }
 
-    public bool Admin { get; set; }
-
-    public AccountModel(Int64 id, string email, string password, string? fullname, Int64 admin)
+    public AccountModel(Int64 id, string email, string password, string? fullname)
     {
         Id = (int)id;
         EmailAddress = email;
         Password = password;
         FullName = fullname;
-        Admin = admin == 1;
     }
     public AccountModel(string email, string password, string? fullname)
     {

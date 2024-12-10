@@ -34,4 +34,21 @@ public static class LocationLogic
         LocationAccess.Delete(id);
     }
 
+    public static Tuple<string, int> GetLocationInfo()
+    {
+        List<LocationModel> locations = LocationAccess.GetAll();
+
+        string text = "";
+
+        for (int i = 0; i < locations.Count; i++)
+        {
+            text += $"[{i + 1}] Name: {locations[i].Name}\n";
+        }
+
+        return new(text, locations.Count);
+    }
+
+    public static List<LocationModel> GetAllLocations()
+    { return LocationAccess.GetAll(); }
+
 }

@@ -20,18 +20,6 @@ public static class AccountsAccess
         return lastId;
     }
 
-    public static AccountModel GetById(int id)
-    {
-        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        return _connection.QueryFirstOrDefault<AccountModel>(sql, new { Id = id });
-    }
-
-    public static AccountModel GetByEmail(string email)
-    {
-        string sql = $"SELECT * FROM {Table} WHERE email = @Email";
-        return _connection.QueryFirstOrDefault<AccountModel>(sql, new { Email = email });
-    }
-
     public static void Update(AccountModel account)
     {
         string sql = $"UPDATE {Table} SET email = @EmailAddress, password = @Password, fullname = @FullName WHERE id = @Id";
@@ -44,6 +32,24 @@ public static class AccountsAccess
         _connection.Execute(sql, new { Id = id });
     }
 
+    public static AccountModel GetById(int id)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
+        return _connection.QueryFirstOrDefault<AccountModel>(sql, new { Id = id });
+    }
+
+    public static AccountModel GetByEmail(string email)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE email = @Email";
+        return _connection.QueryFirstOrDefault<AccountModel>(sql, new { Email = email });
+    }
+
+    public static List<AccountModel> GetAllAccounts()
+    {
+        string sql = $"SELECT * FROM {Table} ORDER BY id ASC";
+        return (List<AccountModel>)_connection.Query<AccountModel>(sql, new { });
+    }
+
         public static List<AccountModel> GetAllUserAccounts()
     {
         string sql = $"SELECT * FROM {Table} WHERE admin = 0";
@@ -51,4 +57,5 @@ public static class AccountsAccess
 
         return accounts;
     }
+
 }

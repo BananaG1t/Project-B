@@ -12,7 +12,7 @@ public static class SnackReservation
 
         while (true)
         {
-            int input = General.ValidAnswer(text, [1, 2, 3, 4, 5]);
+            int input = PresentationHelper.MenuLoop(text, 1, 5);
 
             if (input == 1)
             {
@@ -20,7 +20,7 @@ public static class SnackReservation
             }
             else if (input == 2)
             {
-               UpdateSnacks();
+                UpdateSnacks();
             }
             else if (input == 3)
             {
@@ -38,8 +38,6 @@ public static class SnackReservation
         }
 
         Console.Clear();
-        Menu.AdminMenu();
-
     }
     public static void AddSnacks()
     {
@@ -66,7 +64,7 @@ public static class SnackReservation
             ValidInputs.Add(count, (int)snack.Id);
         }
 
-        int input = General.ValidAnswer(text + "Enter the number of the snack that you would like to update: ", new List<int>(ValidInputs.Keys));
+        int input = PresentationHelper.MenuLoop(text + "Enter the number of the snack that you would like to update: ", 1, ValidInputs.Count);
 
         SnacksModel OldSnack = SnacksLogic.GetById(ValidInputs[input]);
 
@@ -93,7 +91,7 @@ public static class SnackReservation
             ValidInputs.Add(count, (int)snack.Id);
         }
 
-        int input = General.ValidAnswer(text + "Enter the number of the snack that you would like to remove: ", new List<int>(ValidInputs.Keys));
+        int input = PresentationHelper.MenuLoop(text + "Enter the number of the snack that you would like to remove: ", 1, ValidInputs.Count);
 
         SnacksModel OldSnack = SnacksLogic.GetById(ValidInputs[input]);
 
@@ -131,7 +129,7 @@ public static class SnackReservation
             }
             else
             {
-                General.PrintInRed("Invalid input. Please try again\n");
+                PresentationHelper.PrintInRed("Invalid input. Please try again\n");
             }
         }
 
@@ -155,7 +153,7 @@ public static class SnackReservation
             }
             else
             {
-                General.PrintInRed("Invalid input. Please try again\n");
+                PresentationHelper.PrintInRed("Invalid input. Please try again\n");
             }
         }
 
@@ -167,19 +165,19 @@ public static class SnackReservation
         Console.Clear();
         List<SnacksModel> snacks = SnacksLogic.GetAll();
         string text = "Enter the number of the snack that you would like to buy";
-        List<int>ValidInputs = [];
+        List<int> ValidInputs = [];
 
         for (int i = 0; i < snacks.Count; i++)
         {
-            text += $"\n[{i+1}] Name: {snacks[i].Name}, Price: {snacks[i].Price:F2}";
-            ValidInputs.Add(i+1);
+            text += $"\n[{i + 1}] Name: {snacks[i].Name}, Price: {snacks[i].Price:F2}";
+            ValidInputs.Add(i + 1);
         }
 
-        int input = General.ValidAnswer(text, ValidInputs);
-        
+        int input = PresentationHelper.MenuLoop(text + "Enter the number of the snack that you would like to buy ", 1, ValidInputs.Count);
+
         int amount = ValidAmount();
 
-        SnacksModel boughtSnack = snacks[input-1];
+        SnacksModel boughtSnack = snacks[input - 1];
 
         BoughtSnacksLogic.Write(reservation_id, boughtSnack.Id, amount);
 
