@@ -117,8 +117,6 @@ static class Menu
             text += $"\n[{i + 1}] {locations[i].Name}";
 
         }
-
-
         int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
         LocationModel Location = locations[LocationId - 1];
 
