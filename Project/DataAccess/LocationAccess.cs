@@ -34,7 +34,7 @@ public static class LocationAccess
 
     public static List<LocationModel> GetAllLocationsWithNoSchedules()
     {
-        string sql = @$"SELECT DISTINCT Location.* FROM {Table} LEFT JOIN Schedule ON {Table}.id = Schedule.LocationID WHERE Schedule.LocationID IS NULL";
+        string sql = @$"SELECT DISTINCT Location.* FROM {Table} LEFT JOIN Schedule ON {Table}.id = Schedule.Location_ID WHERE Schedule.Location_ID IS NULL";
         List<LocationModel> locations = (List<LocationModel>)_connection.Query<LocationModel>(sql);
 
         return locations;

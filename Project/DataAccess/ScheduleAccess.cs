@@ -11,7 +11,7 @@ public static class ScheduleAccess
 
     public static int Write(ScheduleModel schedule)
     {
-        string sql = $"INSERT INTO {Table} (startTime, endTime, Movie_ID, Auditorium_ID, LocationID) VALUES (@StartTime, @EndTime, @MovieId, @AuditoriumId, @LocationId)";
+        string sql = $"INSERT INTO {Table} (startTime, endTime, Movie_ID, Auditorium_ID, Location_ID) VALUES (@StartTime, @EndTime, @MovieId, @AuditoriumId, @LocationId)";
         _connection.Execute(sql, schedule);
 
         string idSql = "SELECT last_insert_rowid();";
@@ -28,7 +28,7 @@ public static class ScheduleAccess
                 WHERE Auditorium.room = @Room 
                 AND @StartTime < endTime 
                 AND @EndTime > startTime
-                AND LocationID = @Location";
+                AND Location_ID = @Location";
         return _connection.ExecuteScalar<int>(sql, new { Room = room, StartTime = startTime, EndTime = endTime, Location = location }) == 0;
     }
 
@@ -44,7 +44,7 @@ public static class ScheduleAccess
     public static List<ScheduleModel> ScheduleByDateAndLocation(LocationModel location)
     {
         DateTime currdate = DateTime.Now;
-        string sql = $"SELECT * FROM {Table} WHERE startTime > @Currdate AND LocationID = @LocationId ORDER BY startTime ASC";
+        string sql = $"SELECT * FROM {Table} WHERE startTime > @Currdate AND Location_ID = @LocationId ORDER BY startTime ASC";
         List<ScheduleModel> schedules = (List<ScheduleModel>)_connection.Query<ScheduleModel>(sql, new { Currdate = currdate, LocationId = location.Id });
 
         return schedules;
@@ -52,7 +52,7 @@ public static class ScheduleAccess
 
     public static List<LocationModel> GetAllLocationsWithSchedules()
     {
-        string sql = @$"SELECT DISTINCT Location.* FROM {Table} JOIN Location ON {Table}.LocationID = Location.id";
+        string sql = @$"SELECT DISTINCT Location.* FROM {Table} JOIN Location ON {Table}.Location_ID = Location.id";
         List<LocationModel> locations = (List<LocationModel>)_connection.Query<LocationModel>(sql);
 
         return locations;
