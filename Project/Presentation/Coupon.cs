@@ -9,7 +9,7 @@ public static class Coupon
 
         while (true)
         {
-            Console.Clear();
+            //Console.Clear();
             int input = General.ValidAnswer(text, [1, 2]);
 
             if (input == 1)
@@ -29,7 +29,7 @@ public static class Coupon
     public static void CreateCoupon()
     {
         Console.Clear();
-        Int64 percentage = 1;
+        bool percentage = false;
         string couponType = "";
         double amount = 0;
 
@@ -41,7 +41,7 @@ public static class Coupon
         int input = General.ValidAnswer("Should the coupon be a percentage of the price or a fixed amount?\n[1] Percentage\n[2] Fixed amount", [1, 2]);
         if (input == 1) 
         {
-            percentage = 0;
+            percentage = true;
             amount = General.ValidDouble("Enter the percentage of the coupon","Invalid input. Please try again\n");
         }
         else if (input == 2)
@@ -49,12 +49,16 @@ public static class Coupon
             amount = General.ValidDouble("Enter the discount price of the coupon","Invalid input. Please try again\n");
         } 
         DateTime expirationDate = ValidDate("Enter the expiration date of the coupon (dd-MM-yyyy)");
+    
+        int couponCode = GenerateRandomCode(4);
 
         AccountModel account = ChooseAccount();
 
-        int couponCode = GenerateRandomCode(4);
-
         CouponsLogic.Write(couponCode, expirationDate, couponType, percentage, amount, account.Id);
+
+        Console.WriteLine("coupon added");
+
+        AdminMenu();
     }
 
     public static int GenerateRandomCode(int length)

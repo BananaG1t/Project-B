@@ -7,13 +7,13 @@ public static class CouponsAccess
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
      private static string Table = "Coupons";
     
-    public static Int64 Write(CouponModel coupon)
+    public static int Write(CouponModel coupon)
     {
         string sql = $"INSERT INTO {Table} (coupon_code,expiration_date,coupon_type,coupon_percentage,amount,Account_ID) VALUES (@CouponCode,@ExpirationDate,@CouponType,@CouponPercentage,@Amount,@AccountId)";
         _connection.Execute(sql, coupon);
         
         string idSql = "SELECT last_insert_rowid();";
-        Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
+        int lastId = _connection.ExecuteScalar<int>(idSql);
 
         return lastId;
     }
