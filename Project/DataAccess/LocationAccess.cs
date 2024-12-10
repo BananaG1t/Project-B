@@ -2,7 +2,6 @@ using Microsoft.Data.Sqlite;
 
 using Dapper;
 
-
 public static class LocationAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
