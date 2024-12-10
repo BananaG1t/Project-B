@@ -1,5 +1,4 @@
 import sqlite3
-import os
 
 # Path to the SQLite database file
 db_file = 'project.db'
@@ -85,7 +84,7 @@ CREATE TABLE IF NOT EXISTS Seats (
 );
 ''')
 
-# cursor.execute('''DROP TABLE IF EXISTS Schedule''')
+cursor.execute('''DROP TABLE IF EXISTS Schedule''')
 
 # Step 7: Create the Schedule table
 cursor.execute('''
