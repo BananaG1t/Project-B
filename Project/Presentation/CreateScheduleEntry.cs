@@ -22,7 +22,7 @@ public static class CreateScheduleEntry
         "[2] Auditorium 2, size 300\n" +
         "[3] Auditorium 3, size 500";
 
-        return General.ValidAnswer(text, [1, 2, 3]);
+        return PresentationHelper.MenuLoop(text, 1, 3);
     }
 
     private static MovieModel SelectMovie()
@@ -37,50 +37,31 @@ public static class CreateScheduleEntry
             valid.Add((int)movie.Id);
         }
 
-        int movieId = General.ValidAnswer(text, valid);
-        return Movies.First(MovieModel => MovieModel.Id == movieId);
+        int answer = PresentationHelper.MenuLoop(text, 1, Movies.Count);
+        return Movies.First(MovieModel => MovieModel.Id == answer);
     }
 
     private static DateTime SelectDate(int room, TimeSpan length, int locationId)
     {
-        Console.Clear();
         string text = "When do you want to show the movie? (dd-MM-yyyy-HH-mm)";
         DateTime date;
         date = General.ValidDate(text);
-        bool cleanupTime = CleanupTime(date);
-        while (!ScheduleLogic.IsAvailable(room, date, length, locationId) || !cleanupTime)
+
+        Console.Clear();
+        if (!ScheduleLogic.IsAvailable(room, date, length, locationId))
         {
-            Console.Clear();
-            if (!ScheduleLogic.IsAvailable(room, date, length, locationId))
-            {
-                Console.WriteLine("There is already a movie playing on that time");
-            }
-            else
-            {
-                Console.WriteLine("Not enough time to clean the room");
-            }    
-                 
-            date = General.ValidDate(text);
-            cleanupTime = CleanupTime(date);
+            Console.WriteLine("There is already a movie playing on that time");
+            return SelectDate(room, length);
         }
+        
+        if (!ScheduleLogic.IsAvailable(room, date.AddMinutes(-20), length.Add(new TimeSpan(0,20,0)), locationId))
+        {
+            Console.WriteLine("Not enough time to clean the room");
+            return SelectDate(room, length);
+        }    
+                 
 
         return date;
-    }
-
-    public static bool CleanupTime(DateTime date)
-    {
-        bool enoughTime = true;
-        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
-        TimeSpan CleanupTime = new TimeSpan(0,20,0);
-         
-        foreach (ScheduleModel schedule in Schedules)
-        {
-            if ((date - schedule.EndTime) <= CleanupTime && (date - schedule.EndTime) > TimeSpan.Zero)
-            {
-                enoughTime = false;
-            }
-        }
-        return enoughTime;
     }
 
     private static string? GetExtras()

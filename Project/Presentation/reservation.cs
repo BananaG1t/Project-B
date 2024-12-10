@@ -1,8 +1,8 @@
 static class Reservation
 {
-    public static void ManageReservations(AccountModel account)
+    public static void ManageReservations(OrderModel order)
     {
-        ReservationModel reservation = ReservationLogic.SelectReservation(account);
+        ReservationModel reservation = ReservationLogic.SelectReservation(order);
 
         Console.Clear();
         string text =
@@ -10,8 +10,7 @@ static class Reservation
         "[1] Cancel\n" +
         "[2] Back\n";
 
-
-        int choice = General.ValidAnswer(text, [1, 2]);
+        int choice = PresentationHelper.MenuLoop(text, 1, 2);
 
         switch (choice)
         {
@@ -21,7 +20,7 @@ static class Reservation
                 "[1] Yes \n" +
                 "[2] No\n";
 
-                int confirmChoice = General.ValidAnswer(confirmText, [1]);
+                int confirmChoice = PresentationHelper.MenuLoop(confirmText, 1, 2);
 
                 if (confirmChoice == 1)
                 {
@@ -32,15 +31,18 @@ static class Reservation
                     }
 
                     reservation.Status = "Canceled";
-                    SeatModel seat = SeatsAccess.GetByReservationInfo(
+                    SeatModel seat = SeatLogic.GetByReservationInfo(
                         reservation.Seat_Collum,
                         reservation.Seat_Row,
-                        ScheduleAccess.GetById((int)reservation.Schedule_ID).AuditoriumId
+                        ScheduleAccess.GetById(order.ScheduleId).AuditoriumId
+
                     );
                     seat.IsAvailable = true;
+                    order.Amount--;
 
-                    ReservationAcces.Update(reservation);
-                    SeatsAccess.Update(seat);
+                    OrderAccess.Update(order);
+                    ReservationLogic.Update(reservation);
+                    SeatLogic.Update(seat);
 
                     Console.WriteLine("The reservation has been canceled.");
                 }

@@ -7,7 +7,7 @@ public static class AuditoriumLayoutAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private static string Table = "Auditorium_layout";
+    private static string Table = "AuditoriumLayout";
 
     public static double GetPriceBySeatClass(int seatClass)
     {
