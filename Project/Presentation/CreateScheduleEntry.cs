@@ -4,12 +4,12 @@ public static class CreateScheduleEntry
 {
     public static void Main()
     {
+        LocationModel location = Location();
         int room = SelectRoom();
         MovieModel movie = SelectMovie();
-        Console.Clear();
-        DateTime date = SelectDate(room, movie.Length);
+        DateTime date = SelectDate(room, movie.Length, (int)location.Id);
         string? extras = GetExtras();
-        new ScheduleModel(date, movie, new AuditoriumModel(room, extras));
+        new ScheduleModel(date, movie, new AuditoriumModel(room, extras), location);
         Console.Clear();
     }
 
@@ -41,23 +41,23 @@ public static class CreateScheduleEntry
         return Movies.First(MovieModel => MovieModel.Id == answer);
     }
 
-    private static DateTime SelectDate(int room, TimeSpan length)
+    private static DateTime SelectDate(int room, TimeSpan length, int locationId)
     {
         string text = "When do you want to show the movie? (dd-MM-yyyy-HH-mm)";
         DateTime date;
         date = General.ValidDate(text);
 
         Console.Clear();
-        if (!ScheduleLogic.IsAvailable(room, date, length))
+        if (!ScheduleLogic.IsAvailable(room, date, length, locationId))
         {
             Console.WriteLine("There is already a movie playing on that time");
-            return SelectDate(room, length);
+            return SelectDate(room, length, locationId);
         }
         
-        if (!ScheduleLogic.IsAvailable(room, date.AddMinutes(-20), length.Add(new TimeSpan(0,20,0))))
+        if (!ScheduleLogic.IsAvailable(room, date.AddMinutes(-20), length.Add(new TimeSpan(0,20,0)), locationId))
         {
             Console.WriteLine("Not enough time to clean the room");
-            return SelectDate(room, length);
+            return SelectDate(room, length, locationId);
         }    
                  
 
@@ -71,4 +71,21 @@ public static class CreateScheduleEntry
         string? Input = Console.ReadLine();
         return Input == "" ? null : Input;
     }
+
+        private static LocationModel Location()
+    {
+        Console.Clear();
+        string text = "At which location do you want to see?";
+        List<LocationModel> locations = LocationLogic.GetAll();
+        List<int> valid = [];
+        foreach (LocationModel location in locations)
+        {
+            text += $"\n[{location.Id}] {location.Name}";
+            valid.Add((int)location.Id);
+        }
+
+        int LocationId = General.ValidAnswer(text, valid);
+        return locations.First(LocationModel => LocationModel.Id == LocationId);
+    }
+
 }

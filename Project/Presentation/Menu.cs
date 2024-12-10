@@ -47,7 +47,11 @@ static class Menu
                 Console.Clear();
                 SnackReservation.Main();
             }
-            else if (functionality == "Exit")
+            else if (input == 7)
+            {
+                LocationMenu.AddLocation();
+            }
+            else if (input == 8)
             {
                 Console.WriteLine("Exiting");
                 break;
@@ -89,7 +93,7 @@ static class Menu
 
             else if (input == 2)
             {
-                Reservation.ManageReservations(CurrentAccount);
+                Reservation.ManageReservations(Order.SelectOrder(CurrentAccount));
             }
             else if (input == 3)
             {
@@ -104,16 +108,28 @@ static class Menu
 
     public static void DisplaySchedule()
     {
-        List<ScheduleModel> Schedules = ScheduleLogic.GetSchedules();
-
-        // Shows what movie are playing based on the date and time
         Console.Clear();
+        string text = "At which location do you want to see?";
+        List<LocationModel> locations = LocationLogic.GetAll();
+        List<int> valid = [];
+        foreach (LocationModel location in locations)
+        {
+            text += $"\n[{location.Id}] {location.Name}";
+            valid.Add((int)location.Id);
+        }
+
+        int LocationId = General.ValidAnswer(text, valid);
+        LocationModel Location = locations.First(LocationModel => LocationModel.Id == LocationId);
+
+        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
+
+        // Shows what movie are playing based on the date and time and location
         Console.WriteLine($"Movies Playing");
         foreach (ScheduleModel schedule in Schedules)
         {
             Console.WriteLine(@$"Movie: {schedule.Movie.Name}, 
-                                Room: {schedule.Auditorium.Room}, 
-                                Starting time: {schedule.StartTime.ToString("dd-MM-yyyy HH:mm")}");
+Room: {schedule.Auditorium.Room}, 
+Starting time: {schedule.StartTime.ToString("dd-MM-yyyy HH:mm")}");
         }
         Console.WriteLine();
     }
