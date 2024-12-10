@@ -222,7 +222,7 @@ CREATE TABLE IF NOT EXISTS Coupons (
     coupon_type TEXT NOT NULL,
     coupon_percentage BOOLEAN NOT NULL DEFAULT false,
     amount INTEGER NOT NULL,
-    account_ID INTEGER NOT NULL,
+    Account_ID INTEGER NOT NULL,
     FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
 );
 ''')
