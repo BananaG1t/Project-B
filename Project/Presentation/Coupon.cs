@@ -9,8 +9,8 @@ public static class Coupon
 
         while (true)
         {
-            //Console.Clear();
-            int input = General.ValidAnswer(text, [1, 2]);
+            Console.Clear();
+            int input = PresentationHelper.MenuLoop(text, [1, 2]);
 
             if (input == 1)
             {
@@ -23,7 +23,6 @@ public static class Coupon
             }
         }
         Console.Clear();
-        Menu.AdminMenu();
     }
 
     public static void CreateCoupon()
@@ -32,13 +31,13 @@ public static class Coupon
         bool percentage = false;
         string couponType = "";
         double amount = 0;
-
-        int type = General.ValidAnswer("What can the coupon be used for?\n[1] Order price\n[2] Seat reservation price\n[3] Snack reservation price",[1, 2, 3]);
+        
+        int type = PresentationHelper.MenuLoop("What can the coupon be used for?\n[1] Order price\n[2] Seat reservation price\n[3] Snack reservation price", 1, 3);
         if (type == 1) couponType = "Order";
         if (type == 2) couponType = "Seats";
         if (type == 3) couponType = "Snacks";
 
-        int input = General.ValidAnswer("Should the coupon be a percentage of the price or a fixed amount?\n[1] Percentage\n[2] Fixed amount", [1, 2]);
+        int input = PresentationHelper.MenuLoop("Should the coupon be a percentage of the price or a fixed amount?\n[1] Percentage\n[2] Fixed amount", 1, 2);
         if (input == 1) 
         {
             percentage = true;
@@ -112,7 +111,7 @@ public static class Coupon
             ValidInputs.Add(count, (int)account.Id);
         }
 
-        int input = General.ValidAnswer("Enter the number of the account that you want to assign the coupon to\n" + text, new List<int>(ValidInputs.Keys));
+        int input = PresentationHelper.MenuLoop("Enter the number of the account that you want to assign the coupon to\n" + text, new List<int>(ValidInputs.Keys));
         AccountModel chosenAccount = AccountsAccess.GetById(ValidInputs[input]);
         return chosenAccount;
     }
