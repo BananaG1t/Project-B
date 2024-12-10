@@ -13,13 +13,62 @@ class ReservationLogic
 
     public static ScheduleModel PickSchedule()
     {
-        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
 
-        string text = "";
+        Console.Clear();
+        string text = "At which location do you want to see?";
+        List<LocationModel> ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
+        List<LocationModel> NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
+        Dictionary<bool, List<LocationModel>> AllLocations = new Dictionary<bool, List<LocationModel>>
+        {
+            { true, [] },
+            { false, [] }
+        };
+        List<int> valid = [];
+
+        // Adds all locations with schedules to dict and as a valid option for reserving
+        foreach (LocationModel location in ScheduleLocations)
+        {
+            AllLocations[true].Add(location);
+            valid.Add((int)location.Id);
+        } 
+
+        // Adds all locations with no schedules to dict without adding it as a valid option for reserving
+        foreach (LocationModel location in NoScheduleLocations)
+        {
+            AllLocations[false].Add(location);
+        }
+
+
+        foreach (var locations in AllLocations)
+        {
+            if (locations.Key)
+            {
+                foreach (LocationModel location in locations.Value)
+                {
+                    text += $"\n[{location.Id}] {location.Name}";
+                }
+            }
+            else
+            {
+                foreach (LocationModel location in locations.Value)
+                {
+                    text += $"\n{location.Name} (Coming Soon!)";
+                }
+            }
+        }
+
+        int LocationId = General.ValidAnswer(text, valid);
+        LocationModel Location = ScheduleLocations.First(LocationModel => LocationModel.Id == LocationId);
+
+        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
+
+
+        text = "";
 
         for (int i = 0; i < Schedules.Count; i++)
         {
             text += $"\n[{i+1}] Movie: {Schedules[i].Movie.Name}, Room: {Schedules[i].Auditorium.Room}, Starting time: {Schedules[i].StartTime}";
+
         }
 
         int input = PresentationHelper.MenuLoop(text, 1, Schedules.Count + 1);
@@ -195,7 +244,7 @@ class ReservationLogic
     {
         Console.Clear();
         ScheduleModel schedule = ScheduleLogic.GetById(order.ScheduleId);
-        string text = $"Movie: {schedule.Movie.Name}, Date: {schedule.StartTime} Bar: {order.Bar}\nWhat reseration do you want to manage?";
+        string text = $"Location: {schedule.Location.Name}, Movie: {schedule.Movie.Name}, Date: {schedule.StartTime} Bar: {order.Bar}\nWhat reseration do you want to manage?";
         List<ReservationModel> reservations = GetFromOrder(order);
         List<int> valid = [];
 

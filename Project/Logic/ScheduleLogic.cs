@@ -6,9 +6,9 @@ public static class ScheduleLogic
         return ScheduleAccess.GetById(id);
     }
 
-    public static bool IsAvailable(int room, DateTime startTime, TimeSpan length)
+    public static bool IsAvailable(int room, DateTime startTime, TimeSpan length, int locationId)
     {
-        return ScheduleAccess.IsAvailable(room, startTime, startTime + length);
+        return ScheduleAccess.IsAvailable(room, startTime, startTime + length, locationId);
     }
 
     public static List<ScheduleModel> GetpastSchedules()
