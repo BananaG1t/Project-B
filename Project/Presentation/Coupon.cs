@@ -41,11 +41,11 @@ public static class Coupon
         if (input == 1) 
         {
             percentage = true;
-            amount = General.ValidDouble("Enter the percentage of the coupon","Invalid input. Please try again\n");
+            amount = ValidDouble("Enter the percentage of the coupon","Invalid input. Please try again\n");
         }
         else if (input == 2)
         {
-            amount = General.ValidDouble("Enter the discount price of the coupon","Invalid input. Please try again\n");
+            amount = ValidDouble("Enter the discount price of the coupon","Invalid input. Please try again\n");
         } 
         DateTime expirationDate = ValidDate("Enter the expiration date of the coupon (dd-MM-yyyy)");
     
@@ -114,5 +114,29 @@ public static class Coupon
         int input = PresentationHelper.MenuLoop("Enter the number of the account that you want to assign the coupon to\n" + text, new List<int>(ValidInputs.Keys));
         AccountModel chosenAccount = AccountsAccess.GetById(ValidInputs[input]);
         return chosenAccount;
+    }
+
+        public static double ValidDouble(string text, string errorText)
+    {
+        double price = 0;
+        bool valid = false;
+        while (!valid)
+        {
+            Console.WriteLine(text);
+            string input = Console.ReadLine();
+            
+            if (input.Contains(".")) { input = input.Replace(".", ","); }
+
+            if (double.TryParse(input, out price) && price >= 0)
+            {
+                valid = true;
+            }
+            else
+            {
+                Console.WriteLine(errorText);
+            }
+        }
+
+        return price;
     }
 }

@@ -23,4 +23,5 @@ public static class General
         // when it breaks out of the loop, the ouput number is valid and returns it to the method that called it
         return output;
     }
+
 }
