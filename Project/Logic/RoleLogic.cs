@@ -61,13 +61,12 @@ public static class RoleLogic
             string roleName = role.Name;
             int roleLevel = (int)role.LevelAccess;
             string fullName = acc.GetById((int)assignedRolesroles[index].AccountId).FullName;
-            string LocName = "";
-            // string LocationName = LocationLogic.GetById(1).Name;
+            string LocationName = LocationLogic.GetById((int)assignedRolesroles[index].LocationId).Name;
 
             text += $"[{index + 1}] Role name: {roleName}, " +
                     $"level access: {roleLevel}, " +
                     $"full name: {fullName}, " +
-                    $"location name: {LocName}\n";
+                    $"location name: {LocationName}\n";
         }
 
         return new(text, assignedRolesroles.Count);
@@ -149,19 +148,6 @@ public static class RoleLogic
         return validLevels;
     }
 
-    // public static string GetLocations()
-    // {
-    //     List<LocationModel> locations = LocationAcces.GetAllLocations();
-
-    //     string text = "";
-
-    //     for (int i = 0; i < locations.Count; i++)
-    //     {
-    //         text += $"[{i + 1}] Name: {locations[i].Name}\n";
-    //     }
-
-    //     return new(text, locations.Count);
-    // }
 
     public static bool HasAccess(AccountModel account, string functionaltyName)
     {
@@ -217,17 +203,12 @@ public static class RoleLogic
 
         List<string> MenuOptions = [];
 
-        int index = 1;
-
         for (int i = 0; i < functionalities.Count; i++)
         {
             if (HasAccess(account, functionalities[i]))
             {
                 MenuOptions.Add($"{functionalities[i]}");
-                index++;
             }
-            else
-                index--;
         }
 
         MenuOptions.Add("Exit");

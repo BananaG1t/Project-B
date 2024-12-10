@@ -57,7 +57,7 @@ class ReservationLogic
             }
         }
 
-        int LocationId = General.ValidAnswer(text, valid);
+        int LocationId = PresentationHelper.MenuLoop(text, valid);
         LocationModel Location = ScheduleLocations.First(LocationModel => LocationModel.Id == LocationId);
 
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
@@ -208,7 +208,7 @@ class ReservationLogic
         bool bar;
         if (OrderLogic.CheckBarSeats(schedule, amount))
         {
-            bar = General.ValidAnswer("Do you want to stay at the bar after the movie?\n[1] yes\n[2] no", [1, 2]) == 1 ? true : false;
+            bar = PresentationHelper.MenuLoop("Do you want to stay at the bar after the movie?\n[1] yes\n[2] no", 1, 2) == 1 ? true : false;
         }
         else
         {
@@ -221,7 +221,7 @@ class ReservationLogic
 
         bool snack = false;
         string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
-        int choice = General.ValidAnswer(text, [1, 2]);
+        int choice = PresentationHelper.MenuLoop(text, 1, 2);
         if (choice == 1)
             snack = true;
 
@@ -235,18 +235,6 @@ class ReservationLogic
                 SnackReservation.BuySnacks(reservationId);
         }
         Console.WriteLine("Made the reservation");
-
-        string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
-
-        int choice = PresentationHelper.MenuLoop(text, 1, 2);
-
-        if (choice == 1)
-        {
-            SnackReservation.BuySnacks(account);
-        }
-
-        BarReservation.GetBarReservation(account, schedule, amount, 1);
-
     }
 
     public static List<ReservationModel> GetFromOrder(OrderModel order)

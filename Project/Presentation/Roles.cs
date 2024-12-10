@@ -67,23 +67,21 @@ public static class Roles
         AccountsLogic accountLogic = new();
         AccountModel account = accountLogic.GetAllAccounts()[PresentationHelper.MenuLoop(allAccountInfo.Item1, 1, allAccountInfo.Item2) - 1];
 
-        // Tuple<string, int> locations = LocationLogic.GetLocations();
+        Tuple<string, int> locationInfo = LocationLogic.GetLocationInfo();
 
-        // if (locations.Count == 0)
-        // {
-        //     PresentationHelper.PrintAndWait("There are no locations in the database");
-        //     return;
-        // }
+        if (locationInfo.Item2 == 0)
+        {
+            PresentationHelper.PrintAndWait("There are no locations in the database");
+            return;
+        }
 
-        // int locationId = PresentationHelper.MenuLoop(RoleInfo.Item1, 1, RoleInfo.Item2);
-
-        int locationId = 0; // remove when location is done
+        LocationModel locationModel = LocationLogic.GetAllLocations()[PresentationHelper.MenuLoop(locationInfo.Item1, 1, locationInfo.Item2) - 1];
 
         AssignedRoleModel assignedRoleModel = RoleLogic.GetAssignedRoleByAccountId((int)account.Id);
 
         bool promote = false;
 
-        if (assignedRoleModel != null && assignedRoleModel.LocationId == locationId)
+        if (assignedRoleModel != null && assignedRoleModel.LocationId == locationModel.Id)
         {
             Console.WriteLine("That account already has a role on that location");
 
@@ -96,7 +94,7 @@ public static class Roles
         if (promote)
         { RoleLogic.RemoveRole((int)assignedRoleModel.Id); }
 
-        if (RoleLogic.AssignRole((int)role.Id, (int)account.Id, locationId))
+        if (RoleLogic.AssignRole((int)role.Id, account.Id, (int)locationModel.Id))
         { PresentationHelper.PrintAndWait("The role has been assigned"); }
     }
 

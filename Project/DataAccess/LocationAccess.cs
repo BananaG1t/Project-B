@@ -5,17 +5,28 @@ using Dapper;
 public static class LocationAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-     private static string Table = "Location";
-    
+    private static string Table = "Location";
+
     public static Int64 Write(LocationModel location)
     {
         string sql = $"INSERT INTO {Table} (name) VALUES (@Name)";
         _connection.Execute(sql, location);
-        
+
         string idSql = "SELECT last_insert_rowid();";
         Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
 
         return lastId;
+    }
+    public static void Update(LocationModel snack)
+    {
+        string sql = $"UPDATE {Table} SET name = @Name WHERE id = @Id";
+        _connection.Execute(sql, snack);
+    }
+
+    public static void Delete(int id)
+    {
+        string sql = $"DELETE FROM {Table} WHERE id = @Id";
+        _connection.Execute(sql, new { Id = id });
     }
     public static LocationModel GetById(int id)
     {
@@ -47,15 +58,4 @@ public static class LocationAccess
         return LocationsNames;
     }
 
-    public static void Update(LocationModel snack)
-    {
-        string sql = $"UPDATE {Table} SET name = @Name WHERE id = @Id";
-        _connection.Execute(sql, snack);
-    }
-
-    public static void Delete(int id)
-    {
-        string sql = $"DELETE FROM {Table} WHERE id = @Id";
-        _connection.Execute(sql, new { Id = id });
-    }
 }
