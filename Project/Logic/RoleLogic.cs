@@ -151,10 +151,18 @@ public static class RoleLogic
 
     public static bool HasAccess(AccountModel account, string functionaltyName)
     {
-        AssignedRoleModel assignedRoleModel = AssignedRoleAccess.GetByAccountId((int)account.Id);
+        AssignedRoleModel assignedRoleModel = AssignedRoleAccess.GetByAccountId(account.Id);
         if (assignedRoleModel == null) { return false; }
 
-        RoleLevelModel roleLevelModel = RoleLevelAccess.GetByFunctionality(functionaltyName);
+        RoleLevelModel roleLevelModel = null;
+        while (true)
+        {
+            roleLevelModel = RoleLevelAccess.GetByFunctionality(functionaltyName);
+
+            if (roleLevelModel == null)
+            { Roles.CreateFunctionalityRole(functionaltyName); }
+            else { break; }
+        }
 
         RoleModel roleModel = RoleAccess.GetById((int)assignedRoleModel.RoleId);
 
@@ -166,7 +174,7 @@ public static class RoleLogic
 
     public static bool HasAccess(AccountModel account, int levelNeeded)
     {
-        AssignedRoleModel assignedRoleModel = AssignedRoleAccess.GetByAccountId((int)account.Id);
+        AssignedRoleModel assignedRoleModel = AssignedRoleAccess.GetByAccountId(account.Id);
         if (assignedRoleModel == null) { return false; }
 
         RoleModel roleModel = RoleAccess.GetById((int)assignedRoleModel.RoleId);

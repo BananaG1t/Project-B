@@ -13,7 +13,7 @@ static class Menu
         //admin menu
         List<string> MenuOptions = RoleLogic.GetMenuText(account);
 
-        string MenuText = String.Join("", MenuOptions);
+        string MenuText = string.Join("", MenuOptions);
 
         List<string> usedFunctionalities = RoleLogic.GetMenuOptions(account);
 
@@ -117,10 +117,10 @@ static class Menu
             text += $"\n[{i + 1}] {locations[i].Name}";
 
         }
-            
+
 
         int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
-        LocationModel Location = locations[LocationId -1];
+        LocationModel Location = locations[LocationId - 1];
 
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
 

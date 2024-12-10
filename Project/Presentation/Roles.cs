@@ -16,9 +16,11 @@ public static class Roles
         "[7] Display all the role levels\n" +
         "[8] go back to the menu";
 
+        int menuChoices = 9;
+
         while (true)
         {
-            int choice = PresentationHelper.MenuLoop(text, 1, 8);
+            int choice = PresentationHelper.MenuLoop(text, 1, menuChoices);
 
             if (choice == 1) { AssignRole(); }
             if (choice == 2) { RemoveRole(); }
@@ -27,11 +29,11 @@ public static class Roles
             if (choice == 5) { DeleteRole(); }
             if (choice == 6) { DisplayRoles("Roles"); }
             // if (choice == 7) { CreateFunctionalityRole(); }
-            // if (choice == 8) { DeleteFunctionalityRole(); }
+            if (choice == 9) { DeleteFunctionalityRole(); }
             if (choice == 7) { DisplayRoles("Role Levels"); }
             if (choice == 8) { break; }
 
-            if (choice > 8)
+            if (choice > menuChoices)
             {
                 PresentationHelper.PrintInRed("Probleem");
                 Console.WriteLine(choice);
@@ -114,25 +116,25 @@ public static class Roles
         PresentationHelper.PrintAndWait("That role name or level access already exists");
     }
 
-    public static void CreateFunctionalityRole()
+    public static void CreateFunctionalityRole(string functionalityName)
     {
         Console.Clear();
 
-        List<string> functionalities = Menu.functionalities;
-
-        Tuple<string, int> functionalityInfo = RoleLogic.GetFunctionalityText(functionalities);
-
-
-        string functionaltyName = functionalities[PresentationHelper.MenuLoop(functionalityInfo.Item1, 1, functionalityInfo.Item2) - 1];
-        int roleLevel = PresentationHelper.GetInt("What level does the functionalty require? ");
-
-        if (RoleLogic.AddRoleLevel(functionaltyName, roleLevel))
+        while (true)
         {
-            Console.WriteLine("The functionality has been added to the database");
-            return;
-        }
+            PresentationHelper.PrintInRed($"{functionalityName} does not have an access level");
+            int roleLevel = PresentationHelper.GetInt($"What level does {functionalityName} require?");
 
-        PresentationHelper.PrintAndWait("That functionality or level already exists");
+            if (!RoleLogic.AddRoleLevel(functionalityName, roleLevel))
+            {
+                PresentationHelper.PrintAndWait("That functionality or level already exists");
+            }
+            else
+            {
+                Console.WriteLine("The functionality has been added to the database");
+                break;
+            }
+        }
     }
 
     public static void RemoveRole()
