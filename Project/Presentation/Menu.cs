@@ -111,13 +111,16 @@ static class Menu
         Console.Clear();
         string text = "At which location do you want to see?";
         List<LocationModel> locations = LocationLogic.GetAll();
-        foreach (LocationModel location in locations)
+
+        for (int i = 0; i < locations.Count; i++)
         {
-            text += $"\n[{location.Id}] {location.Name}";
+            text += $"\n[{i + 1}] {locations[i].Name}";
+
         }
+            
 
         int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
-        LocationModel Location = locations.First(LocationModel => LocationModel.Id == LocationId);
+        LocationModel Location = locations[LocationId -1];
 
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
 
