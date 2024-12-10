@@ -18,7 +18,7 @@ class OrderLogic
             text += $"\n[{order.Id}] Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seats: {order.Amount}, Bar: {order.Bar}";
             valid.Add(order.Id);
         }
-        int answer = General.ValidAnswer(text, valid);
+        int answer = PresentationHelper.MenuLoop(text, valid);
         return orders.First(OrderModel => OrderModel.Id == answer);
     }
 

@@ -7,7 +7,7 @@ static class Menu
 
     public static List<string> functionalities = ["Manage Users", "Add a movie", "Add to the schedule",
                                                     "Display the schedule", "Display income overview",
-                                                    "Manage snacks"];
+                                                    "Manage snacks", "Add Location"];
     static public void AdminMenu(AccountModel account)
     {
         //admin menu
@@ -47,11 +47,11 @@ static class Menu
                 Console.Clear();
                 SnackReservation.Main();
             }
-            else if (input == 7)
+            else if (functionality == functionalities[6])
             {
                 LocationMenu.AddLocation();
             }
-            else if (input == 8)
+            else if (functionality == "Exit")
             {
                 Console.WriteLine("Exiting");
                 break;
@@ -111,14 +111,12 @@ static class Menu
         Console.Clear();
         string text = "At which location do you want to see?";
         List<LocationModel> locations = LocationLogic.GetAll();
-        List<int> valid = [];
         foreach (LocationModel location in locations)
         {
             text += $"\n[{location.Id}] {location.Name}";
-            valid.Add((int)location.Id);
         }
 
-        int LocationId = General.ValidAnswer(text, valid);
+        int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
         LocationModel Location = locations.First(LocationModel => LocationModel.Id == LocationId);
 
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
