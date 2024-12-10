@@ -79,6 +79,23 @@ public static class Roles
 
         int locationId = 0; // remove when location is done
 
+        AssignedRoleModel assignedRoleModel = RoleLogic.GetAssignedRoleByAccountId((int)account.Id);
+
+        bool promote = false;
+
+        if (assignedRoleModel != null && assignedRoleModel.LocationId == locationId)
+        {
+            Console.WriteLine("That account already has a role on that location");
+
+            string text = $"Do you want to promote them?\n[1] Yes\n[2] No";
+
+            promote = PresentationHelper.MenuLoop(text, 1, 2) == 1;
+            if (!promote) { return; }
+        }
+
+        if (promote)
+        { RoleLogic.RemoveRole((int)assignedRoleModel.Id); }
+
         if (RoleLogic.AssignRole((int)role.Id, (int)account.Id, locationId))
         { PresentationHelper.PrintAndWait("The role has been assigned"); }
     }
@@ -196,7 +213,7 @@ public static class Roles
     {
         Tuple<string, int> displayInfo = new("", 0);
 
-        if (displayType == " Roles")
+        if (displayType == "Assigned Roles")
         { displayInfo = RoleLogic.GetAssignedRoleText(); }
         if (displayType == "Roles")
         { displayInfo = RoleLogic.GetRoleText(); }

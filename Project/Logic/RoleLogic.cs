@@ -49,7 +49,6 @@ public static class RoleLogic
     public static Tuple<string, int> GetAssignedRoleText()
     {
         List<AssignedRoleModel> assignedRolesroles = GetAllAssignedRoles();
-        List<RoleModel> roles = GetAllRoles();
 
         AccountsLogic acc = new();
 
@@ -57,11 +56,13 @@ public static class RoleLogic
 
         for (int index = 0; index < assignedRolesroles.Count; index++)
         {
-            string roleName = roles[index].Name;
-            int roleLevel = (int)roles[index].LevelAccess;
+            RoleModel role = RoleAccess.GetById((int)assignedRolesroles[index].RoleId);
+
+            string roleName = role.Name;
+            int roleLevel = (int)role.LevelAccess;
             string fullName = acc.GetById((int)assignedRolesroles[index].AccountId).FullName;
             string LocName = "";
-            //string LocationName = LocationLogic.GetById(1).Name;
+            // string LocationName = LocationLogic.GetById(1).Name;
 
             text += $"[{index + 1}] Role name: {roleName}, " +
                     $"level access: {roleLevel}, " +
@@ -127,6 +128,15 @@ public static class RoleLogic
         return RoleLevelAccess.GetAllRoleLevels();
     }
 
+    public static AssignedRoleModel GetAssignedRoleByAccountId(int id)
+    { return AssignedRoleAccess.GetByAccountId(id); }
+
+    public static RoleModel GetRoleById(int id)
+    { return RoleAccess.GetById(id); }
+
+    public static RoleLevelModel GetRoleLevelById(int id)
+    { return RoleLevelAccess.GetById(id); }
+
     public static List<int> GetValidLevelAccess()
     {
         List<int> validLevels = [];
@@ -187,13 +197,40 @@ public static class RoleLogic
 
         List<string> MenuOptions = [];
 
+        int index = 0;
+
         for (int i = 0; i < functionalities.Count; i++)
         {
             if (HasAccess(account, functionalities[i]))
-                MenuOptions.Add($"[{i + 1}] {functionalities[i]}\n");
-            else
-                i--;
+            {
+                MenuOptions.Add($"[{index + 1}] {functionalities[i]}\n");
+                index++;
+            }
         }
+
+        return MenuOptions;
+    }
+
+    public static List<string> GetMenuOptions(AccountModel account)
+    {
+        List<string> functionalities = Menu.functionalities;
+
+        List<string> MenuOptions = [];
+
+        int index = 1;
+
+        for (int i = 0; i < functionalities.Count; i++)
+        {
+            if (HasAccess(account, functionalities[i]))
+            {
+                MenuOptions.Add($"{functionalities[i]}");
+                index++;
+            }
+            else
+                index--;
+        }
+
+        MenuOptions.Add("Exit");
 
         return MenuOptions;
     }

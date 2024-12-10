@@ -15,8 +15,7 @@ static class Menu
 
         string MenuText = String.Join("", MenuOptions);
 
-        List<string> usedFunctionalities = functionalities;
-        usedFunctionalities.Add("Exit");
+        List<string> usedFunctionalities = RoleLogic.GetMenuOptions(account);
 
         while (true)
         {
@@ -48,7 +47,7 @@ static class Menu
                 Console.Clear();
                 SnackReservation.Main();
             }
-            else if (functionality == usedFunctionalities[6])
+            else if (functionality == "Exit")
             {
                 Console.WriteLine("Exiting");
                 break;
