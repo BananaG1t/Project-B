@@ -55,9 +55,7 @@ public static class Coupon
 
         CouponsLogic.Write(couponCode, expirationDate, couponType, percentage, amount, account.Id);
 
-        Console.WriteLine("coupon added");
-
-        AdminMenu();
+        PresentationHelper.PrintAndWait($"Coupon added and assigned to {account.EmailAddress}");
     }
 
     public static int GenerateRandomCode(int length)
@@ -72,7 +70,7 @@ public static class Coupon
         return Convert.ToInt32(code); // convert string into a integer
     }
 
-        public static DateTime ValidDate(string text)
+    public static DateTime ValidDate(string text)
     {
         // create starting variables
         string input;
@@ -99,7 +97,8 @@ public static class Coupon
     public static AccountModel ChooseAccount()
     {
         Console.Clear();
-        List<AccountModel> accounts = AccountsLogic.GetAllUserAccounts();
+        AccountsLogic accountsLogic = new AccountsLogic();
+        List<AccountModel> accounts = accountsLogic.GetAllAccounts();
         Dictionary<int, int> ValidInputs = new Dictionary<int, int>();
         string text = "";
         int count = 0;
@@ -115,8 +114,7 @@ public static class Coupon
         AccountModel chosenAccount = AccountsAccess.GetById(ValidInputs[input]);
         return chosenAccount;
     }
-
-        public static double ValidDouble(string text, string errorText)
+    public static double ValidDouble(string text, string errorText)
     {
         double price = 0;
         bool valid = false;
@@ -136,7 +134,6 @@ public static class Coupon
                 Console.WriteLine(errorText);
             }
         }
-
         return price;
     }
 }
