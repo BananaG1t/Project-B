@@ -1,25 +1,23 @@
 public class BoughtSnacksModel
 {
-    public Int64 Id { get; set; }
-    public Int64 Account_ID { get; set; }
-    public Int64 Reservation_ID { get; set; }
-    public Int64 Snack_ID { get; set; }
+    public int Id { get; set; }
+    public int ReservationId { get; set; }
+    public int SnackId { get; set; }
     public int Amount { get; set; }
 
-    public BoughtSnacksModel(Int64 id,Int64 account_id, Int64 reservationd_id, Int64 snack_id, int amount)
+    public BoughtSnacksModel(Int64 id, Int64 Reservation_ID, Int64 Snack_ID, int amount)
     {
-        Id = id;
-        Account_ID = account_id;
-        Reservation_ID = reservationd_id;
-        Snack_ID = snack_id;
+        Id = (int)id;
+        ReservationId = (int)Reservation_ID;
+        SnackId = (int)Snack_ID;
         Amount = amount;
     }
-    public BoughtSnacksModel(Int64 account_id, Int64 reservationd_id, Int64 snack_id, int amount)
+    public BoughtSnacksModel(int reservation_id, int snack_id, int amount)
     {
-        Account_ID = account_id;
-        Reservation_ID = reservationd_id;
-        Snack_ID = snack_id;
+        ReservationId = reservation_id;
+        SnackId = snack_id;
         Amount = amount;
+        
         Id = BoughtSnacksAccess.Write(this);
     }
 

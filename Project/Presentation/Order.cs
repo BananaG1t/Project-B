@@ -1,12 +1,17 @@
-static class BarReservation
+static class Order
 {
-    public static void GetBarReservation(AccountModel Account, ScheduleModel schedule, int SeatAmount, int reservationId)
+    public static OrderModel SelectOrder(AccountModel account)
+    {
+        return OrderLogic.SelectOrder(account);
+    }
+
+    public static void GetBarReservation(ScheduleModel schedule, int SeatAmount)
     {
         string text = $"Do you want to sit at the bar after the movie?\n[1] Yes\n[2] No";
 
         bool choice = General.ValidAnswer(text, [1, 2]) == 1;
         if (!choice) { Console.Clear(); return; }
-        if (BarReservationLogic.ReserveBarSeats(Account, schedule, SeatAmount, reservationId))
+        if (OrderLogic.CheckBarSeats(schedule, SeatAmount))
         {
             // Console.Clear();
             Console.WriteLine($"You have booked {SeatAmount} seats for {schedule.EndTime}");

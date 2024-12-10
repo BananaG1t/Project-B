@@ -6,18 +6,25 @@ using Dapper;
 public static class BoughtSnacksAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-     private static string Table = "Bought_snacks";
+     private static string Table = "BoughtSnacks";
     
-    public static Int64 Write(BoughtSnacksModel snack)
+    public static int Write(BoughtSnacksModel snack)
     {
-        string sql = $"INSERT INTO {Table} (Account_ID,Reservation_ID,Snack_ID,amount) VALUES (@Account_ID,@Reservation_ID,@Snack_ID,@Amount)";
+        string sql = $"INSERT INTO {Table} (Reservation_ID, Snack_ID, amount) VALUES (@ReservationId, @SnackId, @Amount)";
         _connection.Execute(sql, snack);
         
         string idSql = "SELECT last_insert_rowid();";
-        Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
+        int lastId = _connection.ExecuteScalar<int>(idSql);
 
         return lastId;
     }
+
+    public static void Write(int reservation_id, int snack_id, int amount)
+    {
+        string sql = $"INSERT INTO {Table} (Reservation_ID, Snack_ID, amount) VALUES (@ReservationId, @SnackId, @Amount)";
+        _connection.Execute(sql, new {ReservationId = reservation_id, SnackId = snack_id, Amount = amount});
+    }
+
     public static BoughtSnacksModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";

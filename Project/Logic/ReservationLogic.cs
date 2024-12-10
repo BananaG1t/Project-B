@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 class ReservationLogic
 {
     public ReservationLogic()
@@ -7,160 +5,73 @@ class ReservationLogic
 
     }
 
-    public static string GetDateAndTime()
+    public static void Update(ReservationModel reservation)
     {
-        List<string> AvailibleDays = DisplayDatesAndTimes();
-        if (AvailibleDays == null) { return null; }
-        string text = string.Join("\n", AvailibleDays);
-
-        int input = General.ValidAnswer(text, General.ListMaker(1, AvailibleDays.Count() + 1));
-
-        string ChosenDayAndTime = AvailibleDays[input - 1];
-        ChosenDayAndTime = ChosenDayAndTime.Remove(0, 4);
-
-        return ChosenDayAndTime;
-    }
-
-    public static List<string> DisplayDatesAndTimes()
-    {
-        List<string> DateInfo = [];
-        int i = 1;
-
-        List<string> InfoList = [];
-
-        // ask the database for all the start times in the schedule
-        // List<string> InfoList = database shit
-
-        if (InfoList.Count() == 0) { return null; }
-
-        foreach (string info in InfoList) { DateInfo.Add($"[{i}] {info}"); i++; }
-
-        return DateInfo;
-    }
-
-    public static MovieModel PickMovie()
-    {
-        MovieModel selectedMovie = null;
-        bool isValid = false;
-
-        while (!isValid)
-        {
-            //Select a movie
-            selectedMovie = SelectMovie();
-
-            // Ask for confirmation
-            Console.WriteLine($"You selected Movie {selectedMovie.Id}: {selectedMovie.Name}. Are you sure? (yes/no): ");
-            string confirmation = Console.ReadLine().ToLower();
-
-            if (confirmation == "yes")
-            {
-                Console.WriteLine($"You confirmed Movie {selectedMovie.Id}: {selectedMovie.Name}.");
-                isValid = true;  // Exit the loop
-            }
-            else if (confirmation == "no")
-            {
-                Console.WriteLine("Let's try again.\n");
-            }
-            else
-            {
-                Console.WriteLine("Invalid response. Returning to the movie list.\n");
-            }
-        }
-
-        return selectedMovie;
-    }
-
-    private static MovieModel SelectMovie()
-    {
-        Console.Clear();
-        string text = "What movie do you want to see?";
-        List<MovieModel> Movies = MovieLogic.GetAll();
-        List<int> valid = [];
-        foreach (MovieModel movie in Movies)
-        {
-            text += $"\n[{movie.Id}] {movie.Name}";
-            valid.Add((int)movie.Id);
-        }
-
-        return Movies.First(MovieModel => MovieModel.Id == General.ValidAnswer(text, valid));
-    }
-
-    public static double GetSeatPrice(int seatClass)
-    {
-        return AuditoriumLayoutAccess.GetPriceBySeatClass(seatClass);
-    }
-
-    /*
-    public static List<SeatModel> AssignSeats(List<int> SeatClasses)
-    {
-        List<SeatModel> AllSeats = [];
-
-        int Auditorium_ID = 1;
-        int RowSize = AuditoriumLayoutAccess.GetRowSizeByRoomId(Auditorium_ID);
-        int ColumnSize = AuditoriumLayoutAccess.GetColSizeByRoomId(Auditorium_ID);
-
-        for (int i = 0; i < SeatClasses.Count(); i++)
-        {
-            for (int j = 1; j < ColumnSize; j++)
-            {
-                for (int k = 1; k < RowSize; k++)
-                {
-                    SeatModel seat = SeatsAccess.GetByReservationInfo(k, j, Auditorium_ID, i);
-                    if (!seat.IsAvailable)
-                    {
-                        seat.IsAvailable = true;
-                        SeatsAccess.Update(seat);
-                        AllSeats.Add(seat);
-                    }
-                }
-            }
-        }
-        return AllSeats;
-    }
-    */
-
-    public static List<int> MakeSeatList(int SeatAmount, bool SameClass = true)
-    {
-        List<int> SeatClassList = [];
-
-        if (SameClass)
-        {
-            string text = "In which class do you want to sit?\n";
-            text += "[1] Class 1 - €15\n[2] Class 2 - €12.50\n[3] Class 3 - €10";
-            int SeatClass = General.ValidAnswer(text, [1, 2, 3]);
-            for (int i = 0; i < SeatAmount; i++)
-            {
-                SeatClassList.Add(SeatClass);
-            }
-        }
-        else
-        {
-            for (int i = 1; i < SeatAmount; i++)
-            {
-                string text = "In which class do you want to sit?\n";
-                text += "[1] Class 1 - €15\n[2] Class 2 - €12.50\n[3] Class 3 - €10";
-                int SeatClass = General.ValidAnswer(text, [1, 2, 3]);
-                SeatClassList.Add(SeatClass);
-            }
-        }
-        return SeatClassList;
+        ReservationAcces.Update(reservation);
     }
 
 
     public static ScheduleModel PickSchedule()
     {
-        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
 
-        int i = 1;
-
-        string text = "";
-        foreach (ScheduleModel schedule in Schedules)
+        Console.Clear();
+        string text = "At which location do you want to see?";
+        List<LocationModel> ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
+        List<LocationModel> NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
+        Dictionary<bool, List<LocationModel>> AllLocations = new Dictionary<bool, List<LocationModel>>
         {
-            text += $"\n[{i}] Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime}";
-            i++;
+            { true, [] },
+            { false, [] }
+        };
+        List<int> valid = [];
+
+        // Adds all locations with schedules to dict and as a valid option for reserving
+        foreach (LocationModel location in ScheduleLocations)
+        {
+            AllLocations[true].Add(location);
+            valid.Add((int)location.Id);
+        } 
+
+        // Adds all locations with no schedules to dict without adding it as a valid option for reserving
+        foreach (LocationModel location in NoScheduleLocations)
+        {
+            AllLocations[false].Add(location);
         }
 
-        int input = General.ValidAnswer(text, General.ListMaker(1, Schedules.Count + 1));
+
+        foreach (var locations in AllLocations)
+        {
+            if (locations.Key)
+            {
+                foreach (LocationModel location in locations.Value)
+                {
+                    text += $"\n[{location.Id}] {location.Name}";
+                }
+            }
+            else
+            {
+                foreach (LocationModel location in locations.Value)
+                {
+                    text += $"\n{location.Name} (Coming Soon!)";
+                }
+            }
+        }
+
+        int LocationId = General.ValidAnswer(text, valid);
+        LocationModel Location = ScheduleLocations.First(LocationModel => LocationModel.Id == LocationId);
+
+        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
+
+
+        text = "";
+
+        for (int i = 0; i < Schedules.Count; i++)
+        {
+            text += $"\n[{i+1}] Movie: {Schedules[i].Movie.Name}, Room: {Schedules[i].Auditorium.Room}, Starting time: {Schedules[i].StartTime}";
+
+        }
+
+        int input = PresentationHelper.MenuLoop(text, 1, Schedules.Count + 1);
 
         return Schedules[input - 1];
     }
@@ -292,54 +203,58 @@ class ReservationLogic
             Console.Clear();
         } while (input != ConsoleKey.Enter);
 
+
+        bool bar;
+        if (OrderLogic.CheckBarSeats(schedule, amount))
+        {
+            bar = General.ValidAnswer("Do you want to stay at the bar after the movie?\n[1] yes\n[2] no", [1, 2]) == 1 ? true : false;
+        } else 
+        {
+            Console.WriteLine("Sorry, the bar is already full");
+            bar = false;
+        }
+
+        OrderModel order = new(account.Id, schedule.Id, amount, bar);
+        int reservationId;
+
+        bool snack = false;
+        string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
+        int choice = General.ValidAnswer(text, [1, 2]);
+        if (choice == 1)
+            snack = true;
+
         for (int i = 0; i < amount; i++)
         {
             SeatModel seat = schedule.Auditorium.Seats[(row, col + i)];
             seat.IsAvailable = false;
             SeatsAccess.Update(seat);
-            ReservationAcces.Write(new(account.Id, (int)schedule.Id, seat.Row, seat.Collum));
+            reservationId = ReservationAcces.Write(new(order.Id, seat.Row, seat.Collum));
+            if (snack)
+                SnackReservation.BuySnacks(reservationId);
         }
         Console.WriteLine("Made the reservation");
-
-        string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
-        int choice = General.ValidAnswer(text, [1, 2]);
-        if (choice == 1)
-        {
-            SnackReservation.BuySnacks(account);
-        }
-
-
-
-        //List<SeatModel> AllSeats = AssignSeats(MakeSeatList());
-
-        //foreach (SeatModel seat in AllSeats)
-        //{
-        //ReservationAcces.Write(new(account.Id, (int)schedule.Id, seat.Row, seat.Collum, status));
-        //}
-
-        BarReservation.GetBarReservation(account, schedule, amount, 1);
-
     }
 
-    public static List<ReservationModel> GetFromAccount(AccountModel account)
+    public static List<ReservationModel> GetFromOrder(OrderModel order)
     {
-        return ReservationAcces.GetFromAccount(account);
+        return ReservationAcces.GetFromOrder(order);
     }
 
-    public static ReservationModel SelectReservation(AccountModel account)
+    public static ReservationModel SelectReservation(OrderModel order)
     {
         Console.Clear();
-        string text = "What reseration do you want to manage?";
-        List<ReservationModel> reservations = ReservationLogic.GetFromAccount(account);
+        ScheduleModel schedule = ScheduleLogic.GetById(order.ScheduleId);
+        string text = $"Location: {schedule.Location.Name}, Movie: {schedule.Movie.Name}, Date: {schedule.StartTime} Bar: {order.Bar}\nWhat reseration do you want to manage?";
+        List<ReservationModel> reservations = GetFromOrder(order);
         List<int> valid = [];
 
         foreach (ReservationModel reservation in reservations)
         {
-            ScheduleModel schedule = ScheduleAccess.GetById((int)reservation.Schedule_ID);
-            text += $"\n[{reservation.Id}] Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seat: row {reservation.Seat_Row} collum {reservation.Seat_Collum}, Status: {reservation.Status}";
+            text += $"\n[{reservation.Id}] Seat: row {reservation.Seat_Row} collum {reservation.Seat_Collum}, Status: {reservation.Status}";
             valid.Add(reservation.Id);
         }
-        int answer = General.ValidAnswer(text, valid);
+
+        int answer = PresentationHelper.MenuLoop(text, 1, reservations.Count);
         return reservations.First(ReservationModel => ReservationModel.Id == answer);
     }
 

@@ -162,31 +162,28 @@ public static class SnackReservation
         return amount;
     }
 
-    public static void BuySnacks(AccountModel currentaccount)
+    public static void BuySnacks(int reservation_id)
     {
         Console.Clear();
-        List<SnacksModel> Snacks = SnacksLogic.GetAll();
-        Dictionary<int, int> ValidInputs = new Dictionary<int, int>();
-        string text = "";
-        int count = 0;
+        List<SnacksModel> snacks = SnacksLogic.GetAll();
+        string text = "Enter the number of the snack that you would like to buy";
+        List<int>ValidInputs = [];
 
-        foreach (SnacksModel snack in Snacks)
+        for (int i = 0; i < snacks.Count; i++)
         {
-            count++;
-            text += $"[{count}] Name: {snack.Name}, Price: {snack.Price:F2}\n";
-            ValidInputs.Add(count, (int)snack.Id);
+            text += $"\n[{i+1}] Name: {snacks[i].Name}, Price: {snacks[i].Price:F2}";
+            ValidInputs.Add(i+1);
         }
 
-        int input = General.ValidAnswer(text + "Enter the number of the snack that you would like to buy ", new List<int>(ValidInputs.Keys));
+        int input = General.ValidAnswer(text, ValidInputs);
         
         int amount = ValidAmount();
 
-        SnacksModel boughtSnack = SnacksLogic.GetById(ValidInputs[input]);
-        Int64 reservation_id = ReservationLogic.GetReservation_id(currentaccount.Id);
+        SnacksModel boughtSnack = snacks[input-1];
 
-        BoughtSnacksLogic.Write(currentaccount.Id, reservation_id, boughtSnack.Id, amount);
+        BoughtSnacksLogic.Write(reservation_id, boughtSnack.Id, amount);
 
-        Console.WriteLine($"\nSnacks reserved: {amount}X {boughtSnack.Name}, Total Price: {(amount * boughtSnack.Price):F2}\n");
+        Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {amount * boughtSnack.Price:F2}\n");
     }
 
 

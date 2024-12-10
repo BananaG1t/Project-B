@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-
-
-//This class is not static so later on we can use inheritance and interfaces
+﻿//This class is not static so later on we can use inheritance and interfaces
 public class AccountsLogic
 {
     //Static properties are shared across all instances of the class
@@ -47,7 +41,7 @@ public class AccountsLogic
 
     public bool Validinfo(string email, string password) // check if new email and password are valid 
     {
-        if (!email.Contains('@')& !email.Contains('.')) 
+        if (!email.Contains('@') & !email.Contains('.'))
         {
             Console.WriteLine("Invalid email");
             return false;
@@ -57,12 +51,12 @@ public class AccountsLogic
             Console.WriteLine("Account with this email already exists");
             return false;
         }
-        else if (password.Length < 1) 
+        else if (password.Length < 1)
         {
             Console.WriteLine("Invalid password");
             return false;
         }
-        else 
+        else
         {
             Console.WriteLine("New account added");
             return true;

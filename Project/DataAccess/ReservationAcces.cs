@@ -7,12 +7,17 @@ public static class ReservationAcces
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private static string Table = "Reservations";
+    private static string Table = "SeatReservations";
 
-    public static void Write(ReservationModel Reservation)
+    public static int Write(ReservationModel Reservation)
     {
-        string sql = $"INSERT INTO {Table} (Account_ID, Schedule_ID, seat_Row, seat_Collum, status) VALUES (@Account_ID, @Schedule_ID, @Seat_Row, @Seat_Collum, @Status)";
+        string sql = $"INSERT INTO {Table} (Order_ID, seat_Row, seat_Collum, status) VALUES (@OrderId, @Seat_Row, @Seat_Collum, @Status)";
         _connection.Execute(sql, Reservation);
+
+        string idSql = "SELECT last_insert_rowid();";
+        int lastId = _connection.ExecuteScalar<int>(idSql);
+
+        return lastId;
     }
 
     public static ReservationModel GetById(int id)
@@ -21,10 +26,10 @@ public static class ReservationAcces
         return _connection.QueryFirstOrDefault<ReservationModel>(sql, new { Id = id });
     }
 
-    public static List<ReservationModel> GetFromAccount(AccountModel account)
+    public static List<ReservationModel> GetFromOrder(OrderModel order)
     {
-        string sql = $"SELECT * FROM {Table} WHERE Account_ID = @Id";
-        return (List<ReservationModel>)_connection.Query<ReservationModel>(sql, account);
+        string sql = $"SELECT * FROM {Table} WHERE Order_ID = @Id";
+        return (List<ReservationModel>)_connection.Query<ReservationModel>(sql, order);
     }
 
     public static List<ReservationModel> GetByAccount_id(int Account_id)

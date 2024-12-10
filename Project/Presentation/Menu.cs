@@ -59,14 +59,15 @@ static class Menu
             }
         }
 
-        UserLogin.Start();
+        Start();
     }
 
     static public void Start()
     {
         Console.Clear();
         // get a valid input number
-        int input = General.ValidAnswer("Enter [1] to login\nEnter [2] to create new account", [1, 2]);
+        string text = $"Enter [1] to login\nEnter [2] to create new account";
+        int input = PresentationHelper.MenuLoop(text, 1, 2);
 
         if (input == 1) { UserLogin.Start(); }
         else if (input == 2) { UserLogin.CreateLogin(); }
@@ -84,7 +85,7 @@ static class Menu
             "Press [4] to log out";
 
             // get a valid input number
-            int input = General.ValidAnswer(text, [1, 2, 3, 4]);
+            int input = PresentationHelper.MenuLoop(text, 1, 4);
 
             if (input == 1)
             {
@@ -93,7 +94,7 @@ static class Menu
 
             else if (input == 2)
             {
-                Reservation.ManageReservations(CurrentAccount);
+                Reservation.ManageReservations(Order.SelectOrder(CurrentAccount));
             }
             else if (input == 3)
             {
@@ -108,14 +109,28 @@ static class Menu
 
     public static void DisplaySchedule()
     {
-        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDate();
-
-        // Shows what movie are playing based on the date and time
         Console.Clear();
+        string text = "At which location do you want to see?";
+        List<LocationModel> locations = LocationLogic.GetAll();
+        List<int> valid = [];
+        foreach (LocationModel location in locations)
+        {
+            text += $"\n[{location.Id}] {location.Name}";
+            valid.Add((int)location.Id);
+        }
+
+        int LocationId = General.ValidAnswer(text, valid);
+        LocationModel Location = locations.First(LocationModel => LocationModel.Id == LocationId);
+
+        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
+
+        // Shows what movie are playing based on the date and time and location
         Console.WriteLine($"Movies Playing");
         foreach (ScheduleModel schedule in Schedules)
         {
-            Console.WriteLine($"Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime.ToString("dd-MM-yyyy HH:mm")}");
+            Console.WriteLine(@$"Movie: {schedule.Movie.Name}, 
+Room: {schedule.Auditorium.Room}, 
+Starting time: {schedule.StartTime.ToString("dd-MM-yyyy HH:mm")}");
         }
         Console.WriteLine();
     }
