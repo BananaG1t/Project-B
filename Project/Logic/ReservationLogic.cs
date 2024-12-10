@@ -198,6 +198,8 @@ class ReservationLogic
                 if (isValid(row, col + 1))
                     col += 1;
                 else findNext(row, col, "right");
+            else if (input == ConsoleKey.Backspace)
+                return;
 
             AuditoriumLogic.DisplaySeats(schedule.Auditorium, row, col, amount);
             input = Console.ReadKey().Key;
