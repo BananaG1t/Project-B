@@ -4,50 +4,51 @@ static class Menu
     //This shows the menu. You can call back to this method to show the menu again
     //after another presentation method is completed.
     //You could edit this to show different menus depending on the user's role
-    static public void AdminMenu()
+
+    public static List<string> functionalities = ["Manage Users", "Add a movie", "Add to the schedule",
+                                                    "Display the schedule", "Display income overview",
+                                                    "Manage snacks"];
+    static public void AdminMenu(AccountModel account)
     {
         //admin menu
-        string text =
-        "Admin Menu:\n" +
-        "[1] Manage Users\n" +
-        "[2] Add a movie\n" +
-        "[3] Add to the schedule\n" +
-        "[4] Display the schedule\n" +
-        "[5] Display income overview\n" +
-        "[6] Manage snacks\n" +
-        "[7] Exit";
+        List<string> MenuOptions = RoleLogic.GetMenuText(account);
+
+        string MenuText = String.Join("", MenuOptions);
+
+        List<string> usedFunctionalities = functionalities;
+        usedFunctionalities.Add("Exit");
 
         while (true)
         {
             //reading input from the menu to connect to the features
-            int input = PresentationHelper.MenuLoop(text, 1, 7);
+            string functionality = usedFunctionalities[PresentationHelper.MenuLoop(MenuText + $"[{MenuOptions.Count + 1}] Exit", 1, MenuOptions.Count + 1) - 1];
 
-            if (input == 1)
+            if (functionality == functionalities[0])
             {
                 Roles.RoleMenu();
             }
-            else if (input == 2)
+            else if (functionality == functionalities[1])
             {
                 AddMovieMenu.Main();
             }
-            else if (input == 3)
+            else if (functionality == functionalities[2])
             {
                 CreateScheduleEntry.Main();
             }
-            else if (input == 4)
+            else if (functionality == functionalities[3])
             {
                 DisplaySchedule();
             }
-            else if (input == 5)
+            else if (functionality == functionalities[4])
             {
                 Overview.MoneyOverview();
             }
-            else if (input == 6)
+            else if (functionality == functionalities[5])
             {
                 Console.Clear();
                 SnackReservation.Main();
             }
-            else if (input == 7)
+            else if (functionality == usedFunctionalities[6])
             {
                 Console.WriteLine("Exiting");
                 break;
@@ -99,7 +100,7 @@ static class Menu
             else if (input == 4) { break; }
         }
 
-        UserLogin.Start();
+        Start();
     }
 
     public static void DisplaySchedule()

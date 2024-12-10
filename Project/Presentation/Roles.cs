@@ -16,24 +16,30 @@ public static class Roles
         "[9] Display all the role levels\n" +
         "[10] go back to the menu";
 
-        int choice = PresentationHelper.MenuLoop(text, 1, 10);
-
-        if (choice == 1) { AssignRole(); }
-        if (choice == 2) { RemoveRole(); }
-        if (choice == 3) { DisplayRoles("Assigned Roles"); }
-        if (choice == 4) { CreateRole(); }
-        if (choice == 5) { DeleteRole(); }
-        if (choice == 6) { DisplayRoles("Roles"); }
-        if (choice == 7) { CreateFunctionalityRole(); }
-        if (choice == 8) { DeleteFunctionalityRole(); }
-        if (choice == 9) { DisplayRoles("Role Levels"); }
-        if (choice == 10) { return; }
-
-        if (choice > 10)
+        while (true)
         {
-            PresentationHelper.PrintInRed("Probleem");
-            Console.WriteLine(choice);
+            int choice = PresentationHelper.MenuLoop(text, 1, 10);
+
+            if (choice == 1) { AssignRole(); }
+            if (choice == 2) { RemoveRole(); }
+            if (choice == 3) { DisplayRoles("Assigned Roles"); }
+            if (choice == 4) { CreateRole(); }
+            if (choice == 5) { DeleteRole(); }
+            if (choice == 6) { DisplayRoles("Roles"); }
+            if (choice == 7) { CreateFunctionalityRole(); }
+            if (choice == 8) { DeleteFunctionalityRole(); }
+            if (choice == 9) { DisplayRoles("Role Levels"); }
+            if (choice == 10) { break; }
+
+            if (choice > 10)
+            {
+                PresentationHelper.PrintInRed("Probleem");
+                Console.WriteLine(choice);
+            }
+
         }
+
+        Console.Clear();
     }
     public static void AssignRole()
     {
@@ -71,7 +77,7 @@ public static class Roles
 
         // int locationId = PresentationHelper.MenuLoop(RoleInfo.Item1, 1, RoleInfo.Item2);
 
-        int locationId = 3; // remove when location is done
+        int locationId = 0; // remove when location is done
 
         if (RoleLogic.AssignRole((int)role.Id, (int)account.Id, locationId))
         { PresentationHelper.PrintAndWait("The role has been assigned"); }
@@ -97,7 +103,12 @@ public static class Roles
     {
         Console.Clear();
 
-        string functionaltyName = PresentationHelper.GetString("What is the name of the functionalty? ", "functionalty");
+        List<string> functionalities = Menu.functionalities;
+
+        Tuple<string, int> functionalityInfo = RoleLogic.GetFunctionalityText(functionalities);
+
+
+        string functionaltyName = functionalities[PresentationHelper.MenuLoop(functionalityInfo.Item1, 1, functionalityInfo.Item2) - 1];
         int roleLevel = PresentationHelper.GetInt("What level does the functionalty require? ");
 
         if (RoleLogic.AddRoleLevel(functionaltyName, roleLevel))

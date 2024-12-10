@@ -80,7 +80,7 @@ public static class RoleLogic
 
         for (int i = 0; i < roles.Count; i++)
         {
-            text += $"[{i + 1}] Name:{roles[i].Name}, Level access: {roles[i].LevelAccess}\n";
+            text += $"[{i + 1}] Name: {roles[i].Name}, Level access: {roles[i].LevelAccess}\n";
         }
 
         return new(text, roles.Count);
@@ -94,10 +94,22 @@ public static class RoleLogic
 
         for (int i = 0; i < roles.Count; i++)
         {
-            text += $"[{i + 1}] Functionalty:{roles[i].Functionalty}, Level needed: {roles[i].LevelNeeded}\n";
+            text += $"[{i + 1}] Functionalty: {roles[i].Functionalty}, Level needed: {roles[i].LevelNeeded}\n";
         }
 
         return new(text, roles.Count);
+    }
+
+    public static Tuple<string, int> GetFunctionalityText(List<string> functionalities)
+    {
+        string text = $"Choose a functionality\n";
+
+        for (int i = 0; i < functionalities.Count; i++)
+        {
+            text += $"[{i + 1}] Functionalty: {functionalities[i]}\n";
+        }
+
+        return new(text, functionalities.Count);
     }
 
     public static List<AssignedRoleModel> GetAllAssignedRoles()
@@ -135,9 +147,54 @@ public static class RoleLogic
 
     //     for (int i = 0; i < locations.Count; i++)
     //     {
-    //         text += $"[{i + 1}] Name:{locations[i].Name}\n";
+    //         text += $"[{i + 1}] Name: {locations[i].Name}\n";
     //     }
 
     //     return new(text, locations.Count);
     // }
+
+    public static bool HasAccess(AccountModel account, string functionaltyName)
+    {
+        AssignedRoleModel assignedRoleModel = AssignedRoleAccess.GetByAccountId((int)account.Id);
+        if (assignedRoleModel == null) { return false; }
+
+        RoleLevelModel roleLevelModel = RoleLevelAccess.GetByFunctionality(functionaltyName);
+
+        RoleModel roleModel = RoleAccess.GetById((int)assignedRoleModel.RoleId);
+
+        if (roleModel.LevelAccess >= roleLevelModel.LevelNeeded)
+            return true;
+
+        return false;
+    }
+
+    public static bool HasAccess(AccountModel account, int levelNeeded)
+    {
+        AssignedRoleModel assignedRoleModel = AssignedRoleAccess.GetByAccountId((int)account.Id);
+        if (assignedRoleModel == null) { return false; }
+
+        RoleModel roleModel = RoleAccess.GetById((int)assignedRoleModel.RoleId);
+
+        if (roleModel.LevelAccess >= levelNeeded)
+            return true;
+
+        return false;
+    }
+
+    public static List<string> GetMenuText(AccountModel account)
+    {
+        List<string> functionalities = Menu.functionalities;
+
+        List<string> MenuOptions = [];
+
+        for (int i = 0; i < functionalities.Count; i++)
+        {
+            if (HasAccess(account, functionalities[i]))
+                MenuOptions.Add($"[{i + 1}] {functionalities[i]}\n");
+            else
+                i--;
+        }
+
+        return MenuOptions;
+    }
 }

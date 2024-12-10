@@ -38,8 +38,6 @@ public static class SnackReservation
         }
 
         Console.Clear();
-        Menu.AdminMenu();
-
     }
     public static void AddSnacks()
     {

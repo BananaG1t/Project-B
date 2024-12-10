@@ -21,7 +21,6 @@ static class Overview
                 TotalMovieIncome();
                 break;
         }
-        Menu.AdminMenu();
     }
 
     public static void TotalIncome()
