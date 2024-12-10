@@ -4,11 +4,11 @@ public static class CreateScheduleEntry
 {
     public static void Main()
     {
+        LocationModel location = Location();
         int room = SelectRoom();
         MovieModel movie = SelectMovie();
-        DateTime date = SelectDate(room, movie.Length);
+        DateTime date = SelectDate(room, movie.Length, (int)location.Id);
         string? extras = GetExtras();
-        LocationModel location = Location();
         new ScheduleModel(date, movie, new AuditoriumModel(room, extras), location);
         Console.Clear();
     }
@@ -41,17 +41,17 @@ public static class CreateScheduleEntry
         return Movies.First(MovieModel => MovieModel.Id == movieId);
     }
 
-    private static DateTime SelectDate(int room, TimeSpan length)
+    private static DateTime SelectDate(int room, TimeSpan length, int locationId)
     {
         Console.Clear();
         string text = "When do you want to show the movie? (dd-MM-yyyy-HH-mm)";
         DateTime date;
         date = General.ValidDate(text);
         bool cleanupTime = CleanupTime(date);
-        while (!ScheduleLogic.IsAvailable(room, date, length) || !cleanupTime)
+        while (!ScheduleLogic.IsAvailable(room, date, length, locationId) || !cleanupTime)
         {
             Console.Clear();
-            if (!ScheduleLogic.IsAvailable(room, date, length))
+            if (!ScheduleLogic.IsAvailable(room, date, length, locationId))
             {
                 Console.WriteLine("There is already a movie playing on that time");
             }
@@ -103,7 +103,8 @@ public static class CreateScheduleEntry
             valid.Add((int)location.Id);
         }
 
-        return locations.First(LocationModel => LocationModel.Id == General.ValidAnswer(text, valid));
+        int LocationId = General.ValidAnswer(text, valid);
+        return locations.First(LocationModel => LocationModel.Id == LocationId);
     }
 
 }

@@ -32,6 +32,22 @@ public static class LocationAccess
         return Locations;
     }
 
+    public static List<LocationModel> GetAllLocationsWithNoSchedules()
+    {
+        string sql = @$"SELECT DISTINCT Location.* FROM {Table} LEFT JOIN Schedule ON {Table}.id = Schedule.LocationID WHERE Schedule.LocationID IS NULL";
+        List<LocationModel> locations = (List<LocationModel>)_connection.Query<LocationModel>(sql);
+
+        return locations;
+    }
+
+    public static List<string> GetAllNames()
+    {
+        string sql = $"SELECT name FROM {Table}";
+        List<string> LocationsNames = (List<string>)_connection.Query<string>(sql);
+
+        return LocationsNames;
+    }
+
     public static void Update(LocationModel snack)
     {
         string sql = $"UPDATE {Table} SET name = @Name WHERE id = @Id";

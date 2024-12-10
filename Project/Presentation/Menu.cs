@@ -21,7 +21,7 @@ static class Menu
         while (true)
         {
             //reading input from the menu to connect to the features
-            int input = General.ValidAnswer(text, [1, 2, 3, 4, 5, 6, 7]);
+            int input = General.ValidAnswer(text, [1, 2, 3, 4, 5, 6, 7, 8]);
 
             if (input == 1)
             {
@@ -118,7 +118,8 @@ static class Menu
             valid.Add((int)location.Id);
         }
 
-        LocationModel Location = locations.First(LocationModel => LocationModel.Id == General.ValidAnswer(text, valid));
+        int LocationId = General.ValidAnswer(text, valid);
+        LocationModel Location = locations.First(LocationModel => LocationModel.Id == LocationId);
 
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
 

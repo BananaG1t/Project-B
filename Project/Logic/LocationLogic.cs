@@ -15,6 +15,16 @@ public static class LocationLogic
         return LocationAccess.GetAll();
     }
 
+    public static List<string> GetAllNames()
+    {
+        return LocationAccess.GetAllNames();
+    }
+
+    public static List<LocationModel> GetAllLocationsWithNoSchedules()
+    {
+        return LocationAccess.GetAllLocationsWithNoSchedules();
+    }
+
     public static void update(LocationModel location)
     {
         LocationAccess.Update(location);

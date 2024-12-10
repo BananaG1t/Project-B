@@ -152,15 +152,49 @@ class ReservationLogic
 
         Console.Clear();
         string text = "At which location do you want to see?";
-        List<LocationModel> locations = LocationLogic.GetAll();
-        List<int> valid = [];
-        foreach (LocationModel location in locations)
+        List<LocationModel> ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
+        List<LocationModel> NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
+        Dictionary<bool, List<LocationModel>> AllLocations = new Dictionary<bool, List<LocationModel>>
         {
-            text += $"\n[{location.Id}] {location.Name}";
+            { true, [] },
+            { false, [] }
+        };
+        List<int> valid = [];
+
+        // Adds all locations with schedules to dict and as a valid option for reserving
+        foreach (LocationModel location in ScheduleLocations)
+        {
+            AllLocations[true].Add(location);
             valid.Add((int)location.Id);
+        } 
+
+        // Adds all locations with no schedules to dict without adding it as a valid option for reserving
+        foreach (LocationModel location in NoScheduleLocations)
+        {
+            AllLocations[false].Add(location);
         }
 
-        LocationModel Location = locations.First(LocationModel => LocationModel.Id == General.ValidAnswer(text, valid));
+
+        foreach (var locations in AllLocations)
+        {
+            if (locations.Key)
+            {
+                foreach (LocationModel location in locations.Value)
+                {
+                    text += $"\n[{location.Id}] {location.Name}";
+                }
+            }
+            else
+            {
+                foreach (LocationModel location in locations.Value)
+                {
+                    text += $"\n{location.Name} (Coming Soon!)";
+                }
+            }
+        }
+
+        int LocationId = General.ValidAnswer(text, valid);
+        LocationModel Location = ScheduleLocations.First(LocationModel => LocationModel.Id == LocationId);
 
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
 

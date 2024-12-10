@@ -5,22 +5,30 @@ static class LocationMenu
         Console.Clear();
         bool valid = false;
         string input = "";
-        List<LocationModel> locations = LocationLogic.GetAll();
+        List<string> locations = LocationLogic.GetAllNames();
 
         while(!valid)
         {
             Console.WriteLine("What is the name of the new location?");
             input = Console.ReadLine();
 
-            foreach (LocationModel location in locations)
+            // Checks if there are any existing locations in db
+            if (locations.Count() > 0)
+            {  
+                if (locations.Contains(input)) { Console.WriteLine("\nThere's already an existing location with that name\n"); }
+                else if (input == "") { Console.WriteLine("\nInvalid input. Please try again\n"); }
+                else { valid = true; }   
+
+            }
+
+            else 
             {
-                if (input == location.Name) { Console.WriteLine("There's already an existing location with that name\n"); break; }
-                else if (input == "") { Console.WriteLine("Invalid input. Please try again\n"); break; }
+                if (input == "") { Console.WriteLine("\nInvalid input. Please try again\n"); }
                 else { valid = true; }
             }
         }
 
         LocationLogic.Add(input);
-        Console.WriteLine("Added new location");
+        Console.WriteLine("\nAdded new location\n");
     }
 }

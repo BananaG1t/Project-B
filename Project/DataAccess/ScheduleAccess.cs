@@ -20,15 +20,16 @@ public static class ScheduleAccess
         return lastId;
     }
 
-    public static bool IsAvailable(int room, DateTime startTime, DateTime endTime)
+    public static bool IsAvailable(int room, DateTime startTime, DateTime endTime, int location)
     {
         string sql = @$"
                 SELECT COUNT(*) FROM {Table} 
                 JOIN Auditorium ON {Table}.Auditorium_ID = Auditorium.id 
                 WHERE Auditorium.room = @Room 
                 AND @StartTime < endTime 
-                AND @EndTime > startTime";
-        return _connection.ExecuteScalar<int>(sql, new { Room = room, StartTime = startTime, EndTime = endTime }) == 0;
+                AND @EndTime > startTime
+                AND LocationID = @Location";
+        return _connection.ExecuteScalar<int>(sql, new { Room = room, StartTime = startTime, EndTime = endTime, Location = location }) == 0;
     }
 
     public static List<ScheduleModel> ScheduleByDate()
@@ -48,6 +49,16 @@ public static class ScheduleAccess
 
         return schedules;
     }
+
+    public static List<LocationModel> GetAllLocationsWithSchedules()
+    {
+        string sql = @$"SELECT DISTINCT Location.* FROM {Table} JOIN Location ON {Table}.LocationID = Location.id";
+        List<LocationModel> locations = (List<LocationModel>)_connection.Query<LocationModel>(sql);
+
+        return locations;
+    }
+
+    
 
     public static ScheduleModel GetById(int id)
     {

@@ -67,40 +67,40 @@ static class AddMovieMenu
         }
         
         // Ask admin if the movie should be added to the weekly schedule
-        Console.WriteLine("Do you want to add this movie to the weekly schedule? (yes/no): ");
-        string response = Console.ReadLine().ToLower();
+        // Console.WriteLine("Do you want to add this movie to the weekly schedule? (yes/no): ");
+        // string response = Console.ReadLine().ToLower();
 
-        if (response == "yes")
-        {
-            Console.WriteLine("Enter the room number:");
-            int room = int.Parse(Console.ReadLine());
+        // if (response == "yes")
+        // {
+        //     Console.WriteLine("Enter the room number:");
+        //     int room = int.Parse(Console.ReadLine());
 
-            Console.WriteLine("Enter the start time of the movie (yyyy-MM-dd HH:mm):");
-            DateTime startTime = DateTime.Parse(Console.ReadLine());
+        //     Console.WriteLine("Enter the start time of the movie (yyyy-MM-dd HH:mm):");
+        //     DateTime startTime = DateTime.Parse(Console.ReadLine());
 
-            Console.WriteLine("Enter the end time of the movie (yyyy-MM-dd HH:mm):");
-            DateTime endTime = DateTime.Parse(Console.ReadLine());
+        //     Console.WriteLine("Enter the end time of the movie (yyyy-MM-dd HH:mm):");
+        //     DateTime endTime = DateTime.Parse(Console.ReadLine());
 
-            for (int day = 1; day <= 7; day++)
-            {
-                DateTime dayStartTime = startTime.AddDays(day - 1);
-                DateTime dayEndTime = endTime.AddDays(day - 1);
+        //     for (int day = 1; day <= 7; day++)
+        //     {
+        //         DateTime dayStartTime = startTime.AddDays(day - 1);
+        //         DateTime dayEndTime = endTime.AddDays(day - 1);
     
-                if (ScheduleAccess.IsAvailable(room, dayStartTime, dayEndTime))
-                {
-                    Console.WriteLine($"The movie has been added to day {day} of the weekly schedule in room {room}.");
-                    MovieLogic.AddMovieByDay(name, author, description, length, genre, agerating, movieRatings);
-                }
-                else
-                {
-                    Console.WriteLine($"Room {room} is not available on day {day} during the specified time.");
-                }
-            }
-        }
-        else
-        {
-            Console.WriteLine("The movie has been added to the database but not to the weekly schedule.");
-        }
+        //         if (ScheduleAccess.IsAvailable(room, dayStartTime, dayEndTime))
+        //         {
+        //             Console.WriteLine($"The movie has been added to day {day} of the weekly schedule in room {room}.");
+        //             MovieLogic.AddMovieByDay(name, author, description, length, genre, agerating, movieRatings);
+        //         }
+        //         else
+        //         {
+        //             Console.WriteLine($"Room {room} is not available on day {day} during the specified time.");
+        //         }
+        //     }
+        // }
+        // else
+        // {
+        //     Console.WriteLine("The movie has been added to the database but not to the weekly schedule.");
+        // }
 
     MovieLogic.AddMovie(name, author, description, length, genre, agerating, movieRatings);
     }
