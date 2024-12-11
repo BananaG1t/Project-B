@@ -5,7 +5,12 @@ public class TestRoles
 {
     [TestMethod]
     [DataRow("staff", true)]
+    [DataRow("admin", true)]
+    [DataRow("floor manager", true)]
+    [DataRow("user", false)]
     [DataRow("watermeloen", false)]
+    [DataRow("kip", false)]
+    [DataRow("stevie wonder", false)]
     public void StaffRoleInDatabase(string roleName, bool expected)
     {
         RoleModel role = RoleAccess.GetByName(roleName);
