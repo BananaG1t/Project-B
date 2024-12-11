@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 // // namespace UnitTests;
-=======
-// namespace UnitTests;
->>>>>>> Stashed changes
 
 // [TestClass]
 // public class MovieLogicTests

@@ -62,6 +62,12 @@ public class TestRoles
     // }
 
     [TestMethod]
+    [DataRow("admin", 100, false)]
+    [DataRow("floor manager", 200, false)]
+    [DataRow("staff", 300, false)]
+    [DataRow("test10", 255, false)]
+    [DataRow("test11", 50, false)]
+    [DataRow("test13", 30, false)]
     [DataRow("test1", 1, true)]
     [DataRow("test1", 2, false)]
     [DataRow("test2", 3, true)]
@@ -72,8 +78,8 @@ public class TestRoles
     [DataRow("test5", 10, false)]
     [DataRow("test6", 20, true)]
     [DataRow("test7", 20, false)]
-    [DataRow("test8", 30, true)]
-    [DataRow("test9", 30, false)]
+    [DataRow("test8", 40, true)]
+    [DataRow("test9", 40, false)]
 
     public void TestAddRoleRole(string roleName, int LevelAccess, bool expected)
     {
