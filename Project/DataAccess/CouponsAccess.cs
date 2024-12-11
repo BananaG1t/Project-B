@@ -25,7 +25,14 @@ public static class CouponsAccess
 
     public static List<CouponModel> GetAll()
     {
-        string sql = $"SELECT Account_ID,Reservation_ID,snack,amount FROM {Table}";
+        string sql = $"SELECT * FROM {Table}";
+        var Coupons = (List<CouponModel>)_connection.Query<CouponModel>(sql);
+
+        return Coupons;
+    }
+        public static List<CouponModel> GetAllById(int id)
+    {
+        string sql = $"SELECT coupon_code,expiration_date,coupon_type,coupon_percentage,amount,Account_ID FROM {Table} WHERE id = @Id";
         List<CouponModel> Coupons = (List<CouponModel>)_connection.Query<CouponModel>(sql);
 
         return Coupons;

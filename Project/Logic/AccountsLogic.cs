@@ -28,11 +28,6 @@ public class AccountsLogic
         return null;
     }
 
-    public static  List<AccountModel> GetAllUserAccounts()
-    {
-        return AccountsAccess.GetAllUserAccounts();
-    }
-
     public bool CheckNewEmail(string email) // added bool to check if email already exsits in database
     {
         AccountModel acc = AccountsAccess.GetByEmail(email);

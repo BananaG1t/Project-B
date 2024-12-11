@@ -1,3 +1,5 @@
+using System.ComponentModel.Design;
+
 public static class Coupon
 {
     public static void AdminMenu()
@@ -10,7 +12,7 @@ public static class Coupon
         while (true)
         {
             Console.Clear();
-            int input = PresentationHelper.MenuLoop(text, [1, 2]);
+            int input = PresentationHelper.MenuLoop(text, [1, 2, 3]);
 
             if (input == 1)
             {
@@ -58,6 +60,31 @@ public static class Coupon
         PresentationHelper.PrintAndWait($"Coupon added and assigned to {account.EmailAddress}");
     }
 
+    public static void DisplayCoupons(int id)
+    {
+        Console.Clear();
+        List<CouponModel> coupons = CouponsLogic.GetAllById(id);
+        int count = 0;
+
+        if (coupons.Count() == 0) PresentationHelper.PrintAndWait("No coupons found");
+        else
+        {
+            foreach (CouponModel coupon in coupons)
+            {
+                count++;
+                Console.WriteLine($"[{count}] Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon)} \n");
+            }
+
+            Console.WriteLine("[ENTER] Continue");
+            Console.ReadLine();
+        }
+    }
+
+    public static string PrintDiscount (CouponModel coupon)
+    {
+        if (coupon.CouponPercentage == true) { return $"% {coupon.Amount}"; }
+        else { return $"€ {coupon.Amount}";}
+    }
     public static int GenerateRandomCode(int length)
     {
         var numbers = new List <int>();

@@ -19,12 +19,12 @@ public class CouponModel
         AccountId = (int)Account_ID;
     }
 
-    public CouponModel(int couponCode,DateTime expirationDate,string couponType,bool couponPercentage,double amount,int Account_ID)
+    public CouponModel(int coupon_code,DateTime expiration_date,string coupon_type,bool coupon_percentage,double amount,int Account_ID)
     {
-        CouponCode = couponCode;
-        ExpirationDate = expirationDate;
-        CouponType = couponType;
-        CouponPercentage = couponPercentage;
+        CouponCode = coupon_code;
+        ExpirationDate = expiration_date;
+        CouponType = coupon_type;
+        CouponPercentage = coupon_percentage;
         Amount = amount;
         AccountId = Account_ID;
         Id = CouponsAccess.Write(this);

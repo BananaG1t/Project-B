@@ -4,5 +4,19 @@ public static class CouponsLogic
     {
         new CouponModel(couponCode, expirationDate, couponType, couponPercentage, amount, Account_ID);
     }
+    public static CouponModel GetById(int id)
+    {
+        return CouponsAccess.GetById(id);
+    }
+
+    public static List<CouponModel> GetAllById(int id)
+    {
+        return CouponsAccess.GetAllById(id);
+    }
+
+    public static List<CouponModel> GetAll()
+    {
+        return CouponsAccess.GetAll();
+    }
 
 }
