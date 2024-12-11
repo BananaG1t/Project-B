@@ -31,37 +31,38 @@ public static class LocationLogic
     }
     public static void Delete(int locationId)
     {
-        while (true)
-        {
-            AssignedRoleModel assignedRoleModel = AssignedRoleAccess.GetByLocationId(locationId);
-            if (assignedRoleModel == null) { break; }
-            AssignedRoleAccess.Delete((int)assignedRoleModel.Id);
-        }
-        while (true)
-        {
-            BoughtSnacksModel boughtSnacks = BoughtSnacksAccess.GetByLocationId(locationId);
-            if (boughtSnacks == null) { break; }
-            BoughtSnacksAccess.Delete(boughtSnacks.Id);
-        }
-        while (true)
-        {
-            ReservationModel reservation = ReservationAcces.GetByLocationId(locationId);
-            if (reservation == null) { break; }
-            ReservationAcces.Delete(reservation.Id);
-        }
+        // AssignedRoleModel assignedRoleModel = AssignedRoleAccess.GetByLocationId(locationId);
+        // OrderModel Order = OrderAccess.GetByLocationId(locationId);
+        // ReservationModel reservation = ReservationAcces.GetFromOrder(locationId);
+        // BoughtSnacksModel boughtSnacks = BoughtSnacksAccess.GetFromReservations(locationId);
+        // ScheduleModel schedule = ScheduleAccess.GetByLocationId(locationId);
+
         // while (true)
         // {
-        //     OrderModel Order = OrderAccess.GetByLocationId(locationId);
+        //     if (assignedRoleModel == null) { break; }
+        //     AssignedRoleAccess.Delete((int)assignedRoleModel.Id);
+        // }
+        // while (true)
+        // {
+        //     if (boughtSnacks == null) { break; }
+        //     BoughtSnacksAccess.Delete(boughtSnacks.Id);
+        // }
+        // while (true)
+        // {
+        //     if (reservation == null) { break; }
+        //     ReservationAcces.Delete(reservation.Id);
+        // }
+        // while (true)
+        // {
         //     if (Order == null) { break; }
         //     OrderAccess.Delete(Order.Id);
         // }
         // while (true)
         // {
-        //     ScheduleModel schedule = ScheduleAccess.GetByLocationId(locationId);
         //     if (schedule == null) { break; }
         //     ScheduleAccess.Delete(schedule.Id);
         // }
-        //LocationAccess.Delete(locationId);
+        // LocationAccess.Delete(locationId);
     }
 
     public static Tuple<string, int> GetLocationInfo()
