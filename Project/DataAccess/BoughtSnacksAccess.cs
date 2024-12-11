@@ -31,6 +31,12 @@ public static class BoughtSnacksAccess
         return _connection.QueryFirstOrDefault<BoughtSnacksModel>(sql, new { Id = id });
     }
 
+    public static BoughtSnacksModel GetByLocationId(int locId)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Reservation_ID = @Id";
+        return _connection.QueryFirstOrDefault<BoughtSnacksModel>(sql, new { Id = locId });
+    }
+
     public static List<BoughtSnacksModel> GetAll()
     {
         string sql = $"SELECT Account_ID,Reservation_ID,snack,amount FROM {Table}";
