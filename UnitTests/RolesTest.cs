@@ -62,12 +62,19 @@ public class TestRoles
     // }
 
     [TestMethod]
-    [DataRow("test1", 10, true)]
-    [DataRow("test1", 20, false)]
-    [DataRow("test2", 20, true)]
-    [DataRow("test2", 30, false)]
-    [DataRow("test3", 40, true)]
-    [DataRow("test3", 40, false)]
+    [DataRow("test1", 1, true)]
+    [DataRow("test1", 2, false)]
+    [DataRow("test2", 3, true)]
+    [DataRow("test2", 4, false)]
+    [DataRow("test3", 5, true)]
+    [DataRow("test3", 6, false)]
+    [DataRow("test4", 10, true)]
+    [DataRow("test5", 10, false)]
+    [DataRow("test6", 20, true)]
+    [DataRow("test7", 20, false)]
+    [DataRow("test8", 30, true)]
+    [DataRow("test9", 30, false)]
+
     public void TestAddRoleRole(string roleName, int LevelAccess, bool expected)
     {
         bool result = RoleLogic.AddRole(roleName, LevelAccess);
