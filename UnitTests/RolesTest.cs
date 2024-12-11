@@ -12,4 +12,38 @@ public class TestRoles
 
         Assert.AreEqual(role != null, expected);
     }
+
+    [TestMethod]
+    [DataRow(true)]
+    public void LocationIdCheck(bool expected)
+    {
+        List<AssignedRoleModel> assignedRoles = AssignedRoleAccess.GetAllAssignedRoles();
+        foreach (AssignedRoleModel assignedRole in assignedRoles)
+        {
+            Assert.AreEqual(assignedRole.LocationId is long, expected);
+        }
+    }
+
+    [TestMethod]
+    [DataRow("Display income overview", "staff", true)]
+    [DataRow("Display income overview", "floor manager", false)]
+    [DataRow("Display income overview", "admin", false)]
+
+    public void StaffRoleCgeck(string roleLevelName, string roleName, bool expected)
+    {
+        RoleModel role = RoleAccess.GetByName(roleName);
+        RoleLevelModel roleLevel = RoleLevelAccess.GetByFunctionality(roleLevelName);
+        Assert.AreEqual(role.LevelAccess < roleLevel.LevelNeeded, expected);
+    }
+
+    using (var reader = new StringReader(date))
+        {
+            Console.SetIn(reader);
+
+            DateTime Date = General.ValidDate("test");
+
+            bool result = CreateScheduleEntry.CleanupTime(Date);
+
+            Assert.AreEqual(expected, result);
+        }
 }
