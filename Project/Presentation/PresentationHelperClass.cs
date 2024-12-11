@@ -1,5 +1,3 @@
-using System.Reflection;
-
 public static class PresentationHelper
 {
     public static string GetString(string text, string variableName)
