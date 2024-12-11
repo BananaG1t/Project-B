@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 namespace UnitTests;
 
 [TestClass]
@@ -38,4 +36,3 @@ public class TestRoles
         Assert.AreEqual(role.LevelAccess < roleLevel.LevelNeeded, expected);
     }
 }
->>>>>>> Stashed changes
