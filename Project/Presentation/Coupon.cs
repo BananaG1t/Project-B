@@ -32,7 +32,8 @@ public static class Coupon
         Console.Clear();
         bool percentage = false;
         string couponType = "";
-        double amount = 0;
+        float amount = 0;
+        int couponCode;
         
         int type = PresentationHelper.MenuLoop("What can the coupon be used for?\n[1] Order price\n[2] Seat reservation price\n[3] Snack reservation price", 1, 3);
         if (type == 1) couponType = "Order";
@@ -43,21 +44,24 @@ public static class Coupon
         if (input == 1) 
         {
             percentage = true;
-            amount = ValidDouble("Enter the percentage of the coupon","Invalid input. Please try again\n");
+            amount = ValidFloatPercentage("Enter the percentage of the coupon (must be between 0-100)","Invalid input. Please try again\n");
         }
         else if (input == 2)
         {
-            amount = ValidDouble("Enter the discount price of the coupon","Invalid input. Please try again\n");
+            amount = ValidFloat("Enter the discount price of the coupon","Invalid input. Please try again\n");
         } 
         DateTime expirationDate = ValidDate("Enter the expiration date of the coupon (dd-MM-yyyy)");
-    
-        int couponCode = GenerateRandomCode(4);
+
+        int inputcode = PresentationHelper.MenuLoop("input coupon code or random generated coupon code?\n[1] Input\n[2] Random generated", 1, 2);
+        if (inputcode == 1) { couponCode = Validcode(); }
+        else {couponCode = GenerateRandomCode(4);}
+
 
         AccountModel account = ChooseAccount();
 
         CouponsLogic.Write(couponCode, expirationDate, couponType, percentage, amount, account.Id);
 
-        PresentationHelper.PrintAndWait($"Coupon added and assigned to {account.EmailAddress}");
+        PresentationHelper.PrintAndWait($"Coupon used for {couponType} expiration date: {expirationDate} coupon code: {couponCode} added and assigned to {account.EmailAddress}");
     }
 
     public static void DisplayCoupons(int id)
@@ -141,18 +145,18 @@ public static class Coupon
         AccountModel chosenAccount = AccountsAccess.GetById(ValidInputs[input]);
         return chosenAccount;
     }
-    public static double ValidDouble(string text, string errorText)
+    public static float ValidFloatPercentage(string text, string errorText)
     {
-        double price = 0;
-        bool valid = false;
+        float price = 0;
+        bool valid = false; 
         while (!valid)
         {
             Console.WriteLine(text);
             string input = Console.ReadLine();
             
-            if (input.Contains(".")) { input = input.Replace(".", ","); }
+            if (input.Contains(",")) { input = input.Replace(",", "."); }
 
-            if (double.TryParse(input, out price) && price >= 0)
+            if (float.TryParse(input, out price) && price > 0 && price <= 100)
             {
                 valid = true;
             }
@@ -161,6 +165,65 @@ public static class Coupon
                 Console.WriteLine(errorText);
             }
         }
-        return price;
+        float roundedPrice = (float)Math.Round(price, 2);
+        return roundedPrice;
+    }
+    public static float ValidFloat(string text, string errorText)
+    {
+        float price = 0;
+        bool valid = false;
+        while (!valid)
+        {
+            Console.WriteLine(text);
+            string input = Console.ReadLine();
+            
+            if (input.Contains(",")) { input = input.Replace(",", "."); }
+
+            if (float.TryParse(input, out price) && price > 0)
+            {
+                valid = true;
+            }
+            else
+            {
+                Console.WriteLine(errorText);
+            }
+        }
+        float roundedPrice = (float)Math.Round(price, 2); 
+        return roundedPrice;
+    }
+    public static int Validcode()
+    {
+
+        int code = 0;
+        do
+        {
+            Console.WriteLine("Please enter a 4 digit code: ");
+
+            string input = Console.ReadLine();
+
+            // Check if the input has exactly 4 characters
+            if (input.Length == 4)
+            {
+                // Try to convert the input to a 4-digit integer
+                if (int.TryParse(input, out int result) && result >= 1000 && result <= 9999)
+                {
+                    code = result;
+                    break;
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("Input is not a valid 4 digit code.");
+                }
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("Input must have exactly 4 digits code.");
+            }
+
+        } while (true);
+
+        return code;
     }
 }
