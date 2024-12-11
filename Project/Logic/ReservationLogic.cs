@@ -19,12 +19,7 @@ class ReservationLogic
         ScheduleModel schedule = Schedule.SelectSchedule(location);
 
         // pick seat amount
-        int amount;
-        do
-        {
-            Console.WriteLine("How many seats?");
-            int.TryParse(Console.ReadLine(), out amount);
-        } while (amount <= 0);
+        int amount = Reservation.SelectSeatAmount();
 
         if (schedule is null) { return; }
         int row = 0; int col = 1;
@@ -177,24 +172,6 @@ class ReservationLogic
     public static List<ReservationModel> GetFromOrder(OrderModel order)
     {
         return ReservationAcces.GetFromOrder(order);
-    }
-
-    public static ReservationModel SelectReservation(OrderModel order)
-    {
-        Console.Clear();
-        ScheduleModel schedule = ScheduleLogic.GetById(order.ScheduleId);
-        string text = $"Location: {schedule.Location.Name}, Movie: {schedule.Movie.Name}, Date: {schedule.StartTime} Bar: {order.Bar}\nWhat reseration do you want to manage?";
-        List<ReservationModel> reservations = GetFromOrder(order);
-        List<int> valid = [];
-
-        foreach (ReservationModel reservation in reservations)
-        {
-            text += $"\n[{reservation.Id}] Seat: row {reservation.Seat_Row} collum {reservation.Seat_Collum}, Status: {reservation.Status}";
-            valid.Add(reservation.Id);
-        }
-
-        int answer = PresentationHelper.MenuLoop(text, 1, reservations.Count);
-        return reservations.First(ReservationModel => ReservationModel.Id == answer);
     }
 
     public static Int64 GetReservation_id(Int64 id)
