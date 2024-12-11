@@ -29,9 +29,21 @@ public static class LocationLogic
     {
         LocationAccess.Update(location);
     }
-    public static void Delete(int id)
+    public static void Delete(int locationId)
     {
-        LocationAccess.Delete(id);
+        while (true)
+        {
+            AssignedRoleModel assignedRoleModel = AssignedRoleAccess.GetByLocationId(locationId);
+            if (assignedRoleModel == null) { break; }
+            AssignedRoleAccess.Delete((int)assignedRoleModel.Id);
+        }
+        while (true)
+        {
+            ScheduleModel schedule = ScheduleAccess.GetByLocationId(locationId);
+            if (schedule == null) { break; }
+            ScheduleAccess.Delete(schedule.Id);
+        }
+        LocationAccess.Delete(locationId);
     }
 
     public static Tuple<string, int> GetLocationInfo()
