@@ -26,6 +26,12 @@ public static class ReservationAcces
         return _connection.QueryFirstOrDefault<ReservationModel>(sql, new { Id = id });
     }
 
+    public static ReservationModel GetByLocationId(int locId)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Order_ID = @Id";
+        return _connection.QueryFirstOrDefault<ReservationModel>(sql, new { Id = locId });
+    }
+
     public static List<ReservationModel> GetFromOrder(OrderModel order)
     {
         string sql = $"SELECT * FROM {Table} WHERE Order_ID = @Id";

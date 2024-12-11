@@ -66,6 +66,12 @@ public static class ScheduleAccess
         return _connection.QueryFirstOrDefault<ScheduleModel>(sql, new { Id = id });
     }
 
+    public static ScheduleModel GetByLocationId(int locId)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Location_ID = @Id";
+        return _connection.QueryFirstOrDefault<ScheduleModel>(sql, new { Id = locId });
+    }
+
     public static ScheduleModel GetByEmail(string email)
     {
         string sql = $"SELECT * FROM {Table} WHERE email = @Email";
