@@ -46,21 +46,21 @@ static class LocationMenu
         string input = "";
         List<string> locations = LocationLogic.GetAllNames();
 
-        while(!valid)
+        while (!valid)
         {
             Console.WriteLine("What is the name of the new location?");
             input = Console.ReadLine();
 
             // Checks if there are any existing locations in db
             if (locations.Count() > 0)
-            {  
+            {
                 if (locations.Contains(input)) { Console.WriteLine("\nThere's already an existing location with that name\n"); }
                 else if (input == "") { Console.WriteLine("\nInvalid input. Please try again\n"); }
-                else { valid = true; }   
+                else { valid = true; }
 
             }
 
-            else 
+            else
             {
                 if (input == "") { Console.WriteLine("\nInvalid input. Please try again\n"); }
                 else { valid = true; }
@@ -130,5 +130,27 @@ static class LocationMenu
             Console.WriteLine(location.Name);
         }
         Console.WriteLine();
+    }
+
+    public static LocationModel SelectLocation()
+    {
+        string text = "At which location do you want to see?";
+        List<LocationModel> ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
+        List<LocationModel> NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
+
+        // Adds all locations with schedules to dict and as a valid option for reserving
+        for (int i = 0; i < ScheduleLocations.Count; i++)
+        {
+            text += $"\n[{i + 1}] {ScheduleLocations[i].Name}";
+        }
+
+        // Adds all locations with no schedules to dict without adding it as a valid option for reserving
+        for (int i = 0; i < NoScheduleLocations.Count; i++)
+        {
+            text += $"\n{NoScheduleLocations[i].Name} (Coming Soon!)";
+        }
+
+        int locationId = PresentationHelper.MenuLoop(text, 1, ScheduleLocations.Count);
+        return ScheduleLocations[locationId - 1];
     }
 }
