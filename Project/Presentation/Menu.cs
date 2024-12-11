@@ -32,7 +32,7 @@ static class Menu
             }
             else if (functionality == functionalities[2])
             {
-                CreateScheduleEntry.Main();
+                CreateScheduleEntry.Main(account);
             }
             else if (functionality == functionalities[3])
             {
@@ -108,5 +108,33 @@ static class Menu
         }
 
         Start();
+    }
+
+    public static void DisplaySchedule(AccountModel account)
+    {
+        Console.Clear();
+
+        LocationModel location = null;
+
+        AssignedRoleModel assignedRole = RoleLogic.GetAssignedRoleByAccountId(account.Id);
+        if (assignedRole == null)
+        { location = LocationMenu.PickLocation(); }
+        else
+        {
+            if (RoleLogic.GetRoleById((int)assignedRole.RoleId).LevelAccess < 255)
+            { location = LocationLogic.GetById((int)assignedRole.LocationId); }
+        }
+
+        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(location);
+
+        // Shows what movie are playing based on the date and time and location
+        Console.WriteLine($"Movies Playing");
+        foreach (ScheduleModel schedule in Schedules)
+        {
+            Console.WriteLine(@$"Movie: {schedule.Movie.Name}, 
+Room: {schedule.Auditorium.Room}, 
+Starting time: {schedule.StartTime.ToString("dd-MM-yyyy HH:mm")}");
+        }
+        Console.WriteLine();
     }
 }
