@@ -125,7 +125,7 @@ public static class Roles
         }
 
         Console.WriteLine("The functionality has been added to the database");
-        return false;
+        return true;
     }
 
     public static void CreateFunctionalityRole(string functionalityName)
