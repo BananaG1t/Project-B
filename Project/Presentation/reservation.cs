@@ -2,7 +2,7 @@ static class Reservation
 {
     public static void ManageReservations(OrderModel order)
     {
-        ReservationModel reservation = ReservationLogic.SelectReservation(order);
+        ReservationModel reservation = SelectReservation(order);
 
         Console.Clear();
         string text =
@@ -10,7 +10,7 @@ static class Reservation
         "[1] Cancel\n" +
         "[2] Back\n";
 
-        int choice = PresentationHelper.MenuLoop(text, 1, 2);
+        int choice = PresentationHelper.MenuLoop(text, [1, 2]);
 
         switch (choice)
         {
@@ -20,7 +20,7 @@ static class Reservation
                 "[1] Yes \n" +
                 "[2] No\n";
 
-                int confirmChoice = PresentationHelper.MenuLoop(confirmText, 1, 2);
+                int confirmChoice = PresentationHelper.MenuLoop(confirmText, [1, 2]);
 
                 if (confirmChoice == 1)
                 {
@@ -77,4 +77,19 @@ static class Reservation
         }
     }
 
+    public static ReservationModel SelectReservation(OrderModel order)
+    {
+        Console.Clear();
+        ScheduleModel schedule = ScheduleLogic.GetById(order.ScheduleId);
+        string text = $"Location: {schedule.Location.Name}, Movie: {schedule.Movie.Name}, Date: {schedule.StartTime} Bar: {order.Bar}\nWhat reseration do you want to manage?";
+        List<ReservationModel> reservations = ReservationLogic.GetFromOrder(order);
+
+        for (int i = 0; i < reservations.Count; i++)
+        {
+            text += $"\n[{i + 1}] Seat: row {reservations[i].Seat_Row} collum {reservations[i].Seat_Collum}, Status: {reservations[i].Status}";
+        }
+
+        int answer = PresentationHelper.MenuLoop(text, 1, reservations.Count);
+        return reservations[answer - 1];
+    }
 }
