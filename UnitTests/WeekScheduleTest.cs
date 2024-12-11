@@ -8,18 +8,20 @@ public class MovieLogicTests
     {
         int room = 1;
         DateTime startTime = new DateTime(2024, 11, 25, 10, 0, 0);
-        DateTime endTime = startTime.AddHours(2); 
+        DateTime endTime = startTime.AddHours(2);
+        LocationModel location = new(111, "watermeloen");
 
-        Assert.IsTrue(MovieLogic.IsAvailable(room, startTime, endTime));
+        Assert.IsTrue(ScheduleAccess.IsAvailable((room), startTime, endTime, (int)location.Id));
     }
 
     [TestMethod]
     public void IsAvailable_ReturnsFalse_WhenRoomIsUnavailable()
     {
         int room = 2;
-        DateTime startTime = new DateTime(2024, 11, 25, 14, 0, 0); 
-        DateTime endTime = startTime.AddHours(2); 
+        DateTime startTime = new DateTime(2024, 11, 25, 14, 0, 0);
+        DateTime endTime = startTime.AddHours(2);
+        LocationModel location = new((long)111, "watermeloen");
 
-        Assert.IsFalse(MovieLogic.IsAvailable(room, startTime, endTime));
+        Assert.IsFalse(ScheduleAccess.IsAvailable(room, startTime, endTime, (int)location.Id));
     }
 }
