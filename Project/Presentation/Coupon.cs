@@ -40,19 +40,19 @@ public static class Coupon
         if (type == 2) couponType = "Seats";
         if (type == 3) couponType = "Snacks";
 
-        int input = PresentationHelper.MenuLoop("Should the coupon be a percentage of the price or a fixed amount?\n[1] Percentage\n[2] Fixed amount", 1, 2);
+        int input = PresentationHelper.MenuLoop("\nShould the coupon be a percentage of the price or a fixed amount?\n[1] Percentage\n[2] Fixed amount", 1, 2);
         if (input == 1) 
         {
             percentage = true;
-            amount = ValidFloatPercentage("Enter the percentage of the coupon (must be between 0-100)","Invalid input. Please try again\n");
+            amount = ValidFloatPercentage("\nEnter the percentage of the coupon (must be between 0-100)","Invalid input. Please try again\n");
         }
         else if (input == 2)
         {
-            amount = ValidFloat("Enter the discount price of the coupon","Invalid input. Please try again\n");
+            amount = ValidFloat("\nEnter the discount price of the coupon","Invalid input. Please try again\n");
         } 
-        DateTime expirationDate = ValidDate("Enter the expiration date of the coupon (dd-MM-yyyy)");
+        DateTime expirationDate = ValidDate("\nEnter the expiration date of the coupon (dd-MM-yyyy)");
 
-        int inputcode = PresentationHelper.MenuLoop("input coupon code or random generated coupon code?\n[1] Input\n[2] Random generated", 1, 2);
+        int inputcode = PresentationHelper.MenuLoop("\ninput coupon code or random generated coupon code?\n[1] Input\n[2] Random generated", 1, 2);
         if (inputcode == 1) { couponCode = Validcode(); }
         else {couponCode = GenerateRandomCode(4);}
 
@@ -61,7 +61,9 @@ public static class Coupon
 
         CouponsLogic.Write(couponCode, expirationDate, couponType, percentage, amount, account.Id);
 
-        PresentationHelper.PrintAndWait($"Coupon used for {couponType} expiration date: {expirationDate} coupon code: {couponCode} added and assigned to {account.EmailAddress}");
+        Console.WriteLine($"Coupon used for {couponType} expiration date: {expirationDate} coupon code: {couponCode} added and assigned to {account.EmailAddress}");
+        Console.WriteLine("ENTER to continue");
+        Console.ReadLine();
     }
 
     public static void DisplayCoupons(int id)

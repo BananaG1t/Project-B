@@ -36,7 +36,7 @@ static class Menu
             }
             else if (functionality == functionalities[3])
             {
-                DisplaySchedule(account);
+                Schedule.DisplaySchedule();
             }
             else if (functionality == functionalities[4])
             {
@@ -101,7 +101,7 @@ static class Menu
             }
             else if (input == 3)
             {
-                DisplaySchedule(CurrentAccount);
+                Schedule.DisplaySchedule();
             }
             // sends the user to the start to login again
             else if (input == 4) { break; }

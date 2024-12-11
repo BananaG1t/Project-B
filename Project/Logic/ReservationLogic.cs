@@ -10,85 +10,17 @@ class ReservationLogic
         ReservationAcces.Update(reservation);
     }
 
-
-    public static ScheduleModel PickSchedule()
-    {
-
-        Console.Clear();
-        string text = "At which location do you want to see?";
-        List<LocationModel> ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
-        List<LocationModel> NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
-        Dictionary<bool, List<LocationModel>> AllLocations = new Dictionary<bool, List<LocationModel>>
-        {
-            { true, [] },
-            { false, [] }
-        };
-        List<int> valid = [];
-
-        // Adds all locations with schedules to dict and as a valid option for reserving
-        foreach (LocationModel location in ScheduleLocations)
-        {
-            AllLocations[true].Add(location);
-            valid.Add((int)location.Id);
-        }
-
-        // Adds all locations with no schedules to dict without adding it as a valid option for reserving
-        foreach (LocationModel location in NoScheduleLocations)
-        {
-            AllLocations[false].Add(location);
-        }
-
-
-        foreach (var locations in AllLocations)
-        {
-            if (locations.Key)
-            {
-                for (int i = 0; i < locations.Value.Count; i++)
-                {
-                    text += $"\n[{i + 1}] {locations.Value[i].Name}";
-                }
-            }
-            else
-            {
-                foreach (LocationModel location in locations.Value)
-                {
-                    text += $"\n{location.Name} (Coming Soon!)";
-                }
-            }
-        }
-
-        int LocationId = PresentationHelper.MenuLoop(text, valid);
-        LocationModel Location = ScheduleLocations.First(LocationModel => LocationModel.Id == LocationId);
-
-        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
-
-
-        text = "";
-
-        for (int i = 0; i < Schedules.Count; i++)
-        {
-            text += $"\n[{i + 1}] Movie: {Schedules[i].Movie.Name}, Room: {Schedules[i].Auditorium.Room}, Starting time: {Schedules[i].StartTime}";
-
-        }
-
-        int input = PresentationHelper.MenuLoop(text, 1, Schedules.Count + 1);
-
-        return Schedules[input - 1];
-    }
-
     public static void GetReservation(AccountModel account)
     {
-        // pick seat amount
-        // pick seat class
-        // same class?
-        int amount;
-        do
-        {
-            Console.WriteLine("How many seats?");
-            int.TryParse(Console.ReadLine(), out amount);
-        } while (amount <= 0);
+        // pick a location
+        LocationModel location = LocationMenu.SelectLocation();
 
-        ScheduleModel schedule = PickSchedule();
+        // pick a schedule
+        ScheduleModel schedule = Schedule.SelectSchedule(location);
+
+        // pick seat amount
+        int amount = Reservation.SelectSeatAmount();
+
         if (schedule is null) { return; }
         int row = 0; int col = 1;
         int last_row;
@@ -240,24 +172,6 @@ class ReservationLogic
     public static List<ReservationModel> GetFromOrder(OrderModel order)
     {
         return ReservationAcces.GetFromOrder(order);
-    }
-
-    public static ReservationModel SelectReservation(OrderModel order)
-    {
-        Console.Clear();
-        ScheduleModel schedule = ScheduleLogic.GetById(order.ScheduleId);
-        string text = $"Location: {schedule.Location.Name}, Movie: {schedule.Movie.Name}, Date: {schedule.StartTime} Bar: {order.Bar}\nWhat reseration do you want to manage?";
-        List<ReservationModel> reservations = GetFromOrder(order);
-        List<int> valid = [];
-
-        foreach (ReservationModel reservation in reservations)
-        {
-            text += $"\n[{reservation.Id}] Seat: row {reservation.Seat_Row} collum {reservation.Seat_Collum}, Status: {reservation.Status}";
-            valid.Add(reservation.Id);
-        }
-
-        int answer = PresentationHelper.MenuLoop(text, 1, reservations.Count);
-        return reservations.First(ReservationModel => ReservationModel.Id == answer);
     }
 
     public static Int64 GetReservation_id(Int64 id)

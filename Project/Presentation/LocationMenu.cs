@@ -145,4 +145,27 @@ static class LocationMenu
         int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
         return locations[LocationId - 1];
     }
+  
+    public static LocationModel SelectLocation()
+    {
+        Console.Clear();
+        string text = "At which location do you want to see?";
+        List<LocationModel> ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
+        List<LocationModel> NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
+
+        // Adds all locations with schedules to dict and as a valid option for reserving
+        for (int i = 0; i < ScheduleLocations.Count; i++)
+        {
+            text += $"\n[{i + 1}] {ScheduleLocations[i].Name}";
+        }
+
+        // Adds all locations with no schedules to dict without adding it as a valid option for reserving
+        for (int i = 0; i < NoScheduleLocations.Count; i++)
+        {
+            text += $"\n{NoScheduleLocations[i].Name} (Coming Soon!)";
+        }
+
+        int locationId = PresentationHelper.MenuLoop(text, 1, ScheduleLocations.Count);
+        return ScheduleLocations[locationId - 1];
+    }
 }
