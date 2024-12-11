@@ -186,6 +186,11 @@ public static class SnackReservation
     {
         Console.Clear();
         List<SnacksModel> snacks = SnacksLogic.GetAll();
+        if (snacks.Count == 0)
+        {
+            PresentationHelper.PrintAndWait("Sorry there are no snacks to select");
+            return;
+        }
         string text = "Enter the number of the snack that you would like to buy";
         List<int> ValidInputs = [];
 

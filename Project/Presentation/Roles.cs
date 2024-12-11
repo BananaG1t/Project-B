@@ -16,9 +16,11 @@ public static class Roles
         "[7] Display all the role levels\n" +
         "[8] go back to the menu";
 
+        int menuChoices = 9;
+
         while (true)
         {
-            int choice = PresentationHelper.MenuLoop(text, 1, 8);
+            int choice = PresentationHelper.MenuLoop(text, 1, menuChoices);
 
             if (choice == 1) { AssignRole(); }
             if (choice == 2) { RemoveRole(); }
@@ -26,12 +28,13 @@ public static class Roles
             if (choice == 4) { CreateRole(); }
             if (choice == 5) { DeleteRole(); }
             if (choice == 6) { DisplayRoles("Roles"); }
-            // if (choice == 7) { CreateFunctionalityRole(); }
-            // if (choice == 8) { DeleteFunctionalityRole(); }
+            // if (choice == 7) { CreateFunctionalityRole(); } // made this one obsolute but may be usefull later
+            if (choice == 9) { DeleteFunctionalityRole(); } //  this one is secret use it if you want to
             if (choice == 7) { DisplayRoles("Role Levels"); }
             if (choice == 8) { break; }
 
-            if (choice > 8)
+            // made this just in case, if this happens we'll have a giant problem so thats why i want to spot this
+            if (choice > menuChoices)
             {
                 PresentationHelper.PrintInRed("Probleem");
                 Console.WriteLine(choice);
@@ -47,6 +50,7 @@ public static class Roles
 
         Console.Clear();
 
+        // makes sure the user doesn't go into an empty loop
         if (RoleInfo.Item2 == 0)
         {
             PresentationHelper.PrintAndWait("There are no roles in the database");
@@ -58,6 +62,7 @@ public static class Roles
         AccountsLogic acc = new();
         Tuple<string, int> allAccountInfo = acc.GetAccountText();
 
+        // makes sure the user doesn't go into an empty loop
         if (allAccountInfo.Item2 == 0)
         {
             PresentationHelper.PrintAndWait("There are no accounts in the database");
@@ -69,6 +74,7 @@ public static class Roles
 
         Tuple<string, int> locationInfo = LocationLogic.GetLocationInfo();
 
+        // makes sure the user doesn't go into an empty loop
         if (locationInfo.Item2 == 0)
         {
             PresentationHelper.PrintAndWait("There are no locations in the database");
@@ -79,60 +85,68 @@ public static class Roles
 
         AssignedRoleModel assignedRoleModel = RoleLogic.GetAssignedRoleByAccountId((int)account.Id);
 
-        bool promote = false;
+        bool changeRole = false;
 
         if (assignedRoleModel != null && assignedRoleModel.LocationId == locationModel.Id)
         {
             Console.WriteLine("That account already has a role on that location");
 
-            string text = $"Do you want to promote them?\n[1] Yes\n[2] No";
+            string text = "";
+            if (RoleAccess.GetById((int)assignedRoleModel.RoleId).LevelAccess > role.LevelAccess)
+            { text = $"Do you want to demote them?\n[1] Yes\n[2] No"; }
+            if (RoleAccess.GetById((int)assignedRoleModel.RoleId).LevelAccess < role.LevelAccess)
+            { text = $"Do you want to promote them?\n[1] Yes\n[2] No"; }
+            if (RoleAccess.GetById((int)assignedRoleModel.RoleId).LevelAccess == role.LevelAccess)
+            { text = $"That is the same role"; return; }
 
-            promote = PresentationHelper.MenuLoop(text, 1, 2) == 1;
-            if (!promote) { return; }
+            changeRole = PresentationHelper.MenuLoop(text, 1, 2) == 1;
+            if (!changeRole) { return; }
         }
 
-        if (promote)
+        if (changeRole)
         { RoleLogic.RemoveRole((int)assignedRoleModel.Id); }
 
         if (RoleLogic.AssignRole((int)role.Id, account.Id, (int)locationModel.Id))
         { PresentationHelper.PrintAndWait("The role has been assigned"); }
+
     }
 
-    public static void CreateRole()
+    public static bool CreateRole()
     {
         Console.Clear();
 
         string roleName = PresentationHelper.GetString("What is the name of the role? ", "role");
         int levelAccess = PresentationHelper.GetInt("What level access should the role have?");
 
-        if (RoleLogic.AddRole(roleName, levelAccess))
+        if (!RoleLogic.AddRole(roleName, levelAccess))
         {
-            Console.WriteLine("The functionality has been added to the database");
-            return;
+            PresentationHelper.PrintAndWait("That role name or level access already exists");
+            return false;
         }
 
-        PresentationHelper.PrintAndWait("That role name or level access already exists");
+        Console.WriteLine("The functionality has been added to the database");
+        return true;
     }
 
-    public static void CreateFunctionalityRole()
+    public static void CreateFunctionalityRole(string functionalityName)
     {
         Console.Clear();
 
-        List<string> functionalities = Menu.functionalities;
-
-        Tuple<string, int> functionalityInfo = RoleLogic.GetFunctionalityText(functionalities);
-
-
-        string functionaltyName = functionalities[PresentationHelper.MenuLoop(functionalityInfo.Item1, 1, functionalityInfo.Item2) - 1];
-        int roleLevel = PresentationHelper.GetInt("What level does the functionalty require? ");
-
-        if (RoleLogic.AddRoleLevel(functionaltyName, roleLevel))
+        while (true)
         {
-            Console.WriteLine("The functionality has been added to the database");
-            return;
-        }
+            PresentationHelper.PrintInRed($"{functionalityName} does not have an access level");
+            int roleLevel = PresentationHelper.GetInt($"What level does {functionalityName} require?");
 
-        PresentationHelper.PrintAndWait("That functionality or level already exists");
+            if (!RoleLogic.AddRoleLevel(functionalityName, roleLevel))
+            {
+                PresentationHelper.PrintAndWait("That functionality or level already exists");
+            }
+            else
+            {
+                Console.WriteLine("The functionality has been added to the database");
+                break;
+            }
+        }
     }
 
     public static void RemoveRole()
@@ -141,6 +155,7 @@ public static class Roles
 
         Console.Clear();
 
+        // makes sure the user doesn't go into an empty loop
         if (assignedRoles.Item2 == 0)
         {
             PresentationHelper.PrintAndWait("There are no assigned roles in the database");
@@ -149,6 +164,9 @@ public static class Roles
 
         AssignedRoleModel assignedRole = RoleLogic.GetAllAssignedRoles()[PresentationHelper.MenuLoop(assignedRoles.Item1, 1, assignedRoles.Item2) - 1];
 
+        // makes sure the admin doesn't remove admin from himself otherwise i have to manually add it again
+        // spoiler alert
+        // it sucks
         if (assignedRole.AccountId == 0)
         {
             PresentationHelper.PrintAndWait("You cannot remove your admin role");
@@ -177,6 +195,9 @@ public static class Roles
 
         RoleModel role = RoleLogic.GetAllRoles()[PresentationHelper.MenuLoop(Roles.Item1, 1, Roles.Item2) - 1];
 
+        // makes sure the admin doesn't remove admin from himself otherwise i have to manually add it again
+        // spoiler alert
+        // it sucks
         if (role.LevelAccess == 255)
         {
             PresentationHelper.PrintAndWait("You cannot remove the admin role");

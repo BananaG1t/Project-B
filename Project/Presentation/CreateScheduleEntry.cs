@@ -77,15 +77,15 @@ public static class CreateScheduleEntry
         Console.Clear();
         string text = "At which location do you want to see?";
         List<LocationModel> locations = LocationLogic.GetAll();
-        List<int> valid = [];
-        foreach (LocationModel location in locations)
-        {
-            text += $"\n[{location.Id}] {location.Name}";
-            valid.Add((int)location.Id);
-        }
 
-        int LocationId = PresentationHelper.MenuLoop(text, valid);
-        return locations.First(LocationModel => LocationModel.Id == LocationId);
+        for (int i = 0; i < locations.Count; i++)
+        {
+            text += $"\n[{i + 1}] {locations[i].Name}";
+
+        }
+        int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
+        LocationModel Location = locations[LocationId - 1];
+        return Location;
     }
 
 }

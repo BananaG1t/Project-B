@@ -43,9 +43,9 @@ class ReservationLogic
         {
             if (locations.Key)
             {
-                foreach (LocationModel location in locations.Value)
+                for (int i = 0; i < locations.Value.Count; i++)
                 {
-                    text += $"\n[{location.Id}] {location.Name}";
+                    text += $"\n[{i + 1}] {locations.Value[i].Name}";
                 }
             }
             else
@@ -198,6 +198,8 @@ class ReservationLogic
                 if (isValid(row, col + 1))
                     col += 1;
                 else findNext(row, col, "right");
+            else if (input == ConsoleKey.Backspace)
+                return;
 
             AuditoriumLogic.DisplaySeats(schedule.Auditorium, row, col, amount);
             input = Console.ReadKey().Key;
@@ -221,9 +223,7 @@ class ReservationLogic
 
         bool snack = false;
         string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
-        int choice = PresentationHelper.MenuLoop(text, 1, 2);
-        if (choice == 1)
-            snack = true;
+        snack = PresentationHelper.MenuLoop(text, 1, 2) == 1;
 
         for (int i = 0; i < amount; i++)
         {

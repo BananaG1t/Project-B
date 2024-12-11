@@ -36,14 +36,23 @@ public class TestRoles
         Assert.AreEqual(role.LevelAccess < roleLevel.LevelNeeded, expected);
     }
 
-    using (var reader = new StringReader(date))
+    [TestMethod]
+    [DataRow("kevin krull\n10", true)]
+    [DataRow("admin\n1", false)]
+    [DataRow("kevin krull 2\n255", false)]
+    [DataRow("staff\n2", false)]
+    [DataRow("kevin krull 3\n30", false)]
+    [DataRow("floor manager\n3", false)]
+    [DataRow("kevin krull 4\n50", false)]
+    public void CreateRollCheck(string input, bool expected)
+    {
+        using (var reader = new StringReader(input))
         {
             Console.SetIn(reader);
 
-            DateTime Date = General.ValidDate("test");
-
-            bool result = CreateScheduleEntry.CleanupTime(Date);
+            bool result = Roles.CreateRole();
 
             Assert.AreEqual(expected, result);
         }
+    }
 }

@@ -7,13 +7,13 @@ static class Menu
 
     public static List<string> functionalities = ["Manage Users", "Add a movie", "Add to the schedule",
                                                     "Display the schedule", "Display income overview",
-                                                    "Manage snacks", "Add Location"];
+                                                    "Manage snacks", "Manage Locations", "Create coupon"];
     static public void AdminMenu(AccountModel account)
     {
         //admin menu
         List<string> MenuOptions = RoleLogic.GetMenuText(account);
 
-        string MenuText = String.Join("", MenuOptions);
+        string MenuText = string.Join("", MenuOptions);
 
         List<string> usedFunctionalities = RoleLogic.GetMenuOptions(account);
 
@@ -49,7 +49,11 @@ static class Menu
             }
             else if (functionality == functionalities[6])
             {
-                LocationMenu.AddLocation();
+                LocationMenu.Main();
+            }
+            else if (functionality == functionalities[7])
+            {
+                Coupon.AdminMenu();
             }
             else if (functionality == "Exit")
             {
@@ -111,13 +115,14 @@ static class Menu
         Console.Clear();
         string text = "At which location do you want to see?";
         List<LocationModel> locations = LocationLogic.GetAll();
-        foreach (LocationModel location in locations)
-        {
-            text += $"\n[{location.Id}] {location.Name}";
-        }
 
+        for (int i = 0; i < locations.Count; i++)
+        {
+            text += $"\n[{i + 1}] {locations[i].Name}";
+
+        }
         int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
-        LocationModel Location = locations.First(LocationModel => LocationModel.Id == LocationId);
+        LocationModel Location = locations[LocationId - 1];
 
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
 

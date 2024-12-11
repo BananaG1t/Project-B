@@ -140,6 +140,6 @@ public static class PresentationHelper
         Console.WriteLine(text);
         Console.ResetColor();
     }
-
+    
 
 }
