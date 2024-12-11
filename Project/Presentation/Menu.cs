@@ -7,7 +7,7 @@ static class Menu
 
     public static List<string> functionalities = ["Manage Users", "Add a movie", "Add to the schedule",
                                                     "Display the schedule", "Display income overview",
-                                                    "Manage snacks", "Add Location"];
+                                                    "Manage snacks", "Manage Locations"];
     static public void AdminMenu(AccountModel account)
     {
         //admin menu
@@ -49,7 +49,8 @@ static class Menu
             }
             else if (functionality == functionalities[6])
             {
-                LocationMenu.AddLocation();
+                Console.Clear();
+                LocationMenu.Main();
             }
             else if (functionality == "Exit")
             {

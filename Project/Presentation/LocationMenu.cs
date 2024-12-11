@@ -1,5 +1,44 @@
 static class LocationMenu
 {
+    public static void Main()
+    {
+        string text =
+        "Locations menu:\n" +
+        "[1] Add location\n" +
+        "[2] Update location\n" +
+        "[3] Delete location\n" +
+        "[4] Display locations\n" +
+        "[5] Go back to admin menu";
+
+        while (true)
+        {
+            int input = PresentationHelper.MenuLoop(text, 1, 5);
+
+            if (input == 1)
+            {
+                AddLocation();
+            }
+            else if (input == 2)
+            {
+                UpdateLocation();
+            }
+            else if (input == 3)
+            {
+                DeleteLocation();
+            }
+            else if (input == 4)
+            {
+                DisplayLocations();
+            }
+            else if (input == 5)
+            {
+                Console.WriteLine("Exiting");
+                break;
+            }
+        }
+
+        Console.Clear();
+    }
     public static void AddLocation()
     {
         Console.Clear();
@@ -30,5 +69,66 @@ static class LocationMenu
 
         LocationLogic.Add(input);
         Console.WriteLine("\nAdded new location\n");
+    }
+
+    public static void UpdateLocation()
+    {
+        Console.Clear();
+        string text = "Which location do you want to update?";
+        List<LocationModel> locations = LocationLogic.GetAll();
+
+        for (int i = 0; i < locations.Count; i++)
+        {
+            text += $"\n[{i + 1}] {locations[i].Name}";
+
+        }
+        int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
+        LocationModel OldLocation = locations[LocationId - 1];
+
+        bool valid = false;
+        string name = "";
+
+        while (!valid)
+        {
+            Console.WriteLine("What is the name of the new location?");
+            name = Console.ReadLine();
+
+            if (name == "") { Console.WriteLine("\nInvalid input. Please try again\n"); }
+            else { valid = true; }
+        }
+
+        LocationLogic.update(new LocationModel(OldLocation.Id, name));
+        Console.WriteLine($"\nChanged Location Name: From \"{OldLocation.Name}\" to \"{name}\"\n");
+    }
+
+    public static void DeleteLocation()
+    {
+        Console.Clear();
+        string text = "Which location do you want to remove?";
+        List<LocationModel> locations = LocationLogic.GetAll();
+
+        for (int i = 0; i < locations.Count; i++)
+        {
+            text += $"\n[{i + 1}] {locations[i].Name}";
+
+        }
+        int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
+        LocationModel OldLocation = locations[LocationId - 1];
+
+        LocationLogic.Delete((int)OldLocation.Id);
+        Console.WriteLine($"\nRemoved \"{OldLocation.Name}\"\n");
+    }
+
+    public static void DisplayLocations()
+    {
+        Console.Clear();
+        string text = " All current locations:";
+        List<LocationModel> locations = LocationLogic.GetAll();
+
+        foreach (LocationModel location in locations)
+        {
+            Console.WriteLine(location.Name);
+        }
+        Console.WriteLine();
     }
 }
