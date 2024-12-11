@@ -57,4 +57,24 @@ static class Reservation
         }
     }
 
+    public static int SelectSeatAmount()
+    {
+        while (true)
+        {
+            Console.WriteLine("How many seats do you want to book?");
+            if (!int.TryParse(Console.ReadLine(), out int amount))
+            {
+                PresentationHelper.Error("Invalid input. Please enter a valid number.");
+                continue; // Retry
+            }
+            if (amount <= 0)
+            {
+                PresentationHelper.Error("Number must be more than 0. Try again.");
+                continue; // Retry
+            }
+
+            return amount; // Valid input
+        }
+    }
+
 }

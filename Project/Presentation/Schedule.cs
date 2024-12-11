@@ -17,4 +17,22 @@ static class Schedule
 
         return Schedules[input - 1];
     }
+
+    public static void DisplaySchedule()
+    {
+        LocationModel location = LocationMenu.SelectLocation();
+
+        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(location);
+
+        Console.Clear();
+        // Shows what movie are playing based on the date and time and location
+        Console.WriteLine($"Movies Playing");
+        foreach (ScheduleModel schedule in Schedules)
+        {
+            Console.WriteLine(@$"Movie: {schedule.Movie.Name}, 
+Room: {schedule.Auditorium.Room}, 
+Starting time: {schedule.StartTime.ToString("dd-MM-yyyy HH:mm")}");
+        }
+        Console.WriteLine();
+    }
 }

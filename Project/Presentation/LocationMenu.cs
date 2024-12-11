@@ -134,6 +134,7 @@ static class LocationMenu
 
     public static LocationModel SelectLocation()
     {
+        Console.Clear();
         string text = "At which location do you want to see?";
         List<LocationModel> ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
         List<LocationModel> NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();

@@ -19,12 +19,7 @@ class ReservationLogic
         ScheduleModel schedule = Schedule.SelectSchedule(location);
 
         // pick seat amount
-        int amount;
-        do
-        {
-            Console.WriteLine("How many seats?");
-            int.TryParse(Console.ReadLine(), out amount);
-        } while (amount <= 0);
+        int amount = Reservation.SelectSeatAmount();
 
         if (schedule is null) { return; }
         int row = 0; int col = 1;
