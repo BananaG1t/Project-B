@@ -49,7 +49,7 @@ static class Menu
             }
             else if (functionality == functionalities[6])
             {
-                LocationMenu.AddLocation();
+                LocationMenu.Main();
             }
             else if (functionality == functionalities[7])
             {
