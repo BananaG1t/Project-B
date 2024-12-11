@@ -32,11 +32,11 @@ static class Menu
             }
             else if (functionality == functionalities[2])
             {
-                CreateScheduleEntry.Main();
+                CreateScheduleEntry.Main(account);
             }
             else if (functionality == functionalities[3])
             {
-                DisplaySchedule();
+                DisplaySchedule(account);
             }
             else if (functionality == functionalities[4])
             {
@@ -101,7 +101,7 @@ static class Menu
             }
             else if (input == 3)
             {
-                DisplaySchedule();
+                DisplaySchedule(CurrentAccount);
             }
             // sends the user to the start to login again
             else if (input == 4) { break; }
@@ -110,21 +110,22 @@ static class Menu
         Start();
     }
 
-    public static void DisplaySchedule()
+    public static void DisplaySchedule(AccountModel account)
     {
         Console.Clear();
-        string text = "At which location do you want to see?";
-        List<LocationModel> locations = LocationLogic.GetAll();
 
-        for (int i = 0; i < locations.Count; i++)
+        LocationModel location = null;
+
+        AssignedRoleModel assignedRole = RoleLogic.GetAssignedRoleByAccountId(account.Id);
+        if (assignedRole == null)
+        { location = LocationMenu.PickLocation(); }
+        else
         {
-            text += $"\n[{i + 1}] {locations[i].Name}";
-
+            if (RoleLogic.GetRoleById((int)assignedRole.RoleId).LevelAccess < 255)
+            { location = LocationLogic.GetById((int)assignedRole.LocationId); }
         }
-        int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
-        LocationModel Location = locations[LocationId - 1];
 
-        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
+        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(location);
 
         // Shows what movie are playing based on the date and time and location
         Console.WriteLine($"Movies Playing");

@@ -2,9 +2,9 @@ using System.Globalization;
 
 public static class CreateScheduleEntry
 {
-    public static void Main()
+    public static void Main(AccountModel account)
     {
-        LocationModel location = Location();
+        LocationModel location = Location(account);
         int room = SelectRoom();
         MovieModel movie = SelectMovie();
         DateTime date = SelectDate(room, movie.Length, (int)location.Id);
@@ -72,9 +72,15 @@ public static class CreateScheduleEntry
         return Input == "" ? null : Input;
     }
 
-    private static LocationModel Location()
+    private static LocationModel Location(AccountModel account)
     {
         Console.Clear();
+
+        AssignedRoleModel assignedRole = RoleLogic.GetAssignedRoleByAccountId(account.Id);
+        RoleModel role = RoleLogic.GetRoleById((int)assignedRole.RoleId);
+        if (role.LevelAccess < 255)
+        { return LocationLogic.GetById((int)assignedRole.LocationId); }
+
         string text = "At which location do you want to see?";
         List<LocationModel> locations = LocationLogic.GetAll();
 

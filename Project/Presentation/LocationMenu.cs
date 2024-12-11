@@ -46,21 +46,21 @@ static class LocationMenu
         string input = "";
         List<string> locations = LocationLogic.GetAllNames();
 
-        while(!valid)
+        while (!valid)
         {
             Console.WriteLine("What is the name of the new location?");
             input = Console.ReadLine();
 
             // Checks if there are any existing locations in db
             if (locations.Count() > 0)
-            {  
+            {
                 if (locations.Contains(input)) { Console.WriteLine("\nThere's already an existing location with that name\n"); }
                 else if (input == "") { Console.WriteLine("\nInvalid input. Please try again\n"); }
-                else { valid = true; }   
+                else { valid = true; }
 
             }
 
-            else 
+            else
             {
                 if (input == "") { Console.WriteLine("\nInvalid input. Please try again\n"); }
                 else { valid = true; }
@@ -130,5 +130,19 @@ static class LocationMenu
             Console.WriteLine(location.Name);
         }
         Console.WriteLine();
+    }
+
+    public static LocationModel PickLocation()
+    {
+        string text = "At which location do you want to see?";
+        List<LocationModel> locations = LocationLogic.GetAll();
+
+        for (int i = 0; i < locations.Count; i++)
+        {
+            text += $"\n[{i + 1}] {locations[i].Name}";
+
+        }
+        int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
+        return locations[LocationId - 1];
     }
 }
