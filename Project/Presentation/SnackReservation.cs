@@ -145,7 +145,7 @@ public static class SnackReservation
             Console.WriteLine("What is the price of the snack (0,0): ");
             string input = Console.ReadLine();
 
-            if (input.Contains(".")) { input = input.Replace(".", ","); }
+            if (input.Contains(".")) { input = input.Replace(",", "."); }
 
             if (double.TryParse(input, out price) && price >= 0)
             {
@@ -182,16 +182,16 @@ public static class SnackReservation
         return amount;
     }
 
-    public static void BuySnacks(int reservation_id)
+    public static void BuySnacks(int reservation_id, int personNum)
     {
         Console.Clear();
         List<SnacksModel> snacks = SnacksLogic.GetAll();
         if (snacks.Count == 0)
         {
-            PresentationHelper.PrintAndWait("Sorry there are no snacks to select");
+            PresentationHelper.Error("There are no snacks to select");
             return;
         }
-        string text = "Enter the number of the snack that you would like to buy";
+        string text = $"Person {personNum}, enter the number of the snack that you would like to buy";
         List<int> ValidInputs = [];
 
         for (int i = 0; i < snacks.Count; i++)

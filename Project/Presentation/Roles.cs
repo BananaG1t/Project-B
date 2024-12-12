@@ -111,20 +111,21 @@ public static class Roles
 
     }
 
-    public static void CreateRole()
+    public static bool CreateRole()
     {
         Console.Clear();
 
         string roleName = PresentationHelper.GetString("What is the name of the role? ", "role");
         int levelAccess = PresentationHelper.GetInt("What level access should the role have?");
 
-        if (RoleLogic.AddRole(roleName, levelAccess))
+        if (!RoleLogic.AddRole(roleName, levelAccess))
         {
-            Console.WriteLine("The functionality has been added to the database");
-            return;
+            PresentationHelper.PrintAndWait("That role name or level access already exists");
+            return false;
         }
 
-        PresentationHelper.PrintAndWait("That role name or level access already exists");
+        Console.WriteLine("The functionality has been added to the database");
+        return true;
     }
 
     public static void CreateFunctionalityRole(string functionalityName)
