@@ -1,5 +1,3 @@
-using System.ComponentModel.Design;
-
 public static class Coupon
 {
     public static void AdminMenu()
@@ -7,7 +5,8 @@ public static class Coupon
         string text =
         "Coupon Menu\n" +
         "[1] Create coupon\n" +
-        "[2] Exit";
+        "[2] Display coupons\n" +
+        "[3] Exit";
 
         while (true)
         {
@@ -18,7 +17,11 @@ public static class Coupon
             {
                 CreateCoupon();
             }
-            else if (input == 2)
+            if (input == 2)
+            {
+                DisplayCoupons();
+            }
+            else if (input == 3)
             {
                 Console.WriteLine("Exiting");
                 break;
@@ -58,16 +61,16 @@ public static class Coupon
 
 
         AccountModel account = ChooseAccount();
-
+        
         CouponsLogic.Write(couponCode, expirationDate, couponType, percentage, amount, account.Id);
 
         PresentationHelper.PrintAndWait($"Coupon used for {couponType} expiration date: {expirationDate} coupon code: {couponCode} added and assigned to {account.EmailAddress}");
     }
 
-    public static void DisplayCoupons(int id)
+    public static void DisplayCoupons()
     {
         Console.Clear();
-        List<CouponModel> coupons = CouponsLogic.GetAllById(id);
+        List<CouponModel> coupons = CouponsLogic.GetAll();
         int count = 0;
 
         if (coupons.Count() == 0) PresentationHelper.PrintAndWait("No coupons found");
@@ -76,10 +79,10 @@ public static class Coupon
             foreach (CouponModel coupon in coupons)
             {
                 count++;
-                Console.WriteLine($"[{count}] Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon)} \n");
+                Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon),5:C}");
             }
 
-            Console.WriteLine("[ENTER] Continue");
+            Console.WriteLine("\n[ENTER] To go back");
             Console.ReadLine();
         }
     }
