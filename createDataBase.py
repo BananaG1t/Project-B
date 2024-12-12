@@ -216,7 +216,7 @@ cursor.execute('''DROP TABLE IF EXISTS Coupons''')
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Coupons (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    coupon_code INTEGER NOT NULL,
+    coupon_code TEXT NOT NULL,
     expiration_date DATETIME NOT NULL,
     coupon_type TEXT NOT NULL,
     coupon_percentage BOOLEAN NOT NULL DEFAULT false,
