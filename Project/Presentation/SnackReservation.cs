@@ -145,7 +145,7 @@ public static class SnackReservation
             Console.WriteLine("What is the price of the snack (0,0): ");
             string input = Console.ReadLine();
 
-            if (input.Contains(".")) { input = input.Replace(".", ","); }
+            if (input.Contains(".")) { input = input.Replace(",", "."); }
 
             if (double.TryParse(input, out price) && price >= 0)
             {

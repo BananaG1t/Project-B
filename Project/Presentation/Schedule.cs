@@ -17,26 +17,9 @@ static class Schedule
         return Schedules[input - 1];
     }
 
-    public static void DisplaySchedule(AccountModel account)
+    public static void DisplaySchedule(LocationModel location)
     {
         Console.Clear();
-
-        LocationModel location = null;
-
-        AssignedRoleModel assignedRole = RoleLogic.GetAssignedRoleByAccountId(account.Id);
-        if (assignedRole != null)
-        {
-            Console.WriteLine(RoleLogic.GetRoleById((int)assignedRole.RoleId).LevelAccess);
-            if (RoleLogic.GetRoleById((int)assignedRole.RoleId).LevelAccess < 254)
-            {
-                location = LocationLogic.GetById((int)assignedRole.LocationId);
-                Console.WriteLine("help;");
-            }
-            else
-            { location = LocationMenu.PickLocation(); }
-        }
-        else
-        { location = LocationMenu.PickLocation(); }
 
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(location);
 

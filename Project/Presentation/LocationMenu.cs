@@ -131,21 +131,6 @@ static class LocationMenu
         }
         Console.WriteLine();
     }
-
-    public static LocationModel PickLocation()
-    {
-        string text = "At which location do you want to see?";
-        List<LocationModel> locations = LocationLogic.GetAll();
-
-        for (int i = 0; i < locations.Count; i++)
-        {
-            text += $"\n[{i + 1}] {locations[i].Name}";
-
-        }
-        int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
-        return locations[LocationId - 1];
-    }
-  
     public static LocationModel SelectLocation()
     {
         Console.Clear();
