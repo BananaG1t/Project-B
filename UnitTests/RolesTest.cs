@@ -62,24 +62,24 @@ public class TestRoles
     // }
 
     [TestMethod]
-    [DataRow("admin", 100, false)]
-    [DataRow("floor manager", 200, false)]
-    [DataRow("staff", 300, false)]
-    [DataRow("test1", 255, false)]
-    [DataRow("test2", 50, false)]
-    [DataRow("test3", 30, false)]
-    [DataRow("test4", 1, true)]
-    [DataRow("test5", 2, false)]
-    [DataRow("test6", 3, true)]
-    [DataRow("test7", 4, false)]
-    [DataRow("test8", 5, true)]
-    [DataRow("test9", 6, false)]
-    [DataRow("test10", 10, true)]
-    [DataRow("test11", 10, false)]
-    [DataRow("test12", 20, true)]
-    [DataRow("test13", 20, false)]
-    [DataRow("test14", 40, true)]
-    [DataRow("test15", 40, false)]
+    [DataRow("admin", 100, false)]          // tests if the admin name is in the db
+    [DataRow("floor manager", 200, false)]  // tests if the floor manager name is in the db
+    [DataRow("staff", 300, false)]          // tests if the staff name is in the db
+    [DataRow("test1", 255, false)]          // tests if the admin level is in the db
+    [DataRow("test2", 50, false)]           // tests if the floor manager level is in the db
+    [DataRow("test3", 30, false)]           // tests if the staff level is in the db
+    [DataRow("test4", 1, true)]             // tests double names
+    [DataRow("test4", 2, false)]            // tests double names
+    [DataRow("test5", 3, true)]             // tests double names
+    [DataRow("test5", 4, false)]            // tests double names
+    [DataRow("test6", 5, true)]             // tests double names
+    [DataRow("test6", 6, false)]            // tests double names
+    [DataRow("test10", 10, true)]           // tests double levels
+    [DataRow("test11", 10, false)]          // tests double levels
+    [DataRow("test12", 20, true)]           // tests double levels
+    [DataRow("test13", 20, false)]          // tests double levels
+    [DataRow("test14", 40, true)]           // tests double levels
+    [DataRow("test15", 40, false)]          // tests double levels
 
     public void TestAddRoleRole(string roleName, int LevelAccess, bool expected)
     {
@@ -88,15 +88,17 @@ public class TestRoles
     }
 
     [TestMethod]
-    [DataRow(0, 1, true)]
-    [DataRow(0, 254, true)]
+    [DataRow(0, 1, true)]       //checks if the admin has acces to everything it should
     [DataRow(0, 255, true)]
     [DataRow(0, 256, false)]
-    [DataRow(2, 1, true)]
+    [DataRow(1, -1, false)]     //checks if a user has acces to everything it should
+    [DataRow(1, 0, false)]
+    [DataRow(1, 1, false)]
+    [DataRow(2, 1, true)]       //checks if staff has acces to everything it should
     [DataRow(2, 29, true)]
     [DataRow(2, 30, true)]
     [DataRow(2, 31, false)]
-    [DataRow(3, 1, true)]
+    [DataRow(3, 1, true)]       //checks if a floor manager has access to everything it should
     [DataRow(3, 49, true)]
     [DataRow(3, 50, true)]
     [DataRow(3, 51, false)]
@@ -108,30 +110,30 @@ public class TestRoles
     }
 
     [TestMethod]
-    [DataRow(0, "Manage Users", true)]
-    [DataRow(0, "Add a movie", true)]
-    [DataRow(0, "Add to the schedule", true)]
-    [DataRow(0, "Display the schedule", true)]
-    [DataRow(0, "Display income overview", true)]
-    [DataRow(0, "Manage snacks", true)]
-    [DataRow(0, "Manage Locations", true)]
-    [DataRow(0, "Create coupon", true)]
-    [DataRow(2, "Manage Users", false)]
-    [DataRow(2, "Add a movie", false)]
-    [DataRow(2, "Add to the schedule", true)]
-    [DataRow(2, "Display the schedule", true)]
-    [DataRow(2, "Display income overview", false)]
-    [DataRow(2, "Manage snacks", true)]
-    [DataRow(2, "Manage Locations", false)]
-    [DataRow(2, "Create coupon", false)]
-    [DataRow(3, "Manage Users", false)]
-    [DataRow(3, "Add a movie", true)]
-    [DataRow(3, "Add to the schedule", true)]
-    [DataRow(3, "Display the schedule", true)]
-    [DataRow(3, "Display income overview", true)]
-    [DataRow(3, "Manage snacks", true)]
-    [DataRow(3, "Manage Locations", false)]
-    [DataRow(3, "Create coupon", true)]
+    [DataRow(0, "Manage Users", true)]              // checks if the admin has access to this function
+    [DataRow(0, "Add a movie", true)]               // checks if the admin has access to this function
+    [DataRow(0, "Add to the schedule", true)]       // checks if the admin has access to this function
+    [DataRow(0, "Display the schedule", true)]      // checks if the admin has access to this function
+    [DataRow(0, "Display income overview", true)]   // checks if the admin has access to this function
+    [DataRow(0, "Manage snacks", true)]             // checks if the admin has access to this function
+    [DataRow(0, "Manage Locations", true)]          // checks if the admin has access to this function
+    [DataRow(0, "Create coupon", true)]             // checks if the admin has access to this function
+    [DataRow(2, "Manage Users", false)]             // checks if the staff have access to this function
+    [DataRow(2, "Add a movie", false)]              // checks if the staff have access to this function
+    [DataRow(2, "Add to the schedule", true)]       // checks if the staff have access to this function
+    [DataRow(2, "Display the schedule", true)]      // checks if the staff have access to this function
+    [DataRow(2, "Display income overview", false)]  // checks if the staff have access to this function
+    [DataRow(2, "Manage snacks", true)]             // checks if the staff have access to this function
+    [DataRow(2, "Manage Locations", false)]         // checks if the staff have access to this function
+    [DataRow(2, "Create coupon", false)]            // checks if the staff have access to this function
+    [DataRow(3, "Manage Users", false)]             // checks if the floor managers have access to this function
+    [DataRow(3, "Add a movie", true)]               // checks if the floor managers have access to this function
+    [DataRow(3, "Add to the schedule", true)]       // checks if the floor managers have access to this function
+    [DataRow(3, "Display the schedule", true)]      // checks if the floor managers have access to this function
+    [DataRow(3, "Display income overview", true)]   // checks if the floor managers have access to this function
+    [DataRow(3, "Manage snacks", true)]             // checks if the floor managers have access to this function
+    [DataRow(3, "Manage Locations", false)]         // checks if the floor managers have access to this function
+    [DataRow(3, "Create coupon", true)]             // checks if the floor managers have access to this function
     public void TestAccessFunctionality(int accountId, string functionality, bool expected)
     {
         AccountModel acc = AccountsAccess.GetById(accountId);
