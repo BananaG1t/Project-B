@@ -191,7 +191,7 @@ public static class SnackReservation
             PresentationHelper.Error("There are no snacks to select");
             return;
         }
-        string text = "Enter the number of the snack that you would like to buy";
+        string text = $"Person {personNum}, enter the number of the snack that you would like to buy";
         List<int> ValidInputs = [];
 
         for (int i = 0; i < snacks.Count; i++)
