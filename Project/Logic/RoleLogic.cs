@@ -203,4 +203,11 @@ public static class RoleLogic
 
         return MenuOptions;
     }
+
+    public static RoleModel GetRoleByAccountId(int accountId)
+    {
+        AssignedRoleModel assignedRole = AssignedRoleAccess.GetByAccountId(accountId);
+        if (assignedRole == null) { return null; }
+        return RoleAccess.GetById((int)assignedRole.RoleId);
+    }
 }
