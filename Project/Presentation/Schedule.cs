@@ -4,7 +4,6 @@ static class Schedule
     {
         List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(location);
 
-
         string text = "what schedule do you want to see";
 
         for (int i = 0; i < Schedules.Count; i++)
