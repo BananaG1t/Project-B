@@ -23,11 +23,6 @@ public static class LocationAccess
         _connection.Execute(sql, snack);
     }
 
-    public static void Delete(int id)
-    {
-        string sql = $"DELETE FROM {Table} WHERE id = @Id";
-        _connection.Execute(sql, new { Id = id });
-    }
     public static LocationModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
@@ -58,4 +53,10 @@ public static class LocationAccess
         return LocationsNames;
     }
 
+    public static void Delete(int id)
+    {
+        string sql = $"DELETE FROM {Table} WHERE id = @Id";
+        _connection.Execute(sql, new { Id = id });
+    }
+    
 }
