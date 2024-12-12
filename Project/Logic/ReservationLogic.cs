@@ -30,10 +30,7 @@ class ReservationLogic
         findNext(row, col, "down");
         if (row == 0)
         {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("No row of seats available");
-            Console.ResetColor();
+            PresentationHelper.Error("No row of seats available");
             return;
         }
         ConsoleKey input = ConsoleKey.None;
@@ -133,9 +130,8 @@ class ReservationLogic
             else if (input == ConsoleKey.Backspace)
                 return;
 
-            AuditoriumLogic.DisplaySeats(schedule.Auditorium, row, col, amount);
+            Seats.DisplaySeats(schedule.Auditorium, row, col, amount);
             input = Console.ReadKey().Key;
-            Console.Clear();
         } while (input != ConsoleKey.Enter);
 
 
@@ -146,7 +142,7 @@ class ReservationLogic
         }
         else
         {
-            Console.WriteLine("Sorry, the bar is already full");
+            PresentationHelper.Error("Sorry, the bar is already full");
             bar = false;
         }
 
@@ -164,7 +160,7 @@ class ReservationLogic
             SeatsAccess.Update(seat);
             reservationId = ReservationAcces.Write(new(order.Id, seat.Row, seat.Collum));
             if (snack)
-                SnackReservation.BuySnacks(reservationId);
+                SnackReservation.BuySnacks(reservationId, i + 1);
         }
         Console.WriteLine("Made the reservation");
     }
