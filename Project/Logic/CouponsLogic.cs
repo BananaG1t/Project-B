@@ -1,6 +1,6 @@
 public static class CouponsLogic
 {
-    public static void Write(int couponCode, DateTime expirationDate, string couponType, bool couponPercentage, float amount, int Account_ID)
+    public static void Write(string couponCode, DateTime expirationDate, string couponType, bool couponPercentage, float amount, int Account_ID)
     {
         new CouponModel(couponCode, expirationDate, couponType, couponPercentage, amount, Account_ID);
     }

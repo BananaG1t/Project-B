@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 public static class Coupon
 {
     public static void AdminMenu()
@@ -36,7 +38,7 @@ public static class Coupon
         bool percentage = false;
         string couponType = "";
         float amount = 0;
-        int couponCode;
+        string couponCode;
         
         int type = PresentationHelper.MenuLoop("What can the coupon be used for?\n[1] Order price\n[2] Seat reservation price\n[3] Snack reservation price", 1, 3);
         if (type == 1) couponType = "Order";
@@ -57,15 +59,19 @@ public static class Coupon
 
         int inputcode = PresentationHelper.MenuLoop("\ninput coupon code or random generated coupon code?\n[1] Input\n[2] Random generated", 1, 2);
         if (inputcode == 1) { couponCode = Validcode(); }
-        else {couponCode = GenerateRandomCode(4);}
+        else 
+        {
+            int length = PresentationHelper.GetInt("\nplease type in how long the code should be");
+            couponCode = GenerateRandomCode(length);
+        }
 
 
         AccountModel account = ChooseAccount();
         
         CouponsLogic.Write(couponCode, expirationDate, couponType, percentage, amount, account.Id);
 
-        Console.WriteLine($"Coupon used for {couponType} expiration date: {expirationDate} coupon code: {couponCode} added and assigned to {account.EmailAddress}");
-        Console.WriteLine("ENTER to continue");
+        Console.WriteLine($"\nCoupon used for {couponType} expiration date: {expirationDate} coupon code: {couponCode} added and assigned to {account.EmailAddress}");
+        Console.WriteLine("ENTER To go back");
         Console.ReadLine();
     }
 
@@ -94,16 +100,19 @@ public static class Coupon
         if (coupon.CouponPercentage == true) { return $"% {coupon.Amount}"; }
         else { return $"€ {coupon.Amount}";}
     }
-    public static int GenerateRandomCode(int length)
+
+    public static string GenerateRandomCode(int length)
     {
-        var numbers = new List <int>();
-        Random rnd = new Random();
-        for (int i = 0; i < length; i ++)
+        Random random = new Random();
+        string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        char[] code = new char [length];
+
+        for (int i = 0; i < length; i++)
         {
-            numbers.Add(rnd.Next(0, 10));
+            code[i] = chars[random.Next(chars.Length)];
         }
-        string code = string.Join("", numbers); // convert numbers into a single string
-        return Convert.ToInt32(code); // convert string into a integer
+
+        return  new string(code);
     }
 
     public static DateTime ValidDate(string text)
@@ -118,12 +127,20 @@ public static class Coupon
         input = Console.ReadLine();
 
         // loop logic to make sure the input is a number and check if the number is a valid choice
-        while (!DateTime.TryParseExact(input, format, null, System.Globalization.DateTimeStyles.None, out output))
-        {   
-            Console.Clear();
-            Console.WriteLine("That is not a valid input");
-            Console.WriteLine(text);
-            input = Console.ReadLine();
+        while (!DateTime.TryParseExact(input, format, null, System.Globalization.DateTimeStyles.None, out output) || output < DateTime.Now.Date)
+        {
+            if (output < DateTime.Now.Date)
+            {
+                Console.Clear();
+                Console.WriteLine("The date cannot be in the past.");
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("That is not a valid input");
+            }
+                Console.WriteLine(text);
+                input = Console.ReadLine();
         }
 
         // when it breaks out of the loop, the ouput number is valid and returns it to the method that called it
@@ -196,35 +213,26 @@ public static class Coupon
         float roundedPrice = (float)Math.Round(price, 2); 
         return roundedPrice;
     }
-    public static int Validcode()
+    public static string Validcode()
     {
-
-        int code = 0;
+        string code;
         do
         {
-            Console.WriteLine("Please enter a 4 digit code: ");
+            Console.WriteLine("Please enter a coupon code: ");
 
             string input = Console.ReadLine();
 
             // Check if the input has exactly 4 characters
-            if (input.Length == 4)
+            if (input.Length <= 0)
             {
-                // Try to convert the input to a 4-digit integer
-                if (int.TryParse(input, out int result) && result >= 1000 && result <= 9999)
-                {
-                    code = result;
-                    break;
-                }
-                else
-                {
-                    Console.Clear();
-                    Console.WriteLine("Input is not a valid 4 digit code.");
-                }
+                code = input;
+                break;
+
             }
             else
             {
                 Console.Clear();
-                Console.WriteLine("Input must have exactly 4 digits code.");
+                Console.WriteLine("please enter code.");
             }
 
         } while (true);
