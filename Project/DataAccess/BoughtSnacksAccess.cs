@@ -31,10 +31,10 @@ public static class BoughtSnacksAccess
         return _connection.QueryFirstOrDefault<BoughtSnacksModel>(sql, new { Id = id });
     }
 
-    public static List<BoughtSnacksModel> GetFromReservations(OrderModel order)
+    public static List<BoughtSnacksModel> GetFromReservation(ReservationModel reservations)
     {
         string sql = $"SELECT * FROM {Table} WHERE Reservation_ID = @Id";
-        return (List<BoughtSnacksModel>)_connection.Query<BoughtSnacksModel>(sql, order);
+        return (List<BoughtSnacksModel>)_connection.Query<BoughtSnacksModel>(sql, reservations);
     }
 
     public static List<BoughtSnacksModel> GetAll()

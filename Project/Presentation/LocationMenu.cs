@@ -115,8 +115,25 @@ static class LocationMenu
         int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
         LocationModel OldLocation = locations[LocationId - 1];
 
-        LocationLogic.Delete((int)OldLocation.Id);
-        Console.WriteLine($"\nRemoved \"{OldLocation.Name}\"\n");
+        PresentationHelper.PrintInRed("\nWARNING! Removing a location will delete everthing associated with the location\n");
+        string confirmText =
+                "Are you sure you want to remove this location?\n" +
+                "[1] Yes \n" +
+                "[2] No\n";
+
+        int confirmChoice = PresentationHelper.MenuLoop(confirmText, 1, 2);
+
+        if (confirmChoice == 1)
+        {
+            LocationLogic.Delete((int)OldLocation.Id);
+            Console.WriteLine($"\nRemoved \"{OldLocation.Name}\"\n");
+        }
+        else
+        {
+            Console.WriteLine("\nRemoving of location aborted\n");
+        }
+
+        
     }
 
     public static void DisplayLocations()
