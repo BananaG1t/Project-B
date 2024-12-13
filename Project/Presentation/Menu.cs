@@ -11,16 +11,19 @@ static class Menu
     static public void AdminMenu(AccountModel account)
     {
         //admin menu
-        List<string> MenuOptions = RoleLogic.GetMenuText(account);
-
-        string MenuText = string.Join("", MenuOptions);
-
         List<string> usedFunctionalities = RoleLogic.GetMenuOptions(account);
+
+        string text = "Staff menu";
+
+        for (int i = 0; i < usedFunctionalities.Count; i++)
+        {
+            text += $"\n[{i + 1}] {usedFunctionalities[i]}";
+        }
 
         while (true)
         {
             //reading input from the menu to connect to the features
-            string functionality = usedFunctionalities[PresentationHelper.MenuLoop(MenuText + $"[{MenuOptions.Count + 1}] Exit", 1, MenuOptions.Count + 1) - 1];
+            string functionality = usedFunctionalities[PresentationHelper.MenuLoop(text, 1, usedFunctionalities.Count) - 1];
 
             if (functionality == functionalities[0])
             {
@@ -32,11 +35,11 @@ static class Menu
             }
             else if (functionality == functionalities[2])
             {
-                CreateScheduleEntry.Main();
+                CreateScheduleEntry.Main(account);
             }
             else if (functionality == functionalities[3])
             {
-                DisplaySchedule();
+                Schedule.DisplaySchedule(LocationMenu.SelectLocation());
             }
             else if (functionality == functionalities[4])
             {
@@ -101,7 +104,7 @@ static class Menu
             }
             else if (input == 3)
             {
-                DisplaySchedule();
+                Schedule.DisplaySchedule(LocationMenu.SelectLocation());
             }
             // sends the user to the start to login again
             else if (input == 4) { break; }
@@ -110,30 +113,5 @@ static class Menu
         Start();
     }
 
-    public static void DisplaySchedule()
-    {
-        Console.Clear();
-        string text = "At which location do you want to see?";
-        List<LocationModel> locations = LocationLogic.GetAll();
 
-        for (int i = 0; i < locations.Count; i++)
-        {
-            text += $"\n[{i + 1}] {locations[i].Name}";
-
-        }
-        int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
-        LocationModel Location = locations[LocationId - 1];
-
-        List<ScheduleModel> Schedules = ScheduleAccess.ScheduleByDateAndLocation(Location);
-
-        // Shows what movie are playing based on the date and time and location
-        Console.WriteLine($"Movies Playing");
-        foreach (ScheduleModel schedule in Schedules)
-        {
-            Console.WriteLine(@$"Movie: {schedule.Movie.Name}, 
-Room: {schedule.Auditorium.Room}, 
-Starting time: {schedule.StartTime.ToString("dd-MM-yyyy HH:mm")}");
-        }
-        Console.WriteLine();
-    }
 }
