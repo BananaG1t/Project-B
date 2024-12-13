@@ -104,7 +104,7 @@ public static class Coupon
     public static string GenerateRandomCode(int length)
     {
         Random random = new Random();
-        string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         char[] code = new char [length];
 
         for (int i = 0; i < length; i++)
@@ -112,7 +112,7 @@ public static class Coupon
             code[i] = chars[random.Next(chars.Length)];
         }
 
-        return  new string(code);
+        return new string(code);
     }
 
     public static DateTime ValidDate(string text)
@@ -122,7 +122,6 @@ public static class Coupon
         DateTime output;
         string format = "dd-MM-yyyy";
 
-        // ask the question at least once
         Console.WriteLine(text);
         input = Console.ReadLine();
 
@@ -132,7 +131,7 @@ public static class Coupon
             if (output < DateTime.Now.Date)
             {
                 Console.Clear();
-                Console.WriteLine("The date cannot be in the past.");
+                Console.WriteLine("The date cannot be in the past");
             }
             else
             {
@@ -218,12 +217,11 @@ public static class Coupon
         string code;
         do
         {
-            Console.WriteLine("Please enter a coupon code: ");
+            Console.WriteLine("\nPlease enter a coupon code: ");
 
             string input = Console.ReadLine();
 
-            // Check if the input has exactly 4 characters
-            if (input.Length <= 0)
+            if (input.Length >= 0)
             {
                 code = input;
                 break;
@@ -232,11 +230,12 @@ public static class Coupon
             else
             {
                 Console.Clear();
-                Console.WriteLine("please enter code.");
+                Console.WriteLine("\nPlease enter a code");
             }
 
         } while (true);
 
-        return code;
+        
+        return code.ToUpper();
     }
 }
