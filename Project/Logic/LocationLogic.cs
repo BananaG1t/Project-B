@@ -84,49 +84,6 @@ public static class LocationLogic
             }
         }
 
-        Console.WriteLine("Schedule");
-        for (int i = 0; i < schedules.Count; i++)
-        {
-            Console.WriteLine(schedules[i].Id);
-        }
-        Console.WriteLine();
-
-        Console.WriteLine("orders");
-        for (int i = 0; i < orders.Count; i++)
-        {
-            Console.WriteLine(orders[i].Id);
-        }
-        Console.WriteLine();
-        Console.WriteLine("reservations");
-        for (int i = 0; i < reservations.Count; i++)
-        {
-            Console.WriteLine(reservations[i].Id);
-        }
-        Console.WriteLine();
-        Console.WriteLine("snacks");
-        for (int i = 0; i < boughtsnacks.Count; i++)
-        {
-            Console.WriteLine(boughtsnacks[i].Id);
-        }
-        Console.WriteLine();
-        Console.WriteLine("assigned roles");
-        for (int i = 0; i < assignedroles.Count; i++)
-        {
-            Console.WriteLine(assignedroles[i].Id);
-        }
-        Console.WriteLine();
-        Console.WriteLine("auditoriums");
-        for (int i = 0; i < auditoriums.Count; i++)
-        {
-            Console.WriteLine(auditoriums[i].Id);
-        }
-        Console.WriteLine();
-        Console.WriteLine("seats");
-        for (int i = 0; i < seats.Count; i++)
-        {
-            Console.WriteLine(seats[i].Id);
-        }
-
         if (boughtsnacks.Count != 0)
         {
             foreach (var snack in boughtsnacks)
