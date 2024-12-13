@@ -52,7 +52,7 @@ GROUP BY Schedule.Id, Schedule.endTime;";
     public static List<OrderModel> GetFromSchedule(ScheduleModel schedule)
     {
         string sql = $"SELECT * FROM {Table} WHERE Schedule_ID = @Id";
-        return (List<OrderModel>)_connection.Query<OrderModel>(sql,  new { Id = schedule.Id });
+        return (List<OrderModel>)_connection.Query<OrderModel>(sql,  schedule);
     }
 
     public static void Delete(int id)

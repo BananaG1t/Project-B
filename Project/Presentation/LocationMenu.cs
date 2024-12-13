@@ -115,7 +115,7 @@ static class LocationMenu
         int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
         LocationModel OldLocation = locations[LocationId - 1];
 
-        PresentationHelper.PrintInRed("\nWARNING! Removing a location will delete everthing associated with the location\n");
+        PresentationHelper.PrintInRed("\nWARNING! Removing a location will delete everything associated with the location\n");
         string confirmText =
                 "Are you sure you want to remove this location?\n" +
                 "[1] Yes \n" +
