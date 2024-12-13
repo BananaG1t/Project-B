@@ -54,10 +54,11 @@ class OrderLogic
             DateTime currentEndTime = currentStartTime.AddHours(2);
 
             // Remove expired reservations (those whose endTime <= current startTime)
+            int amount = activeReservations.Where(res => res.endTime <= currentStartTime).Sum(res => res.amount);
             activeReservations.RemoveWhere(res => res.endTime <= currentStartTime);
 
             // Add current reservation to the active set
-            activeReservations.Add((currentEndTime, reservation.amount));
+            activeReservations.Add((currentEndTime, Math.Max(reservation.amount, amount)));
 
             // Calculate total spots in use
             int currentSpotsInUse = activeReservations.Sum(res => res.amount);
