@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 public static class Coupon
 {
     public static void AdminMenu()
@@ -166,6 +164,7 @@ public static class Coupon
         AccountModel chosenAccount = AccountsAccess.GetById(ValidInputs[input]);
         return chosenAccount;
     }
+
     public static float ValidFloatPercentage(string text, string errorText)
     {
         float price = 0;
@@ -189,6 +188,7 @@ public static class Coupon
         float roundedPrice = (float)Math.Round(price, 2);
         return roundedPrice;
     }
+
     public static float ValidFloat(string text, string errorText)
     {
         float price = 0;
@@ -212,6 +212,7 @@ public static class Coupon
         float roundedPrice = (float)Math.Round(price, 2); 
         return roundedPrice;
     }
+    
     public static string Validcode()
     {
         string code;
