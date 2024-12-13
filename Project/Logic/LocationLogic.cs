@@ -159,19 +159,19 @@ public static class LocationLogic
             }
         }
 
-        if (auditoriums.Count != 0)
-        {
-            foreach (var auditorium in auditoriums)
-            {
-                AuditoriumAcces.Delete((int)auditorium.Id);
-            }
-        }
-
         if (schedules.Count != 0)
         {
             foreach (var schedule in schedules)
             {
                 ScheduleAccess.Delete(schedule.Id);
+            }
+        }
+
+        if (auditoriums.Count != 0)
+        {
+            foreach (var auditorium in auditoriums)
+            {
+                AuditoriumAcces.Delete((int)auditorium.Id);
             }
         }
 

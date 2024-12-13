@@ -36,7 +36,7 @@ public static class AuditoriumAcces
     public static List<AuditoriumModel> GetFromSchedule(ScheduleModel schedule)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        return (List<AuditoriumModel>)_connection.Query<AuditoriumModel>(sql, schedule);
+        return (List<AuditoriumModel>)_connection.Query<AuditoriumModel>(sql, new { Id = schedule.AuditoriumId });
     }
 
     public static void Update(AuditoriumModel auditorium)
