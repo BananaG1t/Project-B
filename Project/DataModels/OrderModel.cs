@@ -24,4 +24,13 @@ public class OrderModel
         Amount = (int)amount;
         Bar = bar == 1;
     }
+
+    public OrderModel(Int64 id, Int64 Account_ID, Int64 Schedule_ID, Int64 amount, string bar)
+    {
+        Id = (int)id;
+        AccountId = (int)Account_ID;
+        ScheduleId = (int)Schedule_ID;
+        Amount = (int)amount;
+        Bar = bar == "";
+    }
 }

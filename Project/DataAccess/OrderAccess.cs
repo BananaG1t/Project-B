@@ -49,4 +49,16 @@ GROUP BY Schedule.Id, Schedule.endTime;";
 
         return (List<(int, DateTime, int)>)_connection.Query<(int, DateTime, int)>(sql, new { StartTime = schedule.EndTime, EndTime = schedule.EndTime.AddHours(2), LocationId = schedule.LocationId });
     }
+
+    public static List<OrderModel> GetFromSchedule(ScheduleModel schedule)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Schedule_ID = @Id";
+        return (List<OrderModel>)_connection.Query<OrderModel>(sql,  schedule);
+    }
+
+    public static void Delete(int id)
+    {
+        string sql = $"DELETE FROM {Table} WHERE id = @Id";
+        _connection.Execute(sql, new { Id = id });
+    }
 }
