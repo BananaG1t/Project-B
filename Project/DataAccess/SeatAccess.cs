@@ -32,6 +32,12 @@ public static class SeatsAccess
         return _connection.QueryFirstOrDefault<AccountModel>(sql, new { Id = id });
     }
 
+    public static List<SeatModel> GetFromAuditorium(AuditoriumModel auditorium)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Auditorium_ID = @Id";
+        return (List<SeatModel>)_connection.Query<SeatModel>(sql, auditorium);
+    }
+
     public static AccountModel GetByEmail(string email)
     {
         string sql = $"SELECT * FROM {Table} WHERE email = @Email";

@@ -185,26 +185,6 @@ public static class RoleLogic
         return false;
     }
 
-    public static List<string> GetMenuText(AccountModel account)
-    {
-        List<string> functionalities = Menu.functionalities;
-
-        List<string> MenuOptions = [];
-
-        int index = 0;
-
-        for (int i = 0; i < functionalities.Count; i++)
-        {
-            if (HasAccess(account, functionalities[i]))
-            {
-                MenuOptions.Add($"[{index + 1}] {functionalities[i]}\n");
-                index++;
-            }
-        }
-
-        return MenuOptions;
-    }
-
     public static List<string> GetMenuOptions(AccountModel account)
     {
         List<string> functionalities = Menu.functionalities;
