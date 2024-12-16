@@ -38,7 +38,7 @@ public static class Coupon
         float amount = 0;
         string couponCode;
         
-        int type = PresentationHelper.MenuLoop("What can the coupon be used for?\n[1] Order price\n[2] Seat reservation price\n[3] Snack reservation price", 1, 3);
+        int type = PresentationHelper.MenuLoop("What can the coupon be used for?\n[1] The price of the whole order\n[2] Seat reservation price\n[3] Snack reservation price", 1, 3);
         if (type == 1) couponType = "Order";
         if (type == 2) couponType = "Seats";
         if (type == 3) couponType = "Snacks";
@@ -47,20 +47,20 @@ public static class Coupon
         if (input == 1) 
         {
             percentage = true;
-            amount = ValidFloatPercentage("\nEnter the percentage of the coupon (must be between 0-100)","Invalid input. Please try again\n");
+            amount = CouponsLogic.ValidFloatPercentage("\nEnter the percentage of the coupon (must be between 0-100)","Invalid input. Please try again\n");
         }
         else if (input == 2)
         {
-            amount = ValidFloat("\nEnter the discount price of the coupon","Invalid input. Please try again\n");
+            amount = CouponsLogic.ValidFloat("\nEnter the discount price of the coupon","Invalid input. Please try again\n");
         } 
-        DateTime expirationDate = ValidDate("\nEnter the expiration date of the coupon (dd-MM-yyyy)");
+        DateTime expirationDate = General.ValidDate("\nEnter the expiration date of the coupon (dd-MM-yyyy)","The date cannot be in the past","That is not a valid input");
 
         int inputcode = PresentationHelper.MenuLoop("\ninput coupon code or random generated coupon code?\n[1] Input\n[2] Random generated", 1, 2);
         if (inputcode == 1) { couponCode = Validcode(); }
         else 
         {
             int length = PresentationHelper.GetInt("\nplease type in how long the code should be");
-            couponCode = GenerateRandomCode(length);
+            couponCode = CouponsLogic.GenerateRandomCode(length);
         }
 
 
@@ -69,8 +69,8 @@ public static class Coupon
         CouponsLogic.Write(couponCode, expirationDate, couponType, percentage, amount, account.Id);
 
         Console.WriteLine($"\nCoupon used for {couponType} expiration date: {expirationDate} coupon code: {couponCode} added and assigned to {account.EmailAddress}");
-        Console.WriteLine("ENTER To go back");
-        Console.ReadLine();
+        Console.WriteLine("Press any key to go back");
+        Console.ReadKey();
     }
 
     public static void DisplayCoupons()
@@ -87,9 +87,8 @@ public static class Coupon
                 count++;
                 Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon),5:C}");
             }
-
-            Console.WriteLine("\n[ENTER] To go back");
-            Console.ReadLine();
+        Console.WriteLine("Press any key to go back");
+        Console.ReadKey();
         }
     }
 
@@ -97,51 +96,6 @@ public static class Coupon
     {
         if (coupon.CouponPercentage == true) { return $"% {coupon.Amount}"; }
         else { return $"€ {coupon.Amount}";}
-    }
-
-    public static string GenerateRandomCode(int length)
-    {
-        Random random = new Random();
-        string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        char[] code = new char [length];
-
-        for (int i = 0; i < length; i++)
-        {
-            code[i] = chars[random.Next(chars.Length)];
-        }
-
-        return new string(code);
-    }
-
-    public static DateTime ValidDate(string text)
-    {
-        // create starting variables
-        string input;
-        DateTime output;
-        string format = "dd-MM-yyyy";
-
-        Console.WriteLine(text);
-        input = Console.ReadLine();
-
-        // loop logic to make sure the input is a number and check if the number is a valid choice
-        while (!DateTime.TryParseExact(input, format, null, System.Globalization.DateTimeStyles.None, out output) || output < DateTime.Now.Date)
-        {
-            if (output < DateTime.Now.Date)
-            {
-                Console.Clear();
-                Console.WriteLine("The date cannot be in the past");
-            }
-            else
-            {
-                Console.Clear();
-                Console.WriteLine("That is not a valid input");
-            }
-                Console.WriteLine(text);
-                input = Console.ReadLine();
-        }
-
-        // when it breaks out of the loop, the ouput number is valid and returns it to the method that called it
-        return output;
     }
 
     public static AccountModel ChooseAccount()
@@ -165,54 +119,6 @@ public static class Coupon
         return chosenAccount;
     }
 
-    public static float ValidFloatPercentage(string text, string errorText)
-    {
-        float price = 0;
-        bool valid = false; 
-        while (!valid)
-        {
-            Console.WriteLine(text);
-            string input = Console.ReadLine();
-            
-            if (input.Contains(",")) { input = input.Replace(",", "."); }
-
-            if (float.TryParse(input, out price) && price > 0 && price <= 100)
-            {
-                valid = true;
-            }
-            else
-            {
-                Console.WriteLine(errorText);
-            }
-        }
-        float roundedPrice = (float)Math.Round(price, 2);
-        return roundedPrice;
-    }
-
-    public static float ValidFloat(string text, string errorText)
-    {
-        float price = 0;
-        bool valid = false;
-        while (!valid)
-        {
-            Console.WriteLine(text);
-            string input = Console.ReadLine();
-            
-            if (input.Contains(",")) { input = input.Replace(",", "."); }
-
-            if (float.TryParse(input, out price) && price > 0)
-            {
-                valid = true;
-            }
-            else
-            {
-                Console.WriteLine(errorText);
-            }
-        }
-        float roundedPrice = (float)Math.Round(price, 2); 
-        return roundedPrice;
-    }
-    
     public static string Validcode()
     {
         string code;
@@ -231,12 +137,10 @@ public static class Coupon
             else
             {
                 Console.Clear();
-                Console.WriteLine("\nPlease enter a code");
+                PresentationHelper.Error("Please enter a code");
             }
 
         } while (true);
-
-        
         return code.ToUpper();
     }
 }
