@@ -192,7 +192,7 @@ public static class SnackReservation
             return;
         }
         string text = $"Person {personNum}, enter the number of the snack that you would like to buy";
-        List<int> ValidInputs = [];
+        List<int> ValidInputs = [0];
 
         for (int i = 0; i < snacks.Count; i++)
         {
@@ -200,15 +200,27 @@ public static class SnackReservation
             ValidInputs.Add(i + 1);
         }
 
-        int input = PresentationHelper.MenuLoop(text + "Enter the number of the snack that you would like to buy ", 1, ValidInputs.Count);
 
-        int amount = ValidAmount();
+        while (true)
+        {
+            int input = PresentationHelper.MenuLoop(text + "\n[0] Done", 0, ValidInputs.Count);
+            if (input == 0) return;
 
-        SnacksModel boughtSnack = snacks[input - 1];
+            int amount = ValidAmount();
 
-        BoughtSnacksLogic.Write(reservation_id, boughtSnack.Id, amount);
+            SnacksModel boughtSnack = snacks[input - 1];
 
-        Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {amount * boughtSnack.Price:F2}\n");
+            BoughtSnacksLogic.Write(reservation_id, boughtSnack.Id, amount);
+
+            Console.Clear();
+            Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {amount * boughtSnack.Price:F2}\n");
+        }
+
+
+
+
+
+
     }
 
 

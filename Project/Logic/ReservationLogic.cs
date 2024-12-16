@@ -162,6 +162,7 @@ class ReservationLogic
             if (snack)
                 SnackReservation.BuySnacks(reservationId, i + 1);
         }
+        Console.Clear();
         Console.WriteLine("Made the reservation");
     }
 
