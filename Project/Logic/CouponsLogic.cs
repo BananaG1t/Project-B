@@ -33,30 +33,6 @@ public static class CouponsLogic
         return new string(code);
     }
 
-    public static float ValidFloatPercentage(string text, string errorText)
-    {
-        float price = 0;
-        bool valid = false; 
-        while (!valid)
-        {
-            Console.WriteLine(text);
-            string input = Console.ReadLine();
-            
-            if (input.Contains(",")) { input = input.Replace(",", "."); }
-
-            if (float.TryParse(input, out price) && price > 0 && price <= 100)
-            {
-                valid = true;
-            }
-            else
-            {
-                PresentationHelper.Error(errorText);
-            }
-        }
-        float roundedPrice = (float)Math.Round(price, 2);
-        return roundedPrice;
-    }
-
     public static float ValidFloat(string text, string errorText)
     {
         float price = 0;
@@ -80,5 +56,27 @@ public static class CouponsLogic
         float roundedPrice = (float)Math.Round(price, 2); 
         return roundedPrice;
     }
+        public static float ValidFloatPercentage(string text, string errorText)
+    {
+        float price = 0;
+        bool valid = false; 
+        while (!valid)
+        {
+            Console.WriteLine(text);
+            string input = Console.ReadLine();
+            
+            if (input.Contains(",")) { input = input.Replace(",", "."); }
 
+            if (float.TryParse(input, out price) && price > 0 && price <= 100)
+            {
+                valid = true;
+            }
+            else
+            {
+                PresentationHelper.Error(errorText);
+            }
+        }
+        float roundedPrice = (float)Math.Round(price, 2);
+        return roundedPrice;
+    }
 }

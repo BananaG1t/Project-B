@@ -53,7 +53,7 @@ public static class Coupon
         {
             amount = CouponsLogic.ValidFloat("\nEnter the discount price of the coupon","Invalid input. Please try again\n");
         } 
-        DateTime expirationDate = General.ValidDate("Enter the expiration date of the coupon (dd-MM-yyyy)");
+        DateTime expirationDate = PresentationHelper.ValidDate("Enter the expiration date of the coupon (dd-MM-yyyy)");
 
         int inputcode = PresentationHelper.MenuLoop("\ninput coupon code or random generated coupon code?\n[1] Input\n[2] Random generated", 1, 2);
         if (inputcode == 1) { couponCode = Validcode(); }
