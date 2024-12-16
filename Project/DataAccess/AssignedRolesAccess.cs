@@ -49,10 +49,10 @@ public static class AssignedRoleAccess
         return _connection.QueryFirstOrDefault<AssignedRoleModel>(sql, new { AccountId = AccountIdMethod });
     }
 
-    public static AssignedRoleModel GetByLocationId(int LocationIdMethod)
+    public static List<AssignedRoleModel> GetByLocationId(int LocationIdMethod)
     {
-        string sql = $"SELECT * FROM {Table} WHERE Location_ID = @LocationId";
-        return _connection.QueryFirstOrDefault<AssignedRoleModel>(sql, new { LocationId = LocationIdMethod });
+        string sql = $"SELECT * FROM {Table} WHERE Location_ID = @Id";
+        return (List<AssignedRoleModel>)_connection.Query<AssignedRoleModel>(sql, new { Id = LocationIdMethod });
     }
 
     public static List<AssignedRoleModel> GetAllAssignedRoles()

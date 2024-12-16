@@ -46,26 +46,20 @@ class OrderLogic
         // Priority queue (min-heap) to track active reservations (endTime, amount)
         var activeReservations = new SortedSet<(DateTime endTime, int amount)>();
 
-        int maxSpots = 0;
-
         foreach (var reservation in reservations)
         {
             DateTime currentStartTime = reservation.startTime;
             DateTime currentEndTime = currentStartTime.AddHours(2);
 
             // Remove expired reservations (those whose endTime <= current startTime)
+            int amount = activeReservations.Where(res => res.endTime <= currentStartTime).Sum(res => res.amount);
             activeReservations.RemoveWhere(res => res.endTime <= currentStartTime);
 
             // Add current reservation to the active set
-            activeReservations.Add((currentEndTime, reservation.amount));
-
-            // Calculate total spots in use
-            int currentSpotsInUse = activeReservations.Sum(res => res.amount);
-
-            // Track the maximum number of spots required
-            maxSpots = Math.Max(maxSpots, currentSpotsInUse);
+            activeReservations.Add((currentEndTime, Math.Max(reservation.amount, amount)));
         }
 
-        return maxSpots;
+        // Calculate total spots in use and return it
+        return activeReservations.Sum(res => res.amount);;
     }
 }

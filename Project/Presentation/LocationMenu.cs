@@ -104,19 +104,43 @@ static class LocationMenu
     public static void DeleteLocation()
     {
         Console.Clear();
-        string text = "Which location do you want to remove?";
         List<LocationModel> locations = LocationLogic.GetAll();
-
-        for (int i = 0; i < locations.Count; i++)
+        if (locations.Count > 0)
         {
-            text += $"\n[{i + 1}] {locations[i].Name}";
+            string text = "Which location do you want to remove?";
 
+            for (int i = 0; i < locations.Count; i++)
+            {
+                text += $"\n[{i + 1}] {locations[i].Name}";
+
+            }
+            int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
+            LocationModel OldLocation = locations[LocationId - 1];
+
+            PresentationHelper.PrintInRed("\nWARNING! Removing a location will delete everything associated with the location\n");
+            string confirmText =
+                    "Are you sure you want to remove this location?\n" +
+                    "[1] Yes \n" +
+                    "[2] No\n";
+
+            int confirmChoice = PresentationHelper.MenuLoop(confirmText, 1, 2);
+
+            if (confirmChoice == 1)
+            {
+                LocationLogic.Delete((int)OldLocation.Id);
+                Console.WriteLine($"\nRemoved \"{OldLocation.Name}\"\n");
+            }
+            else
+            {
+                Console.WriteLine("\nRemoving of location aborted\n");
+            }
         }
-        int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
-        LocationModel OldLocation = locations[LocationId - 1];
 
-        LocationLogic.Delete((int)OldLocation.Id);
-        Console.WriteLine($"\nRemoved \"{OldLocation.Name}\"\n");
+        else
+        {
+            Console.WriteLine("\nThere are no locations to remove\n");
+        }
+        
     }
 
     public static void DisplayLocations()
