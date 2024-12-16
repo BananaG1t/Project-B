@@ -1,6 +1,6 @@
 public static class General
 {
-    public static DateTime ValidDate(string text)
+    public static DateTime ValidDate(string text, string errorText)
     {
         // create starting variables
         string input;
@@ -15,7 +15,7 @@ public static class General
         while (!DateTime.TryParseExact(input, format, null, System.Globalization.DateTimeStyles.None, out output))
         {
             Console.Clear();
-            Console.WriteLine("That is not a valid input");
+            Console.WriteLine(errorText);
             Console.WriteLine(text);
             input = Console.ReadLine();
         }
