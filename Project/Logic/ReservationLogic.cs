@@ -10,11 +10,8 @@ class ReservationLogic
         ReservationAcces.Update(reservation);
     }
 
-    public static void GetReservation(AccountModel account)
+    public static void GetReservation(AccountModel account, LocationModel location)
     {
-        // pick a location
-        LocationModel location = LocationMenu.SelectLocation();
-
         // pick a schedule
         ScheduleModel schedule = Schedule.SelectSchedule(location);
 

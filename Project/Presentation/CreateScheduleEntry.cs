@@ -7,10 +7,18 @@ public static class CreateScheduleEntry
         LocationModel location = Location(account);
         int room = SelectRoom();
         MovieModel movie = SelectMovie();
-        DateTime date = SelectDate(room, movie.Length, (int)location.Id);
-        string? extras = GetExtras();
-        new ScheduleModel(date, movie, new AuditoriumModel(room, extras), location);
-        Console.Clear();
+        if (movie != null)
+        {
+            DateTime date = SelectDate(room, movie.Length, (int)location.Id);
+            string? extras = GetExtras();
+            new ScheduleModel(date, movie, new AuditoriumModel(room, extras), location);
+            Console.Clear();
+        }
+        
+        else
+        {
+            Console.WriteLine("\nSchedule creation cancelled\n");
+        }
     }
 
     private static int SelectRoom()
@@ -25,11 +33,29 @@ public static class CreateScheduleEntry
         return PresentationHelper.MenuLoop(text, 1, 3);
     }
 
-    private static MovieModel SelectMovie()
+    private static MovieModel? SelectMovie()
     {
         Console.Clear();
         string text = "What movie do you want to show?";
         List<MovieModel> Movies = MovieLogic.GetAll();
+        if (Movies.Count == 0)
+        {
+            PresentationHelper.Error("No locations with schedule entries");
+
+            string confirmText =
+                    "There are no movies\n" +
+                    "Do you want to add a new movie?\n" +
+                    "[1] Yes \n" +
+                    "[2] No\n";
+
+            int confirmChoice = PresentationHelper.MenuLoop(confirmText, 1, 2);
+            if (confirmChoice == 1)
+            {
+                AddMovieMenu.Main();
+                Movies = MovieLogic.GetAll();
+            }
+            else if (confirmChoice == 2) return null;
+        }
         List<int> valid = [];
         foreach (MovieModel movie in Movies)
         {

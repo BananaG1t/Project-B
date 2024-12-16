@@ -155,26 +155,45 @@ static class LocationMenu
         }
         Console.WriteLine();
     }
-    public static LocationModel SelectLocation()
+    public static LocationModel? SelectLocation(bool canAdd = false)
     {
         Console.Clear();
         string text = "At which location do you want to see?";
         List<LocationModel> ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
         List<LocationModel> NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
-
-        // Adds all locations with schedules to dict and as a valid option for reserving
-        for (int i = 0; i < ScheduleLocations.Count; i++)
+        
+        if (ScheduleLocations.Count == 0)
         {
-            text += $"\n[{i + 1}] {ScheduleLocations[i].Name}";
-        }
+            PresentationHelper.Error("No locations with schedule entries");
+            if (!canAdd) return null;
 
-        // Adds all locations with no schedules to dict without adding it as a valid option for reserving
-        for (int i = 0; i < NoScheduleLocations.Count; i++)
-        {
-            text += $"\n{NoScheduleLocations[i].Name} (Coming Soon!)";
-        }
+            string confirmText =
+                    "There are no locations\n" +
+                    "Do you want to add a new location?\n" +
+                    "[1] Yes \n" +
+                    "[2] No\n";
 
-        int locationId = PresentationHelper.MenuLoop(text, 1, ScheduleLocations.Count);
-        return ScheduleLocations[locationId - 1];
+            int confirmChoice = PresentationHelper.MenuLoop(confirmText, 1, 2);
+            if (confirmChoice == 1)
+            {
+                AddLocation();
+                ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
+            }
+            else if (confirmChoice == 2) return null;
+        }
+            // Adds all locations with schedules to dict and as a valid option for reserving
+            for (int i = 0; i < ScheduleLocations.Count; i++)
+            {
+                text += $"\n[{i + 1}] {ScheduleLocations[i].Name}";
+            }
+
+            // Adds all locations with no schedules to dict without adding it as a valid option for reserving
+            for (int i = 0; i < NoScheduleLocations.Count; i++)
+            {
+                text += $"\n{NoScheduleLocations[i].Name} (Coming Soon!)";
+            }
+
+            int locationId = PresentationHelper.MenuLoop(text, 1, ScheduleLocations.Count);
+            return ScheduleLocations[locationId - 1];
     }
 }
