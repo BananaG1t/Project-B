@@ -34,27 +34,27 @@ public static class Coupon
         string couponType = "";
         float amount = 0;
         int couponCode;
-        
+
         int type = PresentationHelper.MenuLoop("What can the coupon be used for?\n[1] Order price\n[2] Seat reservation price\n[3] Snack reservation price", 1, 3);
         if (type == 1) couponType = "Order";
         if (type == 2) couponType = "Seats";
         if (type == 3) couponType = "Snacks";
 
         int input = PresentationHelper.MenuLoop("\nShould the coupon be a percentage of the price or a fixed amount?\n[1] Percentage\n[2] Fixed amount", 1, 2);
-        if (input == 1) 
+        if (input == 1)
         {
             percentage = true;
-            amount = ValidFloatPercentage("\nEnter the percentage of the coupon (must be between 0-100)","Invalid input. Please try again\n");
+            amount = ValidFloatPercentage("\nEnter the percentage of the coupon (must be between 0-100)", "Invalid input. Please try again\n");
         }
         else if (input == 2)
         {
-            amount = ValidFloat("\nEnter the discount price of the coupon","Invalid input. Please try again\n");
-        } 
+            amount = ValidFloat("\nEnter the discount price of the coupon", "Invalid input. Please try again\n");
+        }
         DateTime expirationDate = ValidDate("\nEnter the expiration date of the coupon (dd-MM-yyyy)");
 
         int inputcode = PresentationHelper.MenuLoop("\ninput coupon code or random generated coupon code?\n[1] Input\n[2] Random generated", 1, 2);
         if (inputcode == 1) { couponCode = Validcode(); }
-        else {couponCode = GenerateRandomCode(4);}
+        else { couponCode = GenerateRandomCode(4); }
 
 
         AccountModel account = ChooseAccount();
@@ -72,7 +72,7 @@ public static class Coupon
         List<CouponModel> coupons = CouponsLogic.GetAllById(id);
         int count = 0;
 
-        if (coupons.Count() == 0) PresentationHelper.PrintAndWait("No coupons found");
+        if (coupons.Count() == 0) PresentationHelper.PrintAndEnter("No coupons found");
         else
         {
             foreach (CouponModel coupon in coupons)
@@ -86,16 +86,16 @@ public static class Coupon
         }
     }
 
-    public static string PrintDiscount (CouponModel coupon)
+    public static string PrintDiscount(CouponModel coupon)
     {
         if (coupon.CouponPercentage == true) { return $"% {coupon.Amount}"; }
-        else { return $"€ {coupon.Amount}";}
+        else { return $"€ {coupon.Amount}"; }
     }
     public static int GenerateRandomCode(int length)
     {
-        var numbers = new List <int>();
+        var numbers = new List<int>();
         Random rnd = new Random();
-        for (int i = 0; i < length; i ++)
+        for (int i = 0; i < length; i++)
         {
             numbers.Add(rnd.Next(0, 10));
         }
@@ -116,7 +116,7 @@ public static class Coupon
 
         // loop logic to make sure the input is a number and check if the number is a valid choice
         while (!DateTime.TryParseExact(input, format, null, System.Globalization.DateTimeStyles.None, out output))
-        {   
+        {
             Console.Clear();
             Console.WriteLine("That is not a valid input");
             Console.WriteLine(text);
@@ -150,12 +150,12 @@ public static class Coupon
     public static float ValidFloatPercentage(string text, string errorText)
     {
         float price = 0;
-        bool valid = false; 
+        bool valid = false;
         while (!valid)
         {
             Console.WriteLine(text);
             string input = Console.ReadLine();
-            
+
             if (input.Contains(",")) { input = input.Replace(",", "."); }
 
             if (float.TryParse(input, out price) && price > 0 && price <= 100)
@@ -178,7 +178,7 @@ public static class Coupon
         {
             Console.WriteLine(text);
             string input = Console.ReadLine();
-            
+
             if (input.Contains(",")) { input = input.Replace(",", "."); }
 
             if (float.TryParse(input, out price) && price > 0)
@@ -190,7 +190,7 @@ public static class Coupon
                 Console.WriteLine(errorText);
             }
         }
-        float roundedPrice = (float)Math.Round(price, 2); 
+        float roundedPrice = (float)Math.Round(price, 2);
         return roundedPrice;
     }
     public static int Validcode()

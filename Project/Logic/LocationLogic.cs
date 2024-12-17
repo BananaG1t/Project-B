@@ -31,9 +31,9 @@ public static class LocationLogic
     }
     public static void Delete(int locationId)
     {
-        List<AssignedRoleModel> assignedroles = AssignedRoleAccess.GetByLocationId(locationId);
+        List<AssignedRoleModel> assignedroles = AssignedRoleAccess.GetAllByLocationId(locationId);
         List<ScheduleModel> schedules = ScheduleAccess.GetByLocationId(locationId);
-        
+
         List<AuditoriumModel> auditoriums = [];
         foreach (var schedule in schedules)
         {

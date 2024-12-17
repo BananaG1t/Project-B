@@ -49,7 +49,13 @@ public static class AssignedRoleAccess
         return _connection.QueryFirstOrDefault<AssignedRoleModel>(sql, new { AccountId = AccountIdMethod });
     }
 
-    public static List<AssignedRoleModel> GetByLocationId(int LocationIdMethod)
+    public static AssignedRoleModel GetByLocationId(int LocationIdMethod)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Location_ID = @Id";
+        return _connection.QueryFirstOrDefault<AssignedRoleModel>(sql, new { Id = LocationIdMethod });
+    }
+
+    public static List<AssignedRoleModel> GetAllByLocationId(int LocationIdMethod)
     {
         string sql = $"SELECT * FROM {Table} WHERE Location_ID = @Id";
         return (List<AssignedRoleModel>)_connection.Query<AssignedRoleModel>(sql, new { Id = LocationIdMethod });
@@ -57,7 +63,13 @@ public static class AssignedRoleAccess
 
     public static List<AssignedRoleModel> GetAllAssignedRoles()
     {
-        string sql = $"SELECT * FROM {Table} ORDER BY id ASC";
+        string sql = $"SELECT * FROM {Table} ORDER BY Account_ID ASC";
         return (List<AssignedRoleModel>)_connection.Query<AssignedRoleModel>(sql, new { });
+    }
+
+    public static List<AssignedRoleModel> GetAllByAccountId(int AccountIdMethod)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Account_ID = @AccountId";
+        return (List<AssignedRoleModel>)_connection.Query<AssignedRoleModel>(sql, new { AccountId = AccountIdMethod });
     }
 }

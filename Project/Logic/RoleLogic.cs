@@ -2,6 +2,10 @@ public static class RoleLogic
 {
     public static bool AssignRole(int roleId, int accountId, int locationId)
     {
+        AssignedRoleModel dbModel = AssignedRoleAccess.GetByLocationId(locationId);
+        if (dbModel != null)
+            if (dbModel.AccountId == accountId) { return false; }
+
         AssignedRoleModel assignedRoleModel = new(roleId, accountId, locationId);
         return true;
     }
@@ -62,6 +66,7 @@ public static class RoleLogic
             int roleLevel = (int)role.LevelAccess;
             string fullName = acc.GetById((int)assignedRolesroles[index].AccountId).FullName;
             string LocationName = LocationLogic.GetById((int)assignedRolesroles[index].LocationId).Name;
+            if (LocationName == null) { LocationName = "All"; }
 
             text += $"[{index + 1}] Role name: {roleName}, " +
                     $"level access: {roleLevel}, " +
@@ -209,5 +214,25 @@ public static class RoleLogic
         AssignedRoleModel assignedRole = AssignedRoleAccess.GetByAccountId(accountId);
         if (assignedRole == null) { return null; }
         return RoleAccess.GetById((int)assignedRole.RoleId);
+    }
+
+    public static bool UpdateAssignedRolesByRole(AssignedRoleModel assignedRole, RoleModel role)
+    {
+        List<AssignedRoleModel> assignedRoles = AssignedRoleAccess.GetAllAssignedRoles();
+        foreach (AssignedRoleModel dbmodel in assignedRoles)
+        {
+            if (dbmodel.AccountId == assignedRole.AccountId)
+            {
+                if (dbmodel.RoleId == 0) { return false; }
+                dbmodel.RoleId = role.Id;
+                AssignedRoleAccess.Update(dbmodel);
+            }
+        }
+        return true;
+    }
+
+    public static List<AssignedRoleModel> GetAllAssignedRolesByAccountId(int accountId)
+    {
+        return AssignedRoleAccess.GetAllByAccountId(accountId);
     }
 }
