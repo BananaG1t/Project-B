@@ -155,16 +155,17 @@ static class LocationMenu
         }
         Console.WriteLine();
     }
-    public static LocationModel? SelectLocation(bool canAdd = false)
+    public static LocationModel? SelectLocation(AccountModel account, bool canAdd = false)
     {
         Console.Clear();
         string text = "At which location do you want to see?";
+        List<LocationModel> locations = LocationLogic.GetAll();
         List<LocationModel> ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
         List<LocationModel> NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
         
-        if (ScheduleLocations.Count == 0)
+        if (locations.Count == 0)
         {
-            PresentationHelper.Error("No locations with schedule entries");
+            PresentationHelper.Error("No locations found");
             if (!canAdd) return null;
 
             string confirmText =
@@ -179,8 +180,20 @@ static class LocationMenu
                 AddLocation();
                 ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
             }
-            else if (confirmChoice == 2) return null;
+            else if (confirmChoice == 2)
+            {
+                Console.WriteLine("\nReturning to admin menu\n");
+                return null;
+            }
         }
+
+        if (ScheduleLocations.Count == 0)
+        {
+            Schedule.CheckSchedule(account);
+            ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
+            NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
+        }
+
             // Adds all locations with schedules to dict and as a valid option for reserving
             for (int i = 0; i < ScheduleLocations.Count; i++)
             {

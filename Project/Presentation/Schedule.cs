@@ -17,12 +17,12 @@ static class Schedule
         return Schedules[input - 1];
     }
 
-    public static bool CheckSchedule(AccountModel account)
+    public static void CheckSchedule(AccountModel account)
     {
-        PresentationHelper.Error("No schedule entries");
+        PresentationHelper.Error("No locations with schedule entries");
 
         string confirmText =
-                "There are no schedules\n" +
+                "There are no location with schedule entries\n" +
                 "Do you want to add to the schedule?\n" +
                 "[1] Yes \n" +
                 "[2] No\n";
@@ -31,11 +31,12 @@ static class Schedule
         if (confirmChoice == 1)
         {
             CreateScheduleEntry.Main(account);
-            return true;
         }
-        else if (confirmChoice == 2) return false;
-
-        return false;
+        else if (confirmChoice == 2)
+        {
+            Console.WriteLine("\nSchedule creation cancelled\n");
+            Menu.AdminMenu(account);
+        }
     }
 
     public static void DisplaySchedule(LocationModel location)
