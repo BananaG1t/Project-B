@@ -6,7 +6,7 @@ public static class CreateScheduleEntry
     {
         LocationModel location = Location(account);
         int room = SelectRoom();
-        MovieModel movie = SelectMovie();
+        MovieModel movie = SelectMovie(canAdd : true);
         if (movie != null)
         {
             DateTime date = SelectDate(room, movie.Length, (int)location.Id);
@@ -33,14 +33,15 @@ public static class CreateScheduleEntry
         return PresentationHelper.MenuLoop(text, 1, 3);
     }
 
-    private static MovieModel? SelectMovie()
+    private static MovieModel? SelectMovie(bool canAdd = false)
     {
         Console.Clear();
         string text = "What movie do you want to show?";
         List<MovieModel> Movies = MovieLogic.GetAll();
         if (Movies.Count == 0)
         {
-            PresentationHelper.Error("No locations with schedule entries");
+            PresentationHelper.Error("No movies found");
+            if (!canAdd) return null;
 
             string confirmText =
                     "There are no movies\n" +
@@ -52,19 +53,19 @@ public static class CreateScheduleEntry
             if (confirmChoice == 1)
             {
                 AddMovieMenu.Main();
+                Console.WriteLine();
                 Movies = MovieLogic.GetAll();
             }
             else if (confirmChoice == 2) return null;
         }
-        List<int> valid = [];
-        foreach (MovieModel movie in Movies)
-        {
-            text += $"\n[{movie.Id}] {movie.Name}";
-            valid.Add((int)movie.Id);
-        }
+
+        for (int i = 0; i < Movies.Count; i++)
+            {
+                text += $"\n[{i + 1}] {Movies[i].Name}";
+            }
 
         int answer = PresentationHelper.MenuLoop(text, 1, Movies.Count);
-        return Movies.First(MovieModel => MovieModel.Id == answer);
+        return Movies[answer - 1];
     }
 
     private static DateTime SelectDate(int room, TimeSpan length, int locationId)
