@@ -146,14 +146,22 @@ static class LocationMenu
     public static void DisplayLocations()
     {
         Console.Clear();
-        string text = " All current locations:";
+        Console.WriteLine("All current locations:");
         List<LocationModel> locations = LocationLogic.GetAll();
 
+        if (locations.Count > 0)
+        {
         foreach (LocationModel location in locations)
         {
             Console.WriteLine(location.Name);
         }
         Console.WriteLine();
+        }
+
+        else
+        {
+            Console.WriteLine("\nThere are no locations to display\n");
+        }
     }
     public static LocationModel? SelectLocation(AccountModel account, bool canAdd = false)
     {
@@ -189,6 +197,8 @@ static class LocationMenu
 
         if (ScheduleLocations.Count == 0)
         {
+            PresentationHelper.Error("No locations with schedule entries");
+            if (!canAdd) return null;
             Schedule.CheckSchedule(account);
             ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
             NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();

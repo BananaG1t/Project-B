@@ -19,8 +19,6 @@ static class Schedule
 
     public static void CheckSchedule(AccountModel account)
     {
-        PresentationHelper.Error("No locations with schedule entries");
-
         string confirmText =
                 "There are no location with schedule entries\n" +
                 "Do you want to add to the schedule?\n" +
