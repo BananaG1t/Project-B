@@ -200,7 +200,7 @@ public static class SnackReservation
             ValidInputs.Add(i + 1);
         }
 
-        int input = PresentationHelper.MenuLoop(text + "Enter the number of the snack that you would like to buy ", 1, ValidInputs.Count);
+        int input = PresentationHelper.MenuLoop(text, 1, ValidInputs.Count);
 
         int amount = ValidAmount();
 
