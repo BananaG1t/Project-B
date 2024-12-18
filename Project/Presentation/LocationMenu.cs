@@ -138,7 +138,7 @@ static class LocationMenu
 
         else
         {
-            Console.WriteLine("\nThere are no locations to remove\n");
+            Console.WriteLine("There are no locations to remove\n");
         }
         
     }
@@ -146,11 +146,11 @@ static class LocationMenu
     public static void DisplayLocations()
     {
         Console.Clear();
-        Console.WriteLine("All current locations:");
         List<LocationModel> locations = LocationLogic.GetAll();
 
         if (locations.Count > 0)
         {
+        Console.WriteLine("All current locations:");
         foreach (LocationModel location in locations)
         {
             Console.WriteLine(location.Name);
@@ -160,7 +160,7 @@ static class LocationMenu
 
         else
         {
-            Console.WriteLine("\nThere are no locations to display\n");
+            Console.WriteLine("There are no locations to display\n");
         }
     }
     public static LocationModel? SelectLocation(AccountModel account, bool canAdd = false)
