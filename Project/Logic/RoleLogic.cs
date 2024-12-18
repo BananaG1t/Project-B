@@ -56,7 +56,8 @@ public static class RoleLogic
 
         AccountsLogic acc = new();
 
-        string text = "";
+        string text = String.Format("     {0,-15} | {1,-13} | {2,-10} | {3,-15}|\n", "Role name", "Level access", "Fullname", "Location name"); ;
+        text += "===================================================================|\n";
 
         for (int index = 0; index < assignedRolesroles.Count; index++)
         {
@@ -68,10 +69,8 @@ public static class RoleLogic
             string LocationName = LocationLogic.GetById((int)assignedRolesroles[index].LocationId).Name;
             if (LocationName == null) { LocationName = "All"; }
 
-            text += $"[{index + 1}] Role name: {roleName}, " +
-                    $"level access: {roleLevel}, " +
-                    $"full name: {fullName}, " +
-                    $"location name: {LocationName}\n";
+            // text += String.Format("[{0}] {1,-15} | {2,-13} | {3,-10} | {4,-15}|\n", (index + 1).ToString().PadRight((int)Math.Floor(Math.Log10(assignedRolesroles.Count) + 1)), roleName, roleLevel, fullName, LocationName);
+            text += String.Format("[{0}] {1} {2,-15} | {3,-13} | {4,-10} | {5,-15}|\n", index + 1, "".PadLeft((int)Math.Floor(Math.Log10(assignedRolesroles.Count) - Math.Log10(index + 1))), roleName, roleLevel, fullName, LocationName);
         }
 
         return new(text, assignedRolesroles.Count);
