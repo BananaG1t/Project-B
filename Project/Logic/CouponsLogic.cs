@@ -19,12 +19,17 @@ public static class CouponsLogic
         return CouponsAccess.GetAll();
     }
 
-    public static float CalculateDiscount(float price,bool percentage)
+    public static float CalculateDiscount(float price, CouponModel coupon)
     {
-        float price -=
-        if (percentage == true)
+        float newPrice;
+        if (coupon.CouponPercentage == true)
         {
-            price 
+            newPrice = price / 100 * coupon.Amount;
         } 
+        else
+        {
+            newPrice = price - coupon.Amount;
+        }
+        return newPrice;
     }
 }
