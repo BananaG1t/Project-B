@@ -31,6 +31,16 @@ public static class AssignedRoleAccess
         _connection.Execute(sql, new { Id = id });
     }
 
+    public static bool IsAvailable(int roleId, int? locationId, int accountId)
+    {
+        string sql = @$"
+                SELECT COUNT(*) FROM {Table} 
+                WHERE Role = @RoleId 
+                AND Account_ID = @AccountId 
+                AND Location_ID = @LocationId";
+        return _connection.ExecuteScalar<int>(sql, new { RoleId = roleId, LocationId = locationId, AccountId = accountId }) == 0;
+    }
+
     public static AssignedRoleModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
