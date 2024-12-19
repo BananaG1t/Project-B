@@ -88,10 +88,11 @@ static class Menu
             "Press [1] to make a new reservation\n" +
             "Press [2] to manage the reservations you have made\n" +
             "Press [3] to see movie schedules\n" +
-            "Press [4] to log out";
+            "Press [4] to display coupons\n" +
+            "Press [5] to log out";
 
             // get a valid input number
-            int input = PresentationHelper.MenuLoop(text, 1, 4);
+            int input = PresentationHelper.MenuLoop(text, 1, 5);
 
             if (input == 1)
             {
@@ -106,8 +107,13 @@ static class Menu
             {
                 Schedule.DisplaySchedule(LocationMenu.SelectLocation());
             }
+            else if (input == 4)
+            {
+                Coupon.DisplayCoupons(CurrentAccount.Id);
+            }
             // sends the user to the start to login again
-            else if (input == 4) { break; }
+            else if (input == 5) { break; }
+            
         }
 
         Start();

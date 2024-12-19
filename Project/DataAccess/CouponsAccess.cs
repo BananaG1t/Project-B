@@ -30,11 +30,10 @@ public static class CouponsAccess
 
         return Coupons;
     }
-        public static List<CouponModel> GetAllById(int id)
+        public static List<CouponModel> GetAllById(int accountId)
     {
-        string sql = $"SELECT coupon_code,expiration_date,coupon_type,coupon_percentage,amount,Account_ID FROM {Table} WHERE id = @Id";
-        List<CouponModel> Coupons = (List<CouponModel>)_connection.Query<CouponModel>(sql);
-
+        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
+        List<CouponModel> Coupons = (List<CouponModel>)_connection.Query<CouponModel>(sql, new { Id = accountId});
         return Coupons;
     }
 
@@ -48,5 +47,12 @@ public static class CouponsAccess
     {
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
+    }
+            public static List<CouponModel> GetAllByAccountId(int accountId, string couponType)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Account_ID = @Id AND Coupon_Type = @CouponType";
+        List<CouponModel> Coupons = (List<CouponModel>)_connection.Query<CouponModel>(sql, new { Id = accountId, CouponType = couponType});
+
+        return Coupons;
     }
 }

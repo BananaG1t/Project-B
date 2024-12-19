@@ -9,9 +9,9 @@ public static class CouponsLogic
         return CouponsAccess.GetById(id);
     }
 
-    public static List<CouponModel> GetAllById(int id)
+    public static List<CouponModel> GetAllById(int accountId)
     {
-        return CouponsAccess.GetAllById(id);
+        return CouponsAccess.GetAllById(accountId);
     }
 
     public static List<CouponModel> GetAll()
@@ -78,5 +78,22 @@ public static class CouponsLogic
         }
         float roundedPrice = (float)Math.Round(price, 2);
         return roundedPrice;
+    }
+        public static double CalculateDiscount(double price, CouponModel coupon)
+    {
+        double newPrice;
+        if (coupon.CouponPercentage == true)
+        {
+            newPrice = price / 100 * coupon.Amount;
+        } 
+        else
+        {
+            newPrice = price - coupon.Amount;
+        }
+        return newPrice;
+    }
+    public static List<CouponModel> GetAllByAccountId(int accountId, string couponType)
+    {
+        return CouponsAccess.GetAllByAccountId(accountId,couponType);
     }
 }

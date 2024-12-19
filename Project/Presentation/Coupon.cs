@@ -91,6 +91,24 @@ public static class Coupon
         Console.ReadKey();
         }
     }
+    public static void DisplayCoupons(int accountId)
+    {
+        Console.Clear();
+        List<CouponModel> coupons = CouponsLogic.GetAllById(accountId);
+        int count = 0;
+
+        if (coupons.Count() == 0) PresentationHelper.PrintAndWait("No coupons found");
+        else
+        {
+            foreach (CouponModel coupon in coupons)
+            {
+                count++;
+                Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon)} Experation date: {coupon.ExpirationDate,5:C}");
+            }
+        Console.WriteLine("Press any key to go back");
+        Console.ReadKey();
+        }
+    }
 
     public static string PrintDiscount (CouponModel coupon)
     {
@@ -142,5 +160,32 @@ public static class Coupon
 
         } while (true);
         return code.ToUpper();
+    }
+
+        public static void UseCoupon(int accountId, string couponType, double price)
+    {
+        Console.Clear();
+        List<CouponModel> coupons = CouponsLogic.GetAllByAccountId(accountId,couponType);
+        if (coupons.Count == 0)
+        {
+            return;
+        }
+        string text = $"Enter the number of the coupon you want to use";
+        List<int> ValidInputs = [];
+
+        for (int i = 0; i < coupons.Count; i++)
+        {
+            text += $"\n[{i + 1}] Coupon type: {coupons[i].CouponType} Code: {coupons[i].CouponCode} discount: {PrintDiscount(coupons[i])}";
+            ValidInputs.Add(i + 1);
+        }
+
+        int input = PresentationHelper.MenuLoop(text, 1, ValidInputs.Count);
+
+        CouponModel usedCoupon = coupons[input - 1];
+
+        double newPrice = CouponsLogic.CalculateDiscount(price, usedCoupon);
+
+        Console.WriteLine($"Total price: €{price} you have saved: €{price - newPrice}");
+        //Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {amount * boughtSnack.Price:F2}\n");
     }
 }
