@@ -85,7 +85,7 @@ public static class Coupon
             foreach (CouponModel coupon in coupons)
             {
                 count++;
-                Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon),5:C}");
+                Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon)} Experation date: {coupon.ExpirationDate:MM/dd/yyyy}");
             }
         Console.WriteLine("Press any key to go back");
         Console.ReadKey();
@@ -103,7 +103,7 @@ public static class Coupon
             foreach (CouponModel coupon in coupons)
             {
                 count++;
-                Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon)} Experation date: {coupon.ExpirationDate,5:C}");
+                Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon)} Experation date: {coupon.ExpirationDate:MM/dd/yyyy}");
             }
         Console.WriteLine("Press any key to go back");
         Console.ReadKey();
@@ -186,6 +186,5 @@ public static class Coupon
         double newPrice = CouponsLogic.CalculateDiscount(price, usedCoupon);
 
         Console.WriteLine($"Total price: €{price} you have saved: €{price - newPrice}");
-        //Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {amount * boughtSnack.Price:F2}\n");
     }
 }
