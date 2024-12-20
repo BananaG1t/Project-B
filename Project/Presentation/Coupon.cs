@@ -97,7 +97,7 @@ public static class Coupon
         List<CouponModel> coupons = CouponsLogic.GetAllById(accountId);
         int count = 0;
 
-        if (coupons == null ||coupons.Count() == 0) PresentationHelper.PrintAndWait("No coupons found");
+        if (coupons.Count() == 0) PresentationHelper.PrintAndWait("No coupons found");
         else
         {
             foreach (CouponModel coupon in coupons)
