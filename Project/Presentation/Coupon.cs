@@ -189,8 +189,8 @@ public static class Coupon
 
             double newPrice = CouponsLogic.CalculateDiscount(price, usedCoupon);
 
-            Console.WriteLine($"Total price: €{price} you have saved: €{price - newPrice}");
-
+            if (price == 0){Console.WriteLine($"Total price: €{price} you have saved: € 0");}
+            else {Console.WriteLine($"Total price: €{price} you have saved: €{price - newPrice}");}
             CouponsLogic.DeleteByCode(usedCoupon.CouponCode);
         }
     }
