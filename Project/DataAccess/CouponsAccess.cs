@@ -32,8 +32,9 @@ public static class CouponsAccess
     }
         public static List<CouponModel> GetAllById(int accountId)
     {
-        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        List<CouponModel> Coupons = (List<CouponModel>)_connection.Query<CouponModel>(sql, new { Id = accountId});
+        string sql = $"SELECT * FROM {Table} WHERE Account_ID = @AccountId";
+        List<CouponModel> Coupons = (List<CouponModel>)_connection.Query<CouponModel>(sql, new { AccountId = accountId});
+        
         return Coupons;
     }
 

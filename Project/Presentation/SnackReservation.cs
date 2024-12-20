@@ -182,14 +182,15 @@ public static class SnackReservation
         return amount;
     }
 
-    public static void BuySnacks(int reservation_id, int personNum)
+    public static double BuySnacks(int reservation_id, int personNum)
     {
         Console.Clear();
+        double totalPrice = 0;
         List<SnacksModel> snacks = SnacksLogic.GetAll();
         if (snacks.Count == 0)
         {
             PresentationHelper.Error("There are no snacks to select");
-            return;
+            return 0;
         }
         string text = $"Person {personNum}, enter the number of the snack that you would like to buy";
         List<int> ValidInputs = [];
@@ -209,6 +210,8 @@ public static class SnackReservation
         BoughtSnacksLogic.Write(reservation_id, boughtSnack.Id, amount);
 
         Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {amount * boughtSnack.Price:F2}\n");
+
+        return totalPrice += amount * boughtSnack.Price;
     }
 
 
