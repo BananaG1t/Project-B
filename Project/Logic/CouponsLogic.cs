@@ -19,6 +19,11 @@ public static class CouponsLogic
         return CouponsAccess.GetAll();
     }
 
+        public static void DeleteByCode(string code)
+    {
+        CouponsAccess.DeleteByCode(code);
+    }
+
         public static string GenerateRandomCode(int length)
     {
         Random random = new Random();

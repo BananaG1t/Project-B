@@ -44,10 +44,10 @@ public static class CouponsAccess
         _connection.Execute(sql, coupon);
     }
 
-    public static void Delete(int id)
+    public static void DeleteByCode(string code)
     {
-        string sql = $"DELETE FROM {Table} WHERE id = @Id";
-        _connection.Execute(sql, new { Id = id });
+        string sql = $"DELETE FROM {Table} WHERE coupon_code = @CouponCode";
+        _connection.Execute(sql, new { CouponCode = code });
     }
             public static List<CouponModel> GetAllByAccountId(int accountId, string couponType)
     {

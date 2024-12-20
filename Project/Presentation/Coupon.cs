@@ -171,21 +171,27 @@ public static class Coupon
         {
             return;
         }
-        string text = $"Enter the number of the coupon you want to use";
-        List<int> ValidInputs = [];
-
-        for (int i = 0; i < coupons.Count; i++)
+        int choice = PresentationHelper.MenuLoop("Do you want to use a coupon?\n[1] Yes\n[2] No", 1, 2);
+        if (choice == 1)
         {
-            text += $"\n[{i + 1}] Coupon type: {coupons[i].CouponType} Code: {coupons[i].CouponCode} discount: {PrintDiscount(coupons[i])}";
-            ValidInputs.Add(i + 1);
+            string text = $"Enter the number of the coupon you want to use";
+            List<int> ValidInputs = [];
+
+            for (int i = 0; i < coupons.Count; i++)
+            {
+                text += $"\n[{i + 1}] Coupon type: {coupons[i].CouponType} Code: {coupons[i].CouponCode} discount: {PrintDiscount(coupons[i])}";
+                ValidInputs.Add(i + 1);
+            }
+
+            int input = PresentationHelper.MenuLoop(text, 1, ValidInputs.Count);
+
+            CouponModel usedCoupon = coupons[input - 1];
+
+            double newPrice = CouponsLogic.CalculateDiscount(price, usedCoupon);
+
+            Console.WriteLine($"Total price: €{price} you have saved: €{price - newPrice}");
+
+            CouponsLogic.DeleteByCode(usedCoupon.CouponCode);
         }
-
-        int input = PresentationHelper.MenuLoop(text, 1, ValidInputs.Count);
-
-        CouponModel usedCoupon = coupons[input - 1];
-
-        double newPrice = CouponsLogic.CalculateDiscount(price, usedCoupon);
-
-        Console.WriteLine($"Total price: €{price} you have saved: €{price - newPrice}");
     }
 }
