@@ -164,8 +164,6 @@ class ReservationLogic
                 SnackReservation.BuySnacks(reservationId, i + 1);
                 totalSnackPrice += SnackReservation.BuySnacks(reservationId, i + 1);
         }
-        if (snack)
-        { Coupon.UseCoupon(account.Id, "Snacks", totalSnackPrice); }
         Console.WriteLine("Made the reservation");
     }
 
