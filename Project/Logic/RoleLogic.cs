@@ -64,7 +64,7 @@ public static class RoleLogic
             int roleLevel = (int)role.LevelAccess;
             string LocationName;
             string fullName = acc.GetById((int)assignedRolesroles[index].AccountId).FullName;
-            if (roleLevel >= 255) LocationName = "All";
+            if (fullName == "Admin") LocationName = "All";
             else LocationName = LocationLogic.GetById((int)assignedRolesroles[index].LocationId).Name;
 
             int padding = (int)Math.Ceiling(Math.Ceiling(Math.Log10(assignedRolesroles.Count)) - Math.Log10(index + 1));
