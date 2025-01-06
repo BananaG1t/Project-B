@@ -81,7 +81,7 @@ static class Reservation
     {
         Console.Clear();
         ScheduleModel schedule = ScheduleLogic.GetById(order.ScheduleId);
-        string text = $"Location: {schedule.Location.Name}, Movie: {schedule.Movie.Name}, Date: {schedule.StartTime} Bar: {order.Bar}\nWhat reseration do you want to manage?";
+        string text = $"Location: {schedule.Location.Name}, Movie: {schedule.Movie.Name}, Date: {schedule.StartTime} Bar: {order.Bar}\nWhat reservation do you want to manage?";
         List<ReservationModel> reservations = ReservationLogic.GetFromOrder(order);
 
         for (int i = 0; i < reservations.Count; i++)
