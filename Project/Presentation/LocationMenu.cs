@@ -163,7 +163,7 @@ static class LocationMenu
             Console.WriteLine("There are no locations to display\n");
         }
     }
-    public static LocationModel? SelectLocation(AccountModel account, bool canAdd = false, bool addSchedule = true)
+    public static LocationModel? SelectLocation(AccountModel account, bool canAdd = false, bool addSchedule = false)
     {
         Console.Clear();
         string text = "At which location do you want to see?";
@@ -197,8 +197,20 @@ static class LocationMenu
 
         if (ScheduleLocations.Count == 0)
         {
-            PresentationHelper.Error("No locations with schedule entries");
-            if (!canAdd && addSchedule) return null;
+            if (!addSchedule)
+                PresentationHelper.Error("No locations with schedule entries");
+            if (!canAdd && !addSchedule) return null;
+            if (canAdd && addSchedule) 
+            {
+                locations = LocationLogic.GetAll();
+                for (int i = 0; i < locations.Count; i++)
+                {
+                    text += $"\n[{i + 1}] {locations[i].Name}";
+                }
+                int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
+                LocationModel Location = locations[LocationId - 1];
+                return Location;
+            }
             Schedule.CheckSchedule(account);
             ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
             NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();

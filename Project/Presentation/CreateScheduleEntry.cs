@@ -4,7 +4,7 @@ public static class CreateScheduleEntry
 {
     public static void Main(AccountModel account)
     {
-        LocationModel? location = LocationMenu.SelectLocation(account, canAdd: true, addSchedule: false);
+        LocationModel? location = LocationMenu.SelectLocation(account, canAdd: true, addSchedule: true);
         if (location is null) return;
         int room = SelectRoom();
         MovieModel movie = SelectMovie(canAdd : true);
