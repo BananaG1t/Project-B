@@ -139,8 +139,10 @@ CREATE TABLE IF NOT EXISTS Orders (
     Schedule_ID INTEGER NOT NULL,
     amount INTEGER NOT NULL,
     bar INTEGER NOT NULL,
+    Coupon_ID INTEGER NOT NULL,
     FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
     FOREIGN KEY (Schedule_ID) REFERENCES Schedule(id)
+    FOREIGN KEY (Coupon_ID) REFERENCES Coupons(id)
 );
 ''')
 
