@@ -189,6 +189,7 @@ public static class SnackReservation
         if (snacks.Count == 0)
         {
             PresentationHelper.Error("There are no snacks to select");
+            return;
         }
         string text = $"Person {personNum}, enter the number of the snack that you would like to buy";
         List<int> ValidInputs = [];
@@ -209,6 +210,4 @@ public static class SnackReservation
 
         Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {amount * boughtSnack.Price:F2}\n");
     }
-
-
 }
