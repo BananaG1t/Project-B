@@ -163,13 +163,14 @@ public static class Coupon
         return code.ToUpper();
     }
 
-        public static void UseCoupon(int accountId, string couponType, double price)
+        public static CouponModel SelectCoupon(int accountId)
     {
         Console.Clear();
-        List<CouponModel> coupons = CouponsLogic.GetAllByAccountId(accountId,couponType);
+        List<CouponModel> coupons = CouponsLogic.GetAllById(accountId);
         if (coupons.Count == 0)
         {
-            return;
+            PresentationHelper.Error("No coupons available");
+            return null;
         }
         int choice = PresentationHelper.MenuLoop("Do you want to use a coupon?\n[1] Yes\n[2] No", 1, 2);
         if (choice == 1)
@@ -187,11 +188,17 @@ public static class Coupon
 
             CouponModel usedCoupon = coupons[input - 1];
 
+            return usedCoupon;
+            // CouponsLogic.DeleteByCode(usedCoupon.CouponCode);
+        }
+        else { return null; }
+    }
+
+    public static void discountprice(double price, CouponModel usedCoupon)
+    {
             double newPrice = CouponsLogic.CalculateDiscount(price, usedCoupon);
 
-            if (price == 0){Console.WriteLine($"Total price: €{price} you have saved: € 0");}
+            if (price <= 0){Console.WriteLine($"Total price: € 0 you have saved: € 0");}
             else {Console.WriteLine($"Total price: €{price} you have saved: €{price - newPrice}");}
-            CouponsLogic.DeleteByCode(usedCoupon.CouponCode);
-        }
     }
 }

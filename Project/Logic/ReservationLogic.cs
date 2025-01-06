@@ -146,7 +146,9 @@ class ReservationLogic
             bar = false;
         }
 
-        OrderModel order = new(account.Id, schedule.Id, amount, bar);
+        CouponModel selectedCoupon = Coupon.SelectCoupon(account.Id);
+
+        OrderModel order = new(account.Id, schedule.Id, amount, bar, selectedCoupon.Id);
         int reservationId;
 
         bool snack = false;
@@ -161,10 +163,9 @@ class ReservationLogic
             SeatsAccess.Update(seat);
             reservationId = ReservationAcces.Write(new(order.Id, seat.Row, seat.Collum));
             if (snack)
-                totalSnackPrice += SnackReservation.BuySnacks(reservationId, i + 1);
+                SnackReservation.BuySnacks(reservationId, i + 1);
         }
-        if (snack && totalSnackPrice > 0)
-        { Coupon.UseCoupon(account.Id, "Snacks", totalSnackPrice); }
+        
         Console.WriteLine("Made the reservation");
     }
 
