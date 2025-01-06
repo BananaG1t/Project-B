@@ -8,7 +8,11 @@ public class CouponModel
     public double Amount { get; set; }
     public int AccountId { get; set; }
     
-    public CouponModel(Int64 id,string coupon_code,string expiration_date,string coupon_type,Int64 coupon_percentage,Double amount,Int64 Account_ID)
+    public CouponModel(Int64 id, string coupon_code, string expiration_date, string coupon_type, string coupon_percentage, Double amount, Int64 Account_ID)
+    {
+    }
+
+    public CouponModel(Int64 id, string coupon_code, string expiration_date, string coupon_type, Int64 coupon_percentage,Double amount,Int64 Account_ID)
     {
         string format = "yyyy-MM-dd";
         Id = (int)id;
