@@ -108,7 +108,7 @@ static class Menu
             }
             else if (input == 3)
             {
-                LocationModel? location = LocationMenu.SelectLocation(CurrentAccount, addSchedule: false);
+                LocationModel? location = LocationMenu.SelectLocation(CurrentAccount);
                 if (location is not null) 
                     Schedule.DisplaySchedule(location);
             }
