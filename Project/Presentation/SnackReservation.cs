@@ -211,7 +211,7 @@ public static class SnackReservation
 
         Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {amount * boughtSnack.Price:F2}\n");
 
-        return totalPrice += amount * boughtSnack.Price;
+        return totalPrice + amount * boughtSnack.Price;
     }
 
 

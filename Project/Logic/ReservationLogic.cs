@@ -161,10 +161,9 @@ class ReservationLogic
             SeatsAccess.Update(seat);
             reservationId = ReservationAcces.Write(new(order.Id, seat.Row, seat.Collum));
             if (snack)
-                totalSnackPrice = SnackReservation.BuySnacks(reservationId, i + 1);
-                //totalSnackPrice += SnackReservation.BuySnacks(reservationId, i + 1);
+                totalSnackPrice += SnackReservation.BuySnacks(reservationId, i + 1);
         }
-        if (snack)
+        if (snack && totalSnackPrice > 0)
         { Coupon.UseCoupon(account.Id, "Snacks", totalSnackPrice); }
         Console.WriteLine("Made the reservation");
     }
