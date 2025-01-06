@@ -70,8 +70,10 @@ public static class RoleLogic
             if (roleLevel >= 255) LocationName = "All";
             else LocationName = LocationLogic.GetById((int)assignedRolesroles[index].LocationId).Name;
 
+            int padding = (int)Math.Ceiling(Math.Ceiling(Math.Log10(assignedRolesroles.Count)) - Math.Log10(index+1));
+
             // text += String.Format("[{0}] {1,-15} | {2,-13} | {3,-10} | {4,-15}|\n", (index + 1).ToString().PadRight((int)Math.Floor(Math.Log10(assignedRolesroles.Count) + 1)), roleName, roleLevel, fullName, LocationName);
-            text += String.Format("[{0}] {1} {2,-15} | {3,-13} | {4,-10} | {5,-15}|\n", index + 1, "".PadLeft((int)Math.Floor(Math.Log10(assignedRolesroles.Count) - Math.Log10(index + 1))), roleName, roleLevel, fullName, LocationName);
+            text += String.Format("[{0}]{1}{2,-15} | {3,-13} | {4,-10} | {5,-15}|\n", index + 1, "".PadLeft(padding), roleName, roleLevel, fullName, LocationName);
         }
 
         return new(text, assignedRolesroles.Count);
