@@ -7,7 +7,7 @@ static class Menu
 
     public static List<string> functionalities = ["Manage Users", "Add a movie", "Add to the schedule",
                                                     "Display the schedule", "Manage reservations", "Display income overview",
-                                                    "Manage snacks", "Manage Locations", "Create coupon"];
+                                                    "Manage snacks", "Manage Locations", "Manage coupons"];
     static public void AdminMenu(AccountModel account)
     {
         //admin menu
