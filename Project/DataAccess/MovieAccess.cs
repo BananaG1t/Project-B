@@ -29,7 +29,22 @@ public static class MovieAccess
 
     public static List<MovieModel> GetAll()
     {
-        string sql = $"SELECT id, name, director, description, length, genre, age_rating, CAST(COALESCE(movie_ratings, 0.0) AS REAL) AS movie_ratings FROM {Table}";
+        // string sql = $"SELECT id, name, director, description, length, genre, age_rating, CAST(COALESCE(movie_ratings, 0.0) AS REAL) AS movie_ratings FROM {Table}";
+        string sql = @"
+        SELECT 
+            id, 
+            name, 
+            director, 
+            description, 
+            length, 
+            genre, 
+            age_rating, 
+            CASE 
+                WHEN typeof(movie_ratings) = 'blob' THEN 0.0
+                WHEN movie_ratings IS NULL THEN 0.0
+                ELSE CAST(movie_ratings AS REAL)
+            END AS movie_ratings 
+        FROM Movies";
         List<MovieModel> Movies = (List<MovieModel>)_connection.Query<MovieModel>(sql);
 
         return Movies;
