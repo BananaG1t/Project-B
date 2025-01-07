@@ -146,7 +146,7 @@ class ReservationLogic
             bar = false;
         }
 
-        CouponModel selectedCoupon = Coupon.SelectCoupon(account.Id);
+        CouponModel selectedCoupon = Coupon.SelectCoupon();
 
         OrderModel order = new(account.Id, schedule.Id, amount, bar, selectedCoupon.Id);
         int reservationId;

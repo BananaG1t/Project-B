@@ -9,7 +9,7 @@ public static class CouponsAccess
     
     public static int Write(CouponModel coupon)
     {
-        string sql = $"INSERT INTO {Table} (coupon_code,expiration_date,coupon_type,coupon_percentage,amount,Account_ID) VALUES (@CouponCode,@ExpirationDate,@CouponType,@CouponPercentage,@Amount,@AccountId)";
+        string sql = $"INSERT INTO {Table} (coupon_code,expiration_date,coupon_type,coupon_percentage,amount) VALUES (@CouponCode,@ExpirationDate,@CouponType,@CouponPercentage,@Amount)";
         _connection.Execute(sql, coupon);
         
         string idSql = "SELECT last_insert_rowid();";

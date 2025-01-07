@@ -64,11 +64,11 @@ public static class Coupon
         }
 
 
-        AccountModel account = ChooseAccount();
+        // AccountModel account = ChooseAccount();
         
-        CouponsLogic.Write(couponCode, expirationDate, couponType, percentage, amount, account.Id);
+        CouponsLogic.Write(couponCode, expirationDate, couponType, percentage, amount);
 
-        Console.WriteLine($"\nCoupon used for {couponType} expiration date: {expirationDate} coupon code: {couponCode} added and assigned to {account.EmailAddress}");
+        Console.WriteLine($"\nCoupon used for {couponType} expiration date: {expirationDate} coupon code: {couponCode} added");
         Console.WriteLine("Press any key to go back");
         Console.ReadKey();
     }
@@ -163,10 +163,10 @@ public static class Coupon
         return code.ToUpper();
     }
 
-        public static CouponModel SelectCoupon(int accountId)
+        public static CouponModel SelectCoupon()
     {
         Console.Clear();
-        List<CouponModel> coupons = CouponsLogic.GetAllById(accountId);
+        List<CouponModel> coupons = CouponsLogic.GetAll();
         if (coupons.Count == 0)
         {
             PresentationHelper.Error("No coupons available");
@@ -181,7 +181,7 @@ public static class Coupon
 
             for (int i = 0; i < coupons.Count; i++)
             {
-                text += $"\n[{i + 1}] Coupon type: {coupons[i].CouponType} Code: {coupons[i].CouponCode} discount: {PrintDiscount(coupons[i])}";
+                text += $"\n[{i + 1}] Coupon type: {coupons[i].CouponType} Code: {coupons[i].CouponCode} discount: {PrintDiscount(coupons[i])} Expiration date: {coupons[i].ExpirationDate}";
                 ValidInputs.Add(i + 1);
             }
 
@@ -193,7 +193,7 @@ public static class Coupon
             // CouponsLogic.DeleteByCode(usedCoupon.CouponCode);
         }
         else 
-        {return null; }
+        {return null;}
     }
 
     public static void discountprice(double price, CouponModel usedCoupon)
