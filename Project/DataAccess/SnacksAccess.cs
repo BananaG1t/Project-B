@@ -24,11 +24,7 @@ public static class SnacksAccess
         return _connection.QueryFirstOrDefault<SnacksModel>(sql, new { Id = id });
     }
 
-    public static SnacksModel? GetByReservationId(int Reservation_ID)
-    {
-        string sql = $"SELECT * FROM {Table} WHERE Reservation_ID = @ReservationId";
-        return _connection.QueryFirstOrDefault<SnacksModel>(sql, new { ReservationId = Reservation_ID });
-    }
+
 
     public static List<SnacksModel> GetAll()
     {

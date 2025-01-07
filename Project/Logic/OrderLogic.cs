@@ -62,6 +62,4 @@ class OrderLogic
         // Calculate total spots in use and return it
         return activeReservations.Sum(res => res.amount); ;
     }
-
-    public static List<OrderModel> GetAllActive() => OrderAccess.GetAllActive();
 }

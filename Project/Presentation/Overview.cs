@@ -93,7 +93,8 @@ static class Overview
         string text = "Welcome to the snack income overview\n" +
                       "[1] Show the weekly total income from snacks\n" +
                       "[2] Show the daily total income from snacks\n" +
-                      "[3] Show the total income from snacks by movie\n";
+                      "[3] Show the total income from snacks by movie\n" +
+                      "[4] Show the total income from snacks per reservation";
 
         int input = PresentationHelper.MenuLoop(text, 1, 4);
 
@@ -109,13 +110,13 @@ static class Overview
                 TotalMovieSnackIncome();
                 break;
             case 4:
-                OrderModel? order = GetOrder();
-                if (order is null)
+                BoughtSnacksModel? BoughtSnacks = GetBoughtSnacksModel();
+                if (BoughtSnacks is null)
                 {
                     Console.WriteLine("There are no orders to select from");
                     return;
                 }
-                TotalSnackIncomePerReservation(order);
+                TotalSnackIncomePerReservation(BoughtSnacks);
                 break;
 
 
@@ -175,23 +176,48 @@ static class Overview
         Console.WriteLine($"Total snack income for movie '{selectedMovie.Name}': {movieSnackIncome:C}");
     }
 
-    public static void TotalSnackIncomePerReservation(OrderModel order)
+    public static void TotalSnackIncomePerReservation(BoughtSnacksModel BoughtSnacks)
     {
-        SnacksLogic.CalculateIncomeByReservation(order);
-
+        Console.WriteLine(SnacksLogic.CalculateIncomeByReservation(BoughtSnacks));
     }
 
-    public static OrderModel? GetOrder()
+    public static ReservationModel? GetReservationModel()
     {
-        List<OrderModel> orders = OrderLogic.GetAllActive();
-        if (orders.Count == 0) return null;
+        List<ReservationModel> reservations = ReservationAcces.GetAllActive();
+        if (reservations.Count == 0) return null;
 
         string text = "";
 
-        for (int i = 0; i < orders.Count; i++)
-            text += $"[{i + 1}] Order id: {orders[i].Id}";
+        for (int i = 0; i < reservations.Count; i++)
+            text += $"[{i + 1}] Order id: {reservations[i].Id}\n";
 
-        return orders[PresentationHelper.MenuLoop(text, 1, orders.Count)];
+        return reservations[PresentationHelper.MenuLoop(text, 1, reservations.Count) - 1];
+    }
+
+    public static BoughtSnacksModel? GetBoughtSnacksModel()
+    {
+        List<BoughtSnacksModel> boughtSnacks = BoughtSnacksLogic.GetAll();
+
+        List<BoughtSnacksModel> uniqueBoughtSnacks = [];
+        List<int> validIds = [];
+        List<int> validChoices = [];
+
+        if (boughtSnacks.Count == 0) return null;
+
+        string text = "";
+
+        for (int i = 0; i < boughtSnacks.Count; i++)
+        {
+            if (!validIds.Contains(boughtSnacks[i].ReservationId))
+            {
+                uniqueBoughtSnacks.Add(boughtSnacks[i]);
+                validIds.Add(boughtSnacks[i].ReservationId);
+                validChoices.Add(validIds.Count);
+                text += $"[{validIds.Count}] Reservation id: {boughtSnacks[i].ReservationId}\n";
+            }
+
+        }
+        return uniqueBoughtSnacks[PresentationHelper.MenuLoop(text, validChoices) - 1];
     }
 
 

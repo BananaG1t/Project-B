@@ -54,4 +54,18 @@ public static class ReservationAcces
         string sql = $"SELECT id FROM {Table} WHERE Account_ID = @Id";
         return _connection.QueryFirstOrDefault<Int64>(sql, new { Id = Account_id });
     }
+
+    public static List<SnacksModel> GetAll()
+    {
+        string sql = $"SELECT id, name, price FROM {Table}";
+        List<SnacksModel> Snacks = (List<SnacksModel>)_connection.Query<SnacksModel>(sql);
+
+        return Snacks;
+    }
+
+    public static List<ReservationModel> GetAllActive()
+    {
+        string sql = $"SELECT * FROM {Table} WHERE status = Status";
+        return (List<ReservationModel>)_connection.Query<ReservationModel>(sql, new { Status = "Active" });
+    }
 }

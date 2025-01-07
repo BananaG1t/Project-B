@@ -39,7 +39,7 @@ public static class BoughtSnacksAccess
 
     public static List<BoughtSnacksModel> GetAll()
     {
-        string sql = $"SELECT Account_ID,Reservation_ID,snack,amount FROM {Table}";
+        string sql = $"SELECT * FROM {Table}";
         List<BoughtSnacksModel> Snacks = (List<BoughtSnacksModel>)_connection.Query<BoughtSnacksModel>(sql);
 
         return Snacks;
@@ -57,9 +57,15 @@ public static class BoughtSnacksAccess
         _connection.Execute(sql, new { Id = id });
     }
 
-    public static BoughtSnacksModel? GetByReservationId(int Reservation_ID)
+    public static List<BoughtSnacksModel> GetByReservationId(int Reservation_ID)
     {
         string sql = $"SELECT * FROM {Table} WHERE Reservation_ID = @ReservationId";
-        return _connection.QueryFirstOrDefault<BoughtSnacksModel>(sql, new { ReservationId = Reservation_ID });
+        return (List<BoughtSnacksModel>)_connection.Query<BoughtSnacksModel>(sql, new { ReservationId = Reservation_ID });
+    }
+
+    public static List<BoughtSnacksModel> GetAllById(int Reservation_ID)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Reservation_ID = @ReservationId";
+        return (List<BoughtSnacksModel>)_connection.Query<BoughtSnacksModel>(sql, new { ReservationId = Reservation_ID });
     }
 }
