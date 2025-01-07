@@ -200,7 +200,7 @@ public static class SnackReservation
             ValidInputs.Add(i + 1);
         }
 
-
+        double totalPrice = 0;
         while (true)
         {
             int input = PresentationHelper.MenuLoop(text + "\n[0] Done", 0, ValidInputs.Count);
@@ -209,16 +209,13 @@ public static class SnackReservation
             int amount = ValidAmount();
 
             SnacksModel boughtSnack = snacks[input - 1];
+            totalPrice += amount * boughtSnack.Price;
 
             BoughtSnacksLogic.Write(reservation_id, boughtSnack.Id, amount);
 
             Console.Clear();
-            Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {amount * boughtSnack.Price:F2}\n");
+            Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {totalPrice:F2}\n");
         }
-
-
-
-
 
 
     }

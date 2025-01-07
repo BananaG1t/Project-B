@@ -13,7 +13,7 @@ static class Menu
         //admin menu
         List<string> usedFunctionalities = RoleLogic.GetMenuOptions(account);
 
-        string text = "Staff menu";
+        string text = $"Staff menu: {RoleLogic.GetRoleByAccountId(account.Id).Name}";
 
         for (int i = 0; i < usedFunctionalities.Count; i++)
         {

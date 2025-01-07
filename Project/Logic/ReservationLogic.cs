@@ -17,11 +17,11 @@ class ReservationLogic
 
         // pick a schedule
         ScheduleModel schedule = Schedule.SelectSchedule(location);
+        if (schedule is null) { return; }
 
         // pick seat amount
         int amount = Reservation.SelectSeatAmount();
 
-        if (schedule is null) { return; }
         int row = 0; int col = 1;
         int last_row;
         int last_col;
@@ -162,7 +162,6 @@ class ReservationLogic
             if (snack)
                 SnackReservation.BuySnacks(reservationId, i + 1);
         }
-        Console.Clear();
         Console.WriteLine("Made the reservation");
     }
 
