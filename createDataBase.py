@@ -218,17 +218,28 @@ cursor.execute('''DROP TABLE IF EXISTS Coupons''')
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Coupons (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    coupon_code TEXT NOT NULL,
-    expiration_date DATETIME NOT NULL,
-    coupon_type TEXT NOT NULL,
-    coupon_percentage BOOLEAN NOT NULL DEFAULT false,
-    amount INTEGER NOT NULL,
-    Account_ID INTEGER NOT NULL,
-    FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
+    Coupon_code TEXT NOT NULL,
+    Expiration_date DATETIME NOT NULL,
+    Coupon_type TEXT NOT NULL,
+    Coupon_percentage BOOLEAN NOT NULL DEFAULT false,
+    Amount INTEGER NOT NULL
 );
 ''')
 
-# Step 18: Commit changes and close the connection
+cursor.execute('''DROP TABLE IF EXISTS ActiveCoupons''')
+# Step 18: Create the Coupons table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS ActiveCoupons (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Account_ID INTEGER NOT NULL,
+    coupon_ID INTEGER NOT NULL,
+    Uses INTEGER NOT NULL, 
+    FOREIGN KEY (Account_ID) REFERENCES Accounts(id)
+    FOREIGN KEY (coupon_ID) REFERENCES coupons(id)
+);
+''')
+
+# Step 19: Commit changes and close the connection
 connection.commit()
 connection.close()
 
