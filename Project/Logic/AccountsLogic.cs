@@ -11,11 +11,15 @@ public class AccountsLogic
         // Could do something here
     }
 
-    public AccountModel GetById(int id)
+    public static AccountModel? GetById(int id)
     {
         return AccountsAccess.GetById(id);
     }
 
+    public static AccountModel? GetByEmail(string email)
+    {
+        return AccountsAccess.GetByEmail(email);
+    }
 
     public AccountModel CheckLogin(string email, string password)
     {

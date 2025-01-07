@@ -32,13 +32,13 @@ public static class AccountsAccess
         _connection.Execute(sql, new { Id = id });
     }
 
-    public static AccountModel GetById(int id)
+    public static AccountModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<AccountModel>(sql, new { Id = id });
     }
 
-    public static AccountModel GetByEmail(string email)
+    public static AccountModel? GetByEmail(string email)
     {
         string sql = $"SELECT * FROM {Table} WHERE email = @Email";
         return _connection.QueryFirstOrDefault<AccountModel>(sql, new { Email = email });
