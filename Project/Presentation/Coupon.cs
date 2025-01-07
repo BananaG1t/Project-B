@@ -53,7 +53,7 @@ public static class Coupon
         {
             amount = CouponsLogic.ValidFloat("\nEnter the discount price of the coupon","Invalid input. Please try again\n");
         } 
-        DateTime expirationDate = PresentationHelper.ValidDate("Enter the expiration date of the coupon (dd-MM-yyyy)");
+        DateTime expirationDate = PresentationHelper.ValidDate("\nEnter the expiration date of the coupon (dd-MM-yyyy)");
 
         int inputcode = PresentationHelper.MenuLoop("\ninput coupon code or random generated coupon code?\n[1] Input\n[2] Random generated", 1, 2);
         if (inputcode == 1) { couponCode = Validcode(); }
@@ -82,8 +82,8 @@ public static class Coupon
         if (coupons.Count() == 0)
         {
             Console.WriteLine("No available coupons");
-            Console.WriteLine("Press any key to go back");
-            Console.ReadKey();         
+            int input = PresentationHelper.MenuLoop("\nWould you like to create a new coupon?\n[1] Yes\n[2] No", 1, 2);
+            if (input == 1){ CreateCoupon(); }
         }
         else
         {
