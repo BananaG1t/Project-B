@@ -175,6 +175,7 @@ public static class Coupon
         int choice = PresentationHelper.MenuLoop("Do you want to use a coupon?\n[1] Yes\n[2] No", 1, 2);
         if (choice == 1)
         {
+            Console.Clear();
             string text = $"Enter the number of the coupon you want to use";
             List<int> ValidInputs = [];
 
@@ -191,14 +192,15 @@ public static class Coupon
             return usedCoupon;
             // CouponsLogic.DeleteByCode(usedCoupon.CouponCode);
         }
-        else { return null; }
+        else 
+        {return null; }
     }
 
     public static void discountprice(double price, CouponModel usedCoupon)
     {
             double newPrice = CouponsLogic.CalculateDiscount(price, usedCoupon);
 
-            if (price <= 0){Console.WriteLine($"Total price: € 0 you have saved: € 0");}
-            else {Console.WriteLine($"Total price: €{price} you have saved: €{price - newPrice}");}
+            if (price <= 0){Console.WriteLine($"Total {usedCoupon.CouponType} price: € 0 you have saved: € 0");}
+            else {Console.WriteLine($"Total {usedCoupon.CouponType} price: €{price} you have saved: €{price - newPrice}");}
     }
 }
