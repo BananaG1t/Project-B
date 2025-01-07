@@ -103,11 +103,11 @@ public static class PresentationHelper
         }
     }
 
-    public static void PrintAndWait(string text)
+    public static void PrintAndEnter(string text)
     {
         Console.WriteLine(text);
-        Thread.Sleep(3000);
-        Console.Clear();
+        Console.WriteLine("Press enter to continue");
+        Console.ReadLine();
     }
 
     public static void PrintInRed(string text)
