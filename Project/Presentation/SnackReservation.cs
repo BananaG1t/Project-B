@@ -218,10 +218,6 @@ public static class SnackReservation
         }
 
 
-
-
-
-
     }
 
 

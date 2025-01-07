@@ -95,4 +95,12 @@ public static class ScheduleLogic
 
         return total;
     }
+
+    public static List<IGrouping<DateTime, ScheduleModel>> GroupByDay(List<ScheduleModel> schedules)
+    {
+        return schedules
+            .GroupBy(schedule => schedule.StartTime.Date) // Group by day
+            .OrderBy(group => group.Key) // Sort groups by the day
+            .ToList();
+    }
 }

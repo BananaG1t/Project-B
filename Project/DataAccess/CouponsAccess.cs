@@ -26,7 +26,7 @@ public static class CouponsAccess
     public static List<CouponModel> GetAll()
     {
         string sql = $"SELECT * FROM {Table}";
-        var Coupons = (List<CouponModel>)_connection.Query<CouponModel>(sql);
+        List <CouponModel> Coupons = (List<CouponModel>)_connection.Query<CouponModel>(sql);
 
         return Coupons;
     }
