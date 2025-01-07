@@ -9,11 +9,6 @@ public static class CouponsLogic
         return CouponsAccess.GetById(id);
     }
 
-    public static List<CouponModel> GetAllById(int accountId)
-    {
-        return CouponsAccess.GetAllById(accountId);
-    }
-
     public static List<CouponModel> GetAll()
     {
         return CouponsAccess.GetAll();

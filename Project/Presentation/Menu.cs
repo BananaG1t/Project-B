@@ -109,7 +109,7 @@ static class Menu
             }
             else if (input == 4)
             {
-                Coupon.DisplayCoupons(CurrentAccount.Id);
+                Coupon.DisplayCoupons();
             }
             // sends the user to the start to login again
             else if (input == 5) { break; }

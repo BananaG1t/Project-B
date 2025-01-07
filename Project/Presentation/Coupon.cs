@@ -79,34 +79,22 @@ public static class Coupon
         List<CouponModel> coupons = CouponsLogic.GetAll();
         int count = 0;
 
-        if (coupons.Count() == 0) PresentationHelper.PrintAndWait("No coupons found");
-        else
+        if (coupons.Count() == 0)
         {
-            foreach (CouponModel coupon in coupons)
-            {
-                count++;
-                Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon)} Experation date: {coupon.ExpirationDate:MM/dd/yyyy}");
-            }
-        Console.WriteLine("Press any key to go back");
-        Console.ReadKey();
+            Console.WriteLine("No available coupons");
+            Console.WriteLine("Press any key to go back");
+            Console.ReadKey();         
         }
-    }
-    public static void DisplayCoupons(int accountId)
-    {
-        Console.Clear();
-        List<CouponModel> coupons = CouponsLogic.GetAllById(accountId);
-        int count = 0;
-
-        if (coupons.Count() == 0) PresentationHelper.PrintAndWait("No coupons found");
         else
         {
+            Console.WriteLine("Available coupons");
             foreach (CouponModel coupon in coupons)
             {
                 count++;
                 Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon)} Experation date: {coupon.ExpirationDate:MM/dd/yyyy}");
             }
-        Console.WriteLine("Press any key to go back");
-        Console.ReadKey();
+            Console.WriteLine("Press any key to go back");
+            Console.ReadKey();
         }
         Console.Clear();
     }
@@ -172,28 +160,25 @@ public static class Coupon
             PresentationHelper.Error("No coupons available");
             return null;
         }
-        int choice = PresentationHelper.MenuLoop("Do you want to use a coupon?\n[1] Yes\n[2] No", 1, 2);
-        if (choice == 1)
+        Console.Clear();
+        string text = $"Enter the number of the coupon you want to use";
+        List<int> ValidInputs = [];
+
+        for (int i = 0; i < coupons.Count; i++)
         {
-            Console.Clear();
-            string text = $"Enter the number of the coupon you want to use";
-            List<int> ValidInputs = [];
-
-            for (int i = 0; i < coupons.Count; i++)
-            {
-                text += $"\n[{i + 1}] Coupon type: {coupons[i].CouponType} Code: {coupons[i].CouponCode} discount: {PrintDiscount(coupons[i])} Expiration date: {coupons[i].ExpirationDate}";
-                ValidInputs.Add(i + 1);
-            }
-
-            int input = PresentationHelper.MenuLoop(text, 1, ValidInputs.Count);
-
-            CouponModel usedCoupon = coupons[input - 1];
-
-            return usedCoupon;
-            // CouponsLogic.DeleteByCode(usedCoupon.CouponCode);
+            text += $"\n[{i + 1}] Coupon type: {coupons[i].CouponType} Code: {coupons[i].CouponCode} discount: {PrintDiscount(coupons[i])} Expiration date: {coupons[i].ExpirationDate}";
+            ValidInputs.Add(i + 1);
         }
-        else 
-        {return null;}
+
+        int input = PresentationHelper.MenuLoop(text, 1, ValidInputs.Count);
+
+        CouponModel usedCoupon = coupons[input - 1];
+
+        return usedCoupon;
+            // CouponsLogic.DeleteByCode(usedCoupon.CouponCode);
+        
+        // else 
+        // {return null;}
     }
 
     public static void discountprice(double price, CouponModel usedCoupon)
