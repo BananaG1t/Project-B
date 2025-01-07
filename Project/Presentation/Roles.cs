@@ -121,10 +121,6 @@ public static class Roles
 
             if (differentRole)
             {
-                if (role.LevelAccess == 255 || assignedrole.LevelAccess == 255)
-                {
-
-                }
                 string text = $"which role do you want them to have\n[1] {role.Name}\n[2] {assignedrole.Name}";
                 List<RoleModel> roles = [role, assignedrole];
                 role = roles[PresentationHelper.MenuLoop(text, 1, 2) - 1];

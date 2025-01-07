@@ -1,5 +1,71 @@
 static class Reservation
 {
+
+    public static void AdminMenu()
+    {
+        string text =
+            "Manage reservations menu\n" +
+            "Press [1] search by account id\n" +
+            "Press [2] search by email\n" +
+            "Press [3] search by order id\n" +
+            "Press [4] to go back";
+
+
+
+        while (true)
+        {
+            // get a valid input number
+            int input = PresentationHelper.MenuLoop(text, 1, 4);
+            if (input == 1)
+            {
+                int accountId = PresentationHelper.GetInt("Enter account id: ");
+                AccountModel? account = AccountsLogic.GetById(accountId);
+                if (account == null)
+                {
+                    PresentationHelper.Error("Account not found");
+                    continue;
+                }
+
+                ManageReservations(OrderLogic.SelectOrder(account));
+            }
+            else if (input == 2)
+            {
+                Console.WriteLine("Enter email: ");
+                string? email = Console.ReadLine();
+                if (email == null)
+                {
+                    PresentationHelper.Error("Invalid email");
+                    continue;
+                }
+
+                AccountModel? account = AccountsLogic.GetByEmail(email);
+                if (account == null)
+                {
+                    PresentationHelper.Error("Account not found");
+                    continue;
+                }
+
+                ManageReservations(OrderLogic.SelectOrder(account));
+            }
+            else if (input == 3)
+            {
+                int orderId = PresentationHelper.GetInt("Enter order id: ");
+                OrderModel? order = OrderLogic.GetById(orderId);
+                if (order == null)
+                {
+                    PresentationHelper.Error("Order not found");
+                    continue;
+                }
+
+                ManageReservations(order);
+            }
+            else if (input == 4)
+            {
+                return;
+            }
+        }
+    }
+
     public static void ManageReservations(OrderModel order)
     {
         ReservationModel reservation = SelectReservation(order);
@@ -26,7 +92,7 @@ static class Reservation
                 {
                     if (reservation.Status == "Canceled")
                     {
-                        Console.WriteLine("Already canceled");
+                        PresentationHelper.Error("Already canceled");
                         return;
                     }
 
@@ -81,7 +147,7 @@ static class Reservation
     {
         Console.Clear();
         ScheduleModel schedule = ScheduleLogic.GetById(order.ScheduleId);
-        string text = $"Location: {schedule.Location.Name}, Movie: {schedule.Movie.Name}, Date: {schedule.StartTime} Bar: {order.Bar}\nWhat reseration do you want to manage?";
+        string text = $"Location: {schedule.Location.Name}, Movie: {schedule.Movie.Name}, Date: {schedule.StartTime} Bar: {order.Bar}\nWhat reservation do you want to manage?";
         List<ReservationModel> reservations = ReservationLogic.GetFromOrder(order);
 
         for (int i = 0; i < reservations.Count; i++)

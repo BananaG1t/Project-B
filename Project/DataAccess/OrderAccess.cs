@@ -32,6 +32,12 @@ public class OrderAccess
         return (List<OrderModel>)_connection.Query<OrderModel>(sql, account);
     }
 
+    public static OrderModel? GetById(int id)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
+        return _connection.QueryFirstOrDefault<OrderModel>(sql, new { Id = id });
+    }
+
     public static List<(int, DateTime, int)> GetAvailableBarSpots(ScheduleModel schedule)
     {
         string sql = @"
@@ -53,7 +59,7 @@ GROUP BY Schedule.Id, Schedule.endTime;";
     public static List<OrderModel> GetFromSchedule(ScheduleModel schedule)
     {
         string sql = $"SELECT * FROM {Table} WHERE Schedule_ID = @Id";
-        return (List<OrderModel>)_connection.Query<OrderModel>(sql,  schedule);
+        return (List<OrderModel>)_connection.Query<OrderModel>(sql, schedule);
     }
 
     public static void Delete(int id)
