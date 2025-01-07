@@ -61,4 +61,10 @@ public static class SeatsAccess
         string sql = $"SELECT * FROM {Table} WHERE collum = @ColNum AND row = @RowNum AND Auditorium_ID = @AuditoriumId";
         return _connection.QueryFirstOrDefault<SeatModel>(sql, new { ColNum = ColNum, RowNum = RowNum, AuditoriumId = Auditorium_ID });
     }
+
+        public static SeatModel GetByReservation(int ColNum, int RowNum)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE collum = @ColNum AND row = @RowNum AND Auditorium_ID = @AuditoriumId";
+        return _connection.QueryFirstOrDefault<SeatModel>(sql, new { ColNum = ColNum, RowNum = RowNum});
+    }
 }

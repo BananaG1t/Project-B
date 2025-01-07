@@ -16,7 +16,10 @@ public class SeatLogic
     {
         return SeatsAccess.GetByReservationInfo(ColNum, RowNum, Auditorium_ID);
     }
-
+    public static SeatModel GetByReservation(int ColNum, int RowNum)
+    {
+        return SeatsAccess.GetByReservation(ColNum, RowNum);
+    }
     public static void Update(SeatModel seat)
     {
         SeatsAccess.Update(seat);

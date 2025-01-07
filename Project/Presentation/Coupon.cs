@@ -200,7 +200,7 @@ public static class Coupon
     {
             double newPrice = CouponsLogic.CalculateDiscount(price, usedCoupon);
 
-            if (price <= 0){Console.WriteLine($"Total {usedCoupon.CouponType} price: € 0 you have saved: € 0");}
-            else {Console.WriteLine($"Total {usedCoupon.CouponType} price: €{price} you have saved: €{price - newPrice}");}
+            if (price > 0){Console.WriteLine($"Total {usedCoupon.CouponType} price: €{price} you have saved: €{price - newPrice}");}
+            else {Console.WriteLine($"Total {usedCoupon.CouponType} price: € 0 you have saved: € 0");}
     }
 }

@@ -155,7 +155,6 @@ class ReservationLogic
         string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
         snack = PresentationHelper.MenuLoop(text, 1, 2) == 1;
 
-        double totalSnackPrice = 0;
         for (int i = 0; i < amount; i++)
         {
             SeatModel seat = schedule.Auditorium.Seats[(row, col + i)];
@@ -165,7 +164,19 @@ class ReservationLogic
             if (snack)
                 SnackReservation.BuySnacks(reservationId, i + 1);
         }
+
+        List <ReservationModel> reservations = GetFromOrder(order);
+        double totalSeatPrice = 0;
+        foreach(ReservationModel reservation in reservations)
+        {
+            SeatModel seat = SeatLogic.GetByReservationInfo(reservation.Seat_Collum, reservation.Seat_Row,schedule.AuditoriumId);
+            seat.Price += totalSeatPrice;
+        }
         
+        if(selectedCoupon.CouponType == "Seats")
+        {
+            Coupon.discountprice(totalSeatPrice, selectedCoupon);
+        }
         Console.WriteLine("Made the reservation");
     }
 
