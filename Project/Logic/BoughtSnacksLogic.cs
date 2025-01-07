@@ -18,4 +18,11 @@ public static class BoughtSnacksLogic
         BoughtSnacksAccess.Delete(id);
     }
 
+    public static BoughtSnacksModel? GetByReservationId(int id)
+    {
+        return BoughtSnacksAccess.GetByReservationId(id);
+    }
+
+
+
 }

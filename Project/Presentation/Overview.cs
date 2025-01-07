@@ -108,13 +108,24 @@ static class Overview
             case 3:
                 TotalMovieSnackIncome();
                 break;
+            case 4:
+                OrderModel? order = GetOrder();
+                if (order is null)
+                {
+                    Console.WriteLine("There are no orders to select from");
+                    return;
+                }
+                TotalSnackIncomePerReservation(order);
+                break;
+
+
         }
     }
 
     public static void TotalWeeklySnackIncome()
     {
         Console.Clear();
-        var weeklyIncome = SnacksLogic.CalculateWeeklyIncome();
+        double weeklyIncome = SnacksLogic.CalculateWeeklyIncome();
 
         if (weeklyIncome == 0)
         {
@@ -128,7 +139,7 @@ static class Overview
     public static void TotalDailySnackIncome()
     {
         Console.Clear();
-        var dailyIncome = SnacksLogic.CalculateDailyIncome();
+        double dailyIncome = SnacksLogic.CalculateDailyIncome();
 
         if (dailyIncome == 0)
         {
@@ -144,24 +155,45 @@ static class Overview
         Console.Clear();
         string text = "Select a movie to view snack income:";
 
-        var movies = MovieLogic.GetAll();
+        List<MovieModel> movies = MovieLogic.GetAll();
         if (!movies.Any())
         {
             Console.WriteLine("No movies available.");
             return;
         }
 
-        foreach (var movie in movies)
+        foreach (MovieModel movie in movies)
         {
             text += $"\n[{movie.Id}] {movie.Name}";
         }
 
         int input = PresentationHelper.MenuLoop(text, 1, movies.Count);
 
-        var selectedMovie = movies.First(movie => movie.Id == input);
-        var movieSnackIncome = SnacksLogic.CalculateIncomeByMovie(selectedMovie);
+        MovieModel selectedMovie = movies.First(movie => movie.Id == input);
+        double movieSnackIncome = SnacksLogic.CalculateIncomeByMovie(selectedMovie);
 
         Console.WriteLine($"Total snack income for movie '{selectedMovie.Name}': {movieSnackIncome:C}");
     }
+
+    public static void TotalSnackIncomePerReservation(OrderModel order)
+    {
+        SnacksLogic.CalculateIncomeByReservation(order);
+
+    }
+
+    public static OrderModel? GetOrder()
+    {
+        List<OrderModel> orders = OrderLogic.GetAllActive();
+        if (orders.Count == 0) return null;
+
+        string text = "";
+
+        for (int i = 0; i < orders.Count; i++)
+            text += $"[{i + 1}] Order id: {orders[i].Id}";
+
+        return orders[PresentationHelper.MenuLoop(text, 1, orders.Count)];
+    }
+
+
 
 }

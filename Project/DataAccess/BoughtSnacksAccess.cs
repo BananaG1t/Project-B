@@ -56,4 +56,10 @@ public static class BoughtSnacksAccess
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
     }
+
+    public static BoughtSnacksModel? GetByReservationId(int Reservation_ID)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Reservation_ID = @ReservationId";
+        return _connection.QueryFirstOrDefault<BoughtSnacksModel>(sql, new { ReservationId = Reservation_ID });
+    }
 }

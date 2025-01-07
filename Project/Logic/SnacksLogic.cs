@@ -49,10 +49,12 @@ public static class SnacksLogic
         return movieSales;
     }
 
-    public static double CalculateIncomeByReservation(ReservationModel reservation)
+    public static double CalculateIncomeByReservation(OrderModel order)
     {
-        var reservationSales = SnacksModel.Where(sale => sale.ReservationId == reservation.Id).Sum(sale => sale.Amount);
-        return reservationSales;
+        BoughtSnacksModel? boughtSnack = BoughtSnacksLogic.GetByReservationId(order.Id);
+        if (boughtSnack is null) return 0;
+        SnacksModel snack = GetById(boughtSnack.SnackId);
+        return boughtSnack.Amount * snack.Price;
     }
 
 
