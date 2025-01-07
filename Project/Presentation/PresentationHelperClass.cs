@@ -75,7 +75,12 @@ public static class PresentationHelper
     }
 
     // turn the lowerbound / upperbound into a list and give it to the main menuloop
-    public static int MenuLoop(string text, int lowerbound, int upperbound) => MenuLoop(text, Enumerable.Range(lowerbound, upperbound).ToList());
+    public static int MenuLoop(string text, int lowerbound, int upperbound) 
+    {
+        if (lowerbound > upperbound) { throw new ArgumentException("Lowerbound cannot be higher than upperbound"); }
+        if (lowerbound == 0 && upperbound > 0) { upperbound++; }
+        return MenuLoop(text, Enumerable.Range(lowerbound, upperbound).ToList());
+    }
 
     public static int MenuLoop(string text, List<int> valid)
     {
@@ -103,11 +108,11 @@ public static class PresentationHelper
         }
     }
 
-    public static void PrintAndWait(string text)
+    public static void PrintAndEnter(string text)
     {
         Console.WriteLine(text);
-        Thread.Sleep(3000);
-        Console.Clear();
+        Console.WriteLine("Press enter to continue");
+        Console.ReadLine();
     }
 
     public static void PrintInRed(string text)

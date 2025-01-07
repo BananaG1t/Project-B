@@ -53,7 +53,7 @@ public static class Roles
         // makes sure the user doesn't go into an empty loop
         if (RoleInfo.Item2 == 0)
         {
-            PresentationHelper.PrintAndWait("There are no roles in the database");
+            PresentationHelper.PrintAndEnter("There are no roles in the database");
             return;
         }
 
@@ -65,49 +65,81 @@ public static class Roles
         // makes sure the user doesn't go into an empty loop
         if (allAccountInfo.Item2 == 0)
         {
-            PresentationHelper.PrintAndWait("There are no accounts in the database");
+            PresentationHelper.PrintAndEnter("There are no accounts in the database");
             return;
         }
 
         AccountsLogic accountLogic = new();
         AccountModel account = accountLogic.GetAllAccounts()[PresentationHelper.MenuLoop(allAccountInfo.Item1, 1, allAccountInfo.Item2) - 1];
 
+        if (account.Id == 0)
+        {
+            Console.WriteLine("Cannot give the admin account a different role");
+            return;
+        }
+
         Tuple<string, int> locationInfo = LocationLogic.GetLocationInfo();
 
         // makes sure the user doesn't go into an empty loop
         if (locationInfo.Item2 == 0)
         {
-            PresentationHelper.PrintAndWait("There are no locations in the database");
+            PresentationHelper.PrintAndEnter("There are no locations in the database");
             return;
         }
 
         LocationModel locationModel = LocationLogic.GetAllLocations()[PresentationHelper.MenuLoop(locationInfo.Item1, 1, locationInfo.Item2) - 1];
 
-        AssignedRoleModel assignedRoleModel = RoleLogic.GetAssignedRoleByAccountId((int)account.Id);
+        AssignedRoleModel assignedRoleModel = RoleLogic.GetAssignedRoleByAccountId(account.Id);
 
-        bool changeRole = false;
+        bool differentLocation = false;
+        bool differentRole = false;
 
-        if (assignedRoleModel != null && assignedRoleModel.LocationId == locationModel.Id)
+        if (assignedRoleModel != null)
         {
-            Console.WriteLine("That account already has a role on that location");
+            RoleModel assignedrole = RoleAccess.GetById((int)assignedRoleModel.RoleId);
 
-            string text = "";
-            if (RoleAccess.GetById((int)assignedRoleModel.RoleId).LevelAccess > role.LevelAccess)
-            { text = $"Do you want to demote them?\n[1] Yes\n[2] No"; }
-            if (RoleAccess.GetById((int)assignedRoleModel.RoleId).LevelAccess < role.LevelAccess)
-            { text = $"Do you want to promote them?\n[1] Yes\n[2] No"; }
-            if (RoleAccess.GetById((int)assignedRoleModel.RoleId).LevelAccess == role.LevelAccess)
-            { text = $"That is the same role"; return; }
+            if (assignedRoleModel.LocationId == locationModel.Id)
+            {
+                if (assignedrole.LevelAccess == role.LevelAccess)
+                { PresentationHelper.PrintAndEnter($"That is the same role"); return; }
 
-            changeRole = PresentationHelper.MenuLoop(text, 1, 2) == 1;
-            if (!changeRole) { return; }
+                Console.WriteLine("That account already has a role on that location");
+
+                differentRole = true;
+            }
+            else
+            {
+                differentLocation = true;
+
+                if (assignedrole.LevelAccess != role.LevelAccess)
+                {
+
+                    Console.WriteLine("That account already has a different role on another location");
+                    differentRole = true;
+                }
+            }
+
+            if (differentRole)
+            {
+                string text = $"which role do you want them to have\n[1] {role.Name}\n[2] {assignedrole.Name}";
+                List<RoleModel> roles = [role, assignedrole];
+                role = roles[PresentationHelper.MenuLoop(text, 1, 2) - 1];
+
+                if (!RoleLogic.UpdateAssignedRolesByRole(assignedRoleModel, role))
+                { PresentationHelper.PrintAndEnter("Cannot change the admin role\n"); }
+
+                if (differentLocation)
+                { RoleLogic.AssignRole((int)role.Id, account.Id, (int)locationModel.Id); }
+            }
+            else
+            {
+                if (differentLocation)
+                { RoleLogic.AssignRole((int)role.Id, account.Id, (int)locationModel.Id); }
+            }
         }
 
-        if (changeRole)
-        { RoleLogic.RemoveRole((int)assignedRoleModel.Id); }
-
-        if (RoleLogic.AssignRole((int)role.Id, account.Id, (int)locationModel.Id))
-        { PresentationHelper.PrintAndWait("The role has been assigned"); }
+        if (!differentLocation && !differentRole)
+        { RoleLogic.AssignRole((int)role.Id, account.Id, (int)locationModel.Id); }
 
     }
 
@@ -120,7 +152,7 @@ public static class Roles
 
         if (!RoleLogic.AddRole(roleName, levelAccess))
         {
-            PresentationHelper.PrintAndWait("That role name or level access already exists");
+            PresentationHelper.PrintAndEnter("That role name or level access already exists");
             return false;
         }
 
@@ -139,7 +171,7 @@ public static class Roles
 
             if (!RoleLogic.AddRoleLevel(functionalityName, roleLevel))
             {
-                PresentationHelper.PrintAndWait("That functionality or level already exists");
+                PresentationHelper.PrintAndEnter("That functionality or level already exists");
             }
             else
             {
@@ -158,7 +190,7 @@ public static class Roles
         // makes sure the user doesn't go into an empty loop
         if (assignedRoles.Item2 == 0)
         {
-            PresentationHelper.PrintAndWait("There are no assigned roles in the database");
+            PresentationHelper.PrintAndEnter("There are no assigned roles in the database");
             return;
         }
 
@@ -169,7 +201,7 @@ public static class Roles
         // it sucks
         if (assignedRole.AccountId == 0)
         {
-            PresentationHelper.PrintAndWait("You cannot remove your admin role");
+            PresentationHelper.PrintAndEnter("You cannot remove your admin role");
             return;
         }
 
@@ -186,7 +218,7 @@ public static class Roles
 
         if (Roles.Item2 == 0)
         {
-            PresentationHelper.PrintAndWait("There are no roles in the database");
+            PresentationHelper.PrintAndEnter("There are no roles in the database");
             return;
         }
 
@@ -200,7 +232,7 @@ public static class Roles
         // it sucks
         if (role.LevelAccess == 255)
         {
-            PresentationHelper.PrintAndWait("You cannot remove the admin role");
+            PresentationHelper.PrintAndEnter("You cannot remove the admin role");
             return;
         }
 
@@ -217,7 +249,7 @@ public static class Roles
 
         if (roleLevels.Item2 == 0)
         {
-            PresentationHelper.PrintAndWait("There are no assigned roles in the database");
+            PresentationHelper.PrintAndEnter("There are no assigned roles in the database");
             return;
         }
 

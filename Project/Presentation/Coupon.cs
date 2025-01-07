@@ -36,15 +36,17 @@ public static class Coupon
         bool percentage = false;
         string couponType = "";
         float amount = 0;
+
         string couponCode;
         
         int type = PresentationHelper.MenuLoop("What can the coupon be used for?\n[1] The price of the whole order\n[2] Seat reservation price\n[3] Snack reservation price", 1, 3);
+
         if (type == 1) couponType = "Order";
         if (type == 2) couponType = "Seats";
         if (type == 3) couponType = "Snacks";
 
         int input = PresentationHelper.MenuLoop("\nShould the coupon be a percentage of the price or a fixed amount?\n[1] Percentage\n[2] Fixed amount", 1, 2);
-        if (input == 1) 
+        if (input == 1)
         {
             percentage = true;
             amount = CouponsLogic.ValidFloatPercentage("\nEnter the percentage of the coupon (must be between 0-100)","Invalid input. Please try again\n");
@@ -99,11 +101,12 @@ public static class Coupon
         Console.Clear();
     }
 
-    public static string PrintDiscount (CouponModel coupon)
+    public static string PrintDiscount(CouponModel coupon)
     {
         if (coupon.CouponPercentage == true) { return $"% {coupon.Amount}"; }
-        else { return $"€ {coupon.Amount}";}
+        else { return $"€ {coupon.Amount}"; }
     }
+
 
     public static AccountModel ChooseAccount()
     {
@@ -129,6 +132,7 @@ public static class Coupon
     public static string Validcode()
     {
         string code;
+
         do
         {
             Console.WriteLine("\nPlease enter a coupon code: ");
