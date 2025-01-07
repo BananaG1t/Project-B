@@ -60,7 +60,7 @@ public static class RoleLogic
 
             string roleName = role.Name;
             int roleLevel = (int)role.LevelAccess;
-            string fullName = acc.GetById((int)assignedRolesroles[index].AccountId).FullName;
+            string fullName = AccountsLogic.GetById((int)assignedRolesroles[index].AccountId).FullName;
             string LocationName = LocationLogic.GetById((int)assignedRolesroles[index].LocationId).Name;
 
             text += $"[{index + 1}] Role name: {roleName}, " +
