@@ -2,6 +2,7 @@ public static class RoleLogic
 {
     public static bool AssignRole(int roleId, int accountId, int locationId)
     {
+        if (!AssignedRoleAccess.IsAvailable(roleId, locationId, accountId)) return false;
         AssignedRoleModel assignedRoleModel = new(roleId, accountId, locationId);
         return true;
     }
@@ -52,7 +53,8 @@ public static class RoleLogic
 
         AccountsLogic acc = new();
 
-        string text = "";
+        string text = string.Format("     {0,-15} | {1,-13} | {2,-10} | {3,-15}|\n", "Role name", "Level access", "Fullname", "Location name"); ;
+        text += "===================================================================|\n";
 
         for (int index = 0; index < assignedRolesroles.Count; index++)
         {
@@ -60,13 +62,16 @@ public static class RoleLogic
 
             string roleName = role.Name;
             int roleLevel = (int)role.LevelAccess;
-            string fullName = AccountsLogic.GetById((int)assignedRolesroles[index].AccountId).FullName;
-            string LocationName = LocationLogic.GetById((int)assignedRolesroles[index].LocationId).Name;
 
-            text += $"[{index + 1}] Role name: {roleName}, " +
-                    $"level access: {roleLevel}, " +
-                    $"full name: {fullName}, " +
-                    $"location name: {LocationName}\n";
+            string LocationName;
+            string fullName = acc.GetById((int)assignedRolesroles[index].AccountId).FullName;
+            if (fullName == "Admin") LocationName = "All";
+            else LocationName = LocationLogic.GetById((int)assignedRolesroles[index].LocationId).Name;
+
+            int padding = (int)Math.Ceiling(Math.Ceiling(Math.Log10(assignedRolesroles.Count)) - Math.Log10(index + 1));
+
+            // text += String.Format("[{0}] {1,-15} | {2,-13} | {3,-10} | {4,-15}|\n", (index + 1).ToString().PadRight((int)Math.Floor(Math.Log10(assignedRolesroles.Count) + 1)), roleName, roleLevel, fullName, LocationName);
+            text += String.Format("[{0}]{1}{2,-15} | {3,-13} | {4,-10} | {5,-15}|\n", index + 1, "".PadLeft(padding), roleName, roleLevel, fullName, LocationName);
         }
 
         return new(text, assignedRolesroles.Count);
@@ -202,5 +207,32 @@ public static class RoleLogic
         MenuOptions.Add("Exit");
 
         return MenuOptions;
+    }
+
+    public static RoleModel GetRoleByAccountId(int accountId)
+    {
+        AssignedRoleModel assignedRole = AssignedRoleAccess.GetByAccountId(accountId);
+        if (assignedRole == null) { return null; }
+        return RoleAccess.GetById((int)assignedRole.RoleId);
+    }
+
+    public static bool UpdateAssignedRolesByRole(AssignedRoleModel assignedRole, RoleModel role)
+    {
+        List<AssignedRoleModel> assignedRoles = AssignedRoleAccess.GetAllAssignedRoles();
+        foreach (AssignedRoleModel dbmodel in assignedRoles)
+        {
+            if (dbmodel.AccountId == assignedRole.AccountId)
+            {
+                if (dbmodel.RoleId == 0) { return false; }
+                dbmodel.RoleId = role.Id;
+                AssignedRoleAccess.Update(dbmodel);
+            }
+        }
+        return true;
+    }
+
+    public static List<AssignedRoleModel> GetAllAssignedRolesByAccountId(int accountId)
+    {
+        return AssignedRoleAccess.GetAllByAccountId(accountId);
     }
 }
