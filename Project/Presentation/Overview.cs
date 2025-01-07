@@ -4,10 +4,11 @@ static class Overview
     {
         Console.Clear();
         string text = "Welcome to the income overview\n" +
-        "[1] Show income from all movies\n" +
-        "[2] Show movie income from certain schedule entry\n" +
-        "[3] Show income from movie";
-        int input = PresentationHelper.MenuLoop(text, 1, 3);
+                      "[1] Show income from all movies\n" +
+                      "[2] Show movie income from a specific schedule entry\n" +
+                      "[3] Show income from a specific movie\n" +
+                      "[4] Show the snack income";
+        int input = PresentationHelper.MenuLoop(text, 1, 4);
 
         switch (input)
         {
@@ -19,6 +20,9 @@ static class Overview
                 break;
             case 3:
                 TotalMovieIncome();
+                break;
+            case 4:
+                SnackIncome();
                 break;
         }
     }
@@ -82,4 +86,82 @@ static class Overview
         }
         Console.WriteLine($"\nTotal income: {ScheduleLogic.GetIncome(scheduleEntries)}");
     }
+
+    public static void SnackIncome()
+    {
+        Console.Clear();
+        string text = "Welcome to the snack income overview\n" +
+                      "[1] Show the weekly total income from snacks\n" +
+                      "[2] Show the daily total income from snacks\n" +
+                      "[3] Show the total income from snacks by movie\n";
+
+        int input = PresentationHelper.MenuLoop(text, 1, 4);
+
+        switch (input)
+        {
+            case 1:
+                TotalWeeklySnackIncome();
+                break;
+            case 2:
+                TotalDailySnackIncome();
+                break;
+            case 3:
+                TotalMovieSnackIncome();
+                break;
+        }
+    }
+
+    public static void TotalWeeklySnackIncome()
+    {
+        Console.Clear();
+        var weeklyIncome = SnacksLogic.CalculateWeeklyIncome();
+
+        if (weeklyIncome == 0)
+        {
+            Console.WriteLine("No snack sales recorded for the past week.");
+            return;
+        }
+
+        Console.WriteLine($"Total weekly snack income: {weeklyIncome:C}");
+    }
+
+    public static void TotalDailySnackIncome()
+    {
+        Console.Clear();
+        var dailyIncome = SnacksLogic.CalculateDailyIncome();
+
+        if (dailyIncome == 0)
+        {
+            Console.WriteLine("No snack sales recorded for today.");
+            return;
+        }
+
+        Console.WriteLine($"Total daily snack income: {dailyIncome:C}");
+    }
+
+    public static void TotalMovieSnackIncome()
+    {
+        Console.Clear();
+        string text = "Select a movie to view snack income:";
+
+        var movies = MovieLogic.GetAll();
+        if (!movies.Any())
+        {
+            Console.WriteLine("No movies available.");
+            return;
+        }
+
+        foreach (var movie in movies)
+        {
+            text += $"\n[{movie.Id}] {movie.Name}";
+        }
+
+        int input = PresentationHelper.MenuLoop(text, 1, movies.Count);
+
+        var selectedMovie = movies.First(movie => movie.Id == input);
+        var movieSnackIncome = SnacksLogic.CalculateIncomeByMovie(selectedMovie);
+
+        Console.WriteLine($"Total snack income for movie '{selectedMovie.Name}': {movieSnackIncome:C}");
+    }
+
 }
