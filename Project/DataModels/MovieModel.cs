@@ -34,27 +34,27 @@
         Id = MovieAccess.Write(this);
     }
 
-    public MovieModel(Int64 id, string name, string director, string description, string length, string genre, Int64 age_rating, Byte[] movie_ratings)
-    {
-        Id = id;
-        Name = name;
-        Director = director;
-        Description = description;
-        Length = TimeSpan.Parse(length);
-        Genre = genre;
-        AgeRating = (int)age_rating;
-        if (movie_ratings == null || movie_ratings.Length != sizeof(double))
-        {
-            throw new ArgumentException("Byte array must be 8 bytes long to convert to a double.");
-        }
-        // Handle endianness if necessary
-        if (!BitConverter.IsLittleEndian)
-        {
-            Array.Reverse(movie_ratings);
-        }
-        MovieRating = BitConverter.ToDouble(movie_ratings, 0);
+    // public MovieModel(Int64 id, string name, string director, string description, string length, string genre, Int64 age_rating, Byte[] movie_ratings)
+    // {
+    //     Id = id;
+    //     Name = name;
+    //     Director = director;
+    //     Description = description;
+    //     Length = TimeSpan.Parse(length);
+    //     Genre = genre;
+    //     AgeRating = (int)age_rating;
+    //     if (movie_ratings == null || movie_ratings.Length != sizeof(double))
+    //     {
+    //         throw new ArgumentException("Byte array must be 8 bytes long to convert to a double.");
+    //     }
+    //     // Handle endianness if necessary
+    //     if (!BitConverter.IsLittleEndian)
+    //     {
+    //         Array.Reverse(movie_ratings);
+    //     }
+    //     MovieRating = BitConverter.ToDouble(movie_ratings, 0);
          
-    }
+    // }
 }
 
 
