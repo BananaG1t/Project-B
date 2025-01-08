@@ -76,7 +76,8 @@ static class LocationMenu
         Console.Clear();
         string text = "Which location do you want to update?";
         List<LocationModel> locations = LocationLogic.GetAll();
-
+        if (locations.Count > 0)
+        {
         for (int i = 0; i < locations.Count; i++)
         {
             text += $"\n[{i + 1}] {locations[i].Name}";
@@ -99,6 +100,12 @@ static class LocationMenu
 
         LocationLogic.update(new LocationModel(OldLocation.Id, name));
         Console.WriteLine($"\nChanged Location Name: From \"{OldLocation.Name}\" to \"{name}\"\n");
+        }
+
+        else
+        {
+            Console.WriteLine("There are no locations to update\n");
+        }
     }
 
     public static void DeleteLocation()
