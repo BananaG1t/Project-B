@@ -1,7 +1,7 @@
 namespace UnitTests;
 
 [TestClass]
-public class TestRoles
+public class TestDeleteLocationFunction
 {
     [TestMethod]
     [DataRow(0, true)]
@@ -19,3 +19,4 @@ public class TestRoles
             Assert.AreEqual(locations.Count == amount, expected);
         }
     }
+}
