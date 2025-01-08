@@ -24,6 +24,8 @@ public static class SnacksAccess
         return _connection.QueryFirstOrDefault<SnacksModel>(sql, new { Id = id });
     }
 
+
+
     public static List<SnacksModel> GetAll()
     {
         string sql = $"SELECT id, name, price FROM {Table}";
