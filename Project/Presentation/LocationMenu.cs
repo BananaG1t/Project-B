@@ -78,28 +78,28 @@ static class LocationMenu
         List<LocationModel> locations = LocationLogic.GetAll();
         if (locations.Count > 0)
         {
-        for (int i = 0; i < locations.Count; i++)
-        {
-            text += $"\n[{i + 1}] {locations[i].Name}";
+            for (int i = 0; i < locations.Count; i++)
+            {
+                text += $"\n[{i + 1}] {locations[i].Name}";
 
-        }
-        int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
-        LocationModel OldLocation = locations[LocationId - 1];
+            }
+            int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
+            LocationModel OldLocation = locations[LocationId - 1];
 
-        bool valid = false;
-        string name = "";
+            bool valid = false;
+            string name = "";
 
-        while (!valid)
-        {
-            Console.WriteLine("What is the name of the new location?");
-            name = Console.ReadLine();
+            while (!valid)
+            {
+                Console.WriteLine("What is the name of the new location?");
+                name = Console.ReadLine();
 
-            if (name == "") { Console.WriteLine("\nInvalid input. Please try again\n"); }
-            else { valid = true; }
-        }
+                if (name == "") { Console.WriteLine("\nInvalid input. Please try again\n"); }
+                else { valid = true; }
+            }
 
-        LocationLogic.update(new LocationModel(OldLocation.Id, name));
-        Console.WriteLine($"\nChanged Location Name: From \"{OldLocation.Name}\" to \"{name}\"\n");
+            LocationLogic.update(new LocationModel(OldLocation.Id, name));
+            Console.WriteLine($"\nChanged Location Name: From \"{OldLocation.Name}\" to \"{name}\"\n");
         }
 
         else
@@ -147,7 +147,7 @@ static class LocationMenu
         {
             Console.WriteLine("There are no locations to remove\n");
         }
-        
+
     }
 
     public static void DisplayLocations()
@@ -157,12 +157,12 @@ static class LocationMenu
 
         if (locations.Count > 0)
         {
-        Console.WriteLine("All current locations:");
-        foreach (LocationModel location in locations)
-        {
-            Console.WriteLine(location.Name);
-        }
-        Console.WriteLine();
+            Console.WriteLine("All current locations:");
+            foreach (LocationModel location in locations)
+            {
+                Console.WriteLine(location.Name);
+            }
+            Console.WriteLine();
         }
 
         else
@@ -177,7 +177,7 @@ static class LocationMenu
         List<LocationModel> locations = LocationLogic.GetAll();
         List<LocationModel> ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
         List<LocationModel> NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
-        
+
         if (locations.Count == 0)
         {
             PresentationHelper.Error("No locations found");
@@ -201,13 +201,12 @@ static class LocationMenu
                 return null;
             }
         }
-
-        if (ScheduleLocations.Count == 0)
+        if (canAdd)
         {
             if (!addSchedule)
                 PresentationHelper.Error("No locations with schedule entries");
             if (!canAdd && !addSchedule) return null;
-            if (canAdd && addSchedule) 
+            if (canAdd && addSchedule)
             {
                 locations = LocationLogic.GetAll();
                 for (int i = 0; i < locations.Count; i++)
@@ -223,19 +222,20 @@ static class LocationMenu
             NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
         }
 
-            // Adds all locations with schedules to dict and as a valid option for reserving
-            for (int i = 0; i < ScheduleLocations.Count; i++)
-            {
-                text += $"\n[{i + 1}] {ScheduleLocations[i].Name}";
-            }
 
-            // Adds all locations with no schedules to dict without adding it as a valid option for reserving
-            for (int i = 0; i < NoScheduleLocations.Count; i++)
-            {
-                text += $"\n{NoScheduleLocations[i].Name} (Coming Soon!)";
-            }
+        // Adds all locations with schedules to dict and as a valid option for reserving
+        for (int i = 0; i < ScheduleLocations.Count; i++)
+        {
+            text += $"\n[{i + 1}] {ScheduleLocations[i].Name}";
+        }
 
-            int locationId = PresentationHelper.MenuLoop(text, 1, ScheduleLocations.Count);
-            return ScheduleLocations[locationId - 1];
+        // Adds all locations with no schedules to dict without adding it as a valid option for reserving
+        for (int i = 0; i < NoScheduleLocations.Count; i++)
+        {
+            text += $"\n{NoScheduleLocations[i].Name} (Coming Soon!)";
+        }
+
+        int locationId = PresentationHelper.MenuLoop(text, 1, ScheduleLocations.Count);
+        return ScheduleLocations[locationId - 1];
     }
 }
