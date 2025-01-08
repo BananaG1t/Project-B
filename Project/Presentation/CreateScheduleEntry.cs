@@ -2,6 +2,16 @@ using System.Globalization;
 
 public static class CreateScheduleEntry
 {
+    private static string name;
+    private static string author;
+    private static string description;
+    private static string length;
+    private static string genre;
+    private static string agerating;
+    private static string movieRatings;
+
+
+
     public static void Main()
     {
         int room = SelectRoom();
@@ -37,6 +47,37 @@ public static class CreateScheduleEntry
         }
 
         int movieId = General.ValidAnswer(text, valid);
+        // Ask admin if the movie should be added to the weekly schedule
+        Console.WriteLine("Do you want to add this movie to the weekly schedule? (yes/no): ");
+        string response = Console.ReadLine().ToLower();
+
+        if (response == "yes")
+        {
+            Console.WriteLine("Enter the room number:");
+            int room = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Enter the start time of the movie (yyyy-MM-dd HH:mm):");
+            DateTime startTime = DateTime.Parse(Console.ReadLine());
+
+            Console.WriteLine("Enter the end time of the movie (yyyy-MM-dd HH:mm):");
+            DateTime endTime = DateTime.Parse(Console.ReadLine());
+
+            for (int day = 1; day <= 7; day++)
+            {
+                DateTime dayStartTime = startTime.AddDays(day - 1);
+                DateTime dayEndTime = endTime.AddDays(day - 1);
+    
+                if (ScheduleAccess.IsAvailable(room, dayStartTime, dayEndTime))
+                {
+                    Console.WriteLine($"The movie has been added to day {day} of the weekly schedule in room {room}.");
+                    MovieLogic.AddMovieByDay(name, author, description, length, genre, agerating, movieRatings);
+                }
+                else
+                {
+                    Console.WriteLine($"Room {room} is not available on day {day} during the specified time.");
+                }
+            }
+        }
         return Movies.First(MovieModel => MovieModel.Id == movieId);
     }
 
