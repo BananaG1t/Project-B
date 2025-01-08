@@ -11,6 +11,11 @@ public class TestRoles
 
         if (locations.Count > 0)
         {
-            Assert.AreEqual(locations.Count != 0, expected);
+            foreach (var loc in locations)
+            {
+                LocationLogic.Delete((int)loc.Id);
+            }
+            locations = LocationLogic.GetAll();
+            Assert.AreEqual(locations.Count == 0, expected);
         }
     }
