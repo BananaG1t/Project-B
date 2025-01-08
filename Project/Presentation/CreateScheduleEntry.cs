@@ -4,13 +4,22 @@ public static class CreateScheduleEntry
 {
     public static void Main(AccountModel account)
     {
-        LocationModel location = Location(account);
+        LocationModel? location = LocationMenu.SelectLocation(account, canAdd: true, addSchedule: true);
+        if (location is null) return;
         int room = SelectRoom();
-        MovieModel movie = SelectMovie();
-        DateTime date = SelectDate(room, movie.Length, (int)location.Id);
-        string? extras = GetExtras();
-        new ScheduleModel(date, movie, new AuditoriumModel(room, extras), location);
-        Console.Clear();
+        MovieModel movie = SelectMovie(canAdd : true);
+        if (movie != null)
+        {
+            DateTime date = SelectDate(room, movie.Length, (int)location.Id);
+            string? extras = GetExtras();
+            new ScheduleModel(date, movie, new AuditoriumModel(room, extras), location);
+            Console.Clear();
+        }
+        
+        else
+        {
+            Console.WriteLine("\nSchedule creation cancelled\n");
+        }
     }
 
     private static int SelectRoom()
@@ -25,20 +34,39 @@ public static class CreateScheduleEntry
         return PresentationHelper.MenuLoop(text, 1, 3);
     }
 
-    private static MovieModel SelectMovie()
+    private static MovieModel? SelectMovie(bool canAdd = false)
     {
         Console.Clear();
         string text = "What movie do you want to show?";
         List<MovieModel> Movies = MovieLogic.GetAll();
-        List<int> valid = [];
-        foreach (MovieModel movie in Movies)
+        if (Movies.Count == 0)
         {
-            text += $"\n[{movie.Id}] {movie.Name}";
-            valid.Add((int)movie.Id);
+            PresentationHelper.Error("No movies found");
+            if (!canAdd) return null;
+
+            string confirmText =
+                    "There are no movies\n" +
+                    "Do you want to add a new movie?\n" +
+                    "[1] Yes \n" +
+                    "[2] No\n";
+
+            int confirmChoice = PresentationHelper.MenuLoop(confirmText, 1, 2);
+            if (confirmChoice == 1)
+            {
+                AddMovieMenu.Main();
+                Console.WriteLine();
+                Movies = MovieLogic.GetAll();
+            }
+            else if (confirmChoice == 2) return null;
         }
 
+        for (int i = 0; i < Movies.Count; i++)
+            {
+                text += $"\n[{i + 1}] {Movies[i].Name}";
+            }
+
         int answer = PresentationHelper.MenuLoop(text, 1, Movies.Count);
-        return Movies.First(MovieModel => MovieModel.Id == answer);
+        return Movies[answer - 1];
     }
 
     private static DateTime SelectDate(int room, TimeSpan length, int locationId)
@@ -70,38 +98,6 @@ public static class CreateScheduleEntry
         Console.WriteLine("Does it have any extras like IMAX? (leave blank if none)");
         string? Input = Console.ReadLine();
         return Input == "" ? null : Input;
-    }
-
-    private static LocationModel Location(AccountModel account)
-    {
-        List<LocationModel> locations = [];
-        Console.Clear();
-        List<AssignedRoleModel> assignedroles = AssignedRoleAccess.GetAllByAccountId(account.Id);
-        foreach (AssignedRoleModel assignedRole in assignedroles)
-        {
-            if (!(assignedRole.Id == 0))
-                locations.Add(LocationLogic.GetById((int)assignedRole.LocationId));
-        }
-
-
-
-
-        // AssignedRoleModel assignedRole = RoleLogic.GetAssignedRoleByAccountId(account.Id);
-        // RoleModel role = RoleLogic.GetRoleById((int)assignedRole.RoleId);
-        // if (role.LevelAccess < 255)
-        // { return LocationLogic.GetById((int)assignedRole.LocationId); }
-
-        string text = "At which location do you want to see?";
-        if (locations.Count == 0)
-            locations = LocationLogic.GetAll();
-
-        for (int i = 0; i < locations.Count; i++)
-        {
-            text += $"\n[{i + 1}] {locations[i].Name}";
-        }
-        int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
-        LocationModel Location = locations[LocationId - 1];
-        return Location;
     }
 
 }

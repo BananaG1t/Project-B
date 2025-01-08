@@ -39,7 +39,9 @@ static class Menu
             }
             else if (functionality == functionalities[3])
             {
-                Schedule.DisplaySchedule(LocationMenu.SelectLocation());
+                LocationModel? location = LocationMenu.SelectLocation(account, canAdd : true);
+                if (location is not null) 
+                    Schedule.DisplaySchedule(location);
             }
             else if (functionality == functionalities[4])
             {
@@ -100,7 +102,9 @@ static class Menu
 
             if (input == 1)
             {
-                ReservationLogic.GetReservation(CurrentAccount);
+                LocationModel? location = LocationMenu.SelectLocation(CurrentAccount);
+                if (location is not null) 
+                    ReservationLogic.GetReservation(CurrentAccount, location);
             }
 
             else if (input == 2)
@@ -109,7 +113,9 @@ static class Menu
             }
             else if (input == 3)
             {
-                Schedule.DisplaySchedule(LocationMenu.SelectLocation());
+                LocationModel? location = LocationMenu.SelectLocation(CurrentAccount);
+                if (location is not null) 
+                    Schedule.DisplaySchedule(location);
             }
             else if (input == 4)
             {
