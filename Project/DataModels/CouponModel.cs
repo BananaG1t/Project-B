@@ -13,7 +13,7 @@ public class CouponModel
 
     public CouponModel(Int64 id, string coupon_code, string expiration_date, string coupon_type, Int64 coupon_percentage,Double amount)
     {
-        string format = "yyyy-MM-dd";
+        string format = "yyyy-MM-dd HH:mm:ss";
         Id = (int)id;
         DateTime.TryParseExact(expiration_date, format, null, System.Globalization.DateTimeStyles.None, out DateTime output);
         CouponCode = coupon_code;

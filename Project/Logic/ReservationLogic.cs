@@ -151,6 +151,10 @@ class ReservationLogic
         if (choice == 1)
         {
             selectedCoupon = Coupon.SelectCoupon();
+            Coupon.PrintDiscount(selectedCoupon);
+        Console.WriteLine("Press any key to continue");
+        Console.ReadKey();
+            Console.Clear();
         } 
         int? CouponId = selectedCoupon == null ? null : selectedCoupon.Id;
         if (selectedCoupon != null)

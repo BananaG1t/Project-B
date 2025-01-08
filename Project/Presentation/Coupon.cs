@@ -89,11 +89,10 @@ public static class Coupon
         }
         else
         {
-            Console.WriteLine("Available coupons");
             foreach (CouponModel coupon in coupons)
             {
                 count++;
-                Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon)} Experation date: {coupon.ExpirationDate:MM/dd/yyyy}");
+                Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscountType(coupon)} Experation date: {coupon.ExpirationDate:MM/dd/yyyy}");
             }
             Console.WriteLine("Press any key to go back");
             Console.ReadKey();
@@ -116,7 +115,7 @@ public static class Coupon
             Console.WriteLine("Available coupons");
             foreach (CouponModel coupon in coupons)
             {
-                if (coupon.ExpirationDate < DateTime.Now.Date)
+                if (coupon.ExpirationDate > DateTime.Now.Date)
                 {
                     availableCoupons.Add(coupon);
                 }
@@ -130,17 +129,18 @@ public static class Coupon
                 foreach (CouponModel availableCoupon in availableCoupons)
                 {
                     count++;
-                    Console.WriteLine($"[{count}] Coupon type: {availableCoupon.CouponType}, Code: {availableCoupon.CouponCode}, Discount: {PrintDiscount(availableCoupon)}, Expiration date: {availableCoupon.ExpirationDate:dd-MM-yyyy}");
+                    Console.WriteLine($"[{count}] Coupon type: {availableCoupon.CouponType}, Code: {availableCoupon.CouponCode}, Discount: {PrintDiscountType(availableCoupon)}, Expiration date: {availableCoupon.ExpirationDate:dd-MM-yyyy}");
                 }
             }
         }
             Console.WriteLine("Press any key to go back");
             Console.ReadKey();
+        Console.Clear();
     }
 
-    public static string PrintDiscount(CouponModel coupon)
+    public static string PrintDiscountType(CouponModel coupon)
     {
-        if (coupon.CouponPercentage == true) { return $"{coupon.Amount} Percentage"; }
+        if (coupon.CouponPercentage == true) { return $"{coupon.Amount} Percent"; }
         else { return $" {coupon.Amount} Euros"; }
     }
 
@@ -201,32 +201,55 @@ public static class Coupon
             PresentationHelper.Error("No coupons available");
             return null;
         }
-        Console.Clear();
-        string text = $"Enter the number of the coupon you want to use";
-        List<int> ValidInputs = [];
-
-        for (int i = 0; i < coupons.Count; i++)
+        else
         {
-            text += $"\n[{i + 1}] Coupon type: {coupons[i].CouponType} Code: {coupons[i].CouponCode} discount: {PrintDiscount(coupons[i])} Expiration date: {coupons[i].ExpirationDate}";
-            ValidInputs.Add(i + 1);
-        }
+            Console.Clear();
+            string text = $"Enter the number of the coupon you want to use";
+            List<int> ValidInputs = [];
+            List<CouponModel> availableCoupons = new List<CouponModel>();
 
-        int input = PresentationHelper.MenuLoop(text, 1, ValidInputs.Count);
+            for (int i = 0; i < coupons.Count; i++)
+            {
+                if (coupons[i].ExpirationDate > DateTime.Now.Date)
+                {
+                    availableCoupons.Add(coupons[i]);
+                }
+                if(availableCoupons.Count == 0)
+                {
+                    Console.WriteLine("No available coupons");
+                }
+                else
+                {
+                    foreach(CouponModel availableCoupon in availableCoupons)
+                    {
+                        text += $"\n[{i + 1}] Coupon type: {coupons[i].CouponType} Code: {coupons[i].CouponCode} discount: {PrintDiscountType(coupons[i])} Expiration date: {coupons[i].ExpirationDate}";
+                        ValidInputs.Add(i + 1);
+                    }
+                }
 
-        CouponModel usedCoupon = coupons[input - 1];
+            }
 
-        return usedCoupon;
+            int input = PresentationHelper.MenuLoop(text, 1, ValidInputs.Count);
+
+            CouponModel SelectedCoupon = coupons[input - 1];
+
+            return SelectedCoupon;
             // CouponsLogic.DeleteByCode(usedCoupon.CouponCode);
-        
-        // else 
-        // {return null;}
+
+            // else 
+            // {return null;}
+        }
     }
 
-    public static void discountprice(double price, CouponModel usedCoupon)
+    public static void discountprice(double price,CouponModel usedCoupon)
     {
             double newPrice = CouponsLogic.CalculateDiscount(price, usedCoupon);
 
             if (price > 0){Console.WriteLine($"Total {usedCoupon.CouponType} price: €{price} you have saved: €{price - newPrice}");}
             else {Console.WriteLine($"Total {usedCoupon.CouponType} price: € 0 you have saved: € 0");}
+    }
+    public static void PrintDiscount(CouponModel selectedCoupon)
+    {
+        Console.WriteLine($"You saved {PrintDiscountType(selectedCoupon)} off your {selectedCoupon.CouponType} price");
     }
 }
