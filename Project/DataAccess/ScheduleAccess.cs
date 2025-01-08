@@ -65,10 +65,9 @@ public static class ScheduleAccess
 
     public static List<ScheduleModel> GetByMovieId(int movieId)
     {
-        string sql = $"SELECT * FROM {Table} WHERE Id = @Id";
+        string sql = $"SELECT * FROM {Table} WHERE movieId = @movieId";
         return _connection.Query<ScheduleModel>(sql, new { MovieId = movieId }).ToList();
     }
-
 
     public static ScheduleModel GetById(int id)
     {

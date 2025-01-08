@@ -28,7 +28,7 @@ public static class ReservationAcces
 
     public static List<ReservationModel> GetByScheduleId(int scheduleId)
     {
-        string sql = $"SELECT * FROM {Table} WHERE Id = @Id";
+        string sql = $"SELECT * FROM {Table} WHERE scheduleId = @scheduleId";
         return _connection.Query<ReservationModel>(sql, new { ScheduleId = scheduleId }).ToList();
     }
 
