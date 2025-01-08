@@ -7,7 +7,7 @@ static class Menu
 
     public static List<string> functionalities = ["Manage Users", "Add a movie", "Add to the schedule",
                                                     "Display the schedule", "Manage reservations", "Display income overview",
-                                                    "Manage snacks", "Manage Locations", "Create coupon"];
+                                                    "Manage snacks", "Manage Locations", "Manage Coupons"];
     static public void AdminMenu(AccountModel account)
     {
         //admin menu
@@ -94,10 +94,11 @@ static class Menu
             "Press [1] to make a new reservation\n" +
             "Press [2] to manage the reservations you have made\n" +
             "Press [3] to see movie schedules\n" +
-            "Press [4] to log out";
+            "Press [4] to display coupons\n" +
+            "Press [5] to log out";
 
             // get a valid input number
-            int input = PresentationHelper.MenuLoop(text, 1, 4);
+            int input = PresentationHelper.MenuLoop(text, 1, 5);
 
             if (input == 1)
             {
@@ -116,8 +117,12 @@ static class Menu
                 if (location is not null) 
                     Schedule.DisplaySchedule(location);
             }
+            else if (input == 4)
+            {
+                Coupon.DisplayCoupons();
+            }
             // sends the user to the start to login again
-            else if (input == 4) { break; }
+            else if (input == 5) { break; }
         }
 
         Start();
