@@ -48,6 +48,26 @@ static class Schedule
         return schedules[input - 3];
     }
 
+    public static void CheckSchedule(AccountModel account)
+    {
+        string confirmText =
+                "There are no location with schedule entries\n" +
+                "Do you want to add to the schedule?\n" +
+                "[1] Yes \n" +
+                "[2] No\n";
+
+        int confirmChoice = PresentationHelper.MenuLoop(confirmText, 1, 2);
+        if (confirmChoice == 1)
+        {
+            CreateScheduleEntry.Main(account);
+        }
+        else if (confirmChoice == 2)
+        {
+            Console.WriteLine("\nSchedule creation cancelled\n");
+            Menu.AdminMenu(account);
+        }
+    }
+
     public static void DisplaySchedule(LocationModel location)
     {
         List<ScheduleModel> schedules = ScheduleAccess.ScheduleByDateAndLocation(location);

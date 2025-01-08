@@ -76,7 +76,8 @@ static class LocationMenu
         Console.Clear();
         string text = "Which location do you want to update?";
         List<LocationModel> locations = LocationLogic.GetAll();
-
+        if (locations.Count > 0)
+        {
         for (int i = 0; i < locations.Count; i++)
         {
             text += $"\n[{i + 1}] {locations[i].Name}";
@@ -99,6 +100,12 @@ static class LocationMenu
 
         LocationLogic.update(new LocationModel(OldLocation.Id, name));
         Console.WriteLine($"\nChanged Location Name: From \"{OldLocation.Name}\" to \"{name}\"\n");
+        }
+
+        else
+        {
+            Console.WriteLine("There are no locations to update\n");
+        }
     }
 
     public static void DeleteLocation()
@@ -138,7 +145,7 @@ static class LocationMenu
 
         else
         {
-            Console.WriteLine("\nThere are no locations to remove\n");
+            Console.WriteLine("There are no locations to remove\n");
         }
         
     }
@@ -146,35 +153,89 @@ static class LocationMenu
     public static void DisplayLocations()
     {
         Console.Clear();
-        string text = " All current locations:";
         List<LocationModel> locations = LocationLogic.GetAll();
 
+        if (locations.Count > 0)
+        {
+        Console.WriteLine("All current locations:");
         foreach (LocationModel location in locations)
         {
             Console.WriteLine(location.Name);
         }
         Console.WriteLine();
+        }
+
+        else
+        {
+            Console.WriteLine("There are no locations to display\n");
+        }
     }
-    public static LocationModel SelectLocation()
+    public static LocationModel? SelectLocation(AccountModel account, bool canAdd = false, bool addSchedule = false)
     {
         Console.Clear();
         string text = "At which location do you want to see?";
+        List<LocationModel> locations = LocationLogic.GetAll();
         List<LocationModel> ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
         List<LocationModel> NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
-
-        // Adds all locations with schedules to dict and as a valid option for reserving
-        for (int i = 0; i < ScheduleLocations.Count; i++)
+        
+        if (locations.Count == 0)
         {
-            text += $"\n[{i + 1}] {ScheduleLocations[i].Name}";
+            PresentationHelper.Error("No locations found");
+            if (!canAdd) return null;
+
+            string confirmText =
+                    "There are no locations\n" +
+                    "Do you want to add a new location?\n" +
+                    "[1] Yes \n" +
+                    "[2] No\n";
+
+            int confirmChoice = PresentationHelper.MenuLoop(confirmText, 1, 2);
+            if (confirmChoice == 1)
+            {
+                AddLocation();
+                ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
+            }
+            else if (confirmChoice == 2)
+            {
+                Console.WriteLine("\nReturning to admin menu\n");
+                return null;
+            }
         }
 
-        // Adds all locations with no schedules to dict without adding it as a valid option for reserving
-        for (int i = 0; i < NoScheduleLocations.Count; i++)
+        if (ScheduleLocations.Count == 0)
         {
-            text += $"\n{NoScheduleLocations[i].Name} (Coming Soon!)";
+            if (!addSchedule)
+                PresentationHelper.Error("No locations with schedule entries");
+            if (!canAdd && !addSchedule) return null;
+            if (canAdd && addSchedule) 
+            {
+                locations = LocationLogic.GetAll();
+                for (int i = 0; i < locations.Count; i++)
+                {
+                    text += $"\n[{i + 1}] {locations[i].Name}";
+                }
+                int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
+                LocationModel Location = locations[LocationId - 1];
+                return Location;
+            }
+            Schedule.CheckSchedule(account);
+            ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
+            NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
         }
 
-        int locationId = PresentationHelper.MenuLoop(text, 1, ScheduleLocations.Count);
-        return ScheduleLocations[locationId - 1];
+            // Adds all locations with schedules to dict and as a valid option for reserving
+            for (int i = 0; i < ScheduleLocations.Count; i++)
+            {
+                text += $"\n[{i + 1}] {ScheduleLocations[i].Name}";
+            }
+
+            // Adds all locations with no schedules to dict without adding it as a valid option for reserving
+            for (int i = 0; i < NoScheduleLocations.Count; i++)
+            {
+                text += $"\n{NoScheduleLocations[i].Name} (Coming Soon!)";
+            }
+
+            int locationId = PresentationHelper.MenuLoop(text, 1, ScheduleLocations.Count);
+            return ScheduleLocations[locationId - 1];
     }
 }
