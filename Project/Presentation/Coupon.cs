@@ -55,7 +55,7 @@ public static class Coupon
         {
             amount = CouponsLogic.ValidFloat("\nEnter the discount price of the coupon","Invalid input. Please try again\n");
         } 
-        DateTime expirationDate = PresentationHelper.ValidDate("Enter the expiration date of the coupon (dd-MM-yyyy)");
+        DateTime expirationDate = PresentationHelper.ValidDate("\nEnter the expiration date of the coupon (dd-MM-yyyy)");
 
         int inputcode = PresentationHelper.MenuLoop("\ninput coupon code or random generated coupon code?\n[1] Input\n[2] Random generated", 1, 2);
         if (inputcode == 1) { couponCode = Validcode(); }
@@ -66,11 +66,11 @@ public static class Coupon
         }
 
 
-        AccountModel account = ChooseAccount();
+        // AccountModel account = ChooseAccount();
         
-        CouponsLogic.Write(couponCode, expirationDate, couponType, percentage, amount, account.Id);
+        CouponsLogic.Write(couponCode, expirationDate, couponType, percentage, amount);
 
-        Console.WriteLine($"\nCoupon used for {couponType} expiration date: {expirationDate} coupon code: {couponCode} added and assigned to {account.EmailAddress}");
+        Console.WriteLine($"\nCoupon used for {couponType} expiration date: {expirationDate} coupon code: {couponCode} added");
         Console.WriteLine("Press any key to go back");
         Console.ReadKey();
     }
@@ -81,17 +81,24 @@ public static class Coupon
         List<CouponModel> coupons = CouponsLogic.GetAll();
         int count = 0;
 
-        if (coupons.Count() == 0) PresentationHelper.PrintAndEnter("No coupons found");
+        if (coupons.Count() == 0)
+        {
+            Console.WriteLine("No available coupons");
+            int input = PresentationHelper.MenuLoop("\nWould you like to create a new coupon?\n[1] Yes\n[2] No", 1, 2);
+            if (input == 1){ CreateCoupon(); }
+        }
         else
         {
+            Console.WriteLine("Available coupons");
             foreach (CouponModel coupon in coupons)
             {
                 count++;
-                Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon),5:C}");
+                Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon)} Experation date: {coupon.ExpirationDate:MM/dd/yyyy}");
             }
-        Console.WriteLine("Press any key to go back");
-        Console.ReadKey();
+            Console.WriteLine("Press any key to go back");
+            Console.ReadKey();
         }
+        Console.Clear();
     }
 
     public static string PrintDiscount(CouponModel coupon)
@@ -146,5 +153,43 @@ public static class Coupon
 
         } while (true);
         return code.ToUpper();
+    }
+
+        public static CouponModel SelectCoupon()
+    {
+        Console.Clear();
+        List<CouponModel> coupons = CouponsLogic.GetAll();
+        if (coupons.Count == 0)
+        {
+            PresentationHelper.Error("No coupons available");
+            return null;
+        }
+        Console.Clear();
+        string text = $"Enter the number of the coupon you want to use";
+        List<int> ValidInputs = [];
+
+        for (int i = 0; i < coupons.Count; i++)
+        {
+            text += $"\n[{i + 1}] Coupon type: {coupons[i].CouponType} Code: {coupons[i].CouponCode} discount: {PrintDiscount(coupons[i])} Expiration date: {coupons[i].ExpirationDate}";
+            ValidInputs.Add(i + 1);
+        }
+
+        int input = PresentationHelper.MenuLoop(text, 1, ValidInputs.Count);
+
+        CouponModel usedCoupon = coupons[input - 1];
+
+        return usedCoupon;
+            // CouponsLogic.DeleteByCode(usedCoupon.CouponCode);
+        
+        // else 
+        // {return null;}
+    }
+
+    public static void discountprice(double price, CouponModel usedCoupon)
+    {
+            double newPrice = CouponsLogic.CalculateDiscount(price, usedCoupon);
+
+            if (price > 0){Console.WriteLine($"Total {usedCoupon.CouponType} price: €{price} you have saved: €{price - newPrice}");}
+            else {Console.WriteLine($"Total {usedCoupon.CouponType} price: € 0 you have saved: € 0");}
     }
 }
