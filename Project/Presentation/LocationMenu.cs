@@ -203,7 +203,7 @@ static class LocationMenu
         }
         if (canAdd)
         {
-            if (!addSchedule)
+            if (!addSchedule && ScheduleLocations.Count == 0)
                 PresentationHelper.Error("No locations with schedule entries");
             if (!canAdd && !addSchedule) return null;
             if (canAdd && addSchedule)
