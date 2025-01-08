@@ -76,7 +76,7 @@ static class Reservation
         "[4] Go back\n";
 
         while (true)
-        {  
+        {
             int menuSelected = PresentationHelper.MenuLoop(menu, 1, 4);
 
             switch (menuSelected)
@@ -183,7 +183,7 @@ static class Reservation
                     PresentationHelper.Error("Already canceled");
                     return;
                 }
-        
+
                 string confirmText =
                 "Are you sure you want to cancel the reservation?\n" +
                 "[1] Yes \n" +
@@ -207,7 +207,7 @@ static class Reservation
                     {
                         BoughtSnacksLogic.Delete(snack.Id);
                     }
-                    
+
                     OrderAccess.Update(order);
                     ReservationLogic.Update(reservation);
                     SeatLogic.Update(seat);
@@ -247,7 +247,7 @@ static class Reservation
                     SnackReservation.BuySnacks(reservation.Id, 1);
                 }
 
-                else 
+                else
                 {
                     SnacksModel snack = SnacksLogic.GetById(boughtSnacks[selectedSnack - 1].SnackId);
                     string snackManageText = $"What do you want to do with {snack.Name}?\n" +
@@ -297,6 +297,11 @@ static class Reservation
         switch (choice)
         {
             case 1:
+                if (order.Amount == 0)
+                {
+                    PresentationHelper.Error("No seats booked");
+                    return;
+                }
                 if (order.Bar)
                 {
                     PresentationHelper.Error("Bar already added");
