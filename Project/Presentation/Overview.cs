@@ -47,12 +47,18 @@ static class Overview
 
         List<ScheduleModel> pastEntries = ScheduleLogic.GetpastSchedules();
 
+        if (pastEntries.Count == 0)
+        {
+            PresentationHelper.Error("No past schedules found");
+            return;
+        }
+
         for (int i = 0; i < pastEntries.Count; i++)
         {
             text += $"\n[{i + 1}] room: {pastEntries[i].Auditorium.Room}, movie: {pastEntries[i].Movie.Name}, date: {pastEntries[i].StartTime}";
         }
 
-        int input = PresentationHelper.MenuLoop(text, 1, pastEntries.Count) - 1;
+        int input = PresentationHelper.MenuLoop(text, 1, pastEntries.Count);
 
         ScheduleModel Selected = pastEntries[input];
 
