@@ -32,7 +32,6 @@ public class ScheduleModel
         Auditorium = AuditoriumAcces.GetById(AuditoriumId);
         LocationId = (int)Location_ID;
         Location = LocationAccess.GetById(LocationId);
-
     }
 
     public ScheduleModel(DateTime startTime, MovieModel movie, AuditoriumModel auditorium, LocationModel location)

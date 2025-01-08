@@ -178,7 +178,7 @@ static class Overview
 
     public static void TotalSnackIncomePerReservation(BoughtSnacksModel BoughtSnacks)
     {
-        Console.WriteLine(SnacksLogic.CalculateIncomeByReservation(BoughtSnacks));
+        Console.WriteLine($"Total snack income for reservation: €{SnacksLogic.CalculateIncomeByReservation(BoughtSnacks)}");
     }
 
     public static ReservationModel? GetReservationModel()

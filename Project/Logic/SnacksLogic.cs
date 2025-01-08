@@ -31,23 +31,81 @@ public static class SnacksLogic
 
     public static double CalculateWeeklyIncome()
     {
-        var oneWeekAgo = DateTime.Now.AddDays(-7);
-        var weeklySales = SnacksModel.Where(sale => sale.Date >= oneWeekAgo).Sum(sale => sale.Amount);
-        return weeklySales;
+        double totalIncome = 0;
+
+        // Get all schedules for the last week
+        DateTime oneWeekAgo = DateTime.Now.AddDays(-7);
+        var weeklySchedules = ScheduleAccess.GetByDateRange(oneWeekAgo, DateTime.Now);
+        
+        foreach (var schedule in weeklySchedules)
+        {
+            var seatReservations = ReservationAcces.GetByScheduleId(schedule.Id);
+            
+            foreach (var seatReservation in seatReservations)
+            {
+                var boughtSnacks = BoughtSnacksLogic.GetAllById(seatReservation.ReservationId);
+                totalIncome += CalculateIncomeForBoughtSnacks(boughtSnacks);
+            }
+        }
+        return totalIncome;
     }
+
 
     public static double CalculateDailyIncome()
     {
-        var today = DateTime.Now.Date;
-        var dailySales = SnacksModel.Where(sale => sale.Date.Date == today).Sum(sale => sale.Amount);
-        return dailySales;
+        double totalIncome = 0;
+
+        // Get all schedules for today
+        DateTime today = DateTime.Now.Date;
+        var dailySchedules = ScheduleAccess.GetByDateRange(today, today.AddDays(1));
+
+        foreach (var schedule in dailySchedules)
+        {
+            var seatReservations = ReservationAcces.GetByScheduleId(schedule.Id);
+            
+            foreach (var seatReservation in seatReservations)
+            {
+                var boughtSnacks = BoughtSnacksLogic.GetAllById(seatReservation.ReservationId);
+                totalIncome += CalculateIncomeForBoughtSnacks(boughtSnacks);
+            }
+        }
+        return totalIncome;
     }
 
     public static double CalculateIncomeByMovie(MovieModel movie)
     {
-        var movieSales = SnacksModel.Where(sale => sale.MovieId == movie.Id).Sum(sale => sale.Amount);
-        return movieSales;
+        double totalIncome = 0;
+
+        // Get all schedules for the selected movie
+        var movieSchedules = ScheduleAccess.GetByMovieId((int)movie.Id);
+
+        foreach (var schedule in movieSchedules)
+        {
+            var seatReservations = ReservationAcces.GetByScheduleId(schedule.Id);
+
+            foreach (var seatReservation in seatReservations)
+            {
+                var boughtSnacks = BoughtSnacksLogic.GetAllById(seatReservation.ReservationId);
+                totalIncome += CalculateIncomeForBoughtSnacks(boughtSnacks);
+            }
+        }
+
+        return totalIncome;
     }
+
+        private static double CalculateIncomeForBoughtSnacks(List<BoughtSnacksModel> boughtSnacks)
+    {
+        double total = 0;
+
+        foreach (var boughtSnack in boughtSnacks)
+        {
+            SnacksModel snack = GetById(boughtSnack.SnackId);
+            total += boughtSnack.Amount * snack.Price;
+        }
+
+        return total;
+    }
+
 
     public static double CalculateIncomeByReservation(BoughtSnacksModel boughtSnack)
     {
