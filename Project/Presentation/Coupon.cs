@@ -62,6 +62,11 @@ public static class Coupon
         else 
         {
             int length = PresentationHelper.GetInt("\nplease type in how long the code should be");
+            while (length < 1)
+            {
+                PresentationHelper.Error("Must be atleast one digit");
+                length = PresentationHelper.GetInt("\nplease type in how long the code should be");
+            }
             couponCode = CouponsLogic.GenerateRandomCode(length);
         }
 
