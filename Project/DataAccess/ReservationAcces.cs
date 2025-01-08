@@ -26,6 +26,12 @@ public static class ReservationAcces
         return _connection.QueryFirstOrDefault<ReservationModel>(sql, new { Id = id });
     }
 
+    public static List<ReservationModel> GetByScheduleId(int scheduleId)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE scheduleId = @scheduleId";
+        return _connection.Query<ReservationModel>(sql, new { ScheduleId = scheduleId }).ToList();
+    }
+
     public static List<ReservationModel> GetFromOrder(OrderModel order)
     {
         string sql = $"SELECT * FROM {Table} WHERE Order_ID = @Id";
@@ -53,5 +59,19 @@ public static class ReservationAcces
     {
         string sql = $"SELECT id FROM {Table} WHERE Account_ID = @Id";
         return _connection.QueryFirstOrDefault<Int64>(sql, new { Id = Account_id });
+    }
+
+    public static List<SnacksModel> GetAll()
+    {
+        string sql = $"SELECT id, name, price FROM {Table}";
+        List<SnacksModel> Snacks = (List<SnacksModel>)_connection.Query<SnacksModel>(sql);
+
+        return Snacks;
+    }
+
+    public static List<ReservationModel> GetAllActive()
+    {
+        string sql = $"SELECT * FROM {Table} WHERE status = Status";
+        return (List<ReservationModel>)_connection.Query<ReservationModel>(sql, new { Status = "Active" });
     }
 }

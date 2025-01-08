@@ -73,7 +73,7 @@ public static class CreateScheduleEntry
     {
         string text = "When do you want to show the movie? (dd-MM-yyyy-HH-mm)";
         DateTime date;
-        date = General.ValidDate(text,"That is not a valid input");
+        date = General.ValidDate(text, "That is not a valid input");
 
         Console.Clear();
         if (!ScheduleLogic.IsAvailable(room, date, length, locationId))
@@ -99,4 +99,5 @@ public static class CreateScheduleEntry
         string? Input = Console.ReadLine();
         return Input == "" ? null : Input;
     }
+
 }

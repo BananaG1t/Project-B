@@ -1,4 +1,4 @@
-class ReservationLogic
+public class ReservationLogic
 {
     public ReservationLogic()
     {

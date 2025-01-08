@@ -29,4 +29,9 @@ public static class BoughtSnacksLogic
         BoughtSnacksAccess.Delete(id);
     }
 
+    public static List<BoughtSnacksModel> GetAllById(int reservationId)
+    {
+        return BoughtSnacksAccess.GetByReservationId(reservationId);
+    }
+
 }
