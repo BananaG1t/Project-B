@@ -75,7 +75,7 @@ public static class Coupon
         Console.ReadKey();
     }
 
-    public static void DisplayCoupons()
+    public static void DisplayCouponsAdmin()
     {
         Console.Clear();
         List<CouponModel> coupons = CouponsLogic.GetAll();
@@ -94,6 +94,39 @@ public static class Coupon
             {
                 count++;
                 Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon)} Experation date: {coupon.ExpirationDate:MM/dd/yyyy}");
+            }
+            Console.WriteLine("Press any key to go back");
+            Console.ReadKey();
+        }
+        Console.Clear();
+    }
+
+    public static void DisplayCoupons()
+    {
+        Console.Clear();
+        List<CouponModel> coupons = CouponsLogic.GetAll();
+        List<CouponModel> availableCoupons = CouponsLogic.GetAll();
+        int count = 0;
+
+        if (coupons.Count() == 0)
+        {
+            Console.WriteLine("No available coupons");
+        }
+        else
+        {
+            Console.WriteLine("Available coupons");
+            foreach (CouponModel coupon in coupons)
+            {
+                if(coupon.ExpirationDate < DateTime.Now.Date){availableCoupons.Add(coupon);}
+                if (availableCoupons.Count() == 0) { Console.WriteLine("No available coupons"); }
+                else
+                {
+                    foreach (CouponModel availablecoupon in availableCoupons)
+                    {
+                        count++;
+                        Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon)} Experation date: {coupon.ExpirationDate:MM/dd/yyyy}");
+                    }
+                }
             }
             Console.WriteLine("Press any key to go back");
             Console.ReadKey();
