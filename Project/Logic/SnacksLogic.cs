@@ -31,23 +31,12 @@ public static class SnacksLogic
 
     public static double CalculateWeeklyIncome()
     {
-        double totalIncome = 0;
-
         // Get all schedules for the last week
         DateTime oneWeekAgo = DateTime.Now.AddDays(-7);
-        var weeklySchedules = ScheduleAccess.GetByDateRange(oneWeekAgo, DateTime.Now);
-        
-        foreach (var schedule in weeklySchedules)
-        {
-            var seatReservations = ReservationAcces.GetByScheduleId(schedule.Id);
-            
-            foreach (var seatReservation in seatReservations)
-            {
-                var boughtSnacks = BoughtSnacksLogic.GetAllById(seatReservation.ReservationId);
-                totalIncome += CalculateIncomeForBoughtSnacks(boughtSnacks);
-            }
-        }
-        return totalIncome;
+        DateTime oneWeekInfront = DateTime.Now.AddDays(7);
+        List<ScheduleModel> weeklySchedules = ScheduleAccess.GetByDateRange(oneWeekAgo, oneWeekInfront);
+
+        return CalculateIncomeBySchedules(weeklySchedules);
     }
 
 
@@ -120,5 +109,60 @@ public static class SnacksLogic
         return total;
     }
 
+    // public static double CalculateIncomeBySchedules(List<ScheduleModel> schedules)
+    // {
+    //     double totalIncome = 0;
+    //     foreach (ScheduleModel schedule in schedules)
+    //     {
+    //         List<OrderModel> orders = OrderAccess.GetFromSchedule(schedule);
+    //         if (!(orders.Count == 0)) 
+    //         {
+    //             foreach (OrderModel order in orders)
+    //             {
+    //                 List<ReservationModel> reservations = ReservationAcces.GetFromOrder(order);
+    //                 if (!(reservations.Count == 0))
+    //                 {
+    //                     foreach (ReservationModel reservation in reservations)
+    //                     {
+    //                         List<BoughtSnacksModel> boughtSnacks = BoughtSnacksAccess.GetByReservationId(reservation.Id);
+    //                         if (!(boughtSnacks.Count == 0))
+    //                         {
+    //                             foreach (BoughtSnacksModel currentSnack in boughtSnacks)
+    //                             {
+    //                                 SnacksModel snack = GetById(currentSnack.SnackId);
+    //                                 totalIncome += currentSnack.Amount * snack.Price;
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
 
+    //     return totalIncome;
+    // }
+
+    public static double CalculateIncomeBySchedules(List<ScheduleModel> schedules)
+    {
+        double totalIncome = 0;
+        foreach (ScheduleModel schedule in schedules)
+        {
+            List<OrderModel> orders = OrderAccess.GetFromSchedule(schedule);
+            foreach (OrderModel order in orders)
+            {
+                List<ReservationModel> reservations = ReservationAcces.GetFromOrder(order);
+                foreach (ReservationModel reservation in reservations)
+                {
+                    List<BoughtSnacksModel> boughtSnacks = BoughtSnacksAccess.GetByReservationId(reservation.Id);
+                    foreach (BoughtSnacksModel currentSnack in boughtSnacks)
+                    {
+                        SnacksModel snack = GetById(currentSnack.SnackId);
+                        totalIncome += currentSnack.Amount * snack.Price;
+                    }
+                }
+            }
+        }
+
+        return totalIncome;
+    }
 }

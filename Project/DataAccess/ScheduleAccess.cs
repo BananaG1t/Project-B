@@ -59,7 +59,7 @@ public static class ScheduleAccess
     }
     public static List<ScheduleModel> GetByDateRange(DateTime startTime, DateTime endTime)
     {
-        string sql = $"SELECT * FROM {Table} WHERE StartTime >= @StartTime AND EndTime <= @EndTime";
+        string sql = $"SELECT * FROM {Table} WHERE StartTime < endTime AND @EndTime > startTime";
         return _connection.Query<ScheduleModel>(sql, new { StartTime = startTime, EndTime = endTime }).ToList();
     }
 
