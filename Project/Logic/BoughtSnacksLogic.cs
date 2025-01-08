@@ -4,6 +4,12 @@ public static class BoughtSnacksLogic
     {
         BoughtSnacksAccess.Write(reservation_id, snack_id, amount);
     }
+
+    public static void Update(BoughtSnacksModel boughtSnacks)
+    {
+        BoughtSnacksAccess.Update(boughtSnacks);
+    }
+
     public static BoughtSnacksModel GetById(int id)
     {
         return BoughtSnacksAccess.GetById(id);
@@ -11,6 +17,11 @@ public static class BoughtSnacksLogic
     public static List<BoughtSnacksModel> GetAll()
     {
         return BoughtSnacksAccess.GetAll();
+    }
+
+    public static List<BoughtSnacksModel> GetFromReservation(ReservationModel reservation)
+    {
+        return BoughtSnacksAccess.GetFromReservation(reservation);
     }
 
     public static void Delete(int id)

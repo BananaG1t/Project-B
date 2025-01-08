@@ -71,6 +71,12 @@ static class Schedule
     public static void DisplaySchedule(LocationModel location)
     {
         List<ScheduleModel> schedules = ScheduleAccess.ScheduleByDateAndLocation(location);
+        if (schedules.Count == 0)
+        {
+            PresentationHelper.Error("No schedules found");
+            return;
+        }
+
         var scheduleByDay = ScheduleLogic.GroupByDay(schedules);
         int dayIndex = 0;
 
