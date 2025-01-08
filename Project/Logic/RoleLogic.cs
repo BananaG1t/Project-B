@@ -62,8 +62,9 @@ public static class RoleLogic
 
             string roleName = role.Name;
             int roleLevel = (int)role.LevelAccess;
+
             string LocationName;
-            string fullName = acc.GetById((int)assignedRolesroles[index].AccountId).FullName;
+            string? fullName = AccountsLogic.GetById((int)assignedRolesroles[index].AccountId).FullName;
             if (fullName == "Admin") LocationName = "All";
             else LocationName = LocationLogic.GetById((int)assignedRolesroles[index].LocationId).Name;
 

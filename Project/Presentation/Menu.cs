@@ -6,8 +6,8 @@ static class Menu
     //You could edit this to show different menus depending on the user's role
 
     public static List<string> functionalities = ["Manage Users", "Add a movie", "Add to the schedule",
-                                                    "Display the schedule", "Display income overview",
-                                                    "Manage snacks", "Manage Locations", "Create coupon"];
+                                                    "Display the schedule", "Manage reservations", "Display income overview",
+                                                    "Manage snacks", "Manage Locations", "Manage Coupons"];
     static public void AdminMenu(AccountModel account)
     {
         //admin menu
@@ -43,18 +43,22 @@ static class Menu
             }
             else if (functionality == functionalities[4])
             {
-                Overview.MoneyOverview();
+                Reservation.AdminMenu();
             }
             else if (functionality == functionalities[5])
+            {
+                Overview.MoneyOverview();
+            }
+            else if (functionality == functionalities[6])
             {
                 Console.Clear();
                 SnackReservation.Main();
             }
-            else if (functionality == functionalities[6])
+            else if (functionality == functionalities[7])
             {
                 LocationMenu.Main();
             }
-            else if (functionality == functionalities[7])
+            else if (functionality == functionalities[8])
             {
                 Coupon.AdminMenu();
             }
@@ -88,10 +92,11 @@ static class Menu
             "Press [1] to make a new reservation\n" +
             "Press [2] to manage the reservations you have made\n" +
             "Press [3] to see movie schedules\n" +
-            "Press [4] to log out";
+            "Press [4] to display coupons\n" +
+            "Press [5] to log out";
 
             // get a valid input number
-            int input = PresentationHelper.MenuLoop(text, 1, 4);
+            int input = PresentationHelper.MenuLoop(text, 1, 5);
 
             if (input == 1)
             {
@@ -106,8 +111,12 @@ static class Menu
             {
                 Schedule.DisplaySchedule(LocationMenu.SelectLocation());
             }
+            else if (input == 4)
+            {
+                Coupon.DisplayCoupons();
+            }
             // sends the user to the start to login again
-            else if (input == 4) { break; }
+            else if (input == 5) { break; }
         }
 
         Start();

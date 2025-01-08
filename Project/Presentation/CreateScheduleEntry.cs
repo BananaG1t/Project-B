@@ -74,15 +74,26 @@ public static class CreateScheduleEntry
 
     private static LocationModel Location(AccountModel account)
     {
+        List<LocationModel> locations = [];
         Console.Clear();
+        List<AssignedRoleModel> assignedroles = AssignedRoleAccess.GetAllByAccountId(account.Id);
+        foreach (AssignedRoleModel assignedRole in assignedroles)
+        {
+            if (!(assignedRole.Id == 0))
+                locations.Add(LocationLogic.GetById((int)assignedRole.LocationId));
+        }
 
-        AssignedRoleModel assignedRole = RoleLogic.GetAssignedRoleByAccountId(account.Id);
-        RoleModel role = RoleLogic.GetRoleById((int)assignedRole.RoleId);
-        if (role.LevelAccess < 255)
-        { return LocationLogic.GetById((int)assignedRole.LocationId); }
+
+
+
+        // AssignedRoleModel assignedRole = RoleLogic.GetAssignedRoleByAccountId(account.Id);
+        // RoleModel role = RoleLogic.GetRoleById((int)assignedRole.RoleId);
+        // if (role.LevelAccess < 255)
+        // { return LocationLogic.GetById((int)assignedRole.LocationId); }
 
         string text = "At which location do you want to see?";
-        List<LocationModel> locations = LocationLogic.GetAll();
+        if (locations.Count == 0)
+            locations = LocationLogic.GetAll();
 
         for (int i = 0; i < locations.Count; i++)
         {

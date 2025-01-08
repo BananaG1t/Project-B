@@ -1,22 +1,22 @@
 public static class CouponsLogic
 {
-    public static void Write(string couponCode, DateTime expirationDate, string couponType, bool couponPercentage, float amount, int Account_ID)
+    public static void Write(string couponCode, DateTime expirationDate, string couponType, bool couponPercentage, float amount)
     {
-        new CouponModel(couponCode, expirationDate, couponType, couponPercentage, amount, Account_ID);
+        new CouponModel(couponCode, expirationDate, couponType, couponPercentage, amount);
     }
     public static CouponModel GetById(int id)
     {
         return CouponsAccess.GetById(id);
     }
 
-    public static List<CouponModel> GetAllById(int id)
-    {
-        return CouponsAccess.GetAllById(id);
-    }
-
     public static List<CouponModel> GetAll()
     {
         return CouponsAccess.GetAll();
+    }
+
+        public static void DeleteByCode(string code)
+    {
+        CouponsAccess.DeleteByCode(code);
     }
 
         public static string GenerateRandomCode(int length)
@@ -78,5 +78,22 @@ public static class CouponsLogic
         }
         float roundedPrice = (float)Math.Round(price, 2);
         return roundedPrice;
+    }
+        public static double CalculateDiscount(double price, CouponModel coupon)
+    {
+        double newPrice;
+        if (coupon.CouponPercentage == true)
+        {
+            newPrice = price / 100 * coupon.Amount;
+        } 
+        else
+        {
+            newPrice = price - coupon.Amount;
+        }
+        return newPrice;
+    }
+    public static List<CouponModel> GetAllByAccountId(int accountId, string couponType)
+    {
+        return CouponsAccess.GetAllByAccountId(accountId,couponType);
     }
 }

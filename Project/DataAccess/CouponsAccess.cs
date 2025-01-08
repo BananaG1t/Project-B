@@ -9,7 +9,7 @@ public static class CouponsAccess
     
     public static int Write(CouponModel coupon)
     {
-        string sql = $"INSERT INTO {Table} (coupon_code,expiration_date,coupon_type,coupon_percentage,amount,Account_ID) VALUES (@CouponCode,@ExpirationDate,@CouponType,@CouponPercentage,@Amount,@AccountId)";
+        string sql = $"INSERT INTO {Table} (coupon_code,expiration_date,coupon_type,coupon_percentage,amount) VALUES (@CouponCode,@ExpirationDate,@CouponType,@CouponPercentage,@Amount)";
         _connection.Execute(sql, coupon);
         
         string idSql = "SELECT last_insert_rowid();";
@@ -30,11 +30,11 @@ public static class CouponsAccess
 
         return Coupons;
     }
-        public static List<CouponModel> GetAllById(int id)
+        public static List<CouponModel> GetAllById(int accountId)
     {
-        string sql = $"SELECT coupon_code,expiration_date,coupon_type,coupon_percentage,amount,Account_ID FROM {Table} WHERE id = @Id";
-        List<CouponModel> Coupons = (List<CouponModel>)_connection.Query<CouponModel>(sql);
-
+        string sql = $"SELECT * FROM {Table} WHERE Account_ID = @AccountId";
+        List<CouponModel> Coupons = (List<CouponModel>)_connection.Query<CouponModel>(sql, new { AccountId = accountId});
+        
         return Coupons;
     }
 
@@ -44,9 +44,16 @@ public static class CouponsAccess
         _connection.Execute(sql, coupon);
     }
 
-    public static void Delete(int id)
+    public static void DeleteByCode(string code)
     {
-        string sql = $"DELETE FROM {Table} WHERE id = @Id";
-        _connection.Execute(sql, new { Id = id });
+        string sql = $"DELETE FROM {Table} WHERE coupon_code = @CouponCode";
+        _connection.Execute(sql, new { CouponCode = code });
+    }
+            public static List<CouponModel> GetAllByAccountId(int accountId, string couponType)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Account_ID = @Id AND Coupon_Type = @CouponType";
+        List<CouponModel> Coupons = (List<CouponModel>)_connection.Query<CouponModel>(sql, new { Id = accountId, CouponType = couponType});
+
+        return Coupons;
     }
 }

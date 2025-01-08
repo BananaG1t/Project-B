@@ -146,7 +146,25 @@ public class ReservationLogic
             bar = false;
         }
 
-        OrderModel order = new(account.Id, schedule.Id, amount, bar);
+        int choice = PresentationHelper.MenuLoop("Do you want to use a coupon?\n[1] Yes\n[2] No", 1, 2);
+        CouponModel selectedCoupon = null;
+        if (choice == 1)
+        {
+            selectedCoupon = Coupon.SelectCoupon();
+            Coupon.PrintDiscount(selectedCoupon);
+        Console.WriteLine("Press any key to continue");
+        Console.ReadKey();
+            Console.Clear();
+        } 
+        int? CouponId = selectedCoupon == null ? null : selectedCoupon.Id;
+        if (selectedCoupon != null)
+        { 
+            int use = ActiveCouponsLogic.MaxUsesById(account.Id)+1;
+            new ActiveCouponsModel(account.Id, selectedCoupon.Id, use); 
+        }
+
+        OrderModel order = new(account.Id, schedule.Id, amount, bar, CouponId);
+        
         int reservationId;
 
         bool snack = false;
@@ -162,6 +180,18 @@ public class ReservationLogic
             if (snack)
                 SnackReservation.BuySnacks(reservationId, i + 1);
         }
+        // List <ReservationModel> reservations = GetFromOrder(order);
+        // double totalSeatPrice = 0;
+        // foreach(ReservationModel reservation in reservations)
+        // {
+        //     SeatModel seat = SeatLogic.GetByReservationInfo(reservation.Seat_Collum, reservation.Seat_Row,schedule.AuditoriumId);
+        //     seat.Price += totalSeatPrice;
+        // }
+        
+        // if(selectedCoupon.CouponType == "Seats")
+        // {
+        //     Coupon.discountprice(totalSeatPrice, selectedCoupon);
+        // }
         Console.WriteLine("Made the reservation");
     }
 

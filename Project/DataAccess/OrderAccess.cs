@@ -32,6 +32,12 @@ public class OrderAccess
         return (List<OrderModel>)_connection.Query<OrderModel>(sql, account);
     }
 
+    public static OrderModel? GetById(int id)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
+        return _connection.QueryFirstOrDefault<OrderModel>(sql, new { Id = id });
+    }
+
     public static List<(int, DateTime, int)> GetAvailableBarSpots(ScheduleModel schedule)
     {
         string sql = @"
