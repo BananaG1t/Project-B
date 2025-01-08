@@ -19,7 +19,7 @@ public static class Coupon
             }
             if (input == 2)
             {
-                DisplayCoupons();
+                DisplayCouponsAdmin();
             }
             else if (input == 3)
             {
@@ -105,10 +105,9 @@ public static class Coupon
     {
         Console.Clear();
         List<CouponModel> coupons = CouponsLogic.GetAll();
-        List<CouponModel> availableCoupons = CouponsLogic.GetAll();
+        List<CouponModel> availableCoupons = new List<CouponModel>();
         int count = 0;
-
-        if (coupons.Count() == 0)
+        if (coupons.Count == 0)
         {
             Console.WriteLine("No available coupons");
         }
@@ -117,27 +116,32 @@ public static class Coupon
             Console.WriteLine("Available coupons");
             foreach (CouponModel coupon in coupons)
             {
-                if(coupon.ExpirationDate < DateTime.Now.Date){availableCoupons.Add(coupon);}
-                if (availableCoupons.Count() == 0) { Console.WriteLine("No available coupons"); }
-                else
+                if (coupon.ExpirationDate < DateTime.Now.Date)
                 {
-                    foreach (CouponModel availablecoupon in availableCoupons)
-                    {
-                        count++;
-                        Console.WriteLine($"[{count}]  Coupon type: {coupon.CouponType} Code: {coupon.CouponCode} discount: {PrintDiscount(coupon)} Experation date: {coupon.ExpirationDate:MM/dd/yyyy}");
-                    }
+                    availableCoupons.Add(coupon);
                 }
             }
+            if (availableCoupons.Count == 0)
+            {
+                Console.WriteLine("No available coupons");
+            }
+            else
+            {
+                foreach (CouponModel availableCoupon in availableCoupons)
+                {
+                    count++;
+                    Console.WriteLine($"[{count}] Coupon type: {availableCoupon.CouponType}, Code: {availableCoupon.CouponCode}, Discount: {PrintDiscount(availableCoupon)}, Expiration date: {availableCoupon.ExpirationDate:dd-MM-yyyy}");
+                }
+            }
+        }
             Console.WriteLine("Press any key to go back");
             Console.ReadKey();
-        }
-        Console.Clear();
     }
 
     public static string PrintDiscount(CouponModel coupon)
     {
-        if (coupon.CouponPercentage == true) { return $"% {coupon.Amount}"; }
-        else { return $"€ {coupon.Amount}"; }
+        if (coupon.CouponPercentage == true) { return $"{coupon.Amount} Percentage"; }
+        else { return $" {coupon.Amount} Euros"; }
     }
 
 
