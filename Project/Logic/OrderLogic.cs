@@ -5,11 +5,21 @@ class OrderLogic
 
     }
 
+    public static OrderModel? GetById(int id)
+    {
+        return OrderAccess.GetById(id);
+    }
+
+    public static List<OrderModel> GetFromAccount(AccountModel account)
+    {
+        return OrderAccess.GetFromAccount(account);
+    }
+
     public static OrderModel SelectOrder(AccountModel account)
     {
         Console.Clear();
         string text = "What order do you want to manage?";
-        List<OrderModel> orders = OrderAccess.GetFromAccount(account);
+        List<OrderModel> orders = GetFromAccount(account);
         List<int> valid = [];
 
         foreach (OrderModel order in orders)

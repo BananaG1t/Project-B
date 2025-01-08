@@ -45,9 +45,9 @@ public static class BoughtSnacksAccess
         return Snacks;
     }
 
-    public static void Update(SnacksModel snack)
+    public static void Update(BoughtSnacksModel snack)
     {
-        string sql = $"UPDATE {Table} SET name = @Name, price = @Price WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET amount = @Amount WHERE id = @Id";
         _connection.Execute(sql, snack);
     }
 
