@@ -222,7 +222,7 @@ public static class Coupon
                 {
                     foreach(CouponModel availableCoupon in availableCoupons)
                     {
-                        text += $"\n[{i + 1}] Coupon type: {coupons[i].CouponType} Code: {coupons[i].CouponCode} discount: {PrintDiscountType(coupons[i])} Expiration date: {coupons[i].ExpirationDate}";
+                        text += $"\n[{i + 1}] Coupon type: {coupons[i].CouponType} Code: {coupons[i].CouponCode} discount: {PrintDiscountType(coupons[i])} Expiration date: {coupons[i].ExpirationDate:dd-MM-yyyy}";
                         ValidInputs.Add(i + 1);
                     }
                 }
