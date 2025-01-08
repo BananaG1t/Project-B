@@ -63,10 +63,10 @@ public static class ScheduleAccess
         return _connection.Query<ScheduleModel>(sql, new { StartTime = startTime, EndTime = endTime }).ToList();
     }
 
-    public static List<ScheduleModel> GetByMovieId(int movieId)
+    public static List<ScheduleModel> GetByMovieId(int Movie_ID)
     {
-        string sql = $"SELECT * FROM {Table} WHERE movieId = @movieId";
-        return _connection.Query<ScheduleModel>(sql, new { MovieId = movieId }).ToList();
+        string sql = $"SELECT * FROM {Table} WHERE Movie_ID = @MovieId";
+        return _connection.Query<ScheduleModel>(sql, new { MovieId = Movie_ID }).ToList();
     }
 
     public static ScheduleModel GetById(int id)

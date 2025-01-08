@@ -45,7 +45,7 @@ public static class CreateScheduleEntry
     {
         string text = "When do you want to show the movie? (dd-MM-yyyy-HH-mm)";
         DateTime date;
-        date = General.ValidDate(text,"That is not a valid input");
+        date = General.ValidDate(text, "That is not a valid input");
 
         Console.Clear();
         if (!ScheduleLogic.IsAvailable(room, date, length, locationId))
@@ -87,7 +87,6 @@ public static class CreateScheduleEntry
         for (int i = 0; i < locations.Count; i++)
         {
             text += $"\n[{i + 1}] {locations[i].Name}";
-
         }
         int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
         LocationModel Location = locations[LocationId - 1];
