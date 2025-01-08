@@ -16,6 +16,6 @@ public class TestRoles
                 LocationLogic.Delete((int)loc.Id);
             }
             locations = LocationLogic.GetAll();
-            Assert.AreEqual(locations.Count == 0, expected);
+            Assert.AreEqual(locations.Count == amount, expected);
         }
     }
