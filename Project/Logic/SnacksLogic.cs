@@ -24,10 +24,6 @@ public static class SnacksLogic
         SnacksAccess.Delete(id);
     }
 
-    private static List<SnacksModel> SnacksModel = new List<SnacksModel>
-    {
-
-    };
 
     public static double CalculateWeeklyIncome()
     {
