@@ -1,3 +1,5 @@
+using System.Reflection.Metadata.Ecma335;
+
 public static class Coupon
 {
     public static void AdminMenu()
@@ -217,20 +219,19 @@ public static class Coupon
                 if(availableCoupons.Count == 0)
                 {
                     Console.WriteLine("No available coupons");
+                    return null;
                 }
-                else
-                {
-                    foreach(CouponModel availableCoupon in availableCoupons)
-                    {
-                        text += $"\n[{i + 1}] Coupon type: {coupons[i].CouponType} Code: {coupons[i].CouponCode} discount: {PrintDiscountType(coupons[i])} Expiration date: {coupons[i].ExpirationDate:dd-MM-yyyy}";
-                        ValidInputs.Add(i + 1);
-                    }
-                }
-
+                
             }
+            for (int i = 0; i < availableCoupons.Count; i++)
+            {
 
-            int input = PresentationHelper.MenuLoop(text, 1, ValidInputs.Count);
+                text += $"\n[{i + 1}] Coupon type: {availableCoupons[i].CouponType} Code: {availableCoupons[i].CouponCode} discount: {PrintDiscountType(availableCoupons[i])} Expiration date: {availableCoupons[i].ExpirationDate:dd-MM-yyyy}";
+                ValidInputs.Add(i + 1);
+            }
+                
 
+            int input = PresentationHelper.MenuLoop(text, ValidInputs);
             CouponModel SelectedCoupon = coupons[input - 1];
 
             return SelectedCoupon;
