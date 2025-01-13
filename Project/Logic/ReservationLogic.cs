@@ -10,6 +10,11 @@ public class ReservationLogic
         ReservationAcces.Update(reservation);
     }
 
+    public static ReservationModel GetById(int id)
+    {
+        return ReservationAcces.GetById(id);
+    }
+
     public static void GetReservation(AccountModel account, LocationModel location)
     {
         // pick a schedule

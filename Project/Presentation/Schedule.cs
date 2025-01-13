@@ -27,6 +27,7 @@ static class Schedule
             PresentationHelper.Error("No schedules found");
             return null;
         }
+
         var scheduleByDay = ScheduleLogic.GroupByDay(schedules);
         int dayIndex = SelectDay(scheduleByDay);
 

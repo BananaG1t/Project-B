@@ -215,6 +215,7 @@ public static class SnackReservation
         }
 
         double totalPrice = 0;
+        double totalDisplayPrice = 0;
         while (true)
         {
             int input = PresentationHelper.MenuLoop(text + "\n[0] Done", 0, ValidInputs.Count);
@@ -234,7 +235,8 @@ public static class SnackReservation
                 {
                     displayPrice -= boughtSnack.Price * coupon.Amount / 100;
                 }
-            Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {displayPrice:F2}\n");
+            totalDisplayPrice += amount * displayPrice;
+            Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {totalDisplayPrice:F2}\n");
         }
 
 
