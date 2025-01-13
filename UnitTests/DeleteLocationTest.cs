@@ -31,7 +31,7 @@ public class TestDeleteLocationFunction
         Assert.AreEqual(locations.Count == amount, expected);
         Assert.AreEqual(schedules.Count == amount, expected);
 
-        // Need to make sure that only the Admin roll stays
+        // Need to make sure that only the Admin account stays assigned as Admin roll
         Assert.AreEqual(assignedRoles.Count == 1, expected);
         AccountModel acc = AccountsAccess.GetById((int)assignedRoles[0].Id);
         Assert.AreEqual(acc.FullName == "Admin", expected);
