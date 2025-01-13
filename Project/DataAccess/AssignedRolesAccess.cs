@@ -82,4 +82,12 @@ public static class AssignedRoleAccess
         string sql = $"SELECT * FROM {Table} WHERE Account_ID = @AccountId";
         return (List<AssignedRoleModel>)_connection.Query<AssignedRoleModel>(sql, new { AccountId = AccountIdMethod });
     }
+
+    public static List<AssignedRoleModel> GetAll()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        List<AssignedRoleModel> assignedRoles = (List<AssignedRoleModel>)_connection.Query<AssignedRoleModel>(sql);
+
+        return assignedRoles;
+    }
 }

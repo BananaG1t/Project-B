@@ -64,6 +64,15 @@ GROUP BY Schedule.Id, Schedule.endTime;";
         return (List<OrderModel>)_connection.Query<OrderModel>(sql, schedule);
     }
 
+        public static List<OrderModel> GetAll()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        List<OrderModel> orders = (List<OrderModel>)_connection.Query<OrderModel>(sql);
+
+        return orders;
+    }
+
+
     public static void Delete(int id)
     {
         string sql = $"DELETE FROM {Table} WHERE id = @Id";

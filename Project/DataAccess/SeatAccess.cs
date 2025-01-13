@@ -38,6 +38,14 @@ public static class SeatsAccess
         return (List<SeatModel>)_connection.Query<SeatModel>(sql, auditorium);
     }
 
+    public static List<SeatModel> GetAll()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        List<SeatModel> seats = (List<SeatModel>)_connection.Query<SeatModel>(sql);
+
+        return seats;
+    }
+
     public static AccountModel GetByEmail(string email)
     {
         string sql = $"SELECT * FROM {Table} WHERE email = @Email";

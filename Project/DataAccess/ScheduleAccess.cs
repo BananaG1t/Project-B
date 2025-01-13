@@ -58,6 +58,15 @@ public static class ScheduleAccess
 
         return locations;
     }
+
+    public static List<ScheduleModel> GetAll()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        List<ScheduleModel> schedules = (List<ScheduleModel>)_connection.Query<ScheduleModel>(sql);
+
+        return schedules;
+    }
+
     public static List<ScheduleModel> GetByDateRange(DateTime startTime, DateTime endTime)
     {
         string sql = $"SELECT * FROM {Table} WHERE StartTime < endTime AND @EndTime > startTime";
