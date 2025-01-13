@@ -52,8 +52,9 @@ public static class ScheduleAccess
 
     public static List<LocationModel> GetAllLocationsWithSchedules()
     {
-        string sql = @$"SELECT DISTINCT Location.* FROM {Table} JOIN Location ON {Table}.Location_ID = Location.id";
-        List<LocationModel> locations = (List<LocationModel>)_connection.Query<LocationModel>(sql);
+        DateTime currdate = DateTime.Now;
+        string sql = @$"SELECT DISTINCT Location.* FROM {Table} JOIN Location ON {Table}.Location_ID = Location.id WHERE startTime > @Currdate";
+        List<LocationModel> locations = (List<LocationModel>)_connection.Query<LocationModel>(sql, new { Currdate = currdate });
 
         return locations;
     }
