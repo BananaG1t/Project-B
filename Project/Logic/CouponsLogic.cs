@@ -89,6 +89,7 @@ public static class CouponsLogic
         else
         {
             price -= coupon.Amount;
+            if (price < 0) price = 0;
         }
         return price;
     }
