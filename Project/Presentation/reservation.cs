@@ -289,8 +289,8 @@ static class Reservation
         Console.Clear();
         string text =
         "What do you want to do?\n" +
-        "[1] Add bar\n" +
-        "[2] Remove bar\n" +
+        "[1] Add bar to order\n" +
+        "[2] Remove bar from order\n" +
         "[3] Back\n";
 
         int choice = PresentationHelper.MenuLoop(text, 1, 3);
