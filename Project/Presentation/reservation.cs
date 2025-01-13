@@ -227,6 +227,7 @@ static class Reservation
                     return;
                 }
 
+                CouponModel coupon = order.CouponId != null ? CouponsLogic.GetById((int)order.CouponId) : null;
                 List<BoughtSnacksModel> boughtSnacks = BoughtSnacksLogic.GetFromReservation(reservation);
                 string snackSelectText = "Select a snack to manage:\n[0] new snack";
                 for (int i = 0; i < boughtSnacks.Count; i++)
@@ -244,7 +245,7 @@ static class Reservation
 
                 else if (selectedSnack == 0)
                 {
-                    SnackReservation.BuySnacks(reservation.Id, 1);
+                    SnackReservation.BuySnacks(reservation.Id, 1, coupon);
                 }
 
                 else

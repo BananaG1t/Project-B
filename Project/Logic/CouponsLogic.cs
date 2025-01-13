@@ -14,16 +14,16 @@ public static class CouponsLogic
         return CouponsAccess.GetAll();
     }
 
-        public static void DeleteByCode(string code)
+    public static void DeleteByCode(string code)
     {
         CouponsAccess.DeleteByCode(code);
     }
 
-        public static string GenerateRandomCode(int length)
+    public static string GenerateRandomCode(int length)
     {
         Random random = new Random();
         string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        char[] code = new char [length];
+        char[] code = new char[length];
 
         for (int i = 0; i < length; i++)
         {
@@ -41,7 +41,7 @@ public static class CouponsLogic
         {
             Console.WriteLine(text);
             string input = Console.ReadLine();
-            
+
             if (input.Contains(",")) { input = input.Replace(",", "."); }
 
             if (float.TryParse(input, out price) && price > 0)
@@ -53,18 +53,18 @@ public static class CouponsLogic
                 PresentationHelper.Error(errorText);
             }
         }
-        float roundedPrice = (float)Math.Round(price, 2); 
+        float roundedPrice = (float)Math.Round(price, 2);
         return roundedPrice;
     }
-        public static float ValidFloatPercentage(string text, string errorText)
+    public static float ValidFloatPercentage(string text, string errorText)
     {
         float price = 0;
-        bool valid = false; 
+        bool valid = false;
         while (!valid)
         {
             Console.WriteLine(text);
             string input = Console.ReadLine();
-            
+
             if (input.Contains(",")) { input = input.Replace(",", "."); }
 
             if (float.TryParse(input, out price) && price > 0 && price <= 100)
@@ -79,13 +79,27 @@ public static class CouponsLogic
         float roundedPrice = (float)Math.Round(price, 2);
         return roundedPrice;
     }
-        public static double CalculateDiscount(double price, CouponModel coupon)
+
+    public static double DiscountPrice(double price, CouponModel coupon)
+    {
+        if (coupon.CouponPercentage)
+        {
+            price -= price * coupon.Amount / 100;
+        }
+        else
+        {
+            price -= coupon.Amount;
+        }
+        return price;
+    }
+
+    public static double CalculateDiscount(double price, CouponModel coupon)
     {
         double newPrice;
-        if (coupon.CouponPercentage == true)
+        if (coupon.CouponPercentage)
         {
-            newPrice = price / 100 * coupon.Amount;
-        } 
+            newPrice = price * coupon.Amount / 100;
+        }
         else
         {
             newPrice = price - coupon.Amount;
@@ -94,6 +108,6 @@ public static class CouponsLogic
     }
     public static List<CouponModel> GetAllByAccountId(int accountId, string couponType)
     {
-        return CouponsAccess.GetAllByAccountId(accountId,couponType);
+        return CouponsAccess.GetAllByAccountId(accountId, couponType);
     }
 }

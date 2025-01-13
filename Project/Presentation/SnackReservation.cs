@@ -182,21 +182,35 @@ public static class SnackReservation
         return amount;
     }
 
-    public static void BuySnacks(int reservation_id, int personNum)
+    public static double BuySnacks(int reservation_id, int personNum, CouponModel? coupon)
     {
         Console.Clear();
         List<SnacksModel> snacks = SnacksLogic.GetAll();
         if (snacks.Count == 0)
         {
             PresentationHelper.Error("There are no snacks to select");
-            return;
+            return 0;
         }
-        string text = $"Person {personNum}, enter the number of the snack that you would like to buy";
+
+        if (coupon != null && coupon.CouponType != "Snacks" && coupon.CouponType != "Order")
+        {
+            coupon = null;
+        }
+
+        string discountText = coupon == null ? "" : $"Coupon applied, Discount: {(coupon.CouponPercentage ? "" : "€")}{coupon.Amount}{(coupon.CouponPercentage ? "%" : "(amount gets applied after everyone selected)")}\n";
+
+        string text = $"{discountText}Person {personNum}, enter the number of the snack that you would like to buy";
         List<int> ValidInputs = [0];
 
         for (int i = 0; i < snacks.Count; i++)
         {
-            text += $"\n[{i + 1}] Name: {snacks[i].Name}, Price: {snacks[i].Price:F2}";
+            double price = snacks[i].Price;
+            if (coupon != null)
+                if (coupon.CouponPercentage)
+                {
+                    price -= snacks[i].Price * coupon.Amount / 100;
+                }
+            text += $"\n[{i + 1}] Name: {snacks[i].Name}, Price: {price:F2}";
             ValidInputs.Add(i + 1);
         }
 
@@ -204,7 +218,7 @@ public static class SnackReservation
         while (true)
         {
             int input = PresentationHelper.MenuLoop(text + "\n[0] Done", 0, ValidInputs.Count);
-            if (input == 0) return;
+            if (input == 0) return totalPrice;
 
             int amount = ValidAmount();
 
@@ -214,7 +228,13 @@ public static class SnackReservation
             BoughtSnacksLogic.Write(reservation_id, boughtSnack.Id, amount);
 
             Console.Clear();
-            Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {totalPrice:F2}\n");
+            double displayPrice = boughtSnack.Price;
+            if (coupon != null)
+                if (coupon.CouponPercentage)
+                {
+                    displayPrice -= boughtSnack.Price * coupon.Amount / 100;
+                }
+            Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {displayPrice:F2}\n");
         }
 
 

@@ -1,51 +1,50 @@
 static class Schedule
 {
-    public static ScheduleModel SelectSchedule(LocationModel location)
+    public static int SelectDay(List<IGrouping<DateTime, ScheduleModel>> scheduleByDay)
     {
-        List<ScheduleModel> schedules = ScheduleAccess.ScheduleByDateAndLocation(location);
-        var scheduleByDay = ScheduleLogic.GroupByDay(schedules);
-        int dayIndex = 0;
+        int dayIndex;
+        string text = "Select a day to view the schedule";
 
-        int input = -1;
-        while (input < 3 && input != 0)
+        for (int i = 0; i < scheduleByDay.Count; i++)
         {
-            Console.Clear();
-            List<int> valid = [0];
-            string text = $"Movies Playing on {scheduleByDay[dayIndex].Key:dd-MM-yy}";
-
-            if (dayIndex != scheduleByDay.Count - 1)
-            {
-                valid.Add(1);
-                text += "\n[1] Next day";
-            }
-
-            if (dayIndex != 0)
-            {
-                valid.Add(2);
-                text += "\n[2] Previous day";
-            }
-
-            int cnt = 0;
-            foreach (ScheduleModel schedule in scheduleByDay[dayIndex])
-            {
-                text += $"\n[{cnt + 3}] Movie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime}";
-                valid.Add(cnt++ + 3);
-            }
-
-
-
-            text += "\n[0] Back";
-            input = PresentationHelper.MenuLoop(text, valid);
-
-            if (input == 0)
-                return null;
-            if (input == 1)
-                dayIndex++;
-            if (input == 2)
-                dayIndex--;
+            text += $"\n[{i + 1}] {scheduleByDay[i].Key:dd-MM-yy}";
         }
 
-        return schedules[input - 3];
+        text += "\n[0] Back";
+        dayIndex = PresentationHelper.MenuLoop(text, 0, scheduleByDay.Count);
+
+        if (dayIndex == 0)
+            return -1;
+
+        return dayIndex - 1;
+    }
+
+    public static ScheduleModel? SelectSchedule(LocationModel location)
+    {
+        List<ScheduleModel> schedules = ScheduleAccess.ScheduleByDateAndLocation(location);
+        if (schedules.Count == 0)
+        {
+            PresentationHelper.Error("No schedules found");
+            return null;
+        }
+        var scheduleByDay = ScheduleLogic.GroupByDay(schedules);
+        int dayIndex = SelectDay(scheduleByDay);
+
+        if (dayIndex == -1)
+            return null;
+
+        schedules = scheduleByDay[dayIndex].ToList();
+        string text = $"Select a schedule";
+
+        for (int i = 0; i < schedules.Count; i++)
+        {
+            text += $"\n[{i + 1}] Movie: {schedules[i].Movie.Name}, Room: {schedules[i].Auditorium.Room}, Starting time: {schedules[i].StartTime}";
+        }
+
+        text += "\n[0] Back";
+        int input = PresentationHelper.MenuLoop(text, 0, schedules.Count);
+
+        return input == 0 ? null : schedules[input - 1];
     }
 
     public static void CheckSchedule(AccountModel account)
