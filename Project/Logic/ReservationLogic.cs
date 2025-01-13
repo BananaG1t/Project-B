@@ -131,7 +131,6 @@ public class ReservationLogic
             input = Console.ReadKey().Key;
         } while (input != ConsoleKey.Enter);
 
-
         bool bar;
         if (OrderLogic.CheckBarSeats(schedule, amount))
         {
@@ -144,38 +143,41 @@ public class ReservationLogic
         }
 
         int choice = PresentationHelper.MenuLoop("Do you want to use a coupon?\n[1] Yes\n[2] No", 1, 2);
-        CouponModel selectedCoupon = null;
+        CouponModel? selectedCoupon = null;
         if (choice == 1)
         {
             selectedCoupon = Coupon.SelectCoupon();
             Coupon.PrintDiscount(selectedCoupon);
-        Console.WriteLine("Press any key to continue");
-        Console.ReadKey();
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
             Console.Clear();
-        } 
+        }
         int? CouponId = selectedCoupon == null ? null : selectedCoupon.Id;
         if (selectedCoupon != null)
-        { 
-            int use = ActiveCouponsLogic.MaxUsesById(account.Id)+1;
-            new ActiveCouponsModel(account.Id, selectedCoupon.Id, use); 
+        {
+            int use = ActiveCouponsLogic.MaxUsesById(account.Id) + 1;
+            new ActiveCouponsModel(account.Id, selectedCoupon.Id, use);
         }
 
         OrderModel order = new(account.Id, schedule.Id, amount, bar, CouponId);
-        
+
         int reservationId;
 
         bool snack = false;
         string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
         snack = PresentationHelper.MenuLoop(text, 1, 2) == 1;
 
+        double totalSnackPrice = 0;
+        double totalSeatPrice = 0;
         for (int i = 0; i < amount; i++)
         {
             SeatModel seat = schedule.Auditorium.Seats[(row, col + i)];
+            totalSeatPrice += seat.Price;
             seat.IsAvailable = false;
             SeatsAccess.Update(seat);
             reservationId = ReservationAcces.Write(new(order.Id, seat.Row, seat.Collum));
             if (snack)
-                SnackReservation.BuySnacks(reservationId, i + 1);
+                totalSnackPrice += SnackReservation.BuySnacks(reservationId, i + 1, selectedCoupon);
         }
         // List <ReservationModel> reservations = GetFromOrder(order);
         // double totalSeatPrice = 0;
@@ -184,12 +186,39 @@ public class ReservationLogic
         //     SeatModel seat = SeatLogic.GetByReservationInfo(reservation.Seat_Collum, reservation.Seat_Row,schedule.AuditoriumId);
         //     seat.Price += totalSeatPrice;
         // }
-        
+
         // if(selectedCoupon.CouponType == "Seats")
         // {
         //     Coupon.discountprice(totalSeatPrice, selectedCoupon);
         // }
-        Console.WriteLine("Made the reservation");
+
+        double totalPrice = totalSeatPrice + totalSnackPrice;
+        double totalDiscount = 0;
+        if (selectedCoupon != null)
+        {
+            if (selectedCoupon.CouponType == "Order")
+            {
+                totalDiscount = totalPrice;
+                totalSeatPrice = CouponsLogic.DiscountPrice(totalSeatPrice, selectedCoupon);
+                totalSnackPrice = CouponsLogic.DiscountPrice(totalSnackPrice, selectedCoupon);
+                totalDiscount -= totalSeatPrice + totalSnackPrice;
+            }
+            else if (selectedCoupon.CouponType == "Seats")
+            {
+                totalDiscount = totalSeatPrice;
+                totalSeatPrice = CouponsLogic.DiscountPrice(totalSeatPrice, selectedCoupon);
+                totalPrice = totalSeatPrice + totalSnackPrice;
+                totalDiscount -= totalSeatPrice;
+            }
+            else if (selectedCoupon.CouponType == "Snacks")
+            {
+                totalDiscount = totalSnackPrice;
+                totalSnackPrice = CouponsLogic.DiscountPrice(totalSnackPrice, selectedCoupon);
+                totalPrice = totalSeatPrice + totalSnackPrice;
+                totalDiscount -= totalSnackPrice;
+            }
+        }
+        Console.WriteLine($"Made the reservation{(bar == true ? " with bar" : "")}, Seat price: €{totalSeatPrice:F2}, Snack price: €{totalSnackPrice:F2}, Total price: €{totalPrice:F2}{(totalDiscount > 0 ? $", Discount: €{totalDiscount:F2}" : "")}");
     }
 
     public static List<ReservationModel> GetFromOrder(OrderModel order)
