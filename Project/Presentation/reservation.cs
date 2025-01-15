@@ -111,6 +111,12 @@ static class Reservation
         switch (choice)
         {
             case 1:
+                if (reservations.All(x => x.Status == "Canceled"))
+                {
+                    PresentationHelper.Error("Already canceled");
+                    return;
+                }
+
                 string confirmText =
                 "Are you sure you want to cancel the order?\n" +
                 "[1] Yes \n" +
