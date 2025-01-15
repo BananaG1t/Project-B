@@ -69,7 +69,7 @@ public static class CreateScheduleEntry
         return Movies[answer - 1];
     }
 
-    private static DateTime SelectDate(int room, TimeSpan length, int locationId)
+    public static DateTime SelectDate(int room, TimeSpan length, int locationId)
     {
         string text = "When do you want to show the movie? (dd-MM-yyyy-HH-mm)";
         DateTime date;
