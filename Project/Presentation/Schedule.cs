@@ -76,44 +76,19 @@ static class Schedule
             PresentationHelper.Error("No schedules found");
             return;
         }
-
         var scheduleByDay = ScheduleLogic.GroupByDay(schedules);
-        int dayIndex = 0;
+        int dayIndex = SelectDay(scheduleByDay);
 
-        int input = 0;
+        if (dayIndex == -1)
+            return;
 
-        while (input != 3)
+        schedules = scheduleByDay[dayIndex].ToList();
+        string text = $"Movies Playing on {scheduleByDay[dayIndex].Key:dd-MM-yy}";
+        foreach (ScheduleModel schedule in schedules)
         {
-            Console.Clear();
-            List<int> valid = [3];
-            string text = $"Movies Playing on {scheduleByDay[dayIndex].Key:dd-MM-yy}";
-            foreach (ScheduleModel schedule in scheduleByDay[dayIndex])
-            {
-                text += $"\nMovie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime:HH:mm}";
-            }
-
-            if (dayIndex != scheduleByDay.Count - 1)
-            {
-                valid.Add(1);
-                text += "\n[1] Next";
-            }
-            if (dayIndex != 0)
-            {
-                valid.Add(2);
-                text += "\n[2] Previous";
-            }
-
-            text += "\n[3] Back";
-            input = PresentationHelper.MenuLoop(text, valid);
-
-            if (input == 1)
-                dayIndex++;
-            if (input == 2)
-                dayIndex--;
+            text += $"\nMovie: {schedule.Movie.Name}, Room: {schedule.Auditorium.Room}, Starting time: {schedule.StartTime:HH:mm}";
         }
-
-        // Shows what movie are playing based on the date and time and location
-
+        PresentationHelper.PrintAndEnter(text);
         Console.Clear();
     }
 }

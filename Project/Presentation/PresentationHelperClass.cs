@@ -63,7 +63,7 @@ public static class PresentationHelper
         do
         {
             Console.WriteLine(text);
-            string input = Console.ReadLine();
+            string input = Console.ReadLine().Replace(".", ",");
 
             if (!double.TryParse(input, out output))
             { PrintInRed($"That is not a valid number"); }
@@ -75,7 +75,7 @@ public static class PresentationHelper
     }
 
     // turn the lowerbound / upperbound into a list and give it to the main menuloop
-    public static int MenuLoop(string text, int lowerbound, int upperbound) 
+    public static int MenuLoop(string text, int lowerbound, int upperbound)
     {
         if (lowerbound > upperbound) { throw new ArgumentException("Lowerbound cannot be higher than upperbound"); }
         if (lowerbound == 0 && upperbound > 0) { upperbound++; }
@@ -127,7 +127,7 @@ public static class PresentationHelper
         Console.Clear();
         PrintInRed(message);
     }
-        public static DateTime ValidDate(string text)
+    public static DateTime ValidDate(string text)
     {
         // create starting variables
         DateTime output;

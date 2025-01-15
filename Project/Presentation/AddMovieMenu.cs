@@ -15,10 +15,20 @@ static class AddMovieMenu
 
         string genre = PresentationHelper.GetString($"Movie genre: ", "genre");
 
-        int agerating = PresentationHelper.GetInt($"Movie age rating: ");
+        int ageRating = PresentationHelper.GetInt($"Movie age rating: ");
+        while (ageRating < 0)
+        {
+            PresentationHelper.Error("Age rating must be a positive number");
+            ageRating = PresentationHelper.GetInt($"Movie age rating: ");
+        }
 
-        double movieRating = PresentationHelper.Getdouble("Movie rating: ");
+        double movieRating = PresentationHelper.Getdouble("Movie rating (0 - 5): ");
+        while (movieRating < 0 || movieRating > 5)
+        {
+            PresentationHelper.Error("Rating must be between 0 and 5");
+            movieRating = PresentationHelper.Getdouble("Movie rating (0 - 5): ");
+        }
 
-        MovieLogic.AddMovie(name, director, description, movieLength, genre, agerating, movieRating);
+        MovieLogic.AddMovie(name, director, description, movieLength, genre, ageRating, movieRating);
     }
 }
