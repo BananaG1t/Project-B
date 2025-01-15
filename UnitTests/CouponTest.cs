@@ -1,46 +1,58 @@
-using Moq;
-namespace UnitTests
+public class CouponTests
 {
-    [TestClass]
-    public class CouponTests
+    private static MockPresentationHelper MockPresentationHelper;
+
+    [ClassInitialize]
+    public static void ClassInitialize(TestContext context)
     {
-        [DataTestMethod]
-        [DataRow(1, "VALIDCODE", 10, "VALIDCODE", true)] // Valid input code
-        [DataRow(2, "RANDOMCODE", 10, "RANDOMCODE", true)] // Valid random code
-        [DataRow(3, "", 0, "", false)] // Invalid input code
-        [DataRow(2, "RANDOMCODE", -1, "", false)] // Invalid length for random code
-        [DataRow(2, "RANDOMCODE", 0, "", false)] // Zero length for random code
-        [DataRow(2, "RANDOMCODE", 5, "RANDOMCODE", true)] // Valid random code with different length
-        public void CreateCoupon_ShouldHandleInputsCorrectly(int inputCode, string expectedCouponCode, int length, string generatedCode, bool shouldSucceed)
+        MockPresentationHelper = new MockPresentationHelper();
+    }
+
+    [DataTestMethod]
+    [DataRow(1, 1, 10, "RANDOMCODE", "Order", true)] // Valid input for Order with random code
+    [DataRow(2, 2, 5, "RANDOMCODE", "Seats", true)] // Valid input for Seats with random code
+    [DataRow(3, 1, 0, "", "Snacks", false)] // Invalid input for Snacks with invalid code length
+    [DataRow(1, 2, 10, "RANDOMCODE", "Order", true)] // Valid input for Order with fixed amount
+    [DataRow(2, 1, 5, "SHORT", "Seats", false)] // Invalid input for Seats with short random code
+    [DataRow(3, 2, 15, "VALIDCODE12345", "Snacks", false)] // Valid input for Snacks with long random code
+    [DataRow(1, 1, 0, "", "Order", true)] // Invalid input for Order with zero length code
+    [DataRow(2, 2, 8, "VALID123", "Seats", true)] // Valid input for Seats with valid code
+    public void CreateCoupon_ShouldHandleInputsCorrectly(int type, int input, int length, string generatedCode, string expectedCouponType, bool shouldSucceed)
+    {
+        // Arrange
+        MockPresentationHelper.ValidDateResult = new DateTime(2025, 12, 31);
+        MockPresentationHelper.MenuLoopResults = new Queue<int>(new[] { type, input });
+        MockPresentationHelper.GetIntResult = length;
+
+        // Redirect console input and output
+        using (var inputReader = new StringReader($"{type}\n{input}\n{length}\n"))
+        using (var output = new StringWriter())
         {
-            // Arrange
-            var mockPresentationHelper = new Mock<PresentationHelper>();
-            var mockCouponsLogic = new Mock<CouponsLogic>();
-
-            mockPresentationHelper.Setup(ph => ph.ValidDate(It.IsAny<string>())).Returns(new DateTime(2023, 12, 31));
-            mockPresentationHelper.Setup(ph => ph.MenuLoop(It.IsAny<string>(), 1, 2)).Returns(inputCode);
-            mockPresentationHelper.Setup(ph => ph.GetInt(It.IsAny<string>())).Returns(length);
-            mockCouponsLogic.Setup(cl => cl.GenerateRandomCode(length)).Returns(generatedCode);
-
-            var coupon = new Coupon(mockPresentationHelper.Object, mockCouponsLogic.Object);
+            Console.SetIn(inputReader);
+            Console.SetOut(output);
 
             // Act
-            bool success = true;
-            try
-            {
-                coupon.CreateCoupon();
-            }
-            catch (Exception)
-            {
-                success = false;
-            }
+            Coupon.CreateCoupon();
 
             // Assert
+            var savedCoupon = CouponsAccess.GetByCode(generatedCode);
             if (shouldSucceed)
             {
-                mockCouponsLogic.Verify(cl => cl.Write(expectedCouponCode, new DateTime(2023, 12, 31), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<decimal>()), Times.Once);
+                Assert.IsNotNull(savedCoupon);
+                Assert.AreEqual(expectedCouponType, savedCoupon.CouponType);
+                Assert.AreEqual(generatedCode, savedCoupon.CouponCode);
             }
-            Assert.AreEqual(shouldSucceed, success);
+            else
+            {
+                Assert.IsNull(savedCoupon);
+            }
         }
     }
+}
+
+public class MockPresentationHelper
+{
+    public DateTime ValidDateResult { get; set; }
+    public Queue<int> MenuLoopResults { get; set; }
+    public int GetIntResult { get; set; }
 }
