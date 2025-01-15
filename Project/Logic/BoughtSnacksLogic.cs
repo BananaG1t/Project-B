@@ -19,6 +19,11 @@ public static class BoughtSnacksLogic
         return BoughtSnacksAccess.GetAll();
     }
 
+    public static BoughtSnacksModel? FindExisting(int reservation_id, int snack_id)
+    {
+        return BoughtSnacksAccess.FindExisting(reservation_id, snack_id);
+    }
+
     public static List<BoughtSnacksModel> GetFromReservation(ReservationModel reservation)
     {
         return BoughtSnacksAccess.GetFromReservation(reservation);

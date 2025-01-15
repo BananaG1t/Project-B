@@ -226,7 +226,16 @@ public static class SnackReservation
             SnacksModel boughtSnack = snacks[input - 1];
             totalPrice += amount * boughtSnack.Price;
 
-            BoughtSnacksLogic.Write(reservation_id, boughtSnack.Id, amount);
+            BoughtSnacksModel? existing = BoughtSnacksLogic.FindExisting(reservation_id, boughtSnack.Id);
+            if (existing != null)
+            {
+                existing.Amount += amount;
+                BoughtSnacksLogic.Update(existing);
+            }
+            else
+            {
+                BoughtSnacksLogic.Write(reservation_id, boughtSnack.Id, amount);
+            }
 
             Console.Clear();
             double displayPrice = boughtSnack.Price;

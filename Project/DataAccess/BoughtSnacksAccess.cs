@@ -37,6 +37,12 @@ public static class BoughtSnacksAccess
         return (List<BoughtSnacksModel>)_connection.Query<BoughtSnacksModel>(sql, reservations);
     }
 
+    public static BoughtSnacksModel? FindExisting(int reservation_id, int snack_id)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Reservation_ID = @ReservationId AND Snack_ID = @SnackId";
+        return _connection.QueryFirstOrDefault<BoughtSnacksModel>(sql, new { ReservationId = reservation_id, SnackId = snack_id });
+    }
+
     public static List<BoughtSnacksModel> GetAll()
     {
         string sql = $"SELECT * FROM {Table}";
