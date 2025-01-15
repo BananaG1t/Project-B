@@ -204,7 +204,7 @@ public static class RoleLogic
             }
         }
 
-        MenuOptions.Add("Exit");
+        MenuOptions.Add("Logout");
 
         return MenuOptions;
     }
