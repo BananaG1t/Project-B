@@ -204,14 +204,14 @@ static class LocationMenu
 
         if (canAdd && addSchedule)
         {
-                locations = LocationLogic.GetAll();
-                for (int i = 0; i < locations.Count; i++)
-                {
-                    text += $"\n[{i + 1}] {locations[i].Name}";
-                }
-                int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
-                LocationModel Location = locations[LocationId - 1];
-                return Location;
+            locations = LocationLogic.GetAll();
+            for (int i = 0; i < locations.Count; i++)
+            {
+                text += $"\n[{i + 1}] {locations[i].Name}";
+            }
+            int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
+            LocationModel Location = locations[LocationId - 1];
+            return Location;
         }
 
         if (ScheduleLocations.Count == 0)
