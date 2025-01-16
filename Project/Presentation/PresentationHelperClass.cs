@@ -1,5 +1,6 @@
 public static class PresentationHelper
 {
+    public static bool IsTesting = false;
     public static string GetString(string text, string variableName)
     {
         string output = "";
@@ -124,7 +125,7 @@ public static class PresentationHelper
 
     public static void Error(string message)
     {
-        Console.Clear();
+        if (!IsTesting) { Console.Clear(); }
         PrintInRed(message);
     }
     public static DateTime ValidDate(string text)
