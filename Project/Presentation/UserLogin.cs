@@ -47,7 +47,8 @@ static class UserLogin
         string password;
         string? fullname;
 
-        do
+        int valid;
+        do 
         {
             Console.WriteLine("Welcome to the account creation page");
             Console.WriteLine("Enter [1] to return to menu");
@@ -61,7 +62,11 @@ static class UserLogin
             password = Console.ReadLine();
             if (password == "1") Menu.Start();
             Console.Clear();
-        } while (!accountsLogic.Validinfo(email, password));
+            valid = accountsLogic.Validinfo(email, password);
+            if (valid == 1) { PresentationHelper.Error("Invalid email"); }
+            else if (valid == 2) { PresentationHelper.Error("Account with this email already exists"); }
+            else if (valid == 3) { PresentationHelper.Error("Invalid password"); }
+        } while (valid != 0);
 
         fullname = fullname == "" ? null : fullname;
         AccountModel newacc = new AccountModel(email, password, fullname);
