@@ -73,7 +73,7 @@ public static class CreateScheduleEntry
     {
         string text = "When do you want to show the movie? (dd-MM-yyyy-HH-mm)";
         DateTime date;
-        date = General.ValidDate(text, "That is not a valid input");
+        date = PresentationHelper.ValidDate(text, format: "dd-MM-yyyy-HH-mm");
 
         Console.Clear();
         if (!ScheduleLogic.IsAvailable(room, date, length, locationId))

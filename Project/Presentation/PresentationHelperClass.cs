@@ -127,24 +127,23 @@ public static class PresentationHelper
         Console.Clear();
         PrintInRed(message);
     }
-    public static DateTime ValidDate(string text)
+    public static DateTime ValidDate(string text, string format = "dd-MM-yyyy")
     {
         // create starting variables
         DateTime output;
-        string format = "dd-MM-yyyy";
         // loop logic to make sure the input is a number and check if the number is a valid choice
         while (true)
         {
             Console.WriteLine(text);
             if (!DateTime.TryParseExact(Console.ReadLine(), format, null, System.Globalization.DateTimeStyles.None, out output))
             {
-                PresentationHelper.Error("Not a valid datetime format");
+                Error("Not a valid datetime format");
                 continue;
             }
 
             if (output < DateTime.Now.Date)
             {
-                PresentationHelper.Error("Date cannot be in the past");
+                Error("Date cannot be in the past");
                 continue;
             }
             break;
