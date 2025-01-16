@@ -6,9 +6,9 @@ using Dapper;
 public static class BoughtSnacksAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-    private static string Table = "BoughtSnacks";
+    private static readonly string Table = "BoughtSnacks";
 
-    public static Int64 Write(BoughtSnacksModel snack)
+    public static int Write(BoughtSnacksModel snack)
     {
         string sql = $"INSERT INTO {Table} (Reservation_ID, Snack_ID, amount) VALUES (@ReservationId, @SnackId, @Amount)";
         _connection.Execute(sql, snack);
@@ -25,7 +25,7 @@ public static class BoughtSnacksAccess
         _connection.Execute(sql, new { ReservationId = reservation_id, SnackId = snack_id, Amount = amount });
     }
 
-    public static BoughtSnacksModel GetById(int id)
+    public static BoughtSnacksModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<BoughtSnacksModel>(sql, new { Id = id });

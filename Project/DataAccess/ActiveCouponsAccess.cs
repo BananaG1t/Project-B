@@ -5,7 +5,7 @@ using Dapper;
 public static class ActiveCouponsAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-     private static string Table = "ActiveCoupons";
+     private static readonly string Table = "ActiveCoupons";
     
     public static int Write(ActiveCouponsModel coupon)
     {
@@ -23,7 +23,7 @@ public static class ActiveCouponsAccess
         string sql = $"INSERT INTO {Table} (Account_ID,Coupon_ID,Uses) VALUES (@AccountId,@CouponId,@Uses)";
         _connection.Execute(sql, new { AccountId = account_ID, CouponId = coupon_ID, Uses = uses });
     }
-    public static ActiveCouponsModel GetById(int id)
+    public static ActiveCouponsModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<ActiveCouponsModel>(sql, new { Id = id });

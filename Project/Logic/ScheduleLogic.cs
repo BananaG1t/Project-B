@@ -1,7 +1,7 @@
 public static class ScheduleLogic
 {
 
-    public static ScheduleModel GetById(int id)
+    public static ScheduleModel? GetById(int id)
     {
         return ScheduleAccess.GetById(id);
     }
@@ -21,7 +21,7 @@ public static class ScheduleLogic
         return ScheduleAccess.GetpastSchedulesWithMovie(movie);
     }
 
-    public static int CalculateMaxIncome(int id) => CalculateMaxIncome(GetById(id));
+    public static int CalculateMaxIncome(int id) => CalculateMaxIncome(GetById(id) ?? throw new Exception("Schedule not found"));
 
     public static int CalculateMaxIncome(ScheduleModel entry)
     {
@@ -45,7 +45,7 @@ public static class ScheduleLogic
         return scheduleIncome;
     }
 
-    public static double CalculateIncome(int scheduleId) => CalculateIncome(ScheduleAccess.GetById(scheduleId));
+    public static double CalculateIncome(int scheduleId) => CalculateIncome(ScheduleAccess.GetById(scheduleId) ?? throw new Exception("Schedule not found"));
 
     public static double CalculateIncome(ScheduleModel schedule)
     {
@@ -61,7 +61,7 @@ public static class ScheduleLogic
     public static int EmptySeats(int scheduleId)
     {
         int counter = 0;
-        ScheduleModel entry = ScheduleAccess.GetById(scheduleId);
+        ScheduleModel? entry = ScheduleAccess.GetById(scheduleId) ?? throw new Exception("Schedule not found");
         List<SeatModel> seats = ScheduleAccess.GetSeats(entry);
         foreach (SeatModel seat in seats)
         {

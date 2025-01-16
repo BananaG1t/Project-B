@@ -18,7 +18,7 @@ public class BoughtSnacksModel
         SnackId = snack_id;
         Amount = amount;
 
-        Id = (int)BoughtSnacksAccess.Write(this);
+        Id = BoughtSnacksAccess.Write(this);
     }
 
 }

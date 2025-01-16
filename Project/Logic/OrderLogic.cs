@@ -39,7 +39,7 @@ class OrderLogic
     static int MinimizeSpots(List<(int id, DateTime startTime, int amount)> reservations)
     {
         // Sort reservations by startTime
-        reservations = reservations.OrderBy(r => r.startTime).ToList();
+        reservations = [.. reservations.OrderBy(r => r.startTime)];
 
         // Priority queue (min-heap) to track active reservations (endTime, amount)
         var activeReservations = new SortedSet<(DateTime endTime, int amount)>();

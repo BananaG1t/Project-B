@@ -5,15 +5,15 @@ using Dapper;
 public static class LocationAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-    private static string Table = "Location";
+    private static readonly string Table = "Location";
 
-    public static Int64 Write(LocationModel location)
+    public static int Write(LocationModel location)
     {
         string sql = $"INSERT INTO {Table} (name) VALUES (@Name)";
         _connection.Execute(sql, location);
 
         string idSql = "SELECT last_insert_rowid();";
-        Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
+        int lastId = _connection.ExecuteScalar<int>(idSql);
 
         return lastId;
     }
@@ -23,7 +23,7 @@ public static class LocationAccess
         _connection.Execute(sql, snack);
     }
 
-    public static LocationModel GetById(int id)
+    public static LocationModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<LocationModel>(sql, new { Id = id });

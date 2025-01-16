@@ -7,21 +7,21 @@ public static class MovieAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private static string Table = "Movies";
+    private static readonly string Table = "Movies";
 
-    public static Int64 Write(MovieModel movie)
+    public static int Write(MovieModel movie)
     {
         movie.Length.ToString(@"hh\:mm\:ss");
         string sql = $"INSERT INTO {Table} (name, director, description, length, genre, age_rating, movie_ratings) VALUES (@Name, @Director, @Description, @Length ,@Genre, @AgeRating, @MovieRating)";
         _connection.Execute(sql, movie);
 
         string idSql = "SELECT last_insert_rowid();";
-        Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
+        int lastId = _connection.ExecuteScalar<int>(idSql);
 
         return lastId;
     }
 
-    public static MovieModel GetById(int id)
+    public static MovieModel? GetById(int id)
     {
         string sql = $"SELECT id, name, director, description, length, genre, age_rating, CAST(movie_ratings AS REAL) AS movie_ratings FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<MovieModel>(sql, new { Id = id });

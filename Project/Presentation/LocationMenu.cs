@@ -3,7 +3,7 @@ public static class LocationMenu
     // this for only to ignore the exception caused by Console.Clear() in the test environment
     public static bool IsTesting { get; set; } = false;
 
-    public static void Main()
+    public static void MainMenu()
     {
         string text =
         "Locations menu:\n" +
@@ -46,29 +46,29 @@ public static class LocationMenu
     {
         Console.Clear();
         bool valid = false;
-        string input = "";
         List<string> locations = LocationLogic.GetAllNames();
+        string input;
 
-        while (!valid)
+        do 
         {
             Console.WriteLine("What is the name of the new location?");
-            input = Console.ReadLine();
+            input = Console.ReadLine() ?? "";
 
             // Checks if there are any existing locations in db
             if (locations.Count() > 0)
             {
-                if (locations.Contains(input)) { Console.WriteLine("\nThere's already an existing location with that name\n"); }
-                else if (input == "") { Console.WriteLine("\nInvalid input. Please try again\n"); }
+                if (locations.Contains(input)) { PresentationHelper.Error("\nThere's already an existing location with that name\n"); }
+                else if (input == "") { PresentationHelper.Error("\nInvalid input. Please try again\n"); }
                 else { valid = true; }
 
             }
 
             else
             {
-                if (input == "") { Console.WriteLine("\nInvalid input. Please try again\n"); }
+                if (input == "") { PresentationHelper.Error("\nInvalid input. Please try again\n"); }
                 else { valid = true; }
             }
-        }
+        } while (!valid);
 
         LocationLogic.Add(input);
         Console.WriteLine("\nAdded new location\n");
@@ -95,13 +95,13 @@ public static class LocationMenu
             while (!valid)
             {
                 Console.WriteLine("What is the name of the new location?");
-                name = Console.ReadLine();
+                name = Console.ReadLine() ?? "";
 
                 if (name == "") { Console.WriteLine("\nInvalid input. Please try again\n"); }
                 else { valid = true; }
             }
 
-            LocationLogic.update(new LocationModel(OldLocation.Id, name));
+            LocationLogic.Update(new LocationModel(OldLocation.Id, name));
             Console.WriteLine($"\nChanged Location Name: From \"{OldLocation.Name}\" to \"{name}\"\n");
         }
 
@@ -137,7 +137,7 @@ public static class LocationMenu
 
             if (confirmChoice == 1)
             {
-                LocationLogic.Delete((int)OldLocation.Id);
+                LocationLogic.Delete(OldLocation.Id);
                 Console.WriteLine($"\nRemoved \"{OldLocation.Name}\"\n");
             }
             else
@@ -210,14 +210,14 @@ public static class LocationMenu
 
         if (canAdd && addSchedule)
         {
-                locations = LocationLogic.GetAll();
-                for (int i = 0; i < locations.Count; i++)
-                {
-                    text += $"\n[{i + 1}] {locations[i].Name}";
-                }
-                int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
-                LocationModel Location = locations[LocationId - 1];
-                return Location;
+            locations = LocationLogic.GetAll();
+            for (int i = 0; i < locations.Count; i++)
+            {
+                text += $"\n[{i + 1}] {locations[i].Name}";
+            }
+            int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
+            LocationModel Location = locations[LocationId - 1];
+            return Location;
         }
 
         if (ScheduleLocations.Count == 0)

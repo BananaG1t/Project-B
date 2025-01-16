@@ -12,7 +12,7 @@ public class SeatLogic
         // Could do something here
     }
 
-    public static SeatModel GetByReservationInfo(int ColNum, int RowNum, int Auditorium_ID)
+    public static SeatModel? GetByReservationInfo(int ColNum, int RowNum, int Auditorium_ID)
     {
         return SeatsAccess.GetByReservationInfo(ColNum, RowNum, Auditorium_ID);
     }

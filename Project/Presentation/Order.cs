@@ -16,7 +16,8 @@ static class Order
 
         for (int i = 0; i < orders.Count; i++)
         {
-            ScheduleModel schedule = ScheduleLogic.GetById(orders[i].ScheduleId);
+            ScheduleModel? schedule = ScheduleLogic.GetById(orders[i].ScheduleId);
+            if (schedule == null) { continue; }
             text += $"\n[{i +1}] Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seats: {orders[i].Amount}, Bar: {orders[i].Bar}";
         }
 

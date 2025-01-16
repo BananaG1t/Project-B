@@ -146,12 +146,23 @@ static class Reservation
                         }
 
                         reservation.Status = "Canceled";
-                        SeatModel seat = SeatLogic.GetByReservationInfo(
+                        ScheduleModel? schedule = ScheduleAccess.GetById(order.ScheduleId);
+                        if (schedule == null)
+                        {
+                            PresentationHelper.Error("Schedule not found");
+                            return;
+                        }
+
+                        SeatModel? seat = SeatLogic.GetByReservationInfo(
                             reservation.Seat_Collum,
                             reservation.Seat_Row,
-                            ScheduleAccess.GetById(order.ScheduleId).AuditoriumId
-
+                            schedule.AuditoriumId
                         );
+                        if (seat == null)
+                        {
+                            PresentationHelper.Error("Seat not found");
+                            return;
+                        }
                         seat.IsAvailable = true;
                         List<BoughtSnacksModel> snacks = BoughtSnacksLogic.GetFromReservation(reservation);
                         foreach (BoughtSnacksModel snack in snacks)
@@ -212,12 +223,23 @@ static class Reservation
                 if (confirmChoice == 1)
                 {
                     reservation.Status = "Canceled";
-                    SeatModel seat = SeatLogic.GetByReservationInfo(
+                    ScheduleModel? schedule = ScheduleAccess.GetById(order.ScheduleId);
+                    if (schedule == null)
+                    {
+                        PresentationHelper.Error("Schedule not found");
+                        return;
+                    }
+
+                    SeatModel? seat = SeatLogic.GetByReservationInfo(
                         reservation.Seat_Collum,
                         reservation.Seat_Row,
-                        ScheduleAccess.GetById(order.ScheduleId).AuditoriumId
-
+                        schedule.AuditoriumId
                     );
+                    if (seat == null)
+                    {
+                        PresentationHelper.Error("Seat not found");
+                        return;
+                    }
                     seat.IsAvailable = true;
                     order.Amount--;
                     List<BoughtSnacksModel> snacks = BoughtSnacksLogic.GetFromReservation(reservation);
@@ -250,7 +272,7 @@ static class Reservation
                 string snackSelectText = "Select a snack to manage:\n[0] new snack";
                 for (int i = 0; i < boughtSnacks.Count; i++)
                 {
-                    SnacksModel snack = SnacksLogic.GetById(boughtSnacks[i].SnackId);
+                    SnacksModel snack = SnacksLogic.GetById(boughtSnacks[i].SnackId) ?? throw new Exception("Snack not found"); // can't be null due to foreign key constraint
                     snackSelectText += $"\n[{i + 1}] Name: {snack.Name}, Price: {snack.Price:F2}, amount: {boughtSnacks[i].Amount}, total price: {snack.Price * boughtSnacks[i].Amount:F2}";
                 }
                 snackSelectText += $"\n[{boughtSnacks.Count + 1}] Back";
@@ -268,7 +290,7 @@ static class Reservation
 
                 else
                 {
-                    SnacksModel snack = SnacksLogic.GetById(boughtSnacks[selectedSnack - 1].SnackId);
+                    SnacksModel snack = SnacksLogic.GetById(boughtSnacks[selectedSnack - 1].SnackId) ?? throw new Exception("Snack not found"); // can't be null due to foreign key constraint
                     string snackManageText = $"What do you want to do with {snack.Name}?\n" +
                     "[1] Change amount\n" +
                     "[2] Remove\n" +
@@ -340,7 +362,7 @@ static class Reservation
                     return;
                 }
 
-                if (!OrderLogic.CheckBarSeats(ScheduleLogic.GetById(order.ScheduleId), order.Amount))
+                if (!OrderLogic.CheckBarSeats(ScheduleLogic.GetById(order.ScheduleId) ?? throw new Exception("Schedule not found"), order.Amount)) // schedule is never null here because of foreign key constraint
                 {
                     PresentationHelper.Error("Sorry, the bar is already full");
                     return;
@@ -391,7 +413,7 @@ static class Reservation
     public static ReservationModel SelectReservation(OrderModel order)
     {
         Console.Clear();
-        ScheduleModel schedule = ScheduleLogic.GetById(order.ScheduleId);
+        ScheduleModel schedule = ScheduleLogic.GetById(order.ScheduleId) ?? throw new Exception("Schedule not found"); // schedule is never null here because of foreign key constraint
         string text = $"Location: {schedule.Location.Name}, Movie: {schedule.Movie.Name}, Date: {schedule.StartTime} Bar: {order.Bar}\nWhat reservation do you want to manage?";
         List<ReservationModel> reservations = ReservationLogic.GetFromOrder(order);
 
@@ -459,10 +481,12 @@ static class Reservation
         if (useCoupon)
         {
             selectedCoupon = Coupon.SelectCoupon();
-            Coupon.PrintDiscount(selectedCoupon);
-            Console.WriteLine("Press any key to continue");
-            Console.ReadKey();
-            Console.Clear();
+            if (selectedCoupon != null) {
+                Coupon.PrintDiscount(selectedCoupon);
+                Console.WriteLine("Press any key to continue");
+                Console.ReadKey();
+                Console.Clear();
+            }
         }
         
         int? CouponId = selectedCoupon?.Id;

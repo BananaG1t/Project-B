@@ -7,7 +7,7 @@ public static class ReservationAcces
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private static string Table = "SeatReservations";
+    private static readonly string Table = "SeatReservations";
 
     public static int Write(ReservationModel Reservation)
     {
@@ -20,7 +20,7 @@ public static class ReservationAcces
         return lastId;
     }
 
-    public static ReservationModel GetById(int id)
+    public static ReservationModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<ReservationModel>(sql, new { Id = id });

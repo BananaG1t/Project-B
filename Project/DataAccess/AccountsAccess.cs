@@ -7,7 +7,7 @@ public static class AccountsAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private static string Table = "Accounts";
+    private static readonly string Table = "Accounts";
 
     public static int Write(AccountModel account)
     {

@@ -15,7 +15,7 @@ public class ReservationLogic
         ReservationAcces.Update(reservation);
     }
 
-    public static ReservationModel GetById(int id)
+    public static ReservationModel? GetById(int id)
     {
         return ReservationAcces.GetById(id);
     }

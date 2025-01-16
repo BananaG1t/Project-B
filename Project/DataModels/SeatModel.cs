@@ -1,8 +1,8 @@
 public class SeatModel
 {
 
-    public Int64 Id { get; set; }
-    public Int64 AuditoriumId { get; set; }
+    public int Id { get; set; }
+    public int AuditoriumId { get; set; }
     public int Row { get; set; }
     public int Collum { get; set; }
 
@@ -14,7 +14,7 @@ public class SeatModel
 
     public SeatModel(Int64 room_id, Int64 row_num, Int64 col_num, Int64 seat_class, double price)
     {
-        AuditoriumId = room_id;
+        AuditoriumId = (int)room_id;
         Row = (int)row_num;
         Collum = (int)col_num;
         Price = price;
@@ -25,8 +25,8 @@ public class SeatModel
 
     public SeatModel(Int64 id, Int64 Auditorium_ID, Int64 row, Int64 collum, double price, Int64 type, Int64 isAvailable)
     {
-        Id = id;
-        AuditoriumId = Auditorium_ID;
+        Id = (int)id;
+        AuditoriumId = (int)Auditorium_ID;
         Row = (int)row;
         Collum = (int)collum;
         Price = price;

@@ -1,21 +1,19 @@
-using System.Globalization;
-
 public static class CreateScheduleEntry
 {
     // this for only to ignore the exception caused by Console.Clear() in the test environment
     public static bool IsTesting { get; set; } = false;
 
-    public static void Main(AccountModel account)
+    public static void AddSchedule(AccountModel account)
     {
         LocationModel? location = LocationMenu.SelectLocation(account, canAdd: true, addSchedule: true);
         if (location is null) return;
         int room = SelectRoom();
-        MovieModel movie = SelectMovie(canAdd : true);
+        MovieModel? movie = SelectMovie(canAdd : true);
         if (movie != null)
         {
-            DateTime date = SelectDate(room, movie.Length, (int)location.Id);
+            DateTime date = SelectDate(room, movie.Length, location.Id);
             string? extras = GetExtras();
-            new ScheduleModel(date, movie, new AuditoriumModel(room, extras), location);
+            _ = new ScheduleModel(date, movie, new AuditoriumModel(room, extras), location);
             Console.Clear();
         }
         
@@ -56,7 +54,7 @@ public static class CreateScheduleEntry
             int confirmChoice = PresentationHelper.MenuLoop(confirmText, 1, 2);
             if (confirmChoice == 1)
             {
-                AddMovieMenu.Main();
+                AddMovieMenu.AddMovie();
                 Console.WriteLine();
                 Movies = MovieLogic.GetAll();
             }
