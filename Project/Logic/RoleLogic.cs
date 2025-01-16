@@ -51,8 +51,6 @@ public static class RoleLogic
     {
         List<AssignedRoleModel> assignedRolesroles = GetAllAssignedRoles();
 
-        AccountsLogic acc = new();
-
         string text = string.Format("     {0,-15} | {1,-13} | {2,-10} | {3,-15}|\n", "Role name", "Level access", "Fullname", "Location name"); ;
         text += "===================================================================|\n";
 
@@ -64,14 +62,14 @@ public static class RoleLogic
             int roleLevel = (int)role.LevelAccess;
 
             string LocationName;
-            string? fullName = AccountsLogic.GetById((int)assignedRolesroles[index].AccountId).FullName;
+            string? fullName = AccountsLogic.GetById((int)assignedRolesroles[index].AccountId)?.FullName;
             if (fullName == "Admin") LocationName = "All";
             else LocationName = LocationLogic.GetById((int)assignedRolesroles[index].LocationId).Name;
 
             int padding = (int)Math.Ceiling(Math.Ceiling(Math.Log10(assignedRolesroles.Count)) - Math.Log10(index + 1));
 
             // text += String.Format("[{0}] {1,-15} | {2,-13} | {3,-10} | {4,-15}|\n", (index + 1).ToString().PadRight((int)Math.Floor(Math.Log10(assignedRolesroles.Count) + 1)), roleName, roleLevel, fullName, LocationName);
-            text += String.Format("[{0}]{1}{2,-15} | {3,-13} | {4,-10} | {5,-15}|\n", index + 1, "".PadLeft(padding), roleName, roleLevel, fullName, LocationName);
+            text += string.Format("[{0}]{1}{2,-15} | {3,-13} | {4,-10} | {5,-15}|\n", index + 1, "".PadLeft(padding), roleName, roleLevel, fullName, LocationName);
         }
 
         return new(text, assignedRolesroles.Count);
@@ -159,7 +157,7 @@ public static class RoleLogic
         AssignedRoleModel assignedRoleModel = AssignedRoleAccess.GetByAccountId(account.Id);
         if (assignedRoleModel == null) { return false; }
 
-        RoleLevelModel roleLevelModel = null;
+        RoleLevelModel? roleLevelModel;
         while (true)
         {
             roleLevelModel = RoleLevelAccess.GetByFunctionality(functionaltyName);
@@ -209,7 +207,7 @@ public static class RoleLogic
         return MenuOptions;
     }
 
-    public static RoleModel GetRoleByAccountId(int accountId)
+    public static RoleModel? GetRoleByAccountId(int accountId)
     {
         AssignedRoleModel assignedRole = AssignedRoleAccess.GetByAccountId(accountId);
         if (assignedRole == null) { return null; }
