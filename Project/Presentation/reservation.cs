@@ -429,13 +429,13 @@ static class Reservation
         do
         {
             if (input == ConsoleKey.DownArrow)
-                SeatLogic.FindNextSeat(seats, row, col, amount, "down");
+                (row, col) = SeatLogic.FindNextSeat(seats, row, col, amount, "down");
             else if (input == ConsoleKey.UpArrow)
-                SeatLogic.FindNextSeat(seats, row, col, amount, "up");
+                (row, col) = SeatLogic.FindNextSeat(seats, row, col, amount, "up");
             else if (input == ConsoleKey.LeftArrow)
-                SeatLogic.FindNextSeat(seats, row, col, amount, "left");
+                (row, col) = SeatLogic.FindNextSeat(seats, row, col, amount, "left");
             else if (input == ConsoleKey.RightArrow)
-                SeatLogic.FindNextSeat(seats, row, col, amount, "right");
+                (row, col) = SeatLogic.FindNextSeat(seats, row, col, amount, "right");
             else if (input == ConsoleKey.Backspace)
                 return;
 
