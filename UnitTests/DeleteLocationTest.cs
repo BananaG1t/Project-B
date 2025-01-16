@@ -5,7 +5,7 @@ public class TestDeleteLocationFunction
 {
     [TestMethod]
     [DataRow(0, true)]
-    public static void TestDeleteFunction(int amount, bool expected)
+    public void TestDeleteFunction(int amount, bool expected)
     {
         List<LocationModel> locations = LocationLogic.GetAll();
 
