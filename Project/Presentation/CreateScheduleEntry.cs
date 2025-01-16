@@ -2,6 +2,9 @@ using System.Globalization;
 
 public static class CreateScheduleEntry
 {
+    // this for only to ignore the exception caused by Console.Clear() in the test environment
+    public static bool IsTesting { get; set; } = false;
+
     public static void Main(AccountModel account)
     {
         LocationModel? location = LocationMenu.SelectLocation(account, canAdd: true, addSchedule: true);
@@ -75,7 +78,10 @@ public static class CreateScheduleEntry
         DateTime date;
         date = General.ValidDate(text, "That is not a valid input");
 
-        Console.Clear();
+        if (!IsTesting)
+        {
+            Console.Clear();
+        }
         if (!ScheduleLogic.IsAvailable(room, date, length, locationId))
         {
             Console.WriteLine("There is already a movie playing on that time");

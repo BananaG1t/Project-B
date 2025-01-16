@@ -4,15 +4,21 @@ namespace UnitTests;
 public class CleanupTime
 {
     [DataTestMethod]
-    [DataRow("15-12-3000-14-30", true)]  // Test valid date
-    [DataRow("15-12-3000-14-10", false)] // Test invalid date
-    public void CleanupTimeTest(string date, string expected)
+    [DataRow("A", 0, "15-12-3000-14-30", "15/12/3000 14:30:00")] // Test valid date
+    [DataRow("A", 0, "15-12-3000-14-21", "15/12/3000 14:21:00")] // Test valid date
+    [DataRow("A", 0, "15-12-3000-14-20", "15/12/3000 14:20:00")] // Test valid date
+    [DataRow("A", 0, "15-12-3000-14-19", "")] // Test invalid date
+    [DataRow("A", 0, "15-12-3000-14-10", "")] // Test invalid date
+    [DataRow("A", 0, "15-12-3000-14-00", "")] // Test invalid date
+    [DataRow("B", 1, "15-12-3000-14-30", "15/12/3000 14:30:00")] // Test valid date at another location
+    [DataRow("B", 1, "15-12-3000-14-21", "15/12/3000 14:21:00")] // Test valid date at another location
+    [DataRow("B", 1, "15-12-3000-14-20", "15/12/3000 14:20:00")] // Test valid date at another location
+    [DataRow("B", 1, "15-12-3000-14-19", "15/12/3000 14:19:00")] // Test valid date at another location
+    [DataRow("B", 1, "15-12-3000-14-10", "15/12/3000 14:10:00")] // Test valid date at another location
+    [DataRow("B", 1, "15-12-3000-14-00", "15/12/3000 14:00:00")] // Test valid date at another location
+    public void CleanupTimeTest(string locationName, int locationId,string date, string expected)
     {
-        List<MovieModel> Movies = MovieLogic.GetAll();
-        if (Movies.Count == 0)
-        {
-            new MovieModel("Test", "Test", "Test", new TimeSpan(02, 00, 00), "Test", 18, 3);
-        }
+        CreateScheduleEntry.IsTesting = true;
 
         List<LocationModel> locations = LocationLogic.GetAll();
 
@@ -24,22 +30,46 @@ public class CleanupTime
             }
         }
 
-        new LocationModel("Test");
+        if (locationId == 0)
+        {
+            new LocationModel(locationName);
+        }
+        else
+        {
+            new LocationModel("Test");
+            new LocationModel(locationName);
+        }
         locations = LocationLogic.GetAll();
 
         ScheduleModel TestSchedule = new ScheduleModel(new DateTime (3000, 12, 15, 12, 00, 00), 
         new MovieModel ("Test", "Test", "Test", new TimeSpan(02, 00, 00), "Test", 18, 3),
-        new AuditoriumModel(1, null), new LocationModel("Test"));
+        new AuditoriumModel(1, null), LocationLogic.GetById((int)locations[locationId].Id));
 
         using (var inputReader = new StringReader(date))
+        using (var outputWriter = new StringWriter())
         {
             Console.SetIn(inputReader);
+            DateTime? result = null;
 
-            // Call the main method to test
-            DateTime result = CreateScheduleEntry.SelectDate(1, new TimeSpan(02, 00, 00), LocationLogic.GetById(locations[0]));
+            try
+            {
+                result = CreateScheduleEntry.SelectDate(1, new TimeSpan(02, 00, 00), (int)locations[0].Id);
+            }
+            catch (IOException ex) when (ex.Message.Contains("The handle is invalid"))
+            {
+                // Ignore the exception caused by Console.Clear() in the test environment
+            }
             
-            Assert.AreEqual(expected, result);
-        }
+            string consoleOutput = outputWriter.ToString();
 
+            if (result == null)
+            {
+                Assert.AreEqual(consoleOutput, expected);
+            }
+            else
+            {
+                Assert.AreEqual(result.ToString(), expected);
+            } 
+        }
     }
 }
