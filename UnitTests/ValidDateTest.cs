@@ -14,7 +14,7 @@ public class ValidDateTest
         {
             Console.SetIn(reader);
 
-            DateTime result = General.ValidDate("When do you want to show the movie? (dd-mm-yyy-hh-mm)");
+            DateTime result = General.ValidDate("When do you want to show the movie? (dd-mm-yyy-hh-mm)", "That is not a valid input");
 
             Assert.AreEqual(Date, result);
         }
