@@ -76,7 +76,7 @@ static class Menu
 
     static public void Start()
     {
-        //Console.Clear();
+        Console.Clear();
         // get a valid input number
         string text = $"Enter [1] to login\nEnter [2] to create new account";
         int input = PresentationHelper.MenuLoop(text, 1, 2);
