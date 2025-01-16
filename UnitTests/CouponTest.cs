@@ -1,3 +1,4 @@
+[TestClass]
 public class CouponTests
 {
     private static MockPresentationHelper MockPresentationHelper;
@@ -9,42 +10,87 @@ public class CouponTests
     }
 
     [DataTestMethod]
-    [DataRow(1, 1, 10, "RANDOMCODE", "Order", true)] // Valid input for Order with random code
-    [DataRow(2, 2, 5, "RANDOMCODE", "Seats", true)] // Valid input for Seats with random code
-    [DataRow(3, 1, 0, "", "Snacks", false)] // Invalid input for Snacks with invalid code length
-    [DataRow(1, 2, 10, "RANDOMCODE", "Order", true)] // Valid input for Order with fixed amount
-    [DataRow(2, 1, 5, "SHORT", "Seats", false)] // Invalid input for Seats with short random code
-    [DataRow(3, 2, 15, "VALIDCODE12345", "Snacks", false)] // Valid input for Snacks with long random code
-    [DataRow(1, 1, 0, "", "Order", true)] // Invalid input for Order with zero length code
-    [DataRow(2, 2, 8, "VALID123", "Seats", true)] // Valid input for Seats with valid code
-    public void CreateCoupon_ShouldHandleInputsCorrectly(int type, int input, int length, string generatedCode, string expectedCouponType, bool shouldSucceed)
+    [DataRow(1, 1, 10, "31-12-2025", 1, "RANDOMCODE", 1, "Order", true)] // Valid input for Order with input code and valid date
+    [DataRow(2, 1, 10, "31-12-2025", 1, "RANDOMCODE1", 1, "Seats", true)] // Valid input for Seat with input code and valid date
+    [DataRow(3, 1, 10.5, "31-12-2025", 1, "RANDOMCODE2", 1, "Snacks", true)] // Valid input for Snack with input code and valid date
+    [DataRow(1, 2, 10, "31-12-2025", 1, "RANDOMCODE3", 1, "snacks", false)] // Valid input for Order with input code and valid date check if snacks is false
+    [DataRow(2, 2, 10, "31-12-2025", 1, "RANDOMCODE4", 1, "Order", false)] // Valid input for Seat with input code and valid date check if order is false
+    [DataRow(3, 2, 10, "31-12-2025", 1, "RANDOMCODE5", 1, "Seats", false)] // Valid input for Snack with input code and valid date check if seats is false
+
+    public void CreateCoupon_testinputs(int type, int input, double amount, string dateInput, int codeChoice, string codeInput, int readKey, string expectedCouponType, bool shouldSucceed)
     {
         // Arrange
-        MockPresentationHelper.ValidDateResult = new DateTime(2025, 12, 31);
         MockPresentationHelper.MenuLoopResults = new Queue<int>(new[] { type, input });
-        MockPresentationHelper.GetIntResult = length;
 
         // Redirect console input and output
-        using (var inputReader = new StringReader($"{type}\n{input}\n{length}\n"))
+        using (var inputReader = new StringReader($"{type}\n{input}\n{amount}\n{dateInput}\n{codeChoice}\n{codeInput}\n{readKey}"))
+        using (var output = new StringWriter())
+        {
+            Console.SetIn(inputReader);
+            Console.SetOut(output);
+            try
+            {
+                // Act
+                Coupon.IsTesting = true;
+                PresentationHelper.IsTesting = true;
+                Coupon.CreateCoupon();
+            }
+            catch (IOException ex) when (ex.Message.Contains("The handle is invalid"))
+            {
+
+            }
+
+            // Assert
+            var savedCoupon = CouponsAccess.GetByCode(codeInput);
+            if (shouldSucceed)
+            {
+                Assert.IsNotNull(savedCoupon);
+                Assert.AreEqual(expectedCouponType, savedCoupon.CouponType);
+                Assert.AreEqual(codeInput, savedCoupon.CouponCode);
+                Assert.AreEqual(amount, savedCoupon.Amount);
+            }
+            else
+            {
+                Assert.AreNotEqual(savedCoupon.CouponType, expectedCouponType);
+            }
+        }
+    }
+
+    [TestMethod]
+    [DataRow("31-12-2025", "31-12-2025", true)] // Valid date
+    [DataRow("invalid-date\n31-12-2025", "31-12-2025", true)] // Invalid date followed by valid date
+    [DataRow("01-01-2000\n31-12-2025", "31-12-2025", true)] // Past date followed by valid date
+    [DataRow("invalid-date\n01-01-2000\n31-12-2025", "31-12-2025", true)] // Invalid date followed by past date followed by valid date
+    [DataRow("31-12-2025\ninvalid-date", "31-12-2025", true)] // Valid date followed by invalid date
+    public void TestValideDate(string input, string expectedDateString, bool isValid)
+    {
+        // Arrange
+        DateTime expectedDate = DateTime.ParseExact(expectedDateString, "dd-MM-yyyy", null);
+        using (var inputReader = new StringReader(input))
         using (var output = new StringWriter())
         {
             Console.SetIn(inputReader);
             Console.SetOut(output);
 
             // Act
-            Coupon.CreateCoupon();
+            DateTime result = DateTime.MinValue;
+            try
+            {
+                result = PresentationHelper.ValidDate("Enter a valid date (dd-MM-yyyy):");
+            }
+            catch (FormatException)
+            {
+                // Expected exception for invalid date formats
+            }
 
             // Assert
-            var savedCoupon = CouponsAccess.GetByCode(generatedCode);
-            if (shouldSucceed)
+            if (isValid)
             {
-                Assert.IsNotNull(savedCoupon);
-                Assert.AreEqual(expectedCouponType, savedCoupon.CouponType);
-                Assert.AreEqual(generatedCode, savedCoupon.CouponCode);
+                Assert.AreEqual(expectedDate, result);
             }
             else
             {
-                Assert.IsNull(savedCoupon);
+                Assert.AreEqual(DateTime.MinValue, result);
             }
         }
     }
@@ -52,7 +98,5 @@ public class CouponTests
 
 public class MockPresentationHelper
 {
-    public DateTime ValidDateResult { get; set; }
     public Queue<int> MenuLoopResults { get; set; }
-    public int GetIntResult { get; set; }
 }

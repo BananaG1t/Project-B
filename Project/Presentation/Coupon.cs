@@ -2,6 +2,7 @@ using System.Reflection.Metadata.Ecma335;
 
 public static class Coupon
 {
+    public static bool IsTesting = false;
     public static void AdminMenu()
     {
         string text =
@@ -34,7 +35,7 @@ public static class Coupon
 
     public static void CreateCoupon()
     {
-        Console.Clear();
+        if (!IsTesting) { Console.Clear(); }
         bool percentage = false;
         string couponType = "";
         float amount = 0;
@@ -79,7 +80,7 @@ public static class Coupon
 
         Console.WriteLine($"\nCoupon used for {couponType} expiration date: {expirationDate} coupon code: {couponCode} added");
         Console.WriteLine("Press any key to go back");
-        Console.ReadKey();
+        if (!IsTesting) { Console.ReadKey(); }
     }
 
     public static void DisplayCouponsAdmin()
