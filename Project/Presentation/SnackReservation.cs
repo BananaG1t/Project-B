@@ -215,6 +215,7 @@ public static class SnackReservation
         }
 
         double totalPrice = 0;
+        double totalDisplayPrice = 0;
         while (true)
         {
             int input = PresentationHelper.MenuLoop(text + "\n[0] Done", 0, ValidInputs.Count);
@@ -225,7 +226,16 @@ public static class SnackReservation
             SnacksModel boughtSnack = snacks[input - 1];
             totalPrice += amount * boughtSnack.Price;
 
-            BoughtSnacksLogic.Write(reservation_id, boughtSnack.Id, amount);
+            BoughtSnacksModel? existing = BoughtSnacksLogic.FindExisting(reservation_id, boughtSnack.Id);
+            if (existing != null)
+            {
+                existing.Amount += amount;
+                BoughtSnacksLogic.Update(existing);
+            }
+            else
+            {
+                BoughtSnacksLogic.Write(reservation_id, boughtSnack.Id, amount);
+            }
 
             Console.Clear();
             double displayPrice = boughtSnack.Price;
@@ -234,7 +244,8 @@ public static class SnackReservation
                 {
                     displayPrice -= boughtSnack.Price * coupon.Amount / 100;
                 }
-            Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {displayPrice:F2}\n");
+            totalDisplayPrice += amount * displayPrice;
+            Console.WriteLine($"\nSnacks reserved: {amount} X {boughtSnack.Name}, Total Price: {totalDisplayPrice:F2}\n");
         }
 
 

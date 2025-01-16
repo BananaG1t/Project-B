@@ -60,7 +60,7 @@ static class Overview
 
         int input = PresentationHelper.MenuLoop(text, 1, pastEntries.Count);
 
-        ScheduleModel Selected = pastEntries[input];
+        ScheduleModel Selected = pastEntries[input - 1];
 
         Console.WriteLine($"income: {ScheduleLogic.CalculateIncome(Selected)} / {ScheduleLogic.CalculateMaxIncome(Selected)}");
         Console.WriteLine($"Amount of empty seats: {ScheduleLogic.EmptySeats(Selected)}");
@@ -184,7 +184,7 @@ static class Overview
 
     public static void TotalSnackIncomePerReservation(BoughtSnacksModel BoughtSnacks)
     {
-        Console.WriteLine($"Total snack income for reservation: €{SnacksLogic.CalculateIncomeByReservation(BoughtSnacks)}");
+        Console.WriteLine($"Total snack income for reservation: €{SnacksLogic.CalculateIncomeByReservation(BoughtSnacks):F2}");
     }
 
     public static ReservationModel? GetReservationModel()

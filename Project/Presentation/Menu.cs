@@ -39,8 +39,8 @@ static class Menu
             }
             else if (functionality == functionalities[3])
             {
-                LocationModel? location = LocationMenu.SelectLocation(account, canAdd : true);
-                if (location is not null) 
+                LocationModel? location = LocationMenu.SelectLocation(account, canAdd: true);
+                if (location is not null)
                     Schedule.DisplaySchedule(location);
             }
             else if (functionality == functionalities[4])
@@ -64,9 +64,9 @@ static class Menu
             {
                 Coupon.AdminMenu();
             }
-            else if (functionality == "Exit")
+            else if (functionality == "Logout")
             {
-                Console.WriteLine("Exiting");
+                Console.WriteLine("Logging out");
                 break;
             }
         }
@@ -103,7 +103,7 @@ static class Menu
             if (input == 1)
             {
                 LocationModel? location = LocationMenu.SelectLocation(CurrentAccount);
-                if (location is not null) 
+                if (location is not null)
                     ReservationLogic.GetReservation(CurrentAccount, location);
             }
 
@@ -114,7 +114,7 @@ static class Menu
             else if (input == 3)
             {
                 LocationModel? location = LocationMenu.SelectLocation(CurrentAccount);
-                if (location is not null) 
+                if (location is not null)
                     Schedule.DisplaySchedule(location);
             }
             else if (input == 4)

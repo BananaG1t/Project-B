@@ -111,6 +111,12 @@ static class Reservation
         switch (choice)
         {
             case 1:
+                if (reservations.All(x => x.Status == "Canceled"))
+                {
+                    PresentationHelper.Error("Already canceled");
+                    return;
+                }
+
                 string confirmText =
                 "Are you sure you want to cancel the order?\n" +
                 "[1] Yes \n" +
@@ -223,11 +229,11 @@ static class Reservation
             case 2:
                 if (reservation.Status == "Canceled")
                 {
-                    PresentationHelper.Error("Cant chage snacks on canceled reservation");
+                    PresentationHelper.Error("Cant change snacks on canceled reservation");
                     return;
                 }
 
-                CouponModel coupon = order.CouponId != null ? CouponsLogic.GetById((int)order.CouponId) : null;
+                CouponModel? coupon = order.CouponId != null ? CouponsLogic.GetById((int)order.CouponId) : null;
                 List<BoughtSnacksModel> boughtSnacks = BoughtSnacksLogic.GetFromReservation(reservation);
                 string snackSelectText = "Select a snack to manage:\n[0] new snack";
                 for (int i = 0; i < boughtSnacks.Count; i++)
@@ -262,6 +268,19 @@ static class Reservation
                     {
                         case 1:
                             int newAmount = PresentationHelper.GetInt("Enter new amount: ");
+                            if (newAmount < 0)
+                            {
+                                PresentationHelper.Error("Amount cant be negative");
+                                return;
+                            }
+
+                            if (newAmount == 0)
+                            {
+                                BoughtSnacksLogic.Delete(boughtSnacks[selectedSnack - 1].Id);
+                                Console.WriteLine("Snack removed");
+                                return;
+                            }
+
                             boughtSnacks[selectedSnack - 1].Amount = newAmount;
                             BoughtSnacksLogic.Update(boughtSnacks[selectedSnack - 1]);
                             Console.WriteLine("Amount changed");

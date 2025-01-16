@@ -11,7 +11,7 @@ public class OrderAccess
 
     public static int Write(OrderModel order)
     {
-        string sql = $"INSERT INTO {Table} (Account_ID, Schedule_ID, amount, bar) VALUES (@AccountId, @ScheduleId, @Amount, @Bar)";
+        string sql = $"INSERT INTO {Table} (Account_ID, Schedule_ID, amount, bar, Coupon_ID) VALUES (@AccountId, @ScheduleId, @Amount, @Bar, @CouponId)";
         _connection.Execute(sql, order);
 
         string idSql = "SELECT last_insert_rowid();";
