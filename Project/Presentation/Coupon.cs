@@ -1,7 +1,6 @@
-using System.Reflection.Metadata.Ecma335;
-
 public static class Coupon
 {
+    public static bool IsTesting = false;
     public static void AdminMenu()
     {
         string text =
@@ -34,7 +33,7 @@ public static class Coupon
 
     public static void CreateCoupon()
     {
-        Console.Clear();
+        if (!IsTesting) { Console.Clear(); }
         bool percentage = false;
         string couponType = "";
         float amount = 0;

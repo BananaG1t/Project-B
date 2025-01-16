@@ -151,10 +151,7 @@ public static class PresentationHelper
 
     public static void Error(string message)
     {
-        if (!IsTesting)
-        {
-            Console.Clear();
-        }
+        if (!IsTesting) { Console.Clear(); }
         PrintInRed(message);
     }
     public static DateTime ValidDate(string text, string format = "dd-MM-yyyy")
