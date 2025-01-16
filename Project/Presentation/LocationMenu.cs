@@ -201,10 +201,9 @@ static class LocationMenu
                 return null;
             }
         }
+
         if (canAdd && addSchedule)
         {
-            if (canAdd && addSchedule)
-            {
                 locations = LocationLogic.GetAll();
                 for (int i = 0; i < locations.Count; i++)
                 {
@@ -213,7 +212,15 @@ static class LocationMenu
                 int LocationId = PresentationHelper.MenuLoop(text, 1, locations.Count);
                 LocationModel Location = locations[LocationId - 1];
                 return Location;
-            }
+        }
+
+        if (ScheduleLocations.Count == 0)
+        {
+            if (!canAdd)
+            {
+                PresentationHelper.Error("No locations with schedules found");
+                return null;
+            }   
             Schedule.CheckSchedule(account);
             ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
             NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
