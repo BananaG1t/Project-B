@@ -51,11 +51,11 @@ public static class Coupon
         if (input == 1)
         {
             percentage = true;
-            amount = CouponsLogic.ValidFloatPercentage("\nEnter the percentage of the coupon (must be between 0-100)", "Invalid input. Please try again\n");
+            amount = PresentationHelper.ValidFloatPercentage("\nEnter the percentage of the coupon (must be between 0-100)", "Invalid input. Please try again\n");
         }
         else if (input == 2)
         {
-            amount = CouponsLogic.ValidFloat("\nEnter the discount price of the coupon", "Invalid input. Please try again\n");
+            amount = PresentationHelper.ValidFloat("\nEnter the discount price of the coupon", "Invalid input. Please try again\n");
         }
         DateTime expirationDate = PresentationHelper.ValidDate("\nEnter the expiration date of the coupon (dd-MM-yyyy)");
 

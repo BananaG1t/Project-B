@@ -38,8 +38,6 @@ public static class SnacksLogic
 
     public static double CalculateDailyIncome()
     {
-        double totalIncome = 0;
-
         // Get all schedules for today
         DateTime today = DateTime.Now.Date;
         List<ScheduleModel> dailySchedules = ScheduleAccess.GetByDateRange(today, today.AddDays(1));
@@ -49,8 +47,6 @@ public static class SnacksLogic
 
     public static double CalculateIncomeByMovie(MovieModel movie)
     {
-        double totalIncome = 0;
-
         // Get all schedules for the selected movie
         List<ScheduleModel> movieSchedules = ScheduleAccess.GetByMovieId((int)movie.Id);
 
@@ -75,7 +71,7 @@ public static class SnacksLogic
     {
         double total = 0;
         List<BoughtSnacksModel> boughtSnacks = BoughtSnacksLogic.GetAllById(boughtSnack.ReservationId);
-        CouponModel? coupon = null;
+        CouponModel? coupon;
         coupon = CouponsAccess.GetBySnack(boughtSnack);
         if (boughtSnacks.Count == 0) return 0;
         foreach (BoughtSnacksModel currentSnack in boughtSnacks)

@@ -42,7 +42,7 @@ public static class RoleLevelAccess
         return _connection.QueryFirstOrDefault<RoleLevelModel>(sql, new { LevelNeeded = level });
     }
 
-    public static RoleLevelModel GetByFunctionality(string FunctionalityName)
+    public static RoleLevelModel? GetByFunctionality(string FunctionalityName)
     {
         string sql = $"SELECT * FROM {Table} WHERE functionality = @Functionality";
         return _connection.QueryFirstOrDefault<RoleLevelModel>(sql, new { Functionality = FunctionalityName });

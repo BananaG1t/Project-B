@@ -21,7 +21,7 @@ public static class ScheduleLogic
         return ScheduleAccess.GetpastSchedulesWithMovie(movie);
     }
 
-    public static int CalculateMaxIncome(int id) => CalculateMaxIncome(ScheduleLogic.GetById(id));
+    public static int CalculateMaxIncome(int id) => CalculateMaxIncome(GetById(id));
 
     public static int CalculateMaxIncome(ScheduleModel entry)
     {
@@ -29,7 +29,8 @@ public static class ScheduleLogic
         {
             1 => 1610,
             2 => 3465,
-            3 => 5750
+            3 => 5750,
+            _ => throw new NotImplementedException()
         };
     }
 
@@ -98,9 +99,8 @@ public static class ScheduleLogic
 
     public static List<IGrouping<DateTime, ScheduleModel>> GroupByDay(List<ScheduleModel> schedules)
     {
-        return schedules
+        return [.. schedules
             .GroupBy(schedule => schedule.StartTime.Date) // Group by day
-            .OrderBy(group => group.Key) // Sort groups by the day
-            .ToList();
+            .OrderBy(group => group.Key)];
     }
 }
