@@ -26,7 +26,13 @@ static class Reservation
                     continue;
                 }
 
-                ManageReservations(OrderLogic.SelectOrder(account));
+                OrderModel? order = Order.SelectOrder(account);
+                if (order == null)
+                {
+                    continue;
+                }
+
+                ManageReservations(order);
             }
             else if (input == 2)
             {
@@ -45,7 +51,13 @@ static class Reservation
                     continue;
                 }
 
-                ManageReservations(OrderLogic.SelectOrder(account));
+                OrderModel? order = Order.SelectOrder(account);
+                if (order == null)
+                {
+                    continue;
+                }
+
+                ManageReservations(order);
             }
             else if (input == 3)
             {

@@ -1,8 +1,31 @@
 static class Order
 {
-    public static OrderModel SelectOrder(AccountModel account)
+    public static OrderModel? SelectOrder(AccountModel account)
     {
-        return OrderLogic.SelectOrder(account);
+        Console.Clear();
+        List<OrderModel> orders = OrderLogic.GetFromAccount(account);
+        if (!orders.Any())
+        {
+            PresentationHelper.Error("No orders available.");
+            return null;
+        }
+        
+        string text = "What order do you want to manage?";
+        
+        List<int> valid = [];
+
+        for (int i = 0; i < orders.Count; i++)
+        {
+            ScheduleModel schedule = ScheduleLogic.GetById(orders[i].ScheduleId);
+            text += $"\n[{i +1}] Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seats: {orders[i].Amount}, Bar: {orders[i].Bar}";
+        }
+
+        text += "\n[0] Go back";
+
+        int answer = PresentationHelper.MenuLoop(text, 0, orders.Count);
+
+        if (answer == 0) { return null; }
+        return orders[answer - 1];
     }
 
     public static void GetBarReservation(ScheduleModel schedule, int SeatAmount)
