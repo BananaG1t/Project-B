@@ -21,7 +21,7 @@ public class TestSnackIncomeOverview
         AuditoriumModel auditorium = AuditoriumAcces.GetById(1);
         ScheduleModel schedule = new(DateTime.Now, movie, auditorium, location);
         AccountModel account = AccountsAccess.GetById(1);
-        OrderModel order = new(account.Id, schedule.Id, 1, true);
+        OrderModel order = new(account.Id, schedule.Id, 1, true, null);
         ReservationModel reservation = new(order.Id, 1, 1);
         reservation.Id = ReservationAcces.Write(new(order.Id, 1, 1));
         SnacksModel snacks1 = new("mars", 10);
