@@ -1,5 +1,7 @@
 public static class PresentationHelper
 {
+    // this for only to ignore the exception caused by Console.Clear() in the test environment
+    public static bool IsTesting { get; set; } = false;
     public static string GetString(string text, string variableName)
     {
         string output = "";
@@ -124,7 +126,10 @@ public static class PresentationHelper
 
     public static void Error(string message)
     {
-        Console.Clear();
+        if (!IsTesting)
+        {
+            Console.Clear();
+        }
         PrintInRed(message);
     }
     public static DateTime ValidDate(string text)

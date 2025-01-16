@@ -57,7 +57,7 @@ public class CleanupTime
             }
             catch (IOException ex) when (ex.Message.Contains("The handle is invalid"))
             {
-                // Ignore the exception caused by Console.Clear() in the test environment
+                // Ignore the exception caused by a method loop in the test environment
             }
             
             string consoleOutput = outputWriter.ToString();
