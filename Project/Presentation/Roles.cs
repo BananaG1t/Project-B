@@ -59,8 +59,7 @@ public static class Roles
 
         RoleModel role = RoleLogic.GetAllRoles()[PresentationHelper.MenuLoop(RoleInfo.Item1, 1, RoleInfo.Item2) - 1];
 
-        AccountsLogic acc = new();
-        Tuple<string, int> allAccountInfo = acc.GetAccountText();
+        Tuple<string, int> allAccountInfo = AccountsLogic.GetAccountText();
 
         // makes sure the user doesn't go into an empty loop
         if (allAccountInfo.Item2 == 0)
@@ -69,8 +68,7 @@ public static class Roles
             return;
         }
 
-        AccountsLogic accountLogic = new();
-        AccountModel account = accountLogic.GetAllAccounts()[PresentationHelper.MenuLoop(allAccountInfo.Item1, 1, allAccountInfo.Item2) - 1];
+        AccountModel account = AccountsLogic.GetAllAccounts()[PresentationHelper.MenuLoop(allAccountInfo.Item1, 1, allAccountInfo.Item2) - 1];
 
         if (account.Id == 0)
         {
@@ -87,7 +85,9 @@ public static class Roles
             return;
         }
 
-        LocationModel locationModel = LocationLogic.GetAllLocations()[PresentationHelper.MenuLoop(locationInfo.Item1, 1, locationInfo.Item2) - 1];
+        int locationNumbChosen = PresentationHelper.MenuLoop(locationInfo.Item1, 1, locationInfo.Item2);
+
+        LocationModel? locationModel = locationNumbChosen == 1 ? null : LocationLogic.GetAllLocations()[locationNumbChosen - 2];
 
         AssignedRoleModel assignedRoleModel = RoleLogic.GetAssignedRoleByAccountId(account.Id);
 
@@ -98,7 +98,7 @@ public static class Roles
         {
             RoleModel assignedrole = RoleAccess.GetById((int)assignedRoleModel.RoleId);
 
-            if (assignedRoleModel.LocationId == locationModel.Id)
+            if (assignedRoleModel.LocationId == locationModel?.Id)
             {
                 if (assignedrole.LevelAccess == role.LevelAccess)
                 { PresentationHelper.PrintAndEnter($"That is the same role"); return; }
@@ -129,7 +129,7 @@ public static class Roles
                 { PresentationHelper.PrintAndEnter("Cannot change the admin role\n"); }
 
                 if (differentLocation)
-                { RoleLogic.AssignRole((int)role.Id, account.Id, (int)locationModel.Id); }
+                { RoleLogic.AssignRole((int)role.Id, account.Id, locationModel?.Id); }
             }
             else
             {

@@ -1,13 +1,13 @@
 public class LocationModel
 {
 
-    public Int64 Id { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
 
 
     public LocationModel(Int64 id, string name)
     {
-        Id = id;
+        Id = (int)id;
         Name = name;
     }
     public LocationModel(string name)

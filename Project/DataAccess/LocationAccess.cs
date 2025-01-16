@@ -7,13 +7,13 @@ public static class LocationAccess
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
     private static string Table = "Location";
 
-    public static Int64 Write(LocationModel location)
+    public static int Write(LocationModel location)
     {
         string sql = $"INSERT INTO {Table} (name) VALUES (@Name)";
         _connection.Execute(sql, location);
 
         string idSql = "SELECT last_insert_rowid();";
-        Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
+        int lastId = _connection.ExecuteScalar<int>(idSql);
 
         return lastId;
     }

@@ -156,7 +156,7 @@ public static class Coupon
     {
         Console.Clear();
         AccountsLogic accountsLogic = new AccountsLogic();
-        List<AccountModel> accounts = accountsLogic.GetAllAccounts();
+        List<AccountModel> accounts = AccountsLogic.GetAllAccounts();
         Dictionary<int, int> ValidInputs = new Dictionary<int, int>();
         string text = "";
         int count = 0;

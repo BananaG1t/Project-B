@@ -8,13 +8,13 @@ public static class RoleLevelAccess
 
     private static string Table = "RoleLevel";
 
-    public static Int64 Write(RoleLevelModel RoleLevel)
+    public static int Write(RoleLevelModel RoleLevel)
     {
         string sql = $"INSERT INTO {Table} (functionality, level_Needed) VALUES (@Functionalty, @LevelNeeded)";
         _connection.Execute(sql, RoleLevel);
 
         string idSql = "SELECT last_insert_rowid();";
-        Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
+        int lastId = _connection.ExecuteScalar<int>(idSql);
 
         return lastId;
     }

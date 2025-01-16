@@ -147,11 +147,11 @@ public static class LocationLogic
     {
         List<LocationModel> locations = LocationAccess.GetAll();
 
-        string text = "";
+        string text = "[1] All locations (warning: this will include future locations)";
 
         for (int i = 0; i < locations.Count; i++)
         {
-            text += $"[{i + 1}] Name: {locations[i].Name}\n";
+            text += $"\n[{i + 2}] Name: {locations[i].Name}";
         }
 
         return new(text, locations.Count);

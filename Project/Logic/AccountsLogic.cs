@@ -63,10 +63,10 @@ public class AccountsLogic
         }
     }
 
-    public List<AccountModel> GetAllAccounts()
+    public static List<AccountModel> GetAllAccounts()
     { return AccountsAccess.GetAllAccounts(); }
 
-    public Tuple<string, int> GetAccountText()
+    public static Tuple<string, int> GetAccountText()
     {
         List<AccountModel> accounts = GetAllAccounts();
 
@@ -74,7 +74,7 @@ public class AccountsLogic
 
         for (int i = 0; i < accounts.Count; i++)
         {
-            text += $"[{i + 1}] {accounts[i].FullName}\n";
+            text += $"[{i + 1}] {(accounts[i].FullName == null ? $"user{accounts[i].Id}" : accounts[i].FullName)} (id: {accounts[i].Id})\n";
         }
 
         return new(text, accounts.Count);

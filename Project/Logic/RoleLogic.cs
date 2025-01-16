@@ -1,6 +1,6 @@
 public static class RoleLogic
 {
-    public static bool AssignRole(int roleId, int accountId, int locationId)
+    public static bool AssignRole(int roleId, int accountId, int? locationId)
     {
         if (!AssignedRoleAccess.IsAvailable(roleId, locationId, accountId)) return false;
         AssignedRoleModel assignedRoleModel = new(roleId, accountId, locationId);
