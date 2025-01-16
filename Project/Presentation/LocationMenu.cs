@@ -246,6 +246,13 @@ public static class LocationMenu
             text += $"\n{NoScheduleLocations[i].Name} (Coming Soon!)";
         }
 
+        if (IsTesting)
+        {
+            int TestlocationId = PresentationHelper.MenuLoop(text, 1, ScheduleLocations.Count);
+            if (TestlocationId == 0) return null;
+            return ScheduleLocations[TestlocationId - 1];
+        }
+
         int locationId = PresentationHelper.MenuLoop(text, 1, ScheduleLocations.Count);
         return ScheduleLocations[locationId - 1];
     }

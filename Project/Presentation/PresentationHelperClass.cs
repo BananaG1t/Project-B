@@ -89,24 +89,49 @@ public static class PresentationHelper
         // loop logic to make sure the input is a number and check if the number is a valid choice
         while (true)
         {
-            // print the question
-            Console.WriteLine(text);
-
-            // ask the user for input and check if its and int
-            if (!int.TryParse(Console.ReadLine(), out int output))
+            if (!IsTesting)
             {
-                Error("Must enter a number");
-                continue;
-            }
+                // print the question
+                Console.WriteLine(text);
 
-            if (!valid.Contains(output))
+                // ask the user for input and check if its and int
+                if (!int.TryParse(Console.ReadLine(), out int output))
+                {
+                    Error("Must enter a number");
+                    continue;
+                }
+
+                if (!valid.Contains(output))
+                {
+                    Error("Input is not valid");
+                    continue;
+                }
+
+                // when it passes all the test return the output
+                return output;
+            }
+            
+            else
             {
-                Error("Input is not valid");
-                continue;
-            }
+               // print the question
+                Console.WriteLine(text);
 
-            // when it passes all the test return the output
-            return output;
+                // ask the user for input and check if its and int
+                if (!int.TryParse(Console.ReadLine(), out int output))
+                {
+                    Error("Must enter a number");
+                    return 0;
+                }
+
+                if (!valid.Contains(output))
+                {
+                    Error("Input is not valid");
+                    return 0;
+                }
+
+                // when it passes all the test return the output
+                return output; 
+            }
         }
     }
 
