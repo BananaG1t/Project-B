@@ -14,14 +14,18 @@ static class Order
         
         List<int> valid = [];
 
-        foreach (OrderModel order in orders)
+        for (int i = 0; i < orders.Count; i++)
         {
-            ScheduleModel schedule = ScheduleLogic.GetById(order.ScheduleId);
-            text += $"\n[{order.Id}] Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seats: {order.Amount}, Bar: {order.Bar}";
-            valid.Add(order.Id);
+            ScheduleModel schedule = ScheduleLogic.GetById(orders[i].ScheduleId);
+            text += $"\n[{i +1}] Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seats: {orders[i].Amount}, Bar: {orders[i].Bar}";
         }
-        int answer = PresentationHelper.MenuLoop(text, valid);
-        return orders.First(OrderModel => OrderModel.Id == answer);
+
+        text += "\n[0] Go back";
+
+        int answer = PresentationHelper.MenuLoop(text, 0, orders.Count);
+
+        if (answer == 0) { return null; }
+        return orders[answer - 1];
     }
 
     public static void GetBarReservation(ScheduleModel schedule, int SeatAmount)
