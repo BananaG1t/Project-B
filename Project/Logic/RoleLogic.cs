@@ -3,7 +3,7 @@ public static class RoleLogic
     public static bool AssignRole(int roleId, int accountId, int? locationId)
     {
         if (!AssignedRoleAccess.IsAvailable(roleId, locationId, accountId)) return false;
-        AssignedRoleModel assignedRoleModel = new(roleId, accountId, locationId);
+        _ = new AssignedRoleModel(roleId, accountId, locationId);
         return true;
     }
 
@@ -12,7 +12,7 @@ public static class RoleLogic
         if (RoleAccess.GetByName(roleName) != null || RoleAccess.GetByRoleLevelAccess(LevelAccessMethod) != null)
         { return false; }
 
-        RoleModel roleModel = new(roleName, LevelAccessMethod);
+        _ = new RoleModel(roleName, LevelAccessMethod);
         return true;
     }
 
@@ -21,7 +21,7 @@ public static class RoleLogic
         if (RoleLevelAccess.GetByLevel(roleLevel) != null || RoleLevelAccess.GetByFunctionality(functionalty) != null)
         { return false; }
 
-        RoleLevelModel roleLevelModel = new(functionalty, roleLevel);
+        _ = new RoleLevelModel(functionalty, roleLevel);
         return true;
     }
 
@@ -34,9 +34,9 @@ public static class RoleLogic
     {
         while (true)
         {
-            AssignedRoleModel assignedRoleModel = AssignedRoleAccess.GetByRoleId(roleId);
+            AssignedRoleModel? assignedRoleModel = AssignedRoleAccess.GetByRoleId(roleId);
             if (assignedRoleModel == null) { break; }
-            AssignedRoleAccess.Delete((int)assignedRoleModel.Id);
+            AssignedRoleAccess.Delete(assignedRoleModel.Id);
         }
 
         RoleAccess.Delete(roleId);
@@ -56,16 +56,17 @@ public static class RoleLogic
 
         for (int index = 0; index < assignedRolesroles.Count; index++)
         {
-            RoleModel role = RoleAccess.GetById((int)assignedRolesroles[index].RoleId);
+            RoleModel? role = RoleAccess.GetById(assignedRolesroles[index].RoleId);
+
+            if (role == null) { continue; }
 
             string roleName = role.Name;
-            int roleLevel = (int)role.LevelAccess;
+            int roleLevel = role.LevelAccess;
 
-            string LocationName;
-            string? fullName = AccountsLogic.GetById((int)assignedRolesroles[index].AccountId)?.FullName;
-            if (fullName == "Admin") LocationName = "All";
-            else LocationName = LocationLogic.GetById((int)assignedRolesroles[index].LocationId).Name;
+            int? locationId = assignedRolesroles[index].LocationId;
 
+            string LocationName = locationId != null ? (LocationLogic.GetById((int)locationId) ?? throw new Exception("Location not found")).Name : "All"; // GetById cant be null here cause of foreign key
+            string? fullName = AccountsLogic.GetById(assignedRolesroles[index].AccountId)?.FullName;
             int padding = (int)Math.Ceiling(Math.Ceiling(Math.Log10(assignedRolesroles.Count)) - Math.Log10(index + 1));
 
             // text += String.Format("[{0}] {1,-15} | {2,-13} | {3,-10} | {4,-15}|\n", (index + 1).ToString().PadRight((int)Math.Floor(Math.Log10(assignedRolesroles.Count) + 1)), roleName, roleLevel, fullName, LocationName);
@@ -130,13 +131,13 @@ public static class RoleLogic
         return RoleLevelAccess.GetAllRoleLevels();
     }
 
-    public static AssignedRoleModel GetAssignedRoleByAccountId(int id)
+    public static AssignedRoleModel? GetAssignedRoleByAccountId(int id)
     { return AssignedRoleAccess.GetByAccountId(id); }
 
-    public static RoleModel GetRoleById(int id)
+    public static RoleModel? GetRoleById(int id)
     { return RoleAccess.GetById(id); }
 
-    public static RoleLevelModel GetRoleLevelById(int id)
+    public static RoleLevelModel? GetRoleLevelById(int id)
     { return RoleLevelAccess.GetById(id); }
 
     public static List<int> GetValidLevelAccess()
@@ -145,7 +146,7 @@ public static class RoleLogic
 
         foreach (RoleLevelModel role in RoleLevelAccess.GetAllRoleLevels())
         {
-            validLevels.Add((int)role.LevelNeeded);
+            validLevels.Add(role.LevelNeeded);
         }
 
         return validLevels;
@@ -154,7 +155,7 @@ public static class RoleLogic
 
     public static bool HasAccess(AccountModel account, string functionaltyName)
     {
-        AssignedRoleModel assignedRoleModel = AssignedRoleAccess.GetByAccountId(account.Id);
+        AssignedRoleModel? assignedRoleModel = AssignedRoleAccess.GetByAccountId(account.Id);
         if (assignedRoleModel == null) { return false; }
 
         RoleLevelModel? roleLevelModel;
@@ -167,7 +168,8 @@ public static class RoleLogic
             else { break; }
         }
 
-        RoleModel roleModel = RoleAccess.GetById((int)assignedRoleModel.RoleId);
+        RoleModel? roleModel = RoleAccess.GetById(assignedRoleModel.RoleId);
+        if (roleModel == null) { return false; }
 
         if (roleModel.LevelAccess >= roleLevelModel.LevelNeeded)
             return true;
@@ -177,10 +179,11 @@ public static class RoleLogic
 
     public static bool HasAccess(AccountModel account, int levelNeeded)
     {
-        AssignedRoleModel assignedRoleModel = AssignedRoleAccess.GetByAccountId(account.Id);
+        AssignedRoleModel? assignedRoleModel = AssignedRoleAccess.GetByAccountId(account.Id);
         if (assignedRoleModel == null) { return false; }
 
-        RoleModel roleModel = RoleAccess.GetById((int)assignedRoleModel.RoleId);
+        RoleModel? roleModel = RoleAccess.GetById(assignedRoleModel.RoleId);
+        if (roleModel == null) { return false; }
 
         if (roleModel.LevelAccess >= levelNeeded)
             return true;
@@ -209,9 +212,9 @@ public static class RoleLogic
 
     public static RoleModel? GetRoleByAccountId(int accountId)
     {
-        AssignedRoleModel assignedRole = AssignedRoleAccess.GetByAccountId(accountId);
+        AssignedRoleModel? assignedRole = AssignedRoleAccess.GetByAccountId(accountId);
         if (assignedRole == null) { return null; }
-        return RoleAccess.GetById((int)assignedRole.RoleId);
+        return RoleAccess.GetById(assignedRole.RoleId);
     }
 
     public static bool UpdateAssignedRolesByRole(AssignedRoleModel assignedRole, RoleModel role)

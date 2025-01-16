@@ -120,7 +120,7 @@ public static class SnackReservation
         while (!valid)
         {
             Console.WriteLine("What is the name of the snack");
-            string input = Console.ReadLine();
+            string input = Console.ReadLine() ?? "";
 
             if (input != "")
             {
@@ -143,9 +143,9 @@ public static class SnackReservation
         while (!valid)
         {
             Console.WriteLine("What is the price of the snack (0,0): ");
-            string input = Console.ReadLine();
+            string input = Console.ReadLine() ?? "";
 
-            if (input.Contains(".")) { input = input.Replace(".", ","); }
+            if (input.Contains('.')) { input = input.Replace(".", ","); }
 
             if (double.TryParse(input, out price) && price >= 0)
             {
@@ -167,7 +167,7 @@ public static class SnackReservation
         while (!valid)
         {
             Console.WriteLine("Enter how many you want to buy");
-            string input = Console.ReadLine();
+            string input = Console.ReadLine() ?? "";
 
             if (int.TryParse(input, out amount) && amount > 0)
             {

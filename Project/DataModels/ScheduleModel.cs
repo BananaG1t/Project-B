@@ -27,22 +27,23 @@ public class ScheduleModel
         DateTime.TryParseExact(endTime, format, null, System.Globalization.DateTimeStyles.None, out output);
         EndTime = output;
         MovieId = (int)Movie_ID;
-        Movie = MovieAccess.GetById(MovieId);
+        Movie = MovieAccess.GetById(MovieId) ?? throw new Exception("Movie not found"); // can't be null because of foreign key
         AuditoriumId = (int)Auditorium_ID;
-        Auditorium = AuditoriumAcces.GetById(AuditoriumId);
+        Auditorium = AuditoriumAcces.GetById(AuditoriumId) ?? throw new Exception("Auditorium not found"); // can't be null because of foreign key
         LocationId = (int)Location_ID;
-        Location = LocationAccess.GetById(LocationId);
+        Location = LocationAccess.GetById(LocationId) ?? throw new Exception("Location not found"); // can't be null because of foreign key
     }
 
     public ScheduleModel(DateTime startTime, MovieModel movie, AuditoriumModel auditorium, LocationModel location)
     {
         StartTime = startTime;
         Movie = movie;
-        MovieId = (int)Movie.Id;
+        MovieId = Movie.Id;
         Auditorium = auditorium;
-        AuditoriumId = (int)Auditorium.Id;
+        AuditoriumId = Auditorium.Id;
         EndTime = StartTime + Movie.Length;
-        LocationId = (int)location.Id;
+        LocationId = location.Id;
+        Location = location;
         Id = ScheduleAccess.Write(this);
     }
 

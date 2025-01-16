@@ -41,25 +41,25 @@ public static class AssignedRoleAccess
         return _connection.ExecuteScalar<int>(sql, new { RoleId = roleId, LocationId = locationId, AccountId = accountId }) == 0;
     }
 
-    public static AssignedRoleModel GetById(int id)
+    public static AssignedRoleModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<AssignedRoleModel>(sql, new { Id = id });
     }
 
-    public static AssignedRoleModel GetByRoleId(int RoleIdMethod)
+    public static AssignedRoleModel? GetByRoleId(int RoleIdMethod)
     {
         string sql = $"SELECT * FROM {Table} WHERE Role = @RoleId";
         return _connection.QueryFirstOrDefault<AssignedRoleModel>(sql, new { RoleId = RoleIdMethod });
     }
 
-    public static AssignedRoleModel GetByAccountId(int AccountIdMethod)
+    public static AssignedRoleModel? GetByAccountId(int AccountIdMethod)
     {
         string sql = $"SELECT * FROM {Table} WHERE Account_ID = @AccountId";
         return _connection.QueryFirstOrDefault<AssignedRoleModel>(sql, new { AccountId = AccountIdMethod });
     }
 
-    public static AssignedRoleModel GetByLocationId(int LocationIdMethod)
+    public static AssignedRoleModel? GetByLocationId(int LocationIdMethod)
     {
         string sql = $"SELECT * FROM {Table} WHERE Location_ID = @Id";
         return _connection.QueryFirstOrDefault<AssignedRoleModel>(sql, new { Id = LocationIdMethod });

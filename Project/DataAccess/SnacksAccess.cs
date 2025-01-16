@@ -18,7 +18,7 @@ public static class SnacksAccess
 
         return lastId;
     }
-    public static SnacksModel GetById(int id)
+    public static SnacksModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<SnacksModel>(sql, new { Id = id });

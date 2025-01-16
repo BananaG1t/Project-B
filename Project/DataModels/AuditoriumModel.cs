@@ -1,7 +1,6 @@
 public class AuditoriumModel
 {
-
-    public Int64 Id { get; set; }
+    public int Id { get; set; }
     public int Room { get; set; }
 
     public string? Type { get; set; }
@@ -13,11 +12,11 @@ public class AuditoriumModel
 
     public AuditoriumModel(Int64 id, Int64 room, string type, Int64 total_seats)
     {
-        Id = id;
+        Id = (int)id;
         Room = (int)room;
         Type = type;
         Total_seats = (int)total_seats;
-        Seats = Logic.GetSeats(Id);
+        Seats = AuditoriumLogic.GetSeats(Id);
     }
 
     public AuditoriumModel(int room, string? type)
@@ -29,12 +28,11 @@ public class AuditoriumModel
             1 => 150,
             2 => 300,
             3 => 500,
+            _ => throw new NotImplementedException(),
         };
         Id = AuditoriumAcces.Write(this);
-        Seats = Logic.CreateSeats(Id, Room);
+        Seats = AuditoriumLogic.CreateSeats(Id, Room);
     }
-
-
 }
 
 

@@ -23,7 +23,7 @@ public static class LocationAccess
         _connection.Execute(sql, snack);
     }
 
-    public static LocationModel GetById(int id)
+    public static LocationModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<LocationModel>(sql, new { Id = id });

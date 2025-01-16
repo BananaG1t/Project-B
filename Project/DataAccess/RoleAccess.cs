@@ -31,19 +31,19 @@ public static class RoleAccess
         _connection.Execute(sql, new { Id = id });
     }
 
-    public static RoleModel GetById(int id)
+    public static RoleModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<RoleModel>(sql, new { Id = id });
     }
 
-    public static RoleModel GetByRoleLevelAccess(int LevelAccessMethod)
+    public static RoleModel? GetByRoleLevelAccess(int LevelAccessMethod)
     {
         string sql = $"SELECT * FROM {Table} WHERE level_Access = @LevelAccess";
         return _connection.QueryFirstOrDefault<RoleModel>(sql, new { LevelAccess = LevelAccessMethod });
     }
 
-    public static RoleModel GetByName(string RoleNameMethod)
+    public static RoleModel? GetByName(string RoleNameMethod)
     {
         string sql = $"SELECT * FROM {Table} WHERE name = @RoleName";
         return _connection.QueryFirstOrDefault<RoleModel>(sql, new { RoleName = RoleNameMethod });

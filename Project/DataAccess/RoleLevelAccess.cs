@@ -30,13 +30,13 @@ public static class RoleLevelAccess
         _connection.Execute(sql, new { Id = id });
     }
 
-    public static RoleLevelModel GetById(int id)
+    public static RoleLevelModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<RoleLevelModel>(sql, new { Id = id });
     }
 
-    public static RoleLevelModel GetByLevel(int level)
+    public static RoleLevelModel? GetByLevel(int level)
     {
         string sql = $"SELECT * FROM {Table} WHERE level_Needed = @LevelNeeded";
         return _connection.QueryFirstOrDefault<RoleLevelModel>(sql, new { LevelNeeded = level });

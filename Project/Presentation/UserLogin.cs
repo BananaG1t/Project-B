@@ -62,7 +62,7 @@ static class UserLogin
             password = Console.ReadLine();
             if (password == "1") Menu.Start();
             Console.Clear();
-            valid = accountsLogic.Validinfo(email, password);
+            valid = AccountsLogic.Validinfo(email, password);
             if (valid == 1) { PresentationHelper.Error("Invalid email"); }
             else if (valid == 2) { PresentationHelper.Error("Account with this email already exists"); }
             else if (valid == 3) { PresentationHelper.Error("Invalid password"); }

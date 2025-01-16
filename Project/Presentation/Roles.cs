@@ -89,14 +89,14 @@ public static class Roles
 
         LocationModel? locationModel = locationNumbChosen == 1 ? null : LocationLogic.GetAllLocations()[locationNumbChosen - 2];
 
-        AssignedRoleModel assignedRoleModel = RoleLogic.GetAssignedRoleByAccountId(account.Id);
+        AssignedRoleModel? assignedRoleModel = RoleLogic.GetAssignedRoleByAccountId(account.Id);
 
         bool differentLocation = false;
         bool differentRole = false;
 
         if (assignedRoleModel != null)
         {
-            RoleModel assignedrole = RoleAccess.GetById((int)assignedRoleModel.RoleId);
+            RoleModel assignedrole = RoleAccess.GetById(assignedRoleModel.RoleId) ?? throw new Exception("Role not found");
 
             if (assignedRoleModel.LocationId == locationModel?.Id)
             {
@@ -129,17 +129,17 @@ public static class Roles
                 { PresentationHelper.PrintAndEnter("Cannot change the admin role\n"); }
 
                 if (differentLocation)
-                { RoleLogic.AssignRole((int)role.Id, account.Id, locationModel?.Id); }
+                { RoleLogic.AssignRole(role.Id, account.Id, locationModel?.Id); }
             }
             else
             {
                 if (differentLocation)
-                { RoleLogic.AssignRole((int)role.Id, account.Id, (int)locationModel.Id); }
+                { RoleLogic.AssignRole(role.Id, account.Id, locationModel?.Id); }
             }
         }
 
         if (!differentLocation && !differentRole)
-        { RoleLogic.AssignRole((int)role.Id, account.Id, (int)locationModel.Id); }
+        { RoleLogic.AssignRole(role.Id, account.Id, locationModel?.Id); }
 
     }
 

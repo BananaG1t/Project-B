@@ -31,11 +31,11 @@ static class Menu
             }
             else if (functionality == functionalities[1])
             {
-                AddMovieMenu.Main();
+                AddMovieMenu.AddMovie();
             }
             else if (functionality == functionalities[2])
             {
-                CreateScheduleEntry.Main(account);
+                CreateScheduleEntry.AddSchedule(account);
             }
             else if (functionality == functionalities[3])
             {
@@ -133,6 +133,4 @@ static class Menu
 
         Start();
     }
-
-
 }

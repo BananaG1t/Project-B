@@ -8,7 +8,7 @@ public class AuditoriumLogic
 
     }
 
-    public Dictionary<(int Row, int Collum), SeatModel> CreateSeats(Int64 id, int room_id)
+    public static Dictionary<(int Row, int Collum), SeatModel> CreateSeats(Int64 id, int room_id)
     {
         Dictionary<(int Row, int Collum), SeatModel> Seats = [];
         List<AuditoriumLayoutModel> layout = AuditoriumLayoutAccess.GetById(room_id);
@@ -20,7 +20,7 @@ public class AuditoriumLogic
         return Seats;
     }
 
-    public Dictionary<(int Row, int Collum), SeatModel> GetSeats(Int64 id)
+    public static Dictionary<(int Row, int Collum), SeatModel> GetSeats(Int64 id)
     {
         Dictionary<(int Row, int Collum), SeatModel> Seats = [];
         List<SeatModel> seats = SeatsAccess.GetByRoom((int)id);

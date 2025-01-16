@@ -59,7 +59,7 @@ static class Schedule
         int confirmChoice = PresentationHelper.MenuLoop(confirmText, 1, 2);
         if (confirmChoice == 1)
         {
-            CreateScheduleEntry.Main(account);
+            CreateScheduleEntry.AddSchedule(account);
         }
         else if (confirmChoice == 2)
         {

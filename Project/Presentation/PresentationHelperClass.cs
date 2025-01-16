@@ -7,7 +7,7 @@ public static class PresentationHelper
         do
         {
             Console.WriteLine(text);
-            output = Console.ReadLine();
+            output = Console.ReadLine() ?? "";
 
             if (output.Count() == 0)
             { PrintInRed($"That is not a valid {variableName}"); }
@@ -27,7 +27,7 @@ public static class PresentationHelper
         do
         {
             Console.WriteLine(text);
-            output = Console.ReadLine();
+            output = Console.ReadLine() ?? "";
 
             if (!TimeSpan.TryParse(output, out ValidTimeSpan))
             { PrintInRed($"Invalid format. Please try again"); }
@@ -45,7 +45,7 @@ public static class PresentationHelper
         do
         {
             Console.WriteLine(text);
-            string input = Console.ReadLine();
+            string input = Console.ReadLine() ?? "";
 
             if (!int.TryParse(input, out output))
             { PrintInRed($"That is not a valid number"); }
@@ -63,7 +63,7 @@ public static class PresentationHelper
         do
         {
             Console.WriteLine(text);
-            string input = Console.ReadLine().Replace(".", ",");
+            string input = (Console.ReadLine() ?? "").Replace(".", ",");
 
             if (!double.TryParse(input, out output))
             { PrintInRed($"That is not a valid number"); }
@@ -159,9 +159,9 @@ public static class PresentationHelper
         while (!valid)
         {
             Console.WriteLine(text);
-            string input = Console.ReadLine();
+            string input = Console.ReadLine() ?? "";
 
-            if (input.Contains(",")) { input = input.Replace(",", "."); }
+            if (input.Contains(',')) { input = input.Replace(",", "."); }
 
             if (float.TryParse(input, out price) && price > 0)
             {
@@ -183,7 +183,7 @@ public static class PresentationHelper
         while (!valid)
         {
             Console.WriteLine(text);
-            string input = Console.ReadLine();
+            string input = Console.ReadLine() ?? "";
 
             if (input.Contains(",")) { input = input.Replace(",", "."); }
 

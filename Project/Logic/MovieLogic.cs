@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-
-
-//This class is not static so later on we can use inheritance and interfaces
+﻿//This class is not static so later on we can use inheritance and interfaces
 public class MovieLogic
 {
 
@@ -18,7 +12,7 @@ public class MovieLogic
         // Could do something here
     }
 
-    public MovieModel GetById(int id)
+    public static MovieModel? GetById(int id)
     {
         return MovieAccess.GetById(id);
     }
@@ -37,12 +31,12 @@ public class MovieLogic
         new MovieModel(name, director, description, length, genre, agerating, movierating);
     }
 
-    public void UpdateMovie(string name, string director, string description, TimeSpan length, string genre, int agerating, double movierating, int id)
+    public static void UpdateMovie(string name, string director, string description, TimeSpan length, string genre, int agerating, double movierating, int id)
     {
         MovieAccess.Update(new MovieModel(name, director, description, length, genre, agerating, movierating), id);
     }
 
-    public void DeleteMovie(int id) { MovieAccess.Delete(id); }
+    public static void DeleteMovie(int id) { MovieAccess.Delete(id); }
 }
 
 

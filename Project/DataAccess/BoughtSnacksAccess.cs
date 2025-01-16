@@ -25,7 +25,7 @@ public static class BoughtSnacksAccess
         _connection.Execute(sql, new { ReservationId = reservation_id, SnackId = snack_id, Amount = amount });
     }
 
-    public static BoughtSnacksModel GetById(int id)
+    public static BoughtSnacksModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<BoughtSnacksModel>(sql, new { Id = id });

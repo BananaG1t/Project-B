@@ -2,10 +2,10 @@ public static class LocationLogic
 {
     public static void Add(string name)
     {
-        new LocationModel(name);
+        _ = new LocationModel(name);
     }
 
-    public static LocationModel GetById(int id)
+    public static LocationModel? GetById(int id)
     {
         return LocationAccess.GetById(id);
     }
@@ -25,7 +25,7 @@ public static class LocationLogic
         return LocationAccess.GetAllLocationsWithNoSchedules();
     }
 
-    public static void update(LocationModel location)
+    public static void Update(LocationModel location)
     {
         LocationAccess.Update(location);
     }
@@ -112,7 +112,7 @@ public static class LocationLogic
         {
             foreach (var seat in seats)
             {
-                SeatsAccess.Delete((int)seat.Id);
+                SeatsAccess.Delete(seat.Id);
             }
         }
 
@@ -128,7 +128,7 @@ public static class LocationLogic
         {
             foreach (var auditorium in auditoriums)
             {
-                AuditoriumAcces.Delete((int)auditorium.Id);
+                AuditoriumAcces.Delete(auditorium.Id);
             }
         }
 
@@ -136,7 +136,7 @@ public static class LocationLogic
         {
             foreach (var assignedrole in assignedroles)
             {
-                AssignedRoleAccess.Delete((int)assignedrole.Id);
+                AssignedRoleAccess.Delete(assignedrole.Id);
             }
         }
 

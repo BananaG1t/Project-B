@@ -4,7 +4,7 @@ public static class ActiveCouponsLogic
     {
         ActiveCouponsAccess.Write(Account_ID, Coupon_ID, Uses);
     }
-    public static ActiveCouponsModel GetById(int id)
+    public static ActiveCouponsModel? GetById(int id)
     {
         return ActiveCouponsAccess.GetById(id);
     }
@@ -20,7 +20,7 @@ public static class ActiveCouponsLogic
 
     public static bool CheckCoupon(int id) // added bool to check if coupon already exsits in database
     {
-        ActiveCouponsModel coupon = ActiveCouponsAccess.GetById(id);
+        ActiveCouponsModel? coupon = GetById(id);
         if (coupon == null) return true;
         else return false;
     }

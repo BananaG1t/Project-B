@@ -20,7 +20,7 @@ public static class ReservationAcces
         return lastId;
     }
 
-    public static ReservationModel GetById(int id)
+    public static ReservationModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<ReservationModel>(sql, new { Id = id });

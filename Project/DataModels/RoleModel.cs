@@ -14,7 +14,7 @@ public class RoleModel
     public RoleModel(string name, int level_Access)
     {
         Name = name;
-        LevelAccess = (int)level_Access;
+        LevelAccess = level_Access;
         Id = RoleAccess.Write(this);
     }
 }
