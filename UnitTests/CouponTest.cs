@@ -78,7 +78,7 @@ public class CouponTests
             DateTime result = DateTime.MinValue;
             try
             {
-                PresentationHelper.IsTesting = true
+                PresentationHelper.IsTesting = true;
                 result = PresentationHelper.ValidDate("Enter a valid date (dd-MM-yyyy):");
             }
             catch (FormatException)
@@ -96,7 +96,7 @@ public class CouponTests
                 Assert.AreEqual(DateTime.MinValue, result);
             }
         }
-        PresentationHelper.IsTesting = false
+        PresentationHelper.IsTesting = false;
     }
 }
 
