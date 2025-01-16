@@ -5,6 +5,11 @@ class OrderLogic
 
     }
 
+    public static int Write(OrderModel order)
+    {
+        return OrderAccess.Write(order);
+    }
+
     public static OrderModel? GetById(int id)
     {
         return OrderAccess.GetById(id);

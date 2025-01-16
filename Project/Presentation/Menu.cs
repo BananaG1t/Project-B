@@ -13,7 +13,7 @@ static class Menu
         //admin menu
         List<string> usedFunctionalities = RoleLogic.GetMenuOptions(account);
 
-        string text = $"Staff menu: {RoleLogic.GetRoleByAccountId(account.Id).Name}";
+        string text = $"Staff menu: {RoleLogic.GetRoleByAccountId(account.Id)?.Name}";
 
         for (int i = 0; i < usedFunctionalities.Count; i++)
         {
@@ -104,7 +104,7 @@ static class Menu
             {
                 LocationModel? location = LocationMenu.SelectLocation(CurrentAccount);
                 if (location is not null)
-                    ReservationLogic.GetReservation(CurrentAccount, location);
+                    Reservation.GetReservation(CurrentAccount, location);
             }
 
             else if (input == 2)
