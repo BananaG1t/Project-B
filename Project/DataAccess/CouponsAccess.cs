@@ -72,4 +72,9 @@ public static class CouponsAccess
 
         return Coupons;
     }
+        public static CouponModel GetByCode(string couponCode)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE Coupon_Code = @CouponCode";
+        return _connection.QueryFirstOrDefault<CouponModel>(sql, new { CouponCode = couponCode });
+    }
 }
