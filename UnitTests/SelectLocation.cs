@@ -107,5 +107,8 @@ public class TestSelectLocationFunction
             }
         }
         
+        LocationMenu.IsTesting = false;
+        PresentationHelper.IsTesting = false;
+
     }
 }

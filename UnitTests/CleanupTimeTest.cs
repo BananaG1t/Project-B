@@ -71,5 +71,7 @@ public class CleanupTime
                 Assert.AreEqual(result.ToString(), expected);
             } 
         }
+
+        CreateScheduleEntry.IsTesting = false;
     }
 }
