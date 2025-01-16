@@ -15,23 +15,6 @@ class OrderLogic
         return OrderAccess.GetFromAccount(account);
     }
 
-    public static OrderModel SelectOrder(AccountModel account)
-    {
-        Console.Clear();
-        string text = "What order do you want to manage?";
-        List<OrderModel> orders = GetFromAccount(account);
-        List<int> valid = [];
-
-        foreach (OrderModel order in orders)
-        {
-            ScheduleModel schedule = ScheduleLogic.GetById(order.ScheduleId);
-            text += $"\n[{order.Id}] Movie: {schedule.Movie.Name}, Date: {schedule.StartTime}, Seats: {order.Amount}, Bar: {order.Bar}";
-            valid.Add(order.Id);
-        }
-        int answer = PresentationHelper.MenuLoop(text, valid);
-        return orders.First(OrderModel => OrderModel.Id == answer);
-    }
-
     public static bool CheckBarSeats(ScheduleModel schedule, int seatAmount)
     {
         try

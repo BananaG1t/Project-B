@@ -109,7 +109,13 @@ static class Menu
 
             else if (input == 2)
             {
-                Reservation.ManageReservations(Order.SelectOrder(CurrentAccount));
+                OrderModel? order = Order.SelectOrder(CurrentAccount);
+                if (order == null)
+                {
+                    continue;
+                }
+
+                Reservation.ManageReservations(order);
             }
             else if (input == 3)
             {
