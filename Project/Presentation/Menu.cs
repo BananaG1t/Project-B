@@ -104,7 +104,7 @@ static class Menu
             {
                 LocationModel? location = LocationMenu.SelectLocation(CurrentAccount);
                 if (location is not null)
-                    ReservationLogic.GetReservation(CurrentAccount, location);
+                    Reservation.GetReservation(CurrentAccount, location);
             }
 
             else if (input == 2)

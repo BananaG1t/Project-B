@@ -403,4 +403,120 @@ static class Reservation
         int answer = PresentationHelper.MenuLoop(text, 1, reservations.Count);
         return reservations[answer - 1];
     }
+
+    public static void GetReservation(AccountModel account, LocationModel location)
+    {
+        // pick a schedule
+        ScheduleModel? schedule = Schedule.SelectSchedule(location);
+        if (schedule is null) { return; }
+
+        // create seats var
+        Dictionary<(int Row, int Collum), SeatModel> seats = schedule.Auditorium.Seats;
+
+        // pick seat amount
+        int amount = SelectSeatAmount();
+
+        int row = 0; int col = 1;
+
+        (row, col) = SeatLogic.FindNextSeat(seats, row, col, amount, "down");
+        if (row == 0)
+        {
+            PresentationHelper.Error("No row of seats available");
+            return;
+        }
+        ConsoleKey input = ConsoleKey.None; 
+
+        do
+        {
+            if (input == ConsoleKey.DownArrow)
+                SeatLogic.FindNextSeat(seats, row, col, amount, "down");
+            else if (input == ConsoleKey.UpArrow)
+                SeatLogic.FindNextSeat(seats, row, col, amount, "up");
+            else if (input == ConsoleKey.LeftArrow)
+                SeatLogic.FindNextSeat(seats, row, col, amount, "left");
+            else if (input == ConsoleKey.RightArrow)
+                SeatLogic.FindNextSeat(seats, row, col, amount, "right");
+            else if (input == ConsoleKey.Backspace)
+                return;
+
+            Seats.DisplaySeats(schedule.Auditorium, row, col, amount);
+            input = Console.ReadKey().Key;
+        } while (input != ConsoleKey.Enter);
+
+        bool bar;
+        if (OrderLogic.CheckBarSeats(schedule, amount))
+        {
+            bar = PresentationHelper.MenuLoop("Do you want to stay at the bar after the movie?\n[1] yes\n[2] no", 1, 2) == 1;
+        }
+        else
+        {
+            PresentationHelper.Error("Sorry, the bar is already full");
+            bar = false;
+        }
+
+        bool useCoupon = PresentationHelper.MenuLoop("Do you want to use a coupon?\n[1] Yes\n[2] No", 1, 2) == 1;
+        CouponModel? selectedCoupon = null;
+        if (useCoupon)
+        {
+            selectedCoupon = Coupon.SelectCoupon();
+            Coupon.PrintDiscount(selectedCoupon);
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
+            Console.Clear();
+        }
+        
+        int? CouponId = selectedCoupon?.Id;
+        if (selectedCoupon != null)
+        {
+            int use = ActiveCouponsLogic.MaxUsesById(account.Id) + 1;
+            _ = new ActiveCouponsModel(account.Id, selectedCoupon.Id, use);
+        }
+
+        OrderModel order = new(account.Id, schedule.Id, amount, bar, CouponId);
+
+        string text = "would you like to buy snacks?\n[1] Yes\n[2] No";
+        bool snack = PresentationHelper.MenuLoop(text, 1, 2) == 1;
+
+        double totalSnackPrice = 0;
+        double totalSeatPrice = 0;
+        for (int i = 0; i < amount; i++)
+        {
+            SeatModel seat = seats[(row, col + i)];
+            totalSeatPrice += seat.Price;
+            seat.IsAvailable = false;
+            SeatLogic.Update(seat);
+            ReservationModel reservation = new(order.Id, seat.Row, seat.Collum);
+            if (snack)
+                totalSnackPrice += SnackReservation.BuySnacks(reservation.Id, i + 1, selectedCoupon);
+        }
+
+        double totalPrice = totalSeatPrice + totalSnackPrice;
+        double totalDiscount = 0;
+        if (selectedCoupon != null)
+        {
+            if (selectedCoupon.CouponType == "Order")
+            {
+                totalDiscount = totalPrice;
+                totalSeatPrice = CouponsLogic.DiscountPrice(totalSeatPrice, selectedCoupon);
+                totalSnackPrice = CouponsLogic.DiscountPrice(totalSnackPrice, selectedCoupon);
+                totalPrice = totalSeatPrice + totalSnackPrice;
+                totalDiscount -= totalPrice;
+            }
+            else if (selectedCoupon.CouponType == "Seats")
+            {
+                totalDiscount = totalPrice;
+                totalSeatPrice = CouponsLogic.DiscountPrice(totalSeatPrice, selectedCoupon);
+                totalPrice = totalSeatPrice + totalSnackPrice;
+                totalDiscount -= totalPrice;
+            }
+            else if (selectedCoupon.CouponType == "Snacks")
+            {
+                totalDiscount = totalPrice;
+                totalSnackPrice = CouponsLogic.DiscountPrice(totalSnackPrice, selectedCoupon);
+                totalPrice = totalSeatPrice + totalSnackPrice;
+                totalDiscount -= totalPrice;
+            }
+        }
+        Console.WriteLine($"Made the reservation{(bar == true ? " with bar" : "")}, Seat price: €{totalSeatPrice:F2}, Snack price: €{totalSnackPrice:F2}, Total price: €{totalPrice:F2}{(totalDiscount > 0 ? $", Discount: €{totalDiscount:F2}" : "")}");
+    }
 }
