@@ -7,7 +7,7 @@ public static class ScheduleAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private static string Table = "Schedule";
+    private static readonly string Table = "Schedule";
 
     public static int Write(ScheduleModel schedule)
     {

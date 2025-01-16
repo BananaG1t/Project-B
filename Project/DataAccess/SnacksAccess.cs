@@ -6,7 +6,7 @@ using Dapper;
 public static class SnacksAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-    private static string Table = "Snacks";
+    private static readonly string Table = "Snacks";
 
     public static int Write(SnacksModel snack)
     {

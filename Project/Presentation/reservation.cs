@@ -153,12 +153,16 @@ static class Reservation
                             return;
                         }
 
-                        SeatModel seat = SeatLogic.GetByReservationInfo(
+                        SeatModel? seat = SeatLogic.GetByReservationInfo(
                             reservation.Seat_Collum,
                             reservation.Seat_Row,
                             schedule.AuditoriumId
-
                         );
+                        if (seat == null)
+                        {
+                            PresentationHelper.Error("Seat not found");
+                            return;
+                        }
                         seat.IsAvailable = true;
                         List<BoughtSnacksModel> snacks = BoughtSnacksLogic.GetFromReservation(reservation);
                         foreach (BoughtSnacksModel snack in snacks)
@@ -226,11 +230,16 @@ static class Reservation
                         return;
                     }
 
-                    SeatModel seat = SeatLogic.GetByReservationInfo(
+                    SeatModel? seat = SeatLogic.GetByReservationInfo(
                         reservation.Seat_Collum,
                         reservation.Seat_Row,
                         schedule.AuditoriumId
                     );
+                    if (seat == null)
+                    {
+                        PresentationHelper.Error("Seat not found");
+                        return;
+                    }
                     seat.IsAvailable = true;
                     order.Amount--;
                     List<BoughtSnacksModel> snacks = BoughtSnacksLogic.GetFromReservation(reservation);
@@ -263,7 +272,7 @@ static class Reservation
                 string snackSelectText = "Select a snack to manage:\n[0] new snack";
                 for (int i = 0; i < boughtSnacks.Count; i++)
                 {
-                    SnacksModel snack = SnacksLogic.GetById(boughtSnacks[i].SnackId);
+                    SnacksModel snack = SnacksLogic.GetById(boughtSnacks[i].SnackId) ?? throw new Exception("Snack not found"); // can't be null due to foreign key constraint
                     snackSelectText += $"\n[{i + 1}] Name: {snack.Name}, Price: {snack.Price:F2}, amount: {boughtSnacks[i].Amount}, total price: {snack.Price * boughtSnacks[i].Amount:F2}";
                 }
                 snackSelectText += $"\n[{boughtSnacks.Count + 1}] Back";
@@ -281,7 +290,7 @@ static class Reservation
 
                 else
                 {
-                    SnacksModel snack = SnacksLogic.GetById(boughtSnacks[selectedSnack - 1].SnackId);
+                    SnacksModel snack = SnacksLogic.GetById(boughtSnacks[selectedSnack - 1].SnackId) ?? throw new Exception("Snack not found"); // can't be null due to foreign key constraint
                     string snackManageText = $"What do you want to do with {snack.Name}?\n" +
                     "[1] Change amount\n" +
                     "[2] Remove\n" +

@@ -54,11 +54,11 @@ static class Menu
             else if (functionality == functionalities[6])
             {
                 Console.Clear();
-                SnackReservation.Main();
+                SnackReservation.SnackMenu();
             }
             else if (functionality == functionalities[7])
             {
-                LocationMenu.Main();
+                LocationMenu.MainMenu();
             }
             else if (functionality == functionalities[8])
             {
@@ -76,7 +76,7 @@ static class Menu
 
     static public void Start()
     {
-        Console.Clear();
+        //Console.Clear();
         // get a valid input number
         string text = $"Enter [1] to login\nEnter [2] to create new account";
         int input = PresentationHelper.MenuLoop(text, 1, 2);
@@ -85,7 +85,7 @@ static class Menu
         else if (input == 2) { UserLogin.CreateLogin(); }
     }
 
-    public static void Main(AccountModel CurrentAccount)
+    public static void MainMenu(AccountModel CurrentAccount)
     {
         while (true)
         {

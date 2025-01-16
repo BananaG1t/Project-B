@@ -6,7 +6,7 @@ public static class RoleLevelAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private static string Table = "RoleLevel";
+    private static readonly string Table = "RoleLevel";
 
     public static int Write(RoleLevelModel RoleLevel)
     {

@@ -4,7 +4,7 @@ public static class CouponsLogic
     {
         new CouponModel(couponCode, expirationDate, couponType, couponPercentage, amount);
     }
-    public static CouponModel GetById(int id)
+    public static CouponModel? GetById(int id)
     {
         return CouponsAccess.GetById(id);
     }

@@ -8,11 +8,11 @@ static class UserLogin
         Console.Clear();
         Console.WriteLine("Welcome to the login page");
         Console.WriteLine("Please enter your email address");
-        string email = Console.ReadLine();
+        string email = Console.ReadLine() ?? "";
         Console.WriteLine("Please enter your password");
-        string password = Console.ReadLine();
+        string password = Console.ReadLine() ?? "";
         Console.Clear();
-        AccountModel acc = accountsLogic.CheckLogin(email, password);
+        AccountModel? acc = accountsLogic.CheckLogin(email, password);
         if (acc != null)
         {
             Console.WriteLine("Welcome back " + acc.FullName);
@@ -23,12 +23,8 @@ static class UserLogin
             }
             else
             {
-                Menu.Main(acc);
+                Menu.MainMenu(acc);
             }
-
-
-            //Write some code to go back to the menu
-            //Menu.Start();
         }
         else
         {
@@ -56,10 +52,10 @@ static class UserLogin
             fullname = Console.ReadLine();
             if (fullname == "1") Menu.Start();
             Console.WriteLine("Please enter your email address");
-            email = Console.ReadLine();
+            email = Console.ReadLine() ?? "";
             if (email == "1") Menu.Start();
             Console.WriteLine("Please enter your password");
-            password = Console.ReadLine();
+            password = Console.ReadLine() ?? "";
             if (password == "1") Menu.Start();
             Console.Clear();
             valid = AccountsLogic.Validinfo(email, password);
@@ -72,6 +68,6 @@ static class UserLogin
         AccountModel newacc = new AccountModel(email, password, fullname);
         Console.WriteLine($"Welcome {newacc.FullName}");
         Console.WriteLine($"Your email number is {newacc.EmailAddress}");
-        Menu.Main(newacc);
+        Menu.MainMenu(newacc);
     }
 }

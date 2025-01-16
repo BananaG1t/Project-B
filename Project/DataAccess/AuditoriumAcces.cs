@@ -7,7 +7,7 @@ public static class AuditoriumAcces
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private static string Table = "Auditorium";
+    private static readonly string Table = "Auditorium";
 
     public static int Write(AuditoriumModel auditorium)
     {

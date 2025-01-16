@@ -1,6 +1,6 @@
 static class LocationMenu
 {
-    public static void Main()
+    public static void MainMenu()
     {
         string text =
         "Locations menu:\n" +
