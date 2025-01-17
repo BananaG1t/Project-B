@@ -232,8 +232,6 @@ public static class LocationMenu
             NoScheduleLocations = LocationLogic.GetAllLocationsWithNoSchedules();
         }
 
-        NoScheduleLocations = NoScheduleLocations.Except(ScheduleLocations).ToList();
-
         // Adds all locations with schedules to dict and as a valid option for reserving
         for (int i = 0; i < ScheduleLocations.Count; i++)
         {
