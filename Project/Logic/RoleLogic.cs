@@ -67,6 +67,7 @@ public static class RoleLogic
 
             string LocationName = locationId != null ? (LocationLogic.GetById((int)locationId) ?? throw new Exception("Location not found")).Name : "All"; // GetById cant be null here cause of foreign key
             string? fullName = AccountsLogic.GetById(assignedRolesroles[index].AccountId)?.FullName;
+            fullName ??= $"user{assignedRolesroles[index].AccountId}";
             int padding = (int)Math.Ceiling(Math.Ceiling(Math.Log10(assignedRolesroles.Count)) - Math.Log10(index + 1));
 
             // text += String.Format("[{0}] {1,-15} | {2,-13} | {3,-10} | {4,-15}|\n", (index + 1).ToString().PadRight((int)Math.Floor(Math.Log10(assignedRolesroles.Count) + 1)), roleName, roleLevel, fullName, LocationName);
