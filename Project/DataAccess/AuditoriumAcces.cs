@@ -39,6 +39,14 @@ public static class AuditoriumAcces
         return (List<AuditoriumModel>)_connection.Query<AuditoriumModel>(sql, schedule);
     }
 
+    public static List<AuditoriumModel> GetAll()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        List<AuditoriumModel> auditoriums = (List<AuditoriumModel>)_connection.Query<AuditoriumModel>(sql);
+
+        return auditoriums;
+    }
+
     public static void Update(AuditoriumModel auditorium)
     {
         string sql = $"UPDATE {Table} SET email = @EmailAddress, password = @Password, fullname = @FullName WHERE id = @Id";

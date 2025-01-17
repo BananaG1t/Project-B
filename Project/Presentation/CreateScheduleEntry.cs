@@ -1,5 +1,8 @@
 public static class CreateScheduleEntry
 {
+    // this for only to ignore the exception caused by Console.Clear() in the test environment
+    public static bool IsTesting { get; set; } = false;
+
     public static void AddSchedule(AccountModel account)
     {
         LocationModel? location = LocationMenu.SelectLocation(account, canAdd: true, addSchedule: true);
@@ -67,13 +70,16 @@ public static class CreateScheduleEntry
         return Movies[answer - 1];
     }
 
-    private static DateTime SelectDate(int room, TimeSpan length, int locationId)
+    public static DateTime SelectDate(int room, TimeSpan length, int locationId)
     {
         string text = "When do you want to show the movie? (dd-MM-yyyy-HH-mm)";
         DateTime date;
         date = PresentationHelper.ValidDate(text, format: "dd-MM-yyyy-HH-mm");
 
-        Console.Clear();
+        if (!IsTesting)
+        {
+            Console.Clear();
+        }
         if (!ScheduleLogic.IsAvailable(room, date, length, locationId))
         {
             Console.WriteLine("There is already a movie playing on that time");

@@ -44,6 +44,14 @@ public static class SeatsAccess
         return _connection.QueryFirstOrDefault<AccountModel>(sql, new { Email = email });
     }
 
+    public static List<SeatModel> GetAll()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        List<SeatModel> seats = (List<SeatModel>)_connection.Query<SeatModel>(sql);
+
+        return seats;
+    }
+
     public static void Update(SeatModel seat)
     {
         string sql = $"UPDATE {Table} SET IsAvailable = @IsAvailable WHERE id = @Id";

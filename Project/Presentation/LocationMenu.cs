@@ -1,5 +1,8 @@
-static class LocationMenu
+public static class LocationMenu
 {
+    // this for only to ignore the exception caused by Console.Clear() in the test environment
+    public static bool IsTesting { get; set; } = false;
+
     public static void MainMenu()
     {
         string text =
@@ -172,7 +175,10 @@ static class LocationMenu
     }
     public static LocationModel? SelectLocation(AccountModel account, bool canAdd = false, bool addSchedule = false)
     {
-        Console.Clear();
+        if (!IsTesting)
+        {
+            Console.Clear();
+        }
         string text = "At which location do you want to see?";
         List<LocationModel> locations = LocationLogic.GetAll();
         List<LocationModel> ScheduleLocations = ScheduleAccess.GetAllLocationsWithSchedules();
@@ -236,6 +242,13 @@ static class LocationMenu
         for (int i = 0; i < NoScheduleLocations.Count; i++)
         {
             text += $"\n{NoScheduleLocations[i].Name} (Coming Soon!)";
+        }
+
+        if (IsTesting)
+        {
+            int TestlocationId = PresentationHelper.MenuLoop(text, 1, ScheduleLocations.Count);
+            if (TestlocationId == 0) return null;
+            return ScheduleLocations[TestlocationId - 1];
         }
 
         int locationId = PresentationHelper.MenuLoop(text, 1, ScheduleLocations.Count);

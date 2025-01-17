@@ -61,12 +61,12 @@ public static class ReservationAcces
         return _connection.QueryFirstOrDefault<Int64>(sql, new { Id = Account_id });
     }
 
-    public static List<SnacksModel> GetAll()
+    public static List<ReservationModel> GetAll()
     {
-        string sql = $"SELECT id, name, price FROM {Table}";
-        List<SnacksModel> Snacks = (List<SnacksModel>)_connection.Query<SnacksModel>(sql);
+        string sql = $"SELECT * FROM {Table}";
+        List<ReservationModel> reservations = (List<ReservationModel>)_connection.Query<ReservationModel>(sql);
 
-        return Snacks;
+        return reservations;
     }
 
     public static List<ReservationModel> GetAllActive()
