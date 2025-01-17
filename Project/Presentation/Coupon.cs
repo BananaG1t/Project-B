@@ -78,7 +78,7 @@ public static class Coupon
 
         Console.WriteLine($"\nCoupon used for {couponType} expiration date: {expirationDate} coupon code: {couponCode} added");
         Console.WriteLine("Press any key to go back");
-        Console.ReadKey();
+        if (!IsTesting) { Console.ReadKey(); }
     }
 
     public static void DisplayCouponsAdmin()
