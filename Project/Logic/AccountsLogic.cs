@@ -21,9 +21,9 @@ public class AccountsLogic
         return AccountsAccess.GetByEmail(email);
     }
 
-    public AccountModel CheckLogin(string email, string password)
+    public AccountModel? CheckLogin(string email, string password)
     {
-        AccountModel acc = AccountsAccess.GetByEmail(email);
+        AccountModel? acc = AccountsAccess.GetByEmail(email);
         if (acc != null && acc.Password == password)
         {
             CurrentAccount = acc;
@@ -32,41 +32,37 @@ public class AccountsLogic
         return null;
     }
 
-    public bool CheckNewEmail(string email) // added bool to check if email already exsits in database
+    public static bool CheckNewEmail(string email) // added bool to check if email already exsits in database
     {
-        AccountModel acc = AccountsAccess.GetByEmail(email);
+        AccountModel? acc = AccountsAccess.GetByEmail(email);
         if (acc == null) return true;
         else return false;
     }
 
-    public bool Validinfo(string email, string password) // check if new email and password are valid 
+    public static int Validinfo(string email, string password) // check if new email and password are valid 
     {
         if (!email.Contains('@') & !email.Contains('.'))
         {
-            Console.WriteLine("Invalid email");
-            return false;
+            return 1;
         }
         else if (!CheckNewEmail(email))
         {
-            Console.WriteLine("Account with this email already exists");
-            return false;
+            return 2;
         }
         else if (password.Length < 1)
         {
-            Console.WriteLine("Invalid password");
-            return false;
+            return 3;
         }
         else
         {
-            Console.WriteLine("New account added");
-            return true;
+            return 0;
         }
     }
 
-    public List<AccountModel> GetAllAccounts()
+    public static List<AccountModel> GetAllAccounts()
     { return AccountsAccess.GetAllAccounts(); }
 
-    public Tuple<string, int> GetAccountText()
+    public static Tuple<string, int> GetAccountText()
     {
         List<AccountModel> accounts = GetAllAccounts();
 
@@ -74,7 +70,7 @@ public class AccountsLogic
 
         for (int i = 0; i < accounts.Count; i++)
         {
-            text += $"[{i + 1}] {accounts[i].FullName}\n";
+            text += $"[{i + 1}] {accounts[i].FullName ?? $"user{accounts[i].Id}"} (id: {accounts[i].Id})\n";
         }
 
         return new(text, accounts.Count);

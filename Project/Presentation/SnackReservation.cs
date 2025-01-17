@@ -1,6 +1,6 @@
 public static class SnackReservation
 {
-    public static void Main()
+    public static void SnackMenu()
     {
         string text =
         "Snack menu\n" +
@@ -53,52 +53,48 @@ public static class SnackReservation
     {
         Console.Clear();
         List<SnacksModel> Snacks = SnacksLogic.GetAll();
-        Dictionary<int, int> ValidInputs = new Dictionary<int, int>();
         string text = "";
-        int count = 0;
 
-        foreach (SnacksModel snack in Snacks)
+        for (int i = 0; i < Snacks.Count; i++)
         {
-            count++;
-            text += $"[{count}] Name: {snack.Name}, Price: {snack.Price:F2}\n";
-            ValidInputs.Add(count, (int)snack.Id);
+            text += $"[{i+1}] Name: {Snacks[i].Name}, Price: {Snacks[i].Price:F2}\n";
         }
 
-        int input = PresentationHelper.MenuLoop(text + "Enter the number of the snack that you would like to update: ", 1, ValidInputs.Count);
+        int input = PresentationHelper.MenuLoop(text + "Enter the number of the snack that you would like to update: ", 1, Snacks.Count);
 
-        SnacksModel OldSnack = SnacksLogic.GetById(ValidInputs[input]);
+        SnacksModel snack = Snacks[input -1];
+        string oldName = snack.Name;
+        double oldPrice = snack.Price;
 
-        string snackName = ValidName();
-        double price = ValidDouble();
+        snack.Name = ValidName();
+        snack.Price = ValidDouble();
 
-        SnacksLogic.update(new SnacksModel(ValidInputs[input], snackName, price));
-        Console.WriteLine($"\nChanged Name: From {OldSnack.Name} to {snackName}\n" +
-        $"Changed Price: From {OldSnack.Price:F2} to {price:F2}\n");
+        SnacksLogic.Update(snack);
+        Console.WriteLine($"\nChanged Name: From {oldName} to {snack.Name}\n" +
+        $"Changed Price: From {oldPrice:F2} to {snack.Price:F2}\n");
     }
 
     public static void DeleteSnacks()
     {
         Console.Clear();
         List<SnacksModel> Snacks = SnacksLogic.GetAll();
-        Dictionary<int, int> ValidInputs = new Dictionary<int, int>();
         string text = "";
-        int count = 0;
 
-        foreach (SnacksModel snack in Snacks)
+        for (int i = 0; i < Snacks.Count; i++)
         {
-            count++;
-            text += $"[{count}] Name: {snack.Name}, Price: {snack.Price:F2}\n";
-            ValidInputs.Add(count, (int)snack.Id);
+            text += $"[{i+1}] Name: {Snacks[i].Name}, Price: {Snacks[i].Price:F2}\n";
         }
 
-        int input = PresentationHelper.MenuLoop(text + "Enter the number of the snack that you would like to remove: ", 1, ValidInputs.Count);
+        int input = PresentationHelper.MenuLoop(text + "Enter the number of the snack that you would like to remove: ", 1, Snacks.Count);
 
-        SnacksModel OldSnack = SnacksLogic.GetById(ValidInputs[input]);
+        SnacksModel snack = Snacks[input -1];
+        string oldName = snack.Name;
+        double oldPrice = snack.Price;
 
-        SnacksLogic.Delete(ValidInputs[input]);
+        SnacksLogic.Delete(snack);
 
         Console.Clear();
-        Console.WriteLine($"Removed Name: {OldSnack.Name}, Price: {OldSnack.Price:F2} from the menu\n");
+        Console.WriteLine($"Removed Name: {oldName}, Price: {oldPrice:F2} from the menu\n");
     }
 
     public static void DisplaySnacks()
@@ -120,7 +116,7 @@ public static class SnackReservation
         while (!valid)
         {
             Console.WriteLine("What is the name of the snack");
-            string input = Console.ReadLine();
+            string input = Console.ReadLine() ?? "";
 
             if (input != "")
             {
@@ -143,9 +139,9 @@ public static class SnackReservation
         while (!valid)
         {
             Console.WriteLine("What is the price of the snack (0,0): ");
-            string input = Console.ReadLine();
+            string input = Console.ReadLine() ?? "";
 
-            if (input.Contains(".")) { input = input.Replace(".", ","); }
+            if (input.Contains('.')) { input = input.Replace(".", ","); }
 
             if (double.TryParse(input, out price) && price >= 0)
             {
@@ -167,7 +163,7 @@ public static class SnackReservation
         while (!valid)
         {
             Console.WriteLine("Enter how many you want to buy");
-            string input = Console.ReadLine();
+            string input = Console.ReadLine() ?? "";
 
             if (int.TryParse(input, out amount) && amount > 0)
             {

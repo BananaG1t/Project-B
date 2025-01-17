@@ -5,7 +5,7 @@ using Dapper;
 public static class CouponsAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-    private static string Table = "Coupons";
+    private static readonly string Table = "Coupons";
 
     public static int Write(CouponModel coupon)
     {
@@ -17,13 +17,13 @@ public static class CouponsAccess
 
         return lastId;
     }
-    public static CouponModel GetById(int id)
+    public static CouponModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<CouponModel>(sql, new { Id = id });
     }
 
-    public static CouponModel GetBySnack(BoughtSnacksModel snack)
+    public static CouponModel? GetBySnack(BoughtSnacksModel snack)
     {
         string sql = $@"Select * 
                         FROM {Table}

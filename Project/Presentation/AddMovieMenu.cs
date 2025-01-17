@@ -1,7 +1,7 @@
 static class AddMovieMenu
 {
     // Add movie menu
-    public static void Main()
+    public static void AddMovie()
     {
         Console.Clear();
 

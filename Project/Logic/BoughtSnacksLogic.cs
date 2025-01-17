@@ -10,7 +10,7 @@ public static class BoughtSnacksLogic
         BoughtSnacksAccess.Update(boughtSnacks);
     }
 
-    public static BoughtSnacksModel GetById(int id)
+    public static BoughtSnacksModel? GetById(int id)
     {
         return BoughtSnacksAccess.GetById(id);
     }

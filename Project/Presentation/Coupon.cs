@@ -50,11 +50,11 @@ public static class Coupon
         if (input == 1)
         {
             percentage = true;
-            amount = CouponsLogic.ValidFloatPercentage("\nEnter the percentage of the coupon (must be between 0-100)", "Invalid input. Please try again\n");
+            amount = PresentationHelper.ValidFloatPercentage("\nEnter the percentage of the coupon (must be between 0-100)", "Invalid input. Please try again\n");
         }
         else if (input == 2)
         {
-            amount = CouponsLogic.ValidFloat("\nEnter the discount price of the coupon", "Invalid input. Please try again\n");
+            amount = PresentationHelper.ValidFloat("\nEnter the discount price of the coupon", "Invalid input. Please try again\n");
         }
         DateTime expirationDate = PresentationHelper.ValidDate("\nEnter the expiration date of the coupon (dd-MM-yyyy)");
 
@@ -110,7 +110,7 @@ public static class Coupon
     {
         Console.Clear();
         List<CouponModel> coupons = CouponsLogic.GetAll();
-        List<CouponModel> availableCoupons = new List<CouponModel>();
+        List<CouponModel> availableCoupons = [];
         int count = 0;
         if (coupons.Count == 0)
         {
@@ -150,28 +150,6 @@ public static class Coupon
         else { return $" {coupon.Amount} Euros"; }
     }
 
-
-    public static AccountModel ChooseAccount()
-    {
-        Console.Clear();
-        AccountsLogic accountsLogic = new AccountsLogic();
-        List<AccountModel> accounts = accountsLogic.GetAllAccounts();
-        Dictionary<int, int> ValidInputs = new Dictionary<int, int>();
-        string text = "";
-        int count = 0;
-
-        foreach (AccountModel account in accounts)
-        {
-            count++;
-            text += $"[{count}] Email: {account.EmailAddress}\n";
-            ValidInputs.Add(count, (int)account.Id);
-        }
-
-        int input = PresentationHelper.MenuLoop("Enter the number of the account that you want to assign the coupon to\n" + text, new List<int>(ValidInputs.Keys));
-        AccountModel chosenAccount = AccountsAccess.GetById(ValidInputs[input]);
-        return chosenAccount;
-    }
-
     public static string Validcode()
     {
         string code;
@@ -180,9 +158,9 @@ public static class Coupon
         {
             Console.WriteLine("\nPlease enter a coupon code: ");
 
-            string input = Console.ReadLine();
+            string input = Console.ReadLine() ?? "";
 
-            if (input.Length >= 0)
+            if (input.Length > 0)
             {
                 code = input;
                 break;
@@ -190,7 +168,6 @@ public static class Coupon
             }
             else
             {
-                Console.Clear();
                 PresentationHelper.Error("Please enter a code");
             }
 
@@ -198,7 +175,7 @@ public static class Coupon
         return code.ToUpper();
     }
 
-    public static CouponModel SelectCoupon()
+    public static CouponModel? SelectCoupon()
     {
         Console.Clear();
         List<CouponModel> coupons = CouponsLogic.GetAll();

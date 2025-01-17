@@ -13,7 +13,7 @@ static class Menu
         //admin menu
         List<string> usedFunctionalities = RoleLogic.GetMenuOptions(account);
 
-        string text = $"Staff menu: {RoleLogic.GetRoleByAccountId(account.Id).Name}";
+        string text = $"Staff menu: {RoleLogic.GetRoleByAccountId(account.Id)?.Name}";
 
         for (int i = 0; i < usedFunctionalities.Count; i++)
         {
@@ -31,11 +31,11 @@ static class Menu
             }
             else if (functionality == functionalities[1])
             {
-                AddMovieMenu.Main();
+                AddMovieMenu.AddMovie();
             }
             else if (functionality == functionalities[2])
             {
-                CreateScheduleEntry.Main(account);
+                CreateScheduleEntry.AddSchedule(account);
             }
             else if (functionality == functionalities[3])
             {
@@ -54,11 +54,11 @@ static class Menu
             else if (functionality == functionalities[6])
             {
                 Console.Clear();
-                SnackReservation.Main();
+                SnackReservation.SnackMenu();
             }
             else if (functionality == functionalities[7])
             {
-                LocationMenu.Main();
+                LocationMenu.MainMenu();
             }
             else if (functionality == functionalities[8])
             {
@@ -85,7 +85,7 @@ static class Menu
         else if (input == 2) { UserLogin.CreateLogin(); }
     }
 
-    public static void Main(AccountModel CurrentAccount)
+    public static void MainMenu(AccountModel CurrentAccount)
     {
         while (true)
         {
@@ -104,7 +104,7 @@ static class Menu
             {
                 LocationModel? location = LocationMenu.SelectLocation(CurrentAccount);
                 if (location is not null)
-                    ReservationLogic.GetReservation(CurrentAccount, location);
+                    Reservation.GetReservation(CurrentAccount, location);
             }
 
             else if (input == 2)
@@ -133,6 +133,4 @@ static class Menu
 
         Start();
     }
-
-
 }

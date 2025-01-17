@@ -7,7 +7,7 @@ public static class ScheduleAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private static string Table = "Schedule";
+    private static readonly string Table = "Schedule";
 
     public static int Write(ScheduleModel schedule)
     {
@@ -70,7 +70,7 @@ public static class ScheduleAccess
         return _connection.Query<ScheduleModel>(sql, new { MovieId = Movie_ID }).ToList();
     }
 
-    public static ScheduleModel GetById(int id)
+    public static ScheduleModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<ScheduleModel>(sql, new { Id = id });
@@ -82,7 +82,7 @@ public static class ScheduleAccess
         return (List<ScheduleModel>)_connection.Query<ScheduleModel>(sql, new { Id = locId });
     }
 
-    public static ScheduleModel GetByEmail(string email)
+    public static ScheduleModel? GetByEmail(string email)
     {
         string sql = $"SELECT * FROM {Table} WHERE email = @Email";
         return _connection.QueryFirstOrDefault<ScheduleModel>(sql, new { Email = email });

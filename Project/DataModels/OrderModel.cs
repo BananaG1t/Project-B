@@ -30,6 +30,6 @@ public class OrderModel
 
     public OrderModel(Int64 id, Int64 Account_ID, Int64 Schedule_ID, Int64 amount, string bar, Int64? Coupon_ID)
     {
-
+        // for dapper when it tries to get a bool value from the database with no entry it returns a string
     }
 }

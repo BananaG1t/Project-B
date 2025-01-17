@@ -6,15 +6,15 @@ public static class AssignedRoleAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
-    private static string Table = "AssignedRoles";
+    private static readonly string Table = "AssignedRoles";
 
-    public static Int64 Write(AssignedRoleModel AssignedRoleModel)
+    public static int Write(AssignedRoleModel AssignedRoleModel)
     {
         string sql = $"INSERT INTO {Table} (Role, Account_ID, Location_ID) VALUES (@RoleId, @AccountId, @LocationId)";
         _connection.Execute(sql, AssignedRoleModel);
 
         string idSql = "SELECT last_insert_rowid();";
-        Int64 lastId = _connection.ExecuteScalar<Int64>(idSql);
+        int lastId = _connection.ExecuteScalar<int>(idSql);
 
         return lastId;
     }
@@ -41,25 +41,25 @@ public static class AssignedRoleAccess
         return _connection.ExecuteScalar<int>(sql, new { RoleId = roleId, LocationId = locationId, AccountId = accountId }) == 0;
     }
 
-    public static AssignedRoleModel GetById(int id)
+    public static AssignedRoleModel? GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<AssignedRoleModel>(sql, new { Id = id });
     }
 
-    public static AssignedRoleModel GetByRoleId(int RoleIdMethod)
+    public static AssignedRoleModel? GetByRoleId(int RoleIdMethod)
     {
         string sql = $"SELECT * FROM {Table} WHERE Role = @RoleId";
         return _connection.QueryFirstOrDefault<AssignedRoleModel>(sql, new { RoleId = RoleIdMethod });
     }
 
-    public static AssignedRoleModel GetByAccountId(int AccountIdMethod)
+    public static AssignedRoleModel? GetByAccountId(int AccountIdMethod)
     {
         string sql = $"SELECT * FROM {Table} WHERE Account_ID = @AccountId";
         return _connection.QueryFirstOrDefault<AssignedRoleModel>(sql, new { AccountId = AccountIdMethod });
     }
 
-    public static AssignedRoleModel GetByLocationId(int LocationIdMethod)
+    public static AssignedRoleModel? GetByLocationId(int LocationIdMethod)
     {
         string sql = $"SELECT * FROM {Table} WHERE Location_ID = @Id";
         return _connection.QueryFirstOrDefault<AssignedRoleModel>(sql, new { Id = LocationIdMethod });

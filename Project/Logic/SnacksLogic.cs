@@ -5,7 +5,7 @@ public static class SnacksLogic
         new SnacksModel(name, price);
     }
 
-    public static SnacksModel GetById(int id)
+    public static SnacksModel? GetById(int id)
     {
         return SnacksAccess.GetById(id);
     }
@@ -15,13 +15,18 @@ public static class SnacksLogic
         return SnacksAccess.GetAll();
     }
 
-    public static void update(SnacksModel snack)
+    public static void Update(SnacksModel snack)
     {
         SnacksAccess.Update(snack);
     }
     public static void Delete(int id)
     {
         SnacksAccess.Delete(id);
+    }
+    
+    public static void Delete(SnacksModel snack)
+    {
+        SnacksAccess.Delete(snack.Id);
     }
 
 
@@ -38,8 +43,6 @@ public static class SnacksLogic
 
     public static double CalculateDailyIncome()
     {
-        double totalIncome = 0;
-
         // Get all schedules for today
         DateTime today = DateTime.Now.Date;
         List<ScheduleModel> dailySchedules = ScheduleAccess.GetByDateRange(today, today.AddDays(1));
@@ -49,8 +52,6 @@ public static class SnacksLogic
 
     public static double CalculateIncomeByMovie(MovieModel movie)
     {
-        double totalIncome = 0;
-
         // Get all schedules for the selected movie
         List<ScheduleModel> movieSchedules = ScheduleAccess.GetByMovieId((int)movie.Id);
 
@@ -63,7 +64,7 @@ public static class SnacksLogic
 
         foreach (var boughtSnack in boughtSnacks)
         {
-            SnacksModel snack = GetById(boughtSnack.SnackId);
+            SnacksModel snack = GetById(boughtSnack.SnackId) ?? throw new Exception("Snack not found");
             total += boughtSnack.Amount * snack.Price;
         }
 
@@ -75,12 +76,12 @@ public static class SnacksLogic
     {
         double total = 0;
         List<BoughtSnacksModel> boughtSnacks = BoughtSnacksLogic.GetAllById(boughtSnack.ReservationId);
-        CouponModel? coupon = null;
+        CouponModel? coupon;
         coupon = CouponsAccess.GetBySnack(boughtSnack);
         if (boughtSnacks.Count == 0) return 0;
         foreach (BoughtSnacksModel currentSnack in boughtSnacks)
         {
-            SnacksModel snack = GetById(currentSnack.SnackId);
+            SnacksModel snack = GetById(currentSnack.SnackId) ?? throw new Exception("Snack not found"); // can't be null due to foreign key constraint
             if (coupon is not null && (coupon.CouponType == "Snacks" || coupon.CouponType == "Order"))
                 total += CouponsLogic.DiscountPrice(currentSnack.Amount * snack.Price, coupon);
             else
@@ -106,7 +107,7 @@ public static class SnacksLogic
                     List<BoughtSnacksModel> boughtSnacks = BoughtSnacksAccess.GetByReservationId(reservation.Id);
                     foreach (BoughtSnacksModel currentSnack in boughtSnacks)
                     {
-                        SnacksModel snack = GetById(currentSnack.SnackId);
+                        SnacksModel snack = GetById(currentSnack.SnackId) ?? throw new Exception("Snack not found"); // can't be null due to foreign key constraint
                         if (coupon is not null && (coupon.CouponType == "Snacks" || coupon.CouponType == "Order"))
                         {
                             totalIncome += CouponsLogic.DiscountPrice(currentSnack.Amount * snack.Price, coupon);

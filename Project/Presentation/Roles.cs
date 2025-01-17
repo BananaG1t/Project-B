@@ -59,8 +59,7 @@ public static class Roles
 
         RoleModel role = RoleLogic.GetAllRoles()[PresentationHelper.MenuLoop(RoleInfo.Item1, 1, RoleInfo.Item2) - 1];
 
-        AccountsLogic acc = new();
-        Tuple<string, int> allAccountInfo = acc.GetAccountText();
+        Tuple<string, int> allAccountInfo = AccountsLogic.GetAccountText();
 
         // makes sure the user doesn't go into an empty loop
         if (allAccountInfo.Item2 == 0)
@@ -69,8 +68,7 @@ public static class Roles
             return;
         }
 
-        AccountsLogic accountLogic = new();
-        AccountModel account = accountLogic.GetAllAccounts()[PresentationHelper.MenuLoop(allAccountInfo.Item1, 1, allAccountInfo.Item2) - 1];
+        AccountModel account = AccountsLogic.GetAllAccounts()[PresentationHelper.MenuLoop(allAccountInfo.Item1, 1, allAccountInfo.Item2) - 1];
 
         if (account.Id == 0)
         {
@@ -87,18 +85,20 @@ public static class Roles
             return;
         }
 
-        LocationModel locationModel = LocationLogic.GetAllLocations()[PresentationHelper.MenuLoop(locationInfo.Item1, 1, locationInfo.Item2) - 1];
+        int locationNumbChosen = PresentationHelper.MenuLoop(locationInfo.Item1, 1, locationInfo.Item2);
 
-        AssignedRoleModel assignedRoleModel = RoleLogic.GetAssignedRoleByAccountId(account.Id);
+        LocationModel? locationModel = locationNumbChosen == 1 ? null : LocationLogic.GetAllLocations()[locationNumbChosen - 2];
+
+        AssignedRoleModel? assignedRoleModel = RoleLogic.GetAssignedRoleByAccountId(account.Id);
 
         bool differentLocation = false;
         bool differentRole = false;
 
         if (assignedRoleModel != null)
         {
-            RoleModel assignedrole = RoleAccess.GetById((int)assignedRoleModel.RoleId);
+            RoleModel assignedrole = RoleAccess.GetById(assignedRoleModel.RoleId) ?? throw new Exception("Role not found");
 
-            if (assignedRoleModel.LocationId == locationModel.Id)
+            if (assignedRoleModel.LocationId == locationModel?.Id)
             {
                 if (assignedrole.LevelAccess == role.LevelAccess)
                 { PresentationHelper.PrintAndEnter($"That is the same role"); return; }
@@ -129,17 +129,17 @@ public static class Roles
                 { PresentationHelper.PrintAndEnter("Cannot change the admin role\n"); }
 
                 if (differentLocation)
-                { RoleLogic.AssignRole((int)role.Id, account.Id, (int)locationModel.Id); }
+                { RoleLogic.AssignRole(role.Id, account.Id, locationModel?.Id); }
             }
             else
             {
                 if (differentLocation)
-                { RoleLogic.AssignRole((int)role.Id, account.Id, (int)locationModel.Id); }
+                { RoleLogic.AssignRole(role.Id, account.Id, locationModel?.Id); }
             }
         }
 
         if (!differentLocation && !differentRole)
-        { RoleLogic.AssignRole((int)role.Id, account.Id, (int)locationModel.Id); }
+        { RoleLogic.AssignRole(role.Id, account.Id, locationModel?.Id); }
 
     }
 
@@ -205,7 +205,7 @@ public static class Roles
             return;
         }
 
-        RoleLogic.RemoveRole((int)assignedRole.Id);
+        RoleLogic.RemoveRole(assignedRole.Id);
 
         Console.Clear();
     }
@@ -236,7 +236,7 @@ public static class Roles
             return;
         }
 
-        RoleLogic.DeleteRole((int)role.Id);
+        RoleLogic.DeleteRole(role.Id);
 
         Console.Clear();
     }
@@ -255,7 +255,7 @@ public static class Roles
 
         RoleLevelModel roleLevel = RoleLogic.GetAllRoleLevels()[PresentationHelper.MenuLoop(roleLevels.Item1, 1, roleLevels.Item2) - 1];
 
-        RoleLogic.DeleteFunctionalityRole((int)roleLevel.Id);
+        RoleLogic.DeleteFunctionalityRole(roleLevel.Id);
 
         Console.Clear();
     }
