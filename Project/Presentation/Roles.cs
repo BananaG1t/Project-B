@@ -205,7 +205,7 @@ public static class Roles
             return;
         }
 
-        RoleLogic.RemoveRole((int)assignedRole.Id);
+        RoleLogic.RemoveRole(assignedRole.Id);
 
         Console.Clear();
     }
@@ -236,7 +236,7 @@ public static class Roles
             return;
         }
 
-        RoleLogic.DeleteRole((int)role.Id);
+        RoleLogic.DeleteRole(role.Id);
 
         Console.Clear();
     }
@@ -255,7 +255,7 @@ public static class Roles
 
         RoleLevelModel roleLevel = RoleLogic.GetAllRoleLevels()[PresentationHelper.MenuLoop(roleLevels.Item1, 1, roleLevels.Item2) - 1];
 
-        RoleLogic.DeleteFunctionalityRole((int)roleLevel.Id);
+        RoleLogic.DeleteFunctionalityRole(roleLevel.Id);
 
         Console.Clear();
     }
