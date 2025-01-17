@@ -40,8 +40,12 @@ public static class LocationAccess
     public static List<LocationModel> GetAllLocationsWithNoSchedules()
     {
         DateTime currdate = DateTime.Now;
-        string sql = @$"SELECT DISTINCT Location.* FROM {Table} LEFT JOIN Schedule ON {Table}.id = Schedule.Location_ID WHERE Schedule.Location_ID IS NULL OR startTime < @Currdate";
-        List<LocationModel> locations = (List<LocationModel>)_connection.Query<LocationModel>(sql, new { Currdate = currdate });
+        string sql = @$"
+                        SELECT l.*
+                        FROM {Table} l
+                        LEFT JOIN Schedule s ON l.id = s.Location_ID
+                        GROUP BY l.id
+                        HAVING COUNT(s.id) = 0 OR MAX(s.StartTime) < @Currdate";        List<LocationModel> locations = (List<LocationModel>)_connection.Query<LocationModel>(sql, new { Currdate = currdate });
 
         return locations;
     }

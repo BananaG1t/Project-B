@@ -37,8 +37,8 @@ public class SeatModel
     // This only for when the Seat table is empty (isAvailable column returns a string as default value)
     public SeatModel(Int64 id, Int64 Auditorium_ID, Int64 row, Int64 collum, double price, Int64 type, string isAvailable)
     {
-        Id = id;
-        AuditoriumId = Auditorium_ID;
+        Id = (int)id;
+        AuditoriumId = (int)Auditorium_ID;
         Row = (int)row;
         Collum = (int)collum;
         Price = price;
