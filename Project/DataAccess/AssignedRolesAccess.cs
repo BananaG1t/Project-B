@@ -2,13 +2,13 @@ using Microsoft.Data.Sqlite;
 
 using Dapper;
 
-public static class AssignedRoleAccess
+public class AssignedRoleAccess : Access<AssignedRoleModel>, IAccess<AssignedRoleModel>
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
     private static readonly string Table = "AssignedRoles";
 
-    public static int Write(AssignedRoleModel AssignedRoleModel)
+    public int Write(AssignedRoleModel AssignedRoleModel)
     {
         string sql = $"INSERT INTO {Table} (Role, Account_ID, Location_ID) VALUES (@RoleId, @AccountId, @LocationId)";
         _connection.Execute(sql, AssignedRoleModel);
@@ -19,16 +19,10 @@ public static class AssignedRoleAccess
         return lastId;
     }
 
-    public static void Update(AssignedRoleModel AssignedRoleModel)
+    public static void Update(AssignedRoleModel AssignedRoleModel, bool ding = false)
     {
         string sql = $"UPDATE {Table} SET Role = @RoleId, Account_ID = @AccountId, Location_ID = @LocationId WHERE id = @Id";
         _connection.Execute(sql, AssignedRoleModel);
-    }
-
-    public static void Delete(int id)
-    {
-        string sql = $"DELETE FROM {Table} WHERE id = @Id";
-        _connection.Execute(sql, new { Id = id });
     }
 
     public static bool IsAvailable(int roleId, int? locationId, int accountId)
@@ -39,12 +33,6 @@ public static class AssignedRoleAccess
                 AND Account_ID = @AccountId 
                 AND Location_ID = @LocationId";
         return _connection.ExecuteScalar<int>(sql, new { RoleId = roleId, LocationId = locationId, AccountId = accountId }) == 0;
-    }
-
-    public static AssignedRoleModel? GetById(int id)
-    {
-        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        return _connection.QueryFirstOrDefault<AssignedRoleModel>(sql, new { Id = id });
     }
 
     public static AssignedRoleModel? GetByRoleId(int RoleIdMethod)
@@ -77,6 +65,12 @@ public static class AssignedRoleAccess
         return (List<AssignedRoleModel>)_connection.Query<AssignedRoleModel>(sql, new { });
     }
 
+    public static AssignedRoleModel[] GetAllAssignedRoles(bool array = false)
+    {
+        string sql = $"SELECT * FROM {Table} ORDER BY Account_ID ASC";
+        return _connection.Query<AssignedRoleModel>(sql, new { }).ToArray();
+    }
+
     public static List<AssignedRoleModel> GetAllByAccountId(int AccountIdMethod)
     {
         string sql = $"SELECT * FROM {Table} WHERE Account_ID = @AccountId";
@@ -89,5 +83,10 @@ public static class AssignedRoleAccess
         List<AssignedRoleModel> assignedRoles = (List<AssignedRoleModel>)_connection.Query<AssignedRoleModel>(sql);
 
         return assignedRoles;
+    }
+
+    public void Update(AssignedRoleModel model)
+    {
+        throw new NotImplementedException();
     }
 }

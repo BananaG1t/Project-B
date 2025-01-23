@@ -233,6 +233,21 @@ public static class RoleLogic
         return true;
     }
 
+    public static bool UpdateAssignedRolesByRoleArrays(AssignedRoleModel assignedRole, RoleModel role)
+    {
+        AssignedRoleModel[] assignedRoles = AssignedRoleAccess.GetAllAssignedRoles(true);
+        foreach (AssignedRoleModel dbmodel in assignedRoles)
+        {
+            if (dbmodel.AccountId == assignedRole.AccountId)
+            {
+                if (dbmodel.RoleId == 0) { return false; }
+                dbmodel.RoleId = role.Id;
+                AssignedRoleAccess.Update(dbmodel);
+            }
+        }
+        return true;
+    }
+
     public static List<AssignedRoleModel> GetAllAssignedRolesByAccountId(int accountId)
     {
         return AssignedRoleAccess.GetAllByAccountId(accountId);
