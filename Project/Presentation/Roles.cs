@@ -243,21 +243,33 @@ public static class Roles
 
     public static void DeleteFunctionalityRole()
     {
-        Tuple<string, int> roleLevels = RoleLogic.GetRoleLevelText();
-
         Console.Clear();
-
+        Tuple<string, int> roleLevels = RoleLogic.GetRoleLevelText();
         if (roleLevels.Item2 == 0)
         {
             PresentationHelper.PrintAndEnter("There are no assigned roles in the database");
             return;
         }
 
-        RoleLevelModel roleLevel = RoleLogic.GetAllRoleLevels()[PresentationHelper.MenuLoop(roleLevels.Item1, 1, roleLevels.Item2) - 1];
+        List<RoleLevelModel> allRoleLevels = RoleLogic.GetAllRoleLevels();
+        RoleLevelModel roleLevel = allRoleLevels[PresentationHelper.MenuLoop(roleLevels.Item1, 1, roleLevels.Item2) - 1];
 
         RoleLogic.DeleteFunctionalityRole(roleLevel.Id);
+    }
 
+    public static void DeleteFunctionalityRole(bool array = true)
+    {
         Console.Clear();
+        Tuple<string, int> roleLevels = RoleLogic.GetRoleLevelText();
+        if (roleLevels.Item2 == 0)
+        {
+            PresentationHelper.PrintAndEnter("There are no assigned roles in the database");
+            return;
+        }
+        RoleLevelModel[] allRoleLevels = RoleLogic.GetAllRoleLevels().ToArray();
+        RoleLevelModel roleLevel = allRoleLevels[PresentationHelper.MenuLoop(roleLevels.Item1, 1, roleLevels.Item2) - 1];
+
+        RoleLogic.DeleteFunctionalityRole(roleLevel.Id);
     }
 
     public static void DisplayRoles(string displayType)
